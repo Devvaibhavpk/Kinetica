@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Kinetica Control Room - GLOBAL EMERGENCY OVERRIDE</title>
+    
+    <!-- Fonts -->
+    <link href="https://api.fontshare.com/v2/css?f[]=general-sans@400,500,600,700&f[]=supreme@400,500,700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.cdnfonts.com/css/neue-montreal" rel="stylesheet">
+
+    <!-- Tailwind & Shared -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="../shared/theme.js"></script>
+    <link rel="stylesheet" href="../shared/theme.css">
+    <script src="../shared/sidebar.js"></script>
+    
+    <style>
+        .blueprint-grid-emergency {
+            background-image: 
+                linear-gradient(rgba(240,85,66,0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(240,85,66,0.05) 1px, transparent 1px);
+            background-size: 24px 24px;
+            background-color: #0d0403; /* Very dark red/black */
+        }
+
+        .scanline-emergency {
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(to right, transparent, rgba(240,85,66,0.5), transparent);
+            position: absolute;
+            animation: scan-fast 2s linear infinite;
+            z-index: 10;
+            pointer-events: none;
+        }
+        @keyframes scan-fast {
+            0% { top: 0%; opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { top: 100%; opacity: 0; }
+        }
+
+        .emergency-strobe {
+            animation: strobe 1.5s ease-in-out infinite alternate;
+        }
+        @keyframes strobe {
+            0% { box-shadow: inset 0 0 0 1px rgba(240,85,66,0.1), 0 0 20px rgba(240,85,66,0); }
+            100% { box-shadow: inset 0 0 0 2px rgba(240,85,66,0.8), 0 0 40px rgba(240,85,66,0.3); }
+        }
+
+        .flow-line-emergency {
+            stroke-dasharray: 12 8;
+            animation: dashFlowEmergency 0.4s linear infinite;
+        }
+        @keyframes dashFlowEmergency {
+            from { stroke-dashoffset: 20; }
+            to { stroke-dashoffset: 0; }
+        }
+    </style>
+</head>
+<body class="bg-surface flex flex-col font-body text-on-surface h-screen overflow-hidden blueprint-grid-emergency">
+    <div id="sidebar-container"></div>
+    <main class="ml-16 flex-1 flex flex-col relative h-full">
+        
+        <!-- Top Bar -->
+        <header class="fixed top-0 right-0 left-16 z-40 h-14 bg-[#0d0403]/95 backdrop-blur-md border-b-2 border-state-preempted flex items-center justify-between px-6 shadow-[0_4px_30px_rgba(240,85,66,0.15)]">
+            <div class="flex items-center gap-4">
+                <div class="flex items-center gap-2">
+                    <span class="material-symbols-rounded text-state-preempted text-[24px] animate-pulse">crisis_alert</span>
+                    <h1 class="font-telemetry text-lg font-bold tracking-widest text-state-preempted shadow-glow-preempted">GLOBAL OVERRIDE ACTIVE</h1>
+                </div>
+                <div class="h-4 w-px bg-state-preempted/30"></div>
+                <div class="flex items-center gap-2">
+                    <div class="led-pip led-pip-preempted animate-pulse"></div>
+                    <span class="font-telemetry text-[12px] uppercase tracking-widest text-white">E-Routing Locked</span>
+                </div>
+            </div>
+
+            <!-- Global Telemetry Ribbon -->
+            <div class="hidden md:flex items-center gap-6 font-telemetry text-[12px]">
+                <div class="flex flex-col items-end">
+                    <span class="text-state-preempted text-[9px] uppercase tracking-wider mb-0.5">Civilian Traffic</span>
+                    <span class="text-white font-bold">HALTED</span>
+                </div>
+                <div class="h-6 w-px bg-state-preempted/30"></div>
+                <div class="flex flex-col items-end">
+                    <span class="text-state-preempted text-[9px] uppercase tracking-wider mb-0.5">Preempted Nodes</span>
+                    <span class="text-white font-bold">24 / 24</span>
+                </div>
+                <div class="h-6 w-px bg-state-preempted/30"></div>
+                <div class="flex flex-col items-end">
+                    <span class="text-state-preempted text-[9px] uppercase tracking-wider mb-0.5">Route Clearance</span>
+                    <span class="text-white font-bold">100%</span>
+                </div>
+            </div>
+
+            <div class="flex items-center gap-4">
+                <div class="text-right flex flex-col justify-center">
+                    <span class="font-telemetry text-[12px] text-state-preempted font-bold" id="live-time">14:02:41 UTC</span>
+                </div>
+                <button class="flex items-center gap-2 bg-state-preempted text-[#0d0403] px-4 py-1.5 rounded hover:bg-white hover:text-state-preempted transition-colors border border-state-preempted shadow-glow-preempted">
+                    <span class="material-symbols-rounded text-[16px]">lock_open</span>
+                    <span class="font-telemetry text-[11px] font-bold uppercase tracking-widest">DISENGAGE</span>
+                </button>
+            </div>
+        </header>
+
+        <!-- Main Dashboard Canvas Area -->
+        <div class="mt-14 p-6 overflow-y-auto flex-1 flex flex-col gap-6 pb-16">
+            
+            <div class="grid grid-cols-1 xl:grid-cols-12 gap-6 flex-1 min-h-[500px]">
+                
+                <!-- Massive Map View -->
+                <section class="xl:col-span-9 bg-[#0d0403] rounded-[24px] p-0 flex flex-col relative overflow-hidden tech-border emergency-strobe">
+                    <div class="scanline-emergency"></div>
+                    
+                    <div class="absolute top-0 left-0 right-0 p-6 flex justify-between items-start z-20 pointer-events-none">
+                        <div class="bg-state-preempted/10 border border-state-preempted/30 backdrop-blur-md px-4 py-3 rounded-lg flex items-center gap-4 shadow-[0_0_20px_rgba(240,85,66,0.2)]">
+                            <span class="material-symbols-rounded text-state-preempted text-[24px] animate-pulse">local_fire_department</span>
+                            <div class="flex flex-col">
+                                <h2 class="font-telemetry text-sm font-bold text-state-preempted tracking-widest uppercase">SECTOR 4 EVACUATION ROUTE</h2>
+                                <span class="font-telemetry text-[10px] text-white">ALL SIGNALS LOCKED IN PHASE 2</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Visual SVG Map Layer -->
+                    <div class="flex-1 relative w-full h-full min-h-[500px]">
+                        <svg class="absolute inset-0 w-full h-full pointer-events-none" xmlns="http://www.w3.org/2000/svg">
+                            <defs>
+                                <filter id="glow-red" x="-20%" y="-20%" width="140%" height="140%">
+                                    <feGaussianBlur stdDeviation="6" result="blur" />
+                                    <feComposite in="SourceGraphic" in2="blur" operator="over" />
+                                </filter>
+                            </defs>
+                            
+                            <!-- E-Route Pathing -->
+                            <path d="M 10% 50% L 30% 50% L 50% 50% L 70% 50% L 90% 50%" fill="none" stroke="rgba(240,85,66,0.15)" stroke-width="12"></path>
+                            <path class="flow-line-emergency" d="M 10% 50% L 30% 50% L 50% 50% L 70% 50% L 90% 50%" fill="none" stroke="#f05542" stroke-width="4" filter="url(#glow-red)"></path>
+                        </svg>
+
+                        <!-- Intersection Nodes -->
+                        <div class="absolute top-[50%] left-[10%] -translate-x-1/2 -translate-y-1/2 flex flex-col items-center">
+                            <div class="w-16 h-16 rounded bg-state-preempted/20 border-2 border-state-preempted flex items-center justify-center relative pulse-preempted">
+                                <span class="font-telemetry text-[14px] text-white font-bold shadow-glow-preempted">IX101</span>
+                            </div>
+                        </div>
+                        <div class="absolute top-[50%] left-[30%] -translate-x-1/2 -translate-y-1/2 flex flex-col items-center">
+                            <div class="w-16 h-16 rounded bg-state-preempted/20 border-2 border-state-preempted flex items-center justify-center relative pulse-preempted">
+                                <span class="font-telemetry text-[14px] text-white font-bold shadow-glow-preempted">IX102</span>
+                            </div>
+                        </div>
+                        <div class="absolute top-[50%] left-[50%] -translate-x-1/2 -translate-y-1/2 flex flex-col items-center">
+                            <div class="w-16 h-16 rounded bg-state-preempted/20 border-2 border-state-preempted flex items-center justify-center relative pulse-preempted">
+                                <span class="font-telemetry text-[14px] text-white font-bold shadow-glow-preempted">IX104</span>
+                            </div>
+                        </div>
+                        <div class="absolute top-[50%] left-[70%] -translate-x-1/2 -translate-y-1/2 flex flex-col items-center">
+                            <div class="w-16 h-16 rounded bg-state-preempted/20 border-2 border-state-preempted flex items-center justify-center relative pulse-preempted">
+                                <span class="font-telemetry text-[14px] text-white font-bold shadow-glow-preempted">IX106</span>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Emergency Telemetry Panel -->
+                <section class="xl:col-span-3 flex flex-col gap-6">
+                    <div class="bg-[#0d0403] rounded-[24px] p-6 flex flex-col gap-4 tech-border emergency-strobe flex-1 border border-state-preempted/30">
+                        <div class="border-b border-state-preempted/30 pb-4">
+                            <span class="font-telemetry text-[11px] uppercase tracking-widest text-state-preempted block mb-1 animate-pulse">Priority Agent</span>
+                            <h3 class="font-telemetry text-2xl font-bold text-white tracking-widest shadow-glow-preempted">AMBULANCE-01</h3>
+                            <span class="font-telemetry text-[11px] uppercase tracking-widest text-white/70 block mt-2">En Route to Metro General</span>
+                        </div>
+
+                        <div class="flex flex-col gap-4 mt-4">
+                            <div class="bg-state-preempted/5 p-4 rounded border border-state-preempted/20 relative overflow-hidden">
+                                <div class="absolute left-0 top-0 bottom-0 w-1 bg-state-preempted"></div>
+                                <span class="font-telemetry text-[10px] text-state-preempted uppercase tracking-widest block mb-2">ETA to Target</span>
+                                <span class="font-telemetry text-3xl text-white font-bold tabular-nums">04m 12s</span>
+                            </div>
+                            
+                            <div class="bg-state-preempted/5 p-4 rounded border border-state-preempted/20 relative overflow-hidden">
+                                <div class="absolute left-0 top-0 bottom-0 w-1 bg-state-preempted"></div>
+                                <span class="font-telemetry text-[10px] text-state-preempted uppercase tracking-widest block mb-2">Velocity</span>
+                                <span class="font-telemetry text-3xl text-white font-bold tabular-nums">68 MPH</span>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+
+        <!-- Emergency Log Ticker -->
+        <footer class="fixed bottom-0 left-16 right-0 h-10 bg-[#0d0403] border-t-2 border-state-preempted z-30 flex items-center px-3 overflow-hidden shadow-[0_-4px_20px_rgba(240,85,66,0.15)]">
+            <div class="flex items-center gap-2 pr-4 border-r border-state-preempted/30 shrink-0 bg-[#0d0403] z-10 h-full relative">
+                <span class="material-symbols-rounded text-state-preempted text-[16px] animate-pulse">warning</span>
+                <span class="font-telemetry text-[11px] uppercase tracking-widest text-state-preempted font-bold">EMERGENCY_LOG</span>
+                <div class="absolute right-0 top-0 bottom-0 w-8 bg-gradient-to-r from-[#0d0403] to-transparent pointer-events-none translate-x-full"></div>
+            </div>
+            
+            <div class="ticker-wrap flex-1 ml-4 h-full flex items-center">
+                <div class="ticker-move flex items-center gap-6" style="animation-duration: 25s; width: max-content;">
+                    <!-- Copied emergency logs -->
+                    <div class="flex items-center gap-2 shrink-0">
+                        <span class="font-telemetry text-[11px] text-state-preempted">[14:02:41]</span>
+                        <span class="font-telemetry text-[11px] text-white font-bold">SYS_GLOBAL</span>
+                        <span class="px-2 py-0.5 rounded bg-state-preempted text-[#0a0a0a] font-telemetry text-[10px] uppercase font-bold tracking-widest">OVERRIDE</span>
+                        <span class="font-telemetry text-[11px] text-white tracking-wide">Ambulance transit phase lock established</span>
+                    </div>
+                    <div class="w-px h-4 bg-state-preempted/30 shrink-0"></div>
+                    <div class="flex items-center gap-2 shrink-0">
+                        <span class="font-telemetry text-[11px] text-state-preempted">[14:02:41]</span>
+                        <span class="font-telemetry text-[11px] text-white font-bold">IX101</span>
+                        <span class="px-2 py-0.5 rounded bg-state-preempted text-[#0a0a0a] font-telemetry text-[10px] uppercase font-bold tracking-widest">FORCE_GRN</span>
+                        <span class="font-telemetry text-[11px] text-white tracking-wide">Preemption clear protocol verified</span>
+                    </div>
+                    <div class="w-px h-4 bg-state-preempted/30 shrink-0"></div>
+                    <div class="flex items-center gap-2 shrink-0">
+                        <span class="font-telemetry text-[11px] text-state-preempted">[14:02:41]</span>
+                        <span class="font-telemetry text-[11px] text-white font-bold">IX102</span>
+                        <span class="px-2 py-0.5 rounded bg-state-preempted text-[#0a0a0a] font-telemetry text-[10px] uppercase font-bold tracking-widest">FORCE_GRN</span>
+                        <span class="font-telemetry text-[11px] text-white tracking-wide">Preemption clear protocol verified</span>
+                    </div>
+                    <div class="w-px h-4 bg-state-preempted/30 shrink-0"></div>
+                    <div class="flex items-center gap-2 shrink-0">
+                        <span class="font-telemetry text-[11px] text-state-preempted">[14:02:41]</span>
+                        <span class="font-telemetry text-[11px] text-white font-bold">IX104</span>
+                        <span class="px-2 py-0.5 rounded bg-state-preempted text-[#0a0a0a] font-telemetry text-[10px] uppercase font-bold tracking-widest">FORCE_GRN</span>
+                        <span class="font-telemetry text-[11px] text-white tracking-wide">Preemption clear protocol verified</span>
+                    </div>
+                    <div class="w-px h-4 bg-state-preempted/30 shrink-0"></div>
+                    <!-- Duplicate -->
+                    <div class="flex items-center gap-2 shrink-0">
+                        <span class="font-telemetry text-[11px] text-state-preempted">[14:02:41]</span>
+                        <span class="font-telemetry text-[11px] text-white font-bold">SYS_GLOBAL</span>
+                        <span class="px-2 py-0.5 rounded bg-state-preempted text-[#0a0a0a] font-telemetry text-[10px] uppercase font-bold tracking-widest">OVERRIDE</span>
+                        <span class="font-telemetry text-[11px] text-white tracking-wide">Ambulance transit phase lock established</span>
+                    </div>
+                    <div class="w-px h-4 bg-state-preempted/30 shrink-0"></div>
+                    <div class="flex items-center gap-2 shrink-0">
+                        <span class="font-telemetry text-[11px] text-state-preempted">[14:02:41]</span>
+                        <span class="font-telemetry text-[11px] text-white font-bold">IX101</span>
+                        <span class="px-2 py-0.5 rounded bg-state-preempted text-[#0a0a0a] font-telemetry text-[10px] uppercase font-bold tracking-widest">FORCE_GRN</span>
+                        <span class="font-telemetry text-[11px] text-white tracking-wide">Preemption clear protocol verified</span>
+                    </div>
+                    <div class="w-px h-4 bg-state-preempted/30 shrink-0"></div>
+                    <div class="flex items-center gap-2 shrink-0">
+                        <span class="font-telemetry text-[11px] text-state-preempted">[14:02:41]</span>
+                        <span class="font-telemetry text-[11px] text-white font-bold">IX102</span>
+                        <span class="px-2 py-0.5 rounded bg-state-preempted text-[#0a0a0a] font-telemetry text-[10px] uppercase font-bold tracking-widest">FORCE_GRN</span>
+                        <span class="font-telemetry text-[11px] text-white tracking-wide">Preemption clear protocol verified</span>
+                    </div>
+                    <div class="w-px h-4 bg-state-preempted/30 shrink-0"></div>
+                    <div class="flex items-center gap-2 shrink-0">
+                        <span class="font-telemetry text-[11px] text-state-preempted">[14:02:41]</span>
+                        <span class="font-telemetry text-[11px] text-white font-bold">IX104</span>
+                        <span class="px-2 py-0.5 rounded bg-state-preempted text-[#0a0a0a] font-telemetry text-[10px] uppercase font-bold tracking-widest">FORCE_GRN</span>
+                        <span class="font-telemetry text-[11px] text-white tracking-wide">Preemption clear protocol verified</span>
+                    </div>
+                    <div class="w-px h-4 bg-state-preempted/30 shrink-0"></div>
+                </div>
+            </div>
+        </footer>
+    </main>
+</body>
+</html>
