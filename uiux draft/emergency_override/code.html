@@ -11,13 +11,7 @@
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700;800&display=swap" rel="stylesheet">
     <link href="https://fonts.cdnfonts.com/css/neue-montreal" rel="stylesheet">
 
-    <!-- Tailwind & Shared -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="../shared/theme.js"></script>
-    <link rel="stylesheet" href="../shared/theme.css">
-    <script src="../shared/sidebar.js"></script>
-    
-    <style>
+<style>
         .blueprint-grid-emergency {
             background-image: 
                 linear-gradient(rgba(240,85,66,0.05) 1px, transparent 1px),
@@ -59,8 +53,59 @@
             to { stroke-dashoffset: 0; }
         }
     </style>
+
+
+    <!-- Tailwind config: MUST appear before cdn.tailwindcss.com -->
+    <script>
+      window.tailwind = window.tailwind || {};
+      window.tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "surface":                   "#111318",
+              "surface-dim":               "#0d0f13",
+              "surface-bright":            "#1c1e24",
+              "surface-container-lowest":  "#0d0f13",
+              "surface-container-low":     "#161820",
+              "surface-container":         "#1c1e24",
+              "surface-container-high":    "#2c2f3a",
+              "surface-container-highest": "#363944",
+              "on-surface":                "#e8eaf0",
+              "on-surface-variant":        "#9096a8",
+              "outline":                   "#2e3140",
+              "outline-variant":           "#232535",
+              "primary":                   "#4d9fff",
+              "on-primary":                "#ffffff",
+              "state-calm":                "#00c97a",
+              "state-building":            "#ffab1a",
+              "state-preempted":           "#ff4060"
+            },
+            fontFamily: {
+              "sans":      ["Inter",        "system-ui", "sans-serif"],
+              "display":   ["Albert Sans",  "sans-serif"],
+              "body":      ["Inter",        "system-ui", "sans-serif"],
+              "label":     ["Inter",        "system-ui", "sans-serif"],
+              "mono":      ["JetBrains Mono","monospace"],
+              "telemetry": ["JetBrains Mono","monospace"]
+            },
+            borderRadius: {
+              "DEFAULT": "8px",
+              "md":  "10px",
+              "lg":  "14px",
+              "xl":  "18px",
+              "2xl": "24px",
+              "full":"9999px"
+            }
+          }
+        }
+      };
+    </script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="../shared/theme.css">
+    <script src="../shared/sidebar.js" defer></script>
 </head>
-<body class="bg-surface flex flex-col font-body text-on-surface h-screen overflow-hidden blueprint-grid-emergency">
+<body class="bg-surface flex flex-col font-body text-on-surface h-screen overflow-hidden blueprint-grid-emergency" style="background-color:#111318;color:#e8eaf0;">
     <div id="sidebar-container"></div>
     <main class="ml-16 flex-1 flex flex-col relative h-full">
         

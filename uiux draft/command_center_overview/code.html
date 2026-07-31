@@ -1,8 +1,4 @@
-import os
-
-file_path = r"F:\project\Kinetica\uiux draft\command_center_overview\code.html"
-
-new_html = """<!DOCTYPE html>
+<!DOCTYPE html>
 <html class="dark" lang="en">
 <head>
     <meta charset="utf-8"/>
@@ -15,13 +11,7 @@ new_html = """<!DOCTYPE html>
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
     <link href="https://fonts.cdnfonts.com/css/neue-montreal" rel="stylesheet">
 
-    <!-- Tailwind & Shared -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="../shared/theme.js"></script>
-    <link rel="stylesheet" href="../shared/theme.css">
-    <script src="../shared/sidebar.js"></script>
-    
-    <style>
+<style>
         @keyframes dashFlow {
             from { stroke-dashoffset: 100; }
             to { stroke-dashoffset: 0; }
@@ -80,13 +70,67 @@ new_html = """<!DOCTYPE html>
             border-left: none; border-top: none;
         }
     </style>
+
+
+    <!-- Tailwind config: MUST appear before cdn.tailwindcss.com -->
+    <script>
+      window.tailwind = window.tailwind || {};
+      window.tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "surface":                   "#111318",
+              "surface-dim":               "#0d0f13",
+              "surface-bright":            "#1c1e24",
+              "surface-container-lowest":  "#0d0f13",
+              "surface-container-low":     "#161820",
+              "surface-container":         "#1c1e24",
+              "surface-container-high":    "#2c2f3a",
+              "surface-container-highest": "#363944",
+              "on-surface":                "#e8eaf0",
+              "on-surface-variant":        "#9096a8",
+              "outline":                   "#2e3140",
+              "outline-variant":           "#232535",
+              "primary":                   "#4d9fff",
+              "on-primary":                "#ffffff",
+              "state-calm":                "#00c97a",
+              "state-building":            "#ffab1a",
+              "state-preempted":           "#ff4060"
+            },
+            fontFamily: {
+              "sans":      ["Inter",        "system-ui", "sans-serif"],
+              "display":   ["Albert Sans",  "sans-serif"],
+              "body":      ["Inter",        "system-ui", "sans-serif"],
+              "label":     ["Inter",        "system-ui", "sans-serif"],
+              "mono":      ["JetBrains Mono","monospace"],
+              "telemetry": ["JetBrains Mono","monospace"]
+            },
+            borderRadius: {
+              "DEFAULT": "8px",
+              "md":  "10px",
+              "lg":  "14px",
+              "xl":  "18px",
+              "2xl": "24px",
+              "full":"9999px"
+            }
+          }
+        }
+      };
+    </script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="../shared/theme.css">
+    <script src="../shared/sidebar.js" defer></script>
+    <!-- MapLibre GL -->
+    <script src="https://cdn.jsdelivr.net/npm/maplibre-gl@latest/dist/maplibre-gl.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/maplibre-gl@latest/dist/maplibre-gl.css" rel="stylesheet" />
 </head>
-<body class="bg-surface flex flex-col font-body text-on-surface h-screen overflow-hidden blueprint-grid">
+<body class="bg-surface flex flex-col font-body text-on-surface h-screen overflow-hidden blueprint-grid" style="background-color:#111318;color:#e8eaf0;">
     <div id="sidebar-container"></div>
     <main class="ml-16 flex-1 flex flex-col relative h-full">
         
         <!-- Top Bar -->
-        <header class="fixed top-0 right-0 left-16 z-40 h-14 bg-[#0a0a0a]/95 backdrop-blur-md border-b border-white/[0.08] flex items-center justify-between px-6">
+        <header class="fixed top-0 right-0 left-16 z-40 h-14 bg-surface/95 backdrop-blur-md border-b border-outline flex items-center justify-between px-6">
             <div class="flex items-center gap-4">
                 <div class="flex items-center gap-2">
                     <span class="material-symbols-rounded text-state-calm text-[18px]">public</span>
@@ -121,7 +165,7 @@ new_html = """<!DOCTYPE html>
                 <div class="text-right flex flex-col justify-center">
                     <span class="font-mono text-[10px] text-on-surface-variant" id="live-time">14:02:41 UTC</span>
                 </div>
-                <button onclick="triggerScenarioDeployModal()" class="flex items-center gap-2 bg-white text-surface px-3 py-1.5 rounded-full hover:bg-on-surface-variant transition-colors group">
+                <button onclick="triggerScenarioDeployModal()" class="flex items-center gap-2 bg-primary text-on-primary px-3 py-1.5 rounded-full hover:bg-primary/90 transition-colors group shadow-[0_0_15px_rgba(77,159,255,0.2)]">
                     <span class="material-symbols-rounded text-[14px]">rocket_launch</span>
                     <span class="font-label text-[10px] font-bold uppercase tracking-wider">Deploy</span>
                 </button>
@@ -139,7 +183,7 @@ new_html = """<!DOCTYPE html>
                     <span id="current-scenario-name" class="font-telemetry text-[11px] text-state-preempted font-semibold px-2 py-1 bg-state-preempted/10 rounded-md border border-state-preempted/30 uppercase tracking-wider shadow-glow-preempted">Ambulance Preempt (ACT)</span>
                 </div>
 
-                <div class="flex bg-surface-container-high border border-white/[0.08] p-1 rounded-lg">
+                <div class="flex bg-surface-container-high border border-outline p-1 rounded-lg">
                     <button onclick="setScenario('normal')" id="btn-scen-normal" class="px-4 py-1.5 rounded-md text-on-surface-variant font-label text-[10px] uppercase tracking-widest hover:bg-surface transition-all">
                         Baseline
                     </button>
@@ -186,103 +230,70 @@ new_html = """<!DOCTYPE html>
                         </div>
                     </div>
 
-                    <!-- Visual SVG Map Layer -->
-                    <div class="flex-1 relative w-full h-full bg-surface-dim blueprint-grid-sub overflow-hidden min-h-[400px]">
-                        <!-- SVG Connectors & Edge Flow Lines -->
-                        <svg class="absolute inset-0 w-full h-full pointer-events-none" xmlns="http://www.w3.org/2000/svg">
-                            <defs>
-                                <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
-                                    <feGaussianBlur stdDeviation="4" result="blur" />
-                                    <feComposite in="SourceGraphic" in2="blur" operator="over" />
-                                </filter>
-                            </defs>
-                            
-                            <!-- Edges -->
-                            <path d="M 20% 35% L 45% 25%" fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="4"></path>
-                            <path class="flow-line" d="M 20% 35% L 45% 25%" fill="none" stroke="#9ed0ca" stroke-width="2" filter="url(#glow)"></path>
-                            
-                            <path id="edge-102-104" d="M 45% 25% L 75% 50%" fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="4"></path>
-                            <path id="flow-102-104" class="flow-line" d="M 45% 25% L 75% 50%" fill="none" stroke="#ffb783" stroke-width="2" filter="url(#glow)"></path>
-                            
-                            <path d="M 20% 35% L 30% 70%" fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="4"></path>
-                            <path class="flow-line" d="M 20% 35% L 30% 70%" fill="none" stroke="#9ed0ca" stroke-width="2"></path>
-                            
-                            <path d="M 30% 70% L 55% 85%" fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="4"></path>
-                            
-                            <path id="edge-104-106" d="M 75% 50% L 85% 80%" fill="none" stroke="rgba(239, 68, 68, 0.15)" stroke-width="6"></path>
-                            <path id="flow-104-106" class="flow-line" d="M 75% 50% L 85% 80%" fill="none" stroke="#ff5a4e" stroke-width="3" style="animation-duration: 0.6s;" filter="url(#glow)"></path>
-                            
-                            <path d="M 55% 85% L 85% 80%" fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="4"></path>
-
-                            <!-- Target Crosshairs -->
-                            <g stroke="rgba(255,255,255,0.1)" stroke-width="1">
-                                <line x1="75%" y1="0" x2="75%" y2="100%"/>
-                                <line x1="0" y1="50%" x2="100%" y2="50%"/>
-                            </g>
-                        </svg>
-
-                        <!-- Nodes -->
+                    <!-- Visual Geographic Map Layer (MapLibre) -->
+                    <div id="map" class="flex-1 relative w-full h-full bg-surface-dim overflow-hidden min-h-[400px] rounded-b-[24px]"></div>
+                    
+                    <!-- Hidden DOM nodes to be used as MapLibre Markers -->
+                    <div id="map-markers" class="hidden">
                         <!-- NODE IX-101 -->
-                        <div class="absolute top-[35%] left-[20%] -translate-x-1/2 -translate-y-1/2 flex flex-col items-center">
+                        <div id="marker-101" class="flex flex-col items-center">
                             <div onclick="selectNode('IX-101')" class="w-12 h-12 rounded bg-surface-container border border-state-calm/50 flex items-center justify-center hover:bg-surface-container-high transition-all cursor-pointer relative">
                                 <div class="absolute inset-0 border border-state-calm/20 scale-125 rounded pointer-events-none"></div>
                                 <span class="font-telemetry text-[11px] text-on-surface">IX101</span>
                             </div>
-                            <div class="mt-3 bg-surface-container-high px-2 py-1 rounded border border-white/[0.08] text-center">
+                            <div class="mt-3 bg-surface-container-high px-2 py-1 rounded border border-outline text-center shadow-lg">
                                 <span class="font-telemetry text-[10px] text-state-calm tabular-nums">450 V/H</span>
                             </div>
                         </div>
 
                         <!-- NODE IX-102 -->
-                        <div class="absolute top-[25%] left-[45%] -translate-x-1/2 -translate-y-1/2 flex flex-col items-center">
+                        <div id="marker-102" class="flex flex-col items-center">
                             <div onclick="selectNode('IX-102')" id="node-102" class="w-12 h-12 rounded bg-surface-container border border-state-building flex items-center justify-center hover:bg-surface-container-high transition-all cursor-pointer relative shadow-glow-building">
                                 <div class="absolute inset-0 border border-state-building/30 scale-125 rounded pointer-events-none animate-pulse"></div>
                                 <span class="font-telemetry text-[11px] text-on-surface">IX102</span>
                             </div>
-                            <div class="mt-3 bg-surface-container-high px-2 py-1 rounded border border-white/[0.08] text-center">
+                            <div class="mt-3 bg-surface-container-high px-2 py-1 rounded border border-outline text-center shadow-lg">
                                 <span id="vol-102" class="font-telemetry text-[10px] text-state-building tabular-nums">890 V/H</span>
                             </div>
                         </div>
 
                         <!-- NODE IX-103 -->
-                        <div class="absolute top-[70%] left-[30%] -translate-x-1/2 -translate-y-1/2 flex flex-col items-center">
+                        <div id="marker-103" class="flex flex-col items-center">
                             <div onclick="selectNode('IX-103')" id="node-103" class="w-12 h-12 rounded bg-surface-container border border-state-calm/50 flex items-center justify-center hover:bg-surface-container-high transition-all cursor-pointer">
                                 <span class="font-telemetry text-[11px] text-on-surface">IX103</span>
                             </div>
-                            <div class="mt-2 bg-surface-container-high px-2 py-1 rounded border border-white/[0.08] text-center">
+                            <div class="mt-2 bg-surface-container-high px-2 py-1 rounded border border-outline text-center shadow-lg">
                                 <span class="font-telemetry text-[10px] text-on-surface-variant tabular-nums">520 V/H</span>
                             </div>
                         </div>
 
-                        <!-- NODE IX-104 (CRITICAL TARGET NODE) -->
-                        <div class="absolute top-[50%] left-[75%] -translate-x-1/2 -translate-y-1/2 flex flex-col items-center z-10">
-                            <!-- Radar Ping -->
+                        <!-- NODE IX-104 -->
+                        <div id="marker-104" class="flex flex-col items-center z-10">
                             <div class="absolute inset-0 rounded bg-state-preempted/20 animate-ping" style="animation-duration: 2s;"></div>
-                            
                             <div onclick="selectNode('IX-104')" id="node-104" class="w-14 h-14 rounded bg-state-preempted/10 border-2 border-state-preempted flex items-center justify-center hover:scale-105 transition-all cursor-pointer relative shadow-glow-preempted pulse-preempted">
                                 <span class="font-telemetry text-[12px] text-state-preempted font-bold">IX104</span>
                             </div>
-                            <div class="mt-3 bg-surface-container-high border border-state-preempted/50 px-2 py-1 rounded flex items-center gap-1">
+                            <div class="mt-3 bg-surface-container-high border border-state-preempted/50 px-2 py-1 rounded flex items-center gap-1 shadow-lg">
                                 <span id="status-104" class="font-telemetry text-[10px] text-state-preempted uppercase tracking-wider font-semibold">ACT: PREEMPT</span>
                             </div>
                         </div>
 
                         <!-- NODE IX-105 -->
-                        <div class="absolute top-[85%] left-[55%] -translate-x-1/2 -translate-y-1/2 flex flex-col items-center">
+                        <div id="marker-105" class="flex flex-col items-center">
                             <div onclick="selectNode('IX-105')" class="w-12 h-12 rounded bg-surface-container border border-state-calm/50 flex items-center justify-center hover:bg-surface-container-high transition-all cursor-pointer">
                                 <span class="font-telemetry text-[11px] text-on-surface">IX105</span>
                             </div>
-                            <div class="mt-2 bg-surface-container-high px-2 py-1 rounded border border-white/[0.08] text-center">
+                            <div class="mt-2 bg-surface-container-high px-2 py-1 rounded border border-outline text-center shadow-lg">
                                 <span class="font-telemetry text-[10px] text-on-surface-variant tabular-nums">310 V/H</span>
                             </div>
                         </div>
 
                         <!-- NODE IX-106 -->
-                        <div class="absolute top-[80%] left-[85%] -translate-x-1/2 -translate-y-1/2 flex flex-col items-center">
+                        <div id="marker-106" class="flex flex-col items-center">
                             <div onclick="selectNode('IX-106')" class="w-12 h-12 rounded bg-surface-container border border-state-calm/50 flex items-center justify-center hover:bg-surface-container-high transition-all cursor-pointer">
                                 <span class="font-telemetry text-[11px] text-on-surface">IX106</span>
                             </div>
-                            <div class="mt-2 bg-surface-container-high px-2 py-1 rounded border border-white/[0.08] text-center">
+                            <div class="mt-2 bg-surface-container-high px-2 py-1 rounded border border-outline text-center shadow-lg">
                                 <span class="font-telemetry text-[10px] text-state-calm tabular-nums">410 V/H</span>
                             </div>
                         </div>
@@ -294,9 +305,9 @@ new_html = """<!DOCTYPE html>
                     
                     <!-- Selected Node Telemetry Card -->
                     <div class="industrial-panel rounded-[24px] p-5 flex flex-col gap-4 tech-border">
-                        <div class="flex justify-between items-start border-b border-white/[0.08] pb-3">
+                        <div class="flex justify-between items-start border-b border-outline pb-3">
                             <div class="flex items-center gap-3">
-                                <div class="w-8 h-8 rounded bg-surface-container-high border border-white/[0.12] flex items-center justify-center">
+                                <div class="w-8 h-8 rounded bg-surface-container-high border border-outline flex items-center justify-center">
                                     <span class="material-symbols-rounded text-on-surface-variant text-[16px]">radar</span>
                                 </div>
                                 <div class="flex flex-col">
@@ -304,7 +315,7 @@ new_html = """<!DOCTYPE html>
                                     <h3 id="panel-node-id" class="font-telemetry text-sm font-semibold text-on-surface mt-0.5">IX-104</h3>
                                 </div>
                             </div>
-                            <a id="btn-node-detail-link" href="../intersection_detail_ix_104/code.html" class="px-3 py-1.5 rounded bg-surface border border-white/[0.12] text-on-surface font-label text-[10px] uppercase tracking-[0.08em] hover:bg-surface-container-highest transition-all flex items-center gap-1">
+                            <a id="btn-node-detail-link" href="../intersection_detail_ix_104/code.html" class="px-3 py-1.5 rounded bg-surface border border-outline text-on-surface font-label text-[10px] uppercase tracking-[0.08em] hover:bg-surface-container-highest transition-all flex items-center gap-1">
                                 <span>Inspect</span>
                                 <span class="material-symbols-rounded text-[14px]">open_in_new</span>
                             </a>
@@ -389,11 +400,11 @@ new_html = """<!DOCTYPE html>
                         </div>
 
                         <!-- SVG Sparkline -->
-                        <div class="mt-auto pt-4 border-t border-white/[0.08]">
+                        <div class="mt-auto pt-4 border-t border-outline">
                             <span class="font-label text-[9px] uppercase tracking-widest text-on-surface-variant block mb-2">Throughput Trend (1H)</span>
                             <svg class="w-full h-12" viewBox="0 0 100 30" preserveAspectRatio="none">
                                 <path d="M 0 30 L 0 20 L 10 22 L 20 15 L 30 18 L 40 10 L 50 12 L 60 5 L 70 8 L 80 2 L 90 4 L 100 0 L 100 30 Z" fill="rgba(158,208,202,0.1)"></path>
-                                <path d="M 0 20 L 10 22 L 20 15 L 30 18 L 40 10 L 50 12 L 60 5 L 70 8 L 80 2 L 90 4 L 100 0" fill="none" stroke="#9ed0ca" stroke-width="1.5"></path>
+                                <path d="M 0 20 L 10 22 L 20 15 L 30 18 L 40 10 L 50 12 L 60 5 L 70 8 L 80 2 L 90 4 L 100 0" fill="none" stroke="#00c97a" stroke-width="1.5"></path>
                             </svg>
                         </div>
                     </div>
@@ -402,8 +413,8 @@ new_html = """<!DOCTYPE html>
         </div>
 
         <!-- Live Phase Decisions Ticker (Fixed Bottom Bar) -->
-        <footer class="fixed bottom-0 left-16 right-0 h-10 bg-[#0a0a0a] border-t border-white/[0.08] z-30 flex items-center px-3 overflow-hidden">
-            <div class="flex items-center gap-2 pr-4 border-r border-white/[0.08] shrink-0 bg-[#0a0a0a] z-10 h-full relative">
+        <footer class="fixed bottom-0 left-16 right-0 h-10 bg-surface border-t border-outline z-30 flex items-center px-3 overflow-hidden">
+            <div class="flex items-center gap-2 pr-4 border-r border-outline shrink-0 bg-surface z-10 h-full relative">
                 <span class="material-symbols-rounded text-on-surface-variant text-[14px]">terminal</span>
                 <span class="font-label text-[10px] uppercase tracking-widest text-on-surface-variant">Sys_Log</span>
                 <div class="absolute right-0 top-0 bottom-0 w-8 bg-gradient-to-r from-[#0a0a0a] to-transparent pointer-events-none translate-x-full"></div>
@@ -449,7 +460,7 @@ new_html = """<!DOCTYPE html>
                     <div class="flex items-center gap-2 shrink-0">
                         <span class="font-telemetry text-[10px] text-on-surface-variant">[14:01:12]</span>
                         <span class="font-telemetry text-[10px] text-on-surface font-bold">IX104</span>
-                        <span class="px-1.5 py-0.5 rounded bg-surface-container-high text-on-surface-variant border-white/[0.12] border font-telemetry text-[9px] uppercase tracking-widest">INFO</span>
+                        <span class="px-1.5 py-0.5 rounded bg-surface-container-high text-on-surface-variant border-outline border font-telemetry text-[9px] uppercase tracking-widest">INFO</span>
                         <span class="font-telemetry text-[10px] text-on-surface-variant">Camera feed 3 re-established</span>
                     </div>
                     <div class="w-px h-3 bg-white/[0.12] shrink-0"></div>
@@ -470,7 +481,7 @@ new_html = """<!DOCTYPE html>
                     <div class="flex items-center gap-2 shrink-0">
                         <span class="font-telemetry text-[10px] text-on-surface-variant">[14:00:01]</span>
                         <span class="font-telemetry text-[10px] text-on-surface font-bold">SYS_C</span>
-                        <span class="px-1.5 py-0.5 rounded bg-surface-container-high text-on-surface-variant border-white/[0.12] border font-telemetry text-[9px] uppercase tracking-widest">SYNC</span>
+                        <span class="px-1.5 py-0.5 rounded bg-surface-container-high text-on-surface-variant border-outline border font-telemetry text-[9px] uppercase tracking-widest">SYNC</span>
                         <span class="font-telemetry text-[10px] text-on-surface-variant">NTP clock sync successful (Offset 0.2ms)</span>
                     </div>
                     <div class="w-px h-3 bg-white/[0.12] shrink-0"></div>
@@ -519,7 +530,7 @@ new_html = """<!DOCTYPE html>
                     <div class="flex items-center gap-2 shrink-0">
                         <span class="font-telemetry text-[10px] text-on-surface-variant">[14:01:12]</span>
                         <span class="font-telemetry text-[10px] text-on-surface font-bold">IX104</span>
-                        <span class="px-1.5 py-0.5 rounded bg-surface-container-high text-on-surface-variant border-white/[0.12] border font-telemetry text-[9px] uppercase tracking-widest">INFO</span>
+                        <span class="px-1.5 py-0.5 rounded bg-surface-container-high text-on-surface-variant border-outline border font-telemetry text-[9px] uppercase tracking-widest">INFO</span>
                         <span class="font-telemetry text-[10px] text-on-surface-variant">Camera feed 3 re-established</span>
                     </div>
                     <div class="w-px h-3 bg-white/[0.12] shrink-0"></div>
@@ -540,7 +551,7 @@ new_html = """<!DOCTYPE html>
                     <div class="flex items-center gap-2 shrink-0">
                         <span class="font-telemetry text-[10px] text-on-surface-variant">[14:00:01]</span>
                         <span class="font-telemetry text-[10px] text-on-surface font-bold">SYS_C</span>
-                        <span class="px-1.5 py-0.5 rounded bg-surface-container-high text-on-surface-variant border-white/[0.12] border font-telemetry text-[9px] uppercase tracking-widest">SYNC</span>
+                        <span class="px-1.5 py-0.5 rounded bg-surface-container-high text-on-surface-variant border-outline border font-telemetry text-[9px] uppercase tracking-widest">SYNC</span>
                         <span class="font-telemetry text-[10px] text-on-surface-variant">NTP clock sync successful (Offset 0.2ms)</span>
                     </div>
                     <div class="w-px h-3 bg-white/[0.12] shrink-0"></div>
@@ -559,7 +570,7 @@ new_html = """<!DOCTYPE html>
     <!-- Emergency Override Modal -->
     <div id="emergency-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-surface/90 hidden transition-all backdrop-blur-sm">
         <div class="industrial-panel border border-state-preempted p-6 max-w-sm w-full shadow-[0_0_40px_rgba(240,85,66,0.2)] rounded-[24px]">
-            <div class="flex items-center gap-4 border-b border-white/[0.08] pb-4 mb-4">
+            <div class="flex items-center gap-4 border-b border-outline pb-4 mb-4">
                 <div class="w-10 h-10 bg-state-preempted/10 border border-state-preempted flex items-center justify-center shrink-0 rounded-lg">
                     <span class="material-symbols-rounded text-state-preempted text-[20px] animate-pulse">warning</span>
                 </div>
@@ -572,7 +583,7 @@ new_html = """<!DOCTYPE html>
                 Executing an Emergency Override will immediately force all Sector 4 signals into pre-clearing green corridors for emergency response vehicles.
             </p>
             <div class="flex gap-3">
-                <button onclick="toggleEmergencyModal()" class="flex-1 py-2 rounded bg-surface border border-white/[0.12] text-on-surface font-label text-[10px] uppercase tracking-widest hover:bg-surface-container-high transition-colors">
+                <button onclick="toggleEmergencyModal()" class="flex-1 py-2 rounded bg-surface border border-outline text-on-surface font-label text-[10px] uppercase tracking-widest hover:bg-surface-container-high transition-colors">
                     Cancel
                 </button>
                 <button onclick="executeOverride()" class="flex-1 py-2 rounded bg-state-preempted text-[#0a0a0a] font-telemetry text-[11px] uppercase font-bold tracking-widest hover:opacity-90 transition-all shadow-glow-preempted">
@@ -584,9 +595,9 @@ new_html = """<!DOCTYPE html>
 
     <!-- Scenario Deployment Modal -->
     <div id="scenario-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-surface/90 hidden transition-all backdrop-blur-sm">
-        <div class="industrial-panel border border-white/[0.12] p-6 max-w-sm w-full shadow-2xl rounded-[24px]">
-            <div class="flex items-center gap-4 border-b border-white/[0.08] pb-4 mb-4">
-                <div class="w-10 h-10 bg-surface-container-high border border-white/[0.12] flex items-center justify-center shrink-0 rounded-lg">
+        <div class="industrial-panel border border-outline p-6 max-w-sm w-full shadow-2xl rounded-[24px]">
+            <div class="flex items-center gap-4 border-b border-outline pb-4 mb-4">
+                <div class="w-10 h-10 bg-surface-container-high border border-outline flex items-center justify-center shrink-0 rounded-lg">
                     <span class="material-symbols-rounded text-on-surface text-[20px]">rocket_launch</span>
                 </div>
                 <div>
@@ -595,14 +606,14 @@ new_html = """<!DOCTYPE html>
                 </div>
             </div>
             <div class="flex flex-col gap-3 mb-6">
-                <label class="flex items-start p-3 rounded-lg bg-surface-container-high border border-white/[0.08] cursor-pointer hover:border-state-calm/50 transition-colors">
+                <label class="flex items-start p-3 rounded-lg bg-surface-container-high border border-outline cursor-pointer hover:border-state-calm/50 transition-colors">
                     <input type="radio" name="policy" checked class="mt-0.5 accent-state-calm">
                     <div class="ml-3">
                         <span class="font-telemetry text-[12px] font-semibold text-on-surface block mb-1">Max-Pressure</span>
                         <span class="font-body text-[11px] text-on-surface-variant">Dynamic queue-weighted heap reordering.</span>
                     </div>
                 </label>
-                <label class="flex items-start p-3 rounded-lg bg-surface-container-high border border-white/[0.08] cursor-pointer hover:border-state-calm/50 transition-colors">
+                <label class="flex items-start p-3 rounded-lg bg-surface-container-high border border-outline cursor-pointer hover:border-state-calm/50 transition-colors">
                     <input type="radio" name="policy" class="mt-0.5 accent-state-calm">
                     <div class="ml-3">
                         <span class="font-telemetry text-[12px] font-semibold text-on-surface block mb-1">Fixed-Time</span>
@@ -611,10 +622,10 @@ new_html = """<!DOCTYPE html>
                 </label>
             </div>
             <div class="flex gap-3">
-                <button onclick="triggerScenarioDeployModal()" class="flex-1 py-2 rounded bg-surface border border-white/[0.12] text-on-surface font-label text-[10px] uppercase tracking-widest hover:bg-surface-container-high transition-colors">
+                <button onclick="triggerScenarioDeployModal()" class="flex-1 py-2 rounded bg-surface border border-outline text-on-surface font-label text-[10px] uppercase tracking-widest hover:bg-surface-container-high transition-colors">
                     Cancel
                 </button>
-                <button onclick="triggerScenarioDeployModal()" class="flex-1 py-2 rounded bg-white text-[#0a0a0a] font-telemetry text-[11px] uppercase font-bold tracking-widest hover:opacity-90 transition-all">
+                <button onclick="triggerScenarioDeployModal()" class="flex-1 py-2 rounded bg-primary text-on-primary font-telemetry text-[11px] uppercase font-bold tracking-widest hover:opacity-90 transition-all">
                     Deploy
                 </button>
             </div>
@@ -623,6 +634,69 @@ new_html = """<!DOCTYPE html>
 
     <!-- JavaScript Interactions (Preserved functionality) -->
     <script>
+        // MapLibre Initialization
+        const map = new maplibregl.Map({
+            container: 'map',
+            style: 'https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json',
+            center: [80.190, 13.090], // Chennai center (Uptown Metro)
+            zoom: 13,
+            attributionControl: false
+        });
+
+        const nodesData = [
+            { id: '101', lngLat: [80.175, 13.085] },
+            { id: '102', lngLat: [80.190, 13.090] }, // center
+            { id: '103', lngLat: [80.180, 13.070] },
+            { id: '104', lngLat: [80.205, 13.075] },
+            { id: '105', lngLat: [80.195, 13.060] },
+            { id: '106', lngLat: [80.215, 13.065] }
+        ];
+
+        map.on('load', () => {
+            // Add Edges Layer
+            map.addSource('edges', {
+                'type': 'geojson',
+                'data': {
+                    'type': 'FeatureCollection',
+                    'features': [
+                        { 'type': 'Feature', 'properties': { 'id': 'e1' }, 'geometry': { 'type': 'LineString', 'coordinates': [nodesData[0].lngLat, nodesData[1].lngLat] } },
+                        { 'type': 'Feature', 'properties': { 'id': 'e102-104' }, 'geometry': { 'type': 'LineString', 'coordinates': [nodesData[1].lngLat, nodesData[3].lngLat] } },
+                        { 'type': 'Feature', 'properties': { 'id': 'e3' }, 'geometry': { 'type': 'LineString', 'coordinates': [nodesData[0].lngLat, nodesData[2].lngLat] } },
+                        { 'type': 'Feature', 'properties': { 'id': 'e4' }, 'geometry': { 'type': 'LineString', 'coordinates': [nodesData[2].lngLat, nodesData[4].lngLat] } },
+                        { 'type': 'Feature', 'properties': { 'id': 'e104-106' }, 'geometry': { 'type': 'LineString', 'coordinates': [nodesData[3].lngLat, nodesData[5].lngLat] } },
+                        { 'type': 'Feature', 'properties': { 'id': 'e6' }, 'geometry': { 'type': 'LineString', 'coordinates': [nodesData[4].lngLat, nodesData[5].lngLat] } }
+                    ]
+                }
+            });
+
+            map.addLayer({
+                'id': 'edges-layer',
+                'type': 'line',
+                'source': 'edges',
+                'layout': { 'line-join': 'round', 'line-cap': 'round' },
+                'paint': {
+                    'line-color': [
+                        'match',
+                        ['get', 'id'],
+                        'e102-104', '#ffab1a',
+                        'e104-106', '#ff4060',
+                        '#00c97a' // default
+                    ],
+                    'line-width': 4,
+                    'line-opacity': 0.8
+                }
+            });
+
+            // Add DOM Markers
+            nodesData.forEach(n => {
+                const el = document.getElementById('marker-' + n.id);
+                el.classList.remove('hidden'); // maplibre manages visibility
+                new maplibregl.Marker({ element: el })
+                    .setLngLat(n.lngLat)
+                    .addTo(map);
+            });
+        });
+
         function setScenario(type) {
             const btnNormal = document.getElementById('btn-scen-normal');
             const btnBuilding = document.getElementById('btn-scen-building');
@@ -631,14 +705,8 @@ new_html = """<!DOCTYPE html>
             
             const node102 = document.getElementById('node-102');
             const vol102 = document.getElementById('vol-102');
-            
             const node104 = document.getElementById('node-104');
             const status104 = document.getElementById('status-104');
-            
-            const edge102_104 = document.getElementById('edge-102-104');
-            const flow102_104 = document.getElementById('flow-102-104');
-            const edge104_106 = document.getElementById('edge-104-106');
-            const flow104_106 = document.getElementById('flow-104-106');
 
             // Reset buttons
             btnNormal.className = "px-4 py-1.5 rounded-md text-on-surface-variant font-label text-[10px] uppercase tracking-widest hover:bg-surface transition-all";
@@ -646,64 +714,85 @@ new_html = """<!DOCTYPE html>
             btnPreempted.className = "px-4 py-1.5 rounded-md text-on-surface-variant font-label text-[10px] uppercase tracking-widest hover:bg-surface transition-all";
 
             if (type === 'normal') {
-                btnNormal.className = "px-4 py-1.5 rounded-md bg-white/10 text-on-surface border border-white/[0.08] font-label text-[10px] uppercase tracking-widest transition-all";
+                btnNormal.className = "px-4 py-1.5 rounded-md bg-white/10 text-on-surface border border-outline font-label text-[10px] uppercase tracking-widest transition-all";
                 scenName.innerText = "Nominal Flow";
-                scenName.className = "font-telemetry text-[11px] text-on-surface font-semibold px-2 py-1 bg-surface-container-high rounded-md border border-white/[0.12] uppercase tracking-wider";
+                scenName.className = "font-telemetry text-[11px] text-on-surface font-semibold px-2 py-1 bg-surface-container-high rounded-md border border-outline uppercase tracking-wider";
                 
-                node102.className = "w-12 h-12 rounded bg-surface-container border border-state-calm/50 flex items-center justify-center hover:bg-surface-container-high transition-all cursor-pointer relative";
-                node102.innerHTML = '<div class="absolute inset-0 border border-state-calm/20 scale-125 rounded pointer-events-none"></div><span class="font-telemetry text-[11px] text-on-surface">IX102</span>';
-                vol102.innerText = "320 V/H";
-                vol102.className = "font-telemetry text-[10px] text-on-surface-variant tabular-nums";
+                if (node102) {
+                    node102.className = "w-12 h-12 rounded bg-surface-container border border-state-calm/50 flex items-center justify-center hover:bg-surface-container-high transition-all cursor-pointer relative";
+                    node102.innerHTML = '<div class="absolute inset-0 border border-state-calm/20 scale-125 rounded pointer-events-none"></div><span class="font-telemetry text-[11px] text-on-surface">IX102</span>';
+                }
+                if (vol102) {
+                    vol102.innerText = "320 V/H";
+                    vol102.className = "font-telemetry text-[10px] text-on-surface-variant tabular-nums";
+                }
                 
-                node104.className = "w-14 h-14 rounded bg-surface-container border border-state-calm/50 flex items-center justify-center hover:bg-surface-container-high transition-all cursor-pointer relative";
-                node104.innerHTML = `<div class="absolute inset-0 border border-state-calm/20 scale-125 rounded pointer-events-none"></div><span class="font-telemetry text-[12px] text-on-surface">IX104</span>`;
-                status104.innerText = "NOMINAL";
-                status104.className = "font-telemetry text-[10px] text-on-surface-variant uppercase tracking-wider font-semibold";
+                if (node104) {
+                    node104.className = "w-14 h-14 rounded bg-surface-container border border-state-calm/50 flex items-center justify-center hover:bg-surface-container-high transition-all cursor-pointer relative";
+                    node104.innerHTML = `<div class="absolute inset-0 border border-state-calm/20 scale-125 rounded pointer-events-none"></div><span class="font-telemetry text-[12px] text-on-surface">IX104</span>`;
+                }
+                if (status104) {
+                    status104.innerText = "NOMINAL";
+                    status104.className = "font-telemetry text-[10px] text-on-surface-variant uppercase tracking-wider font-semibold";
+                }
 
-                edge102_104.setAttribute('stroke', 'rgba(255,255,255,0.05)');
-                edge102_104.setAttribute('stroke-width', '4');
-                flow102_104.setAttribute('stroke', '#9ed0ca');
-                edge104_106.setAttribute('stroke', 'rgba(255,255,255,0.05)');
-                edge104_106.setAttribute('stroke-width', '4');
-                flow104_106.setAttribute('stroke', '#9ed0ca');
-                flow104_106.style.animationDuration = "1.5s";
+                if(map.getLayer('edges-layer')) {
+                    map.setPaintProperty('edges-layer', 'line-color', '#00c97a');
+                }
 
             } else if (type === 'building') {
                 btnBuilding.className = "px-4 py-1.5 rounded-md bg-state-building/10 text-state-building border border-state-building/30 font-label text-[10px] uppercase tracking-widest transition-all";
                 scenName.innerText = "Queue Buildup";
                 scenName.className = "font-telemetry text-[11px] text-state-building font-semibold px-2 py-1 bg-state-building/10 rounded-md border border-state-building/30 uppercase tracking-wider shadow-glow-building";
 
-                node102.className = "w-12 h-12 rounded bg-surface-container border border-state-building flex items-center justify-center hover:bg-surface-container-high transition-all cursor-pointer relative shadow-glow-building";
-                node102.innerHTML = '<div class="absolute inset-0 border border-state-building/30 scale-125 rounded pointer-events-none animate-pulse"></div><span class="font-telemetry text-[11px] text-on-surface">IX102</span>';
-                vol102.innerText = "890 V/H";
-                vol102.className = "font-telemetry text-[10px] text-state-building tabular-nums";
+                if (node102) {
+                    node102.className = "w-12 h-12 rounded bg-surface-container border border-state-building flex items-center justify-center hover:bg-surface-container-high transition-all cursor-pointer relative shadow-glow-building";
+                    node102.innerHTML = '<div class="absolute inset-0 border border-state-building/30 scale-125 rounded pointer-events-none animate-pulse"></div><span class="font-telemetry text-[11px] text-on-surface">IX102</span>';
+                }
+                if (vol102) {
+                    vol102.innerText = "890 V/H";
+                    vol102.className = "font-telemetry text-[10px] text-state-building tabular-nums";
+                }
+                
+                if (node104) {
+                    node104.className = "w-14 h-14 rounded bg-surface-container border border-state-calm/50 flex items-center justify-center hover:bg-surface-container-high transition-all cursor-pointer relative";
+                    node104.innerHTML = `<div class="absolute inset-0 border border-state-calm/20 scale-125 rounded pointer-events-none"></div><span class="font-telemetry text-[12px] text-on-surface">IX104</span>`;
+                }
+                if (status104) {
+                    status104.innerText = "NOMINAL";
+                    status104.className = "font-telemetry text-[10px] text-on-surface-variant uppercase tracking-wider font-semibold";
+                }
 
-                node104.className = "w-14 h-14 rounded bg-surface-container border border-state-calm/50 flex items-center justify-center hover:bg-surface-container-high transition-all cursor-pointer relative";
-                node104.innerHTML = `<div class="absolute inset-0 border border-state-calm/20 scale-125 rounded pointer-events-none"></div><span class="font-telemetry text-[12px] text-on-surface">IX104</span>`;
-                status104.innerText = "NOMINAL";
-                status104.className = "font-telemetry text-[10px] text-on-surface-variant uppercase tracking-wider font-semibold";
-
-                edge102_104.setAttribute('stroke', 'rgba(255,255,255,0.05)');
-                flow102_104.setAttribute('stroke', '#ffb783');
-                edge104_106.setAttribute('stroke', 'rgba(255,255,255,0.05)');
-                edge104_106.setAttribute('stroke-width', '4');
-                flow104_106.setAttribute('stroke', '#9ed0ca');
-                flow104_106.style.animationDuration = "1.5s";
+                if(map.getLayer('edges-layer')) {
+                    map.setPaintProperty('edges-layer', 'line-color', [
+                        'match', ['get', 'id'],
+                        'e102-104', '#ffab1a',
+                        '#00c97a'
+                    ]);
+                }
 
             } else if (type === 'preempted') {
                 btnPreempted.className = "px-4 py-1.5 rounded-md bg-state-preempted/10 text-state-preempted border border-state-preempted/30 font-label text-[10px] uppercase tracking-widest transition-all";
                 scenName.innerText = "Ambulance Preempt (ACT)";
                 scenName.className = "font-telemetry text-[11px] text-state-preempted font-semibold px-2 py-1 bg-state-preempted/10 rounded-md border border-state-preempted/30 uppercase tracking-wider shadow-glow-preempted";
 
-                node104.className = "w-14 h-14 rounded bg-state-preempted/10 border-2 border-state-preempted flex items-center justify-center hover:scale-105 transition-all cursor-pointer relative shadow-glow-preempted pulse-preempted";
-                node104.innerHTML = `<div class="absolute inset-0 rounded bg-state-preempted/20 animate-ping" style="animation-duration: 2s;"></div><span class="font-telemetry text-[12px] text-state-preempted font-bold">IX104</span>`;
-                status104.innerText = "ACT: PREEMPT";
-                status104.className = "font-telemetry text-[10px] text-state-preempted uppercase tracking-wider font-semibold";
+                if (node104) {
+                    node104.className = "w-14 h-14 rounded bg-state-preempted/10 border-2 border-state-preempted flex items-center justify-center hover:scale-105 transition-all cursor-pointer relative shadow-glow-preempted pulse-preempted";
+                    node104.innerHTML = `<div class="absolute inset-0 rounded bg-state-preempted/20 animate-ping" style="animation-duration: 2s;"></div><span class="font-telemetry text-[12px] text-state-preempted font-bold">IX104</span>`;
+                }
+                if (status104) {
+                    status104.innerText = "ACT: PREEMPT";
+                    status104.className = "font-telemetry text-[10px] text-state-preempted uppercase tracking-wider font-semibold";
+                }
 
-                edge104_106.setAttribute('stroke', 'rgba(239, 68, 68, 0.15)');
-                edge104_106.setAttribute('stroke-width', '6');
-                flow104_106.setAttribute('stroke', '#ff5a4e');
-                flow104_106.style.animationDuration = "0.6s";
+                if(map.getLayer('edges-layer')) {
+                    map.setPaintProperty('edges-layer', 'line-color', [
+                        'match', ['get', 'id'],
+                        'e102-104', '#ffab1a',
+                        'e104-106', '#ff4060',
+                        '#00c97a'
+                    ]);
+                }
             }
         }
 
@@ -723,6 +812,5 @@ new_html = """<!DOCTYPE html>
         function selectNode(nodeId) {
             document.getElementById('panel-node-id').innerText = nodeId;
         }
-    </script>
-</body>
+    </script></body>
 </html>

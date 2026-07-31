@@ -4,351 +4,312 @@
     <meta charset="utf-8"/>
     <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
     <title>Vision Feed Monitor — Kinetica Control Room</title>
-    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-    
-    <!-- Font Imports -->
+
+    <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://api.fontshare.com/v2/css?f[]=general-sans@400,500,600,700&f[]=supreme@400,500,700&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Commit+Mono:ital,wght@0,400;0,500;0,700;1,400&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link href="https://fonts.cdnfonts.com/css/neue-montreal" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Albert+Sans:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
 
-    <!-- Tailwind Configuration -->
-        <script src="../shared/theme.js"></script>
-
+    <!-- Tailwind config BEFORE cdn -->
+    <script>
+      window.tailwind = window.tailwind || {};
+      window.tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "surface":                   "#111318",
+              "surface-dim":               "#0d0f13",
+              "surface-container-lowest":  "#0d0f13",
+              "surface-container-low":     "#161820",
+              "surface-container":         "#1c1e24",
+              "surface-container-high":    "#2c2f3a",
+              "surface-container-highest": "#363944",
+              "on-surface":                "#e8eaf0",
+              "on-surface-variant":        "#9096a8",
+              "outline":                   "#2e3140",
+              "outline-variant":           "#232535",
+              "primary":                   "#4d9fff",
+              "on-primary":                "#ffffff",
+              "state-calm":                "#00c97a",
+              "state-building":            "#ffab1a",
+              "state-preempted":           "#ff4060"
+            },
+            fontFamily: {
+              "sans":      ["Inter", "system-ui", "sans-serif"],
+              "display":   ["Albert Sans", "sans-serif"],
+              "body":      ["Inter", "system-ui", "sans-serif"],
+              "label":     ["Inter", "system-ui", "sans-serif"],
+              "mono":      ["JetBrains Mono", "monospace"],
+              "telemetry": ["JetBrains Mono", "monospace"]
+            },
+            borderRadius: {
+              "DEFAULT": "8px",
+              "md":  "10px",
+              "lg":  "14px",
+              "xl":  "18px",
+              "2xl": "24px",
+              "full":"9999px"
+            }
+          }
+        }
+      };
+    </script>
+    <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="../shared/theme.css">
-    <script src="../shared/sidebar.js"></script>
+    <script src="../shared/sidebar.js" defer></script>
+
+    <style>
+        /* Bounding box label tags */
+        .bbox-tag {
+            position: absolute;
+            top: -24px;
+            left: 0;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            padding: 2px 8px;
+            border-radius: 6px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 10px;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+        /* Camera feed gradient overlay */
+        .cam-overlay {
+            background: linear-gradient(to bottom, rgba(13,15,19,0.85) 0%, rgba(13,15,19,0.3) 40%, transparent 100%);
+        }
+        /* Confidence bar */
+        .conf-bar { height: 3px; border-radius: 9999px; }
+        /* Toggle switch */
+        .toggle-track {
+            width: 36px; height: 20px;
+            background: var(--surface-high, #2c2f3a);
+            border-radius: 9999px;
+            position: relative;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .toggle-track.on { background: var(--calm, #00c97a); }
+        .toggle-thumb {
+            width: 14px; height: 14px;
+            background: white;
+            border-radius: 50%;
+            position: absolute;
+            top: 3px; left: 3px;
+            transition: left 0.2s;
+        }
+        .toggle-track.on .toggle-thumb { left: 19px; }
+        /* Filter pill active */
+        .filter-pill { padding: 5px 12px; border-radius: 9999px; font-size: 11px; font-weight: 600; cursor: pointer; border: 1px solid transparent; transition: all 0.15s; }
+        .filter-pill.active-calm { background: rgba(0,201,122,0.15); color: #00c97a; border-color: rgba(0,201,122,0.4); }
+        .filter-pill.active-crit { background: rgba(255,64,96,0.15); color: #ff4060; border-color: rgba(255,64,96,0.4); }
+        .filter-pill.active-primary { background: rgba(77,159,255,0.15); color: #4d9fff; border-color: rgba(77,159,255,0.4); }
+        .filter-pill.inactive { background: transparent; color: var(--text-secondary, #9096a8); }
+        .filter-pill.inactive:hover { background: var(--surface-high, #2c2f3a); color: var(--text-primary, #e8eaf0); }
+    </style>
 </head>
 
-<body class="bg-surface text-on-surface antialiased selection:bg-primary-container selection:text-on-primary-container min-h-screen flex flex-col blueprint-grid">
+<body style="background-color:#111318;color:#e8eaf0;" class="min-h-screen font-body">
+    <div id="sidebar-container"></div>
 
-    <!-- Top Navigation Bar -->
-    <header class="fixed top-0 right-0 left-16 z-40 h-14 bg-[#0a0a0a]/95 backdrop-blur-md border-b border-white/[0.08] flex items-center justify-between px-6">
-        <div class="flex items-center gap-4">
-            <div class="flex items-center gap-2.5">
-                <div class="w-8 h-8 rounded-[24px] bg-primary/10 border border-primary/30 flex items-center justify-center">
-                    <span class="material-symbols-rounded-full text-state-calm text-lg">videocam</span>
-                </div>
-                <h1 class="font-display font-semibold text-lg text-on-surface tracking-tight">Kinetica Control Room</h1>
-            </div>
-            <div class="h-4 w-px bg-outline-variant/60 hidden sm:block"></div>
-            <span class="font-label text-xs uppercase tracking-[0.12em] text-on-surface-variant font-medium hidden sm:block">Vision Feed Monitor — Multi-Cam Inference</span>
-        </div>
+    <!-- ── TOP BAR ─────────────────────────────────────────────────────── -->
+    <header style="position:fixed;top:0;right:0;left:60px;height:52px;background:var(--surface,#1c1e24);border-bottom:1px solid var(--border,#2e3140);z-index:100;display:flex;align-items:center;justify-content:space-between;padding:0 20px;gap:12px;">
 
-        <!-- Telemetry Indicators & Quick Actions -->
-        <div class="flex items-center gap-6">
-            <div class="hidden lg:flex items-center gap-5 font-telemetry text-xs tracking-tight text-on-surface-variant">
-                <div class="flex items-center gap-1.5">
-                    <span class="font-label text-[10px] text-on-surface-variant/70 uppercase tracking-widest">LANES</span>
-                    <span class="text-on-surface font-bold tabular-nums">12</span>
-                </div>
-                <div class="flex items-center gap-1.5">
-                    <span class="font-label text-[10px] text-on-surface-variant/70 uppercase tracking-widest">GREEN-EXT</span>
-                    <span class="text-state-calm font-bold tabular-nums">4.2<span class="font-label text-[9px] ml-0.5">S</span></span>
-                </div>
-                <div class="flex items-center gap-1.5">
-                    <span class="font-label text-[10px] text-on-surface-variant/70 uppercase tracking-widest">PREEMPTION</span>
-                    <span class="text-state-preempted font-bold tabular-nums">3 <span class="font-label text-[9px] text-state-preempted">ACTIVE</span></span>
-                </div>
-                <div class="flex items-center gap-1.5">
-                    <span class="font-label text-[10px] text-on-surface-variant/70 uppercase tracking-widest">P-VALUE</span>
-                    <span class="text-state-calm font-bold tabular-nums">0.042</span>
-                </div>
-            </div>
-
-            <div class="flex items-center gap-3">
-                <button class="bg-state-calm text-on-primary font-label text-xs font-semibold uppercase tracking-wider px-4 py-2 rounded-full hover:bg-primary/90 transition-all active:scale-95 border border-primary/30">
-                    Deploy Scenario
-                </button>
-                <a href="../benchmarks_system_health/code.html" class="bg-surface-container-high text-on-surface font-label text-xs font-semibold uppercase tracking-wider px-4 py-2 rounded-full border border-white/[0.08] hover:bg-surface-container-highest transition-all active:scale-95">
-                    System Health
-                </a>
-                <button class="p-2 rounded-full hover:bg-surface-container-high text-on-surface-variant transition-colors border border-transparent hover:border-white/[0.08]">
-                    <span class="material-symbols-rounded-full text-xl">notifications</span>
-                </button>
-                <div class="w-8 h-8 rounded-[24px]-full border border-white/10 overflow-hidden ml-1">
-                    <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuBPq3zuvw3F4s_LhDWvMoZhdyXgEWcFCauRSTjDBVMZZxMitf5p9oTbCeYGWHlVTdhvAg6HYn85Qe8bDDs26E1Ve-bZUxS_ugIZMinDKx_ITagEmWHQLRs1X6Dv0yS0PB33MR8H1ucuUMbmwMELuESiMRkJ0uJmp7VAtrI6vvOdR9CKnChhPUxJ9Ix3cboVGJT54MT2h1UP9q39CYsl4DeseOZTuyfKNmu81_EV0yOHYEyhwq5fkGZLeg" alt="Operator Avatar" class="w-full h-full object-cover">
-                </div>
-            </div>
-        </div>
-    </header>
-
-    <!-- Unified Industrial Side Nav Rail -->
-        <div id="sidebar-container"></div>
-
-    <!-- Unified Top Header Bar -->
-    <header class="fixed top-0 right-0 left-16 z-40 h-14 bg-[#0a0a0a]/95 border-b border-white/[0.08] flex items-center justify-between px-6">
-        <!-- Left: Page Title & Context Badge -->
-        <div class="flex items-center gap-4">
-            <div class="flex items-center gap-2.5">
+        <!-- Left: page identity -->
+        <div style="display:flex;align-items:center;gap:12px;min-width:0;">
+            <div style="display:flex;align-items:center;gap:8px;flex-shrink:0;">
                 <span class="led-pip led-pip-calm"></span>
-                <h1 class="font-display text-base font-semibold text-on-surface tracking-tight">AI Vision Feed & Multi-Camera Monitor</h1>
+                <span style="font-family:'Inter',sans-serif;font-size:13px;font-weight:600;letter-spacing:0.01em;white-space:nowrap;">Vision Feed Monitor</span>
             </div>
-            <span class="px-2.5 py-0.5 rounded-full bg-primary-container border border-primary/30 text-primary font-label text-[10px] uppercase tracking-[0.1em] font-semibold">6 Feeds Stream Live</span>
+            <div style="width:1px;height:18px;background:var(--border,#2e3140);flex-shrink:0;"></div>
+            <span style="font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--text-secondary,#9096a8);white-space:nowrap;">6 FEEDS · YOLOv8 ACTIVE</span>
         </div>
 
-        <!-- Center: Standardized Telemetry KPI Ticker -->
-        <div class="hidden xl:flex items-center gap-6 border-x border-white/[0.08] px-6">
-            <div class="flex flex-col">
-                <span class="font-label text-[10px] text-on-surface-variant uppercase tracking-[0.12em]">FPS Performance</span>
-                <span class="font-telemetry text-xs font-bold text-state-calm tabular-nums" id="hdr-fps">60.2 <span class="font-label text-[9px] text-on-surface-variant uppercase">FPS</span></span>
+        <!-- Centre: telemetry pills — hidden on narrow screens -->
+        <div style="display:flex;align-items:center;gap:20px;flex-shrink:0;" class="hidden xl:flex">
+            <div style="display:flex;flex-direction:column;align-items:center;gap:1px;">
+                <span style="font-size:9px;font-weight:500;text-transform:uppercase;letter-spacing:0.07em;color:#9096a8;">FPS</span>
+                <span style="font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:700;color:#00c97a;" id="hdr-fps">60.2</span>
             </div>
-            <div class="h-4 w-px bg-white/[0.08]"></div>
-            <div class="flex flex-col">
-                <span class="font-label text-[10px] text-on-surface-variant uppercase tracking-[0.12em]">Stream Latency</span>
-                <span class="font-telemetry text-xs font-bold text-state-calm tabular-nums">4.2 <span class="font-label text-[9px] text-on-surface-variant uppercase">MS</span></span>
+            <div style="width:1px;height:20px;background:#2e3140;"></div>
+            <div style="display:flex;flex-direction:column;align-items:center;gap:1px;">
+                <span style="font-size:9px;font-weight:500;text-transform:uppercase;letter-spacing:0.07em;color:#9096a8;">Latency</span>
+                <span style="font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:700;color:#00c97a;">4.2 ms</span>
             </div>
-            <div class="h-4 w-px bg-white/[0.08]"></div>
-            <div class="flex flex-col">
-                <span class="font-label text-[10px] text-on-surface-variant uppercase tracking-[0.12em]">Detected Objects</span>
-                <span class="font-telemetry text-xs font-bold text-state-building tabular-nums" id="hdr-objs">42 <span class="font-label text-[9px] text-on-surface-variant uppercase">TAGGED</span></span>
+            <div style="width:1px;height:20px;background:#2e3140;"></div>
+            <div style="display:flex;flex-direction:column;align-items:center;gap:1px;">
+                <span style="font-size:9px;font-weight:500;text-transform:uppercase;letter-spacing:0.07em;color:#9096a8;">Tagged</span>
+                <span style="font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:700;color:#ffab1a;" id="hdr-objs">42</span>
+            </div>
+            <div style="width:1px;height:20px;background:#2e3140;"></div>
+            <div style="display:flex;flex-direction:column;align-items:center;gap:1px;">
+                <span style="font-size:9px;font-weight:500;text-transform:uppercase;letter-spacing:0.07em;color:#9096a8;">mAP@50</span>
+                <span style="font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:700;color:#e8eaf0;">0.924</span>
             </div>
         </div>
 
-        <!-- Right: Status, Quick Actions & Notification Bell -->
-        <div class="flex items-center gap-3">
-            <div class="hidden sm:flex items-center gap-2 px-3 py-1 rounded-[24px] industrial-panel border border-white/[0.08] tech-border">
-                <span class="w-1.5 h-1.5 rounded-full bg-state-calm animate-pulse"></span>
-                <span class="font-telemetry text-[11px] text-on-surface-variant">YOLOv8 Edge Engine Active</span>
+        <!-- Right: clock + actions -->
+        <div style="display:flex;align-items:center;gap:10px;flex-shrink:0;">
+            <span id="live-time" style="font-family:'JetBrains Mono',monospace;font-size:11px;color:#9096a8;"></span>
+            <div style="width:1px;height:20px;background:#2e3140;"></div>
+            <!-- Calibration overlay toggle -->
+            <div style="display:flex;align-items:center;gap:8px;">
+                <span style="font-size:10px;font-weight:500;text-transform:uppercase;letter-spacing:0.06em;color:#9096a8;">Overlay</span>
+                <div class="toggle-track" id="overlay-toggle" onclick="toggleOverlay(this)">
+                    <div class="toggle-thumb"></div>
+                </div>
             </div>
-
-            <a href="../benchmarks_system_health/code.html" class="px-3.5 py-1.5 rounded-full border border-white/[0.08] text-on-surface-variant hover:text-on-surface hover:border-primary/40 transition-colors font-body text-xs font-medium flex items-center gap-1.5">
-                <span class="material-symbols-rounded-full text-sm text-state-calm">monitor_heart</span>
-                <span class="font-label text-[11px] uppercase tracking-[0.1em]">Health</span>
+            <div style="width:1px;height:20px;background:#2e3140;"></div>
+            <a href="../benchmarks_system_health/code.html" class="btn btn-ghost" style="padding:5px 12px;font-size:11px;">
+                <span class="material-symbols-rounded" style="font-size:14px;">monitor_heart</span>
+                Health
             </a>
-
-            <button class="p-2 text-on-surface-variant hover:text-state-preempted transition-colors rounded-full hover:bg-surface-container-high relative">
-                <span class="material-symbols-rounded-full text-lg">notifications</span>
-                <span class="absolute top-1.5 right-1.5 w-2 h-2 bg-state-preempted rounded-full animate-ping"></span>
-            </button>
         </div>
     </header>
 
-    <!-- Main Workspace Area -->
-    <main id="main-canvas" class="md:ml-16 mt-14 p-6 md:p-8 flex-1 grid grid-cols-1 lg:grid-cols-12 gap-6 relative">
-        
-        <!-- Header & Control Bar (Span 12) -->
-        <div class="lg:col-span-12 z-10 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+    <!-- ── MAIN CONTENT ──────────────────────────────────────────────── -->
+    <main style="margin-left:60px;margin-top:52px;padding:20px;display:grid;grid-template-columns:1fr 320px;grid-template-rows:auto 1fr;gap:16px;min-height:calc(100vh - 52px - 36px);">
+
+        <!-- ── FILTER BAR (full width) ───────────────────────────────── -->
+        <div style="grid-column:1/-1;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;">
             <div>
-                <h2 class="font-display font-semibold text-2xl text-on-surface tracking-tight">AI Vision Feed & Object Detection</h2>
-                <p class="font-body text-sm text-on-surface-variant mt-0.5">Live YOLOV8 inference pipeline across District 7 intersections.</p>
+                <h2 style="font-family:'Albert Sans',sans-serif;font-size:18px;font-weight:600;letter-spacing:-0.01em;margin:0;">AI Vision Feed &amp; Object Detection</h2>
+                <p style="font-size:12px;color:#9096a8;margin:2px 0 0;">Live YOLOv8 inference · District 7 intersections · 4-cam array</p>
             </div>
 
-            <!-- Global Calibration & Filter Controls -->
-            <div class="flex flex-wrap items-center gap-3">
-                
-                <!-- Vehicle Class Quick Filter Chips -->
-                <div class="flex bg-surface-container border border-white/[0.12] p-1 rounded-[24px] border border-white/[0.08] font-label text-xs">
-                    <button onclick="filterClass('all')" id="filter-all" class="px-3 py-1.5 rounded-full bg-state-calm/20 text-state-calm font-semibold border border-state-calm/40 transition-colors">ALL</button>
-                    <button onclick="filterClass('ambulance')" id="filter-ambulance" class="px-3 py-1.5 rounded-full text-state-preempted hover:bg-state-preempted/10 transition-colors">AMBULANCE</button>
-                    <button onclick="filterClass('police')" id="filter-police" class="px-3 py-1.5 rounded-full text-tertiary hover:bg-tertiary/10 transition-colors">POLICE</button>
-                    <button onclick="filterClass('school_van')" id="filter-school_van" class="px-3 py-1.5 rounded-full text-secondary hover:bg-secondary/10 transition-colors">SCHOOL VAN</button>
-                    <button onclick="filterClass('two-wheeler')" id="filter-two-wheeler" class="px-3 py-1.5 rounded-full text-state-calm hover:bg-state-calm/10 transition-colors">2-WHEELER</button>
-                </div>
-
-                <!-- ROI Calibration Overlay Switch -->
-                <div class="flex items-center gap-3 bg-surface-container-low px-4 py-2 rounded-[24px] border border-white/[0.08]">
-                    <span class="font-label text-xs uppercase tracking-widest text-on-surface-variant font-semibold">CALIBRATION OVERLAY</span>
-                    <label class="relative inline-flex items-center cursor-pointer">
-                        <input id="polygon-toggle" type="checkbox" class="sr-only peer"/>
-                        <div class="w-10 h-5 bg-surface-container-highest peer-focus:outline-none rounded-[24px]-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-on-surface after:border-gray-300 after:border after:rounded-[24px]-full after:h-4 after:w-4 after:transition-all peer-checked:bg-state-calm"></div>
-                    </label>
-                </div>
+            <!-- Vehicle class filter chips -->
+            <div style="display:flex;align-items:center;gap:6px;background:#1c1e24;border:1px solid #2e3140;border-radius:9999px;padding:4px 6px;">
+                <button class="filter-pill active-calm" id="filter-all"         onclick="setFilter('all',this)">All</button>
+                <button class="filter-pill inactive"    id="filter-ambulance"   onclick="setFilter('ambulance',this)">🚑 Ambulance</button>
+                <button class="filter-pill inactive"    id="filter-police"      onclick="setFilter('police',this)">🚔 Police</button>
+                <button class="filter-pill inactive"    id="filter-school_van"  onclick="setFilter('school_van',this)">🚌 School Van</button>
+                <button class="filter-pill inactive"    id="filter-two-wheeler" onclick="setFilter('two-wheeler',this)">🛵 2-Wheeler</button>
             </div>
         </div>
 
-        <!-- Left Area: Multi-Camera Feed Grid (Span 8) -->
-        <div id="camera-grid-container" class="lg:col-span-8 z-10 grid grid-cols-1 md:grid-cols-2 gap-6 transition-all duration-300">
-            
-            <!-- Camera 1: CAM-01 NORTH (Main St & 5th) -->
-            <div id="cam-card-1" class="tech-border blueprint-grid-sub industrial-panel border border-white/[0.08] tech-border shadow-sm rounded-[24px] overflow-hidden flex flex-col border border-white/[0.08] relative group h-[340px]">
-<div class="scanline"></div>
-                <div class="absolute top-0 left-0 right-0 p-3.5 flex justify-between items-center z-20 bg-gradient-to-b from-black/80 via-black/40 to-transparent">
-                    <div class="flex items-center gap-2">
-                        <span class="w-2.5 h-2.5 rounded-full bg-state-preempted animate-pulse"></span>
-                        <span class="font-telemetry text-xs font-bold text-on-surface">CAM-01 (NORTH :: MAIN ST)</span>
+        <!-- ── CAMERA GRID (left column) ────────────────────────────── -->
+        <div id="camera-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:16px;align-content:start;">
+
+            <!-- CAM-01 NORTH -->
+            <div class="card" style="padding:0;overflow:hidden;position:relative;height:300px;">
+                <!-- Bar at top -->
+                <div class="cam-overlay" style="position:absolute;top:0;left:0;right:0;z-index:10;padding:10px 12px;display:flex;align-items:center;justify-content:space-between;">
+                    <div style="display:flex;align-items:center;gap:7px;">
+                        <span style="width:8px;height:8px;border-radius:50%;background:#ff4060;animation:pulse-ring 1.5s ease infinite;display:inline-block;"></span>
+                        <span style="font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;">CAM-01 · NORTH · MAIN ST</span>
                     </div>
-                    <div class="flex items-center gap-2">
-                        <span class="font-telemetry text-xs text-state-calm bg-surface-container-lowest/90 px-2.5 py-1 rounded-full border border-white/[0.08] tabular-nums">30 <span class="font-label text-[9px] uppercase">FPS</span></span>
-                        <span class="font-telemetry text-xs text-on-surface-variant bg-surface-container-lowest/90 px-2.5 py-1 rounded-full border border-white/[0.08] tabular-nums">8 <span class="font-label text-[9px] uppercase">MS</span></span>
-                        <button onclick="toggleCamFocus(1)" class="p-1 rounded-full hover:bg-surface-container-highest text-on-surface-variant hover:text-on-surface transition-colors" title="Toggle Focus View">
-                            <span class="material-symbols-rounded-full text-lg">fullscreen</span>
-                        </button>
+                    <div style="display:flex;align-items:center;gap:6px;">
+                        <span class="badge badge-calm">30 FPS</span>
+                        <span class="badge badge-neutral">8 MS</span>
                     </div>
                 </div>
-
-                <!-- Feed Viewport -->
-                <div class="relative flex-1 bg-surface-container-lowest w-full h-full bg-cover bg-center" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBR4YaC1rwAdRVTfJJPDE6cuRTlSXj4e4MFrETbRpG0HXgYWXnOZ8SaIBYxEX_H0Lbq5K1WUVbds-Vf0ib-3LkDjZB-f5GRR2gEAgd5iBpD4gh1PY9-pleNwMsVb1nntDiOXGYd9u18ZjhACHJnIDMEIqX7o5M9sMbR4B5GkRkUV3QrA578Rvz-PmbR4c6Ntgs34WFrUu17h6vtZPbIbtfDWkeeH6qUqZRxj1wQCzXdIyMk6vG_4x_fDA')">
-                    
-                    <!-- Bounding Boxes with Vehicle Class Tags -->
-                    <!-- Ambulance Priority Box -->
-                    <div class="class-box class-ambulance absolute top-[28%] left-[18%] w-[22%] h-[20%] border-2 border-state-preempted bg-state-preempted/15 rounded-[24px]">
-                        <div class="absolute -top-7 left-0 bg-state-preempted text-on-error font-telemetry text-[11px] font-bold px-2 py-0.5 rounded-[24px]-full flex items-center gap-1 shadow-md">
-                            <span class="material-symbols-rounded-full text-xs">ambulance</span>
-                            ambulance (0.98)
-                        </div>
+                <!-- Feed image -->
+                <div style="width:100%;height:100%;background-image:url('https://lh3.googleusercontent.com/aida-public/AB6AXuBR4YaC1rwAdRVTfJJPDE6cuRTlSXj4e4MFrETbRpG0HXgYWXnOZ8SaIBYxEX_H0Lbq5K1WUVbds-Vf0ib-3LkDjZB-f5GRR2gEAgd5iBpD4gh1PY9-pleNwMsVb1nntDiOXGYd9u18ZjhACHJnIDMEIqX7o5M9sMbR4B5GkRkUV3QrA578Rvz-PmbR4c6Ntgs34WFrUu17h6vtZPbIbtfDWkeeH6qUqZRxj1wQCzXdIyMk6vG_4x_fDA');background-size:cover;background-position:center;position:relative;">
+                    <!-- Ambulance box -->
+                    <div class="class-box class-ambulance" style="position:absolute;top:28%;left:18%;width:22%;height:20%;border:2px solid #ff4060;background:rgba(255,64,96,0.12);border-radius:6px;">
+                        <div class="bbox-tag" style="background:#ff4060;color:#fff;">🚑 ambulance 0.98</div>
                     </div>
-
-                    <!-- Two-Wheeler Box -->
-                    <div class="class-box class-two-wheeler absolute top-[62%] left-[48%] w-[12%] h-[18%] border-2 border-state-calm bg-state-calm/15 rounded-[24px]">
-                        <div class="absolute -top-7 left-0 bg-state-calm text-on-primary font-telemetry text-[11px] font-bold px-2 py-0.5 rounded-[24px]-full flex items-center gap-1">
-                            <span class="material-symbols-rounded-full text-xs">two_wheeler</span>
-                            two-wheeler (0.88)
-                        </div>
+                    <!-- Two-wheeler box -->
+                    <div class="class-box class-two-wheeler" style="position:absolute;top:62%;left:48%;width:12%;height:18%;border:2px solid #00c97a;background:rgba(0,201,122,0.12);border-radius:6px;">
+                        <div class="bbox-tag" style="background:#00c97a;color:#fff;">🛵 0.88</div>
                     </div>
-
-                    <!-- Standard Sedan Box -->
-                    <div class="class-box class-standard absolute top-[44%] left-[68%] w-[22%] h-[22%] border-2 border-on-surface-variant bg-surface-container-high/30 rounded-[24px]">
-                        <div class="absolute -top-7 left-0 bg-surface-container-highest text-on-surface font-telemetry text-[11px] font-medium px-2 py-0.5 rounded-[24px]-full">
-                            standard (0.94)
-                        </div>
+                    <!-- Standard box -->
+                    <div class="class-box class-standard" style="position:absolute;top:44%;left:68%;width:22%;height:22%;border:2px solid #9096a8;background:rgba(44,47,58,0.5);border-radius:6px;">
+                        <div class="bbox-tag" style="background:#2c2f3a;color:#e8eaf0;border:1px solid #2e3140;">standard 0.94</div>
                     </div>
-
-                    <!-- Calibration Polygon Lines (Hidden by default) -->
-                    <svg class="overlay-polygon absolute inset-0 w-full h-full pointer-events-none" preserveAspectRatio="none" viewBox="0 0 100 100">
-                        <polygon points="10,95 40,25 60,25 90,95" fill="rgba(121,180,169,0.08)" stroke="#10b981" stroke-width="0.6" stroke-dasharray="2,2"/>
-                        <line x1="50" y1="25" x2="50" y2="95" stroke="#10b981" stroke-width="0.6" stroke-dasharray="1,1"/>
+                    <!-- Calibration polygon (hidden until toggle) -->
+                    <svg class="overlay-polygon" style="position:absolute;inset:0;width:100%;height:100%;display:none;" viewBox="0 0 100 100" preserveAspectRatio="none">
+                        <polygon points="10,95 40,25 60,25 90,95" fill="rgba(0,201,122,0.06)" stroke="#00c97a" stroke-width="0.6" stroke-dasharray="2,2"/>
                     </svg>
-
-                    <!-- Feed Bottom Active Tag Chips -->
-                    <div class="absolute bottom-3 left-3 right-3 flex items-center justify-between z-20">
-                        <div class="flex items-center gap-1.5">
-                            <span class="px-2.5 py-1 rounded-full bg-state-preempted/20 border border-state-preempted/50 text-state-preempted font-label text-[10px] uppercase font-bold tracking-wider">EMS PREEMPTION</span>
-                            <span class="px-2.5 py-1 rounded-full bg-surface-container-lowest/90 border border-white/[0.08] text-on-surface-variant font-label text-[10px] uppercase tracking-wider">LANE 1-2 CLEAR</span>
-                        </div>
+                    <!-- Bottom status -->
+                    <div style="position:absolute;bottom:10px;left:10px;display:flex;gap:6px;">
+                        <span class="badge badge-crit">EMS PREEMPTION</span>
+                        <span class="badge badge-neutral">LANE 1-2 CLEAR</span>
                     </div>
                 </div>
             </div>
 
-            <!-- Camera 2: CAM-02 EAST (7th Ave) -->
-            <div id="cam-card-2" class="tech-border blueprint-grid-sub industrial-panel border border-white/[0.08] tech-border shadow-sm rounded-[24px] overflow-hidden flex flex-col border border-white/[0.08] relative group h-[340px]">
-<div class="scanline"></div>
-                <div class="absolute top-0 left-0 right-0 p-3.5 flex justify-between items-center z-20 bg-gradient-to-b from-black/80 via-black/40 to-transparent">
-                    <div class="flex items-center gap-2">
-                        <span class="w-2.5 h-2.5 rounded-full bg-state-calm"></span>
-                        <span class="font-telemetry text-xs font-bold text-on-surface">CAM-02 (EAST :: 7TH AVE)</span>
+            <!-- CAM-02 EAST -->
+            <div class="card" style="padding:0;overflow:hidden;position:relative;height:300px;">
+                <div class="cam-overlay" style="position:absolute;top:0;left:0;right:0;z-index:10;padding:10px 12px;display:flex;align-items:center;justify-content:space-between;">
+                    <div style="display:flex;align-items:center;gap:7px;">
+                        <span style="width:8px;height:8px;border-radius:50%;background:#00c97a;display:inline-block;"></span>
+                        <span style="font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;">CAM-02 · EAST · 7TH AVE</span>
                     </div>
-                    <div class="flex items-center gap-2">
-                        <span class="font-telemetry text-xs text-state-calm bg-surface-container-lowest/90 px-2.5 py-1 rounded-full border border-white/[0.08] tabular-nums">30 <span class="font-label text-[9px] uppercase">FPS</span></span>
-                        <span class="font-telemetry text-xs text-on-surface-variant bg-surface-container-lowest/90 px-2.5 py-1 rounded-full border border-white/[0.08] tabular-nums">11 <span class="font-label text-[9px] uppercase">MS</span></span>
-                        <button onclick="toggleCamFocus(2)" class="p-1 rounded-full hover:bg-surface-container-highest text-on-surface-variant hover:text-on-surface transition-colors" title="Toggle Focus View">
-                            <span class="material-symbols-rounded-full text-lg">fullscreen</span>
-                        </button>
+                    <div style="display:flex;align-items:center;gap:6px;">
+                        <span class="badge badge-calm">30 FPS</span>
+                        <span class="badge badge-neutral">11 MS</span>
                     </div>
                 </div>
-
-                <!-- Feed Viewport -->
-                <div class="relative flex-1 bg-surface-container-lowest w-full h-full bg-cover bg-center" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBJDlS4PL07UxmZlrJd_2YgT0q6LsxE_GqjsNV6bhdDuIqaLTWavgJeJTJptUoBXfjU29Hs2MjfEs82TuMhGud7bahfffkGcnGRbOvtVBGsMQYcHQzlt_WVhFQzHsAvAyNowtxCbMVE6dtUJyvRdegMtBv_Y0du_mbiM_gGosywMbyhjWqPxCt_JTe3tSa9C56TvLmzhRUzBidf53DFD5G6nBHkmVSy7HSHkGCIvI9pak9J2Exn4CuHBA')">
-                    
-                    <!-- Police Priority Box -->
-                    <div class="class-box class-police absolute top-[22%] left-[55%] w-[18%] h-[20%] border-2 border-tertiary bg-tertiary/15 rounded-[24px]">
-                        <div class="absolute -top-7 left-0 bg-tertiary text-on-tertiary font-telemetry text-[11px] font-bold px-2 py-0.5 rounded-[24px]-full flex items-center gap-1">
-                            <span class="material-symbols-rounded-full text-xs">local_police</span>
-                            police (0.96)
-                        </div>
+                <div style="width:100%;height:100%;background-image:url('https://lh3.googleusercontent.com/aida-public/AB6AXuBJDlS4PL07UxmZlrJd_2YgT0q6LsxE_GqjsNV6bhdDuIqaLTWavgJeJTJptUoBXfjU29Hs2MjfEs82TuMhGud7bahfffkGcnGRbOvtVBGsMQYcHQzlt_WVhFQzHsAvAyNowtxCbMVE6dtUJyvRdegMtBv_Y0du_mbiM_gGosywMbyhjWqPxCt_JTe3tSa9C56TvLmzhRUzBidf53DFD5G6nBHkmVSy7HSHkGCIvI9pak9J2Exn4CuHBA');background-size:cover;background-position:center;position:relative;">
+                    <!-- Police box -->
+                    <div class="class-box class-police" style="position:absolute;top:22%;left:55%;width:18%;height:20%;border:2px solid #4d9fff;background:rgba(77,159,255,0.12);border-radius:6px;">
+                        <div class="bbox-tag" style="background:#4d9fff;color:#fff;">🚔 police 0.96</div>
                     </div>
-
-                    <!-- School Van Box -->
-                    <div class="class-box class-school_van absolute top-[42%] left-[25%] w-[26%] h-[28%] border-2 border-secondary bg-secondary/15 rounded-[24px]">
-                        <div class="absolute -top-7 left-0 bg-secondary text-on-secondary font-telemetry text-[11px] font-bold px-2 py-0.5 rounded-[24px]-full flex items-center gap-1">
-                            <span class="material-symbols-rounded-full text-xs">airport_shuttle</span>
-                            school_van (0.95)
-                        </div>
+                    <!-- School van box -->
+                    <div class="class-box class-school_van" style="position:absolute;top:42%;left:25%;width:26%;height:28%;border:2px solid #ffab1a;background:rgba(255,171,26,0.12);border-radius:6px;">
+                        <div class="bbox-tag" style="background:#ffab1a;color:#111318;">🚌 school_van 0.95</div>
                     </div>
-
-                    <!-- Calibration Polygons -->
-                    <svg class="overlay-polygon absolute inset-0 w-full h-full pointer-events-none" preserveAspectRatio="none" viewBox="0 0 100 100">
-                        <polygon points="5,95 45,15 55,15 95,95" fill="rgba(121,180,169,0.08)" stroke="#10b981" stroke-width="0.6" stroke-dasharray="2,2"/>
+                    <svg class="overlay-polygon" style="position:absolute;inset:0;width:100%;height:100%;display:none;" viewBox="0 0 100 100" preserveAspectRatio="none">
+                        <polygon points="5,95 45,15 55,15 95,95" fill="rgba(0,201,122,0.06)" stroke="#00c97a" stroke-width="0.6" stroke-dasharray="2,2"/>
                     </svg>
-
-                    <div class="absolute bottom-3 left-3 right-3 flex items-center justify-between z-20">
-                        <div class="flex items-center gap-1.5">
-                            <span class="px-2.5 py-1 rounded-full bg-tertiary/20 border border-tertiary/40 text-tertiary font-label text-[10px] uppercase font-bold tracking-wider">PATROL UNIT PASSING</span>
-                        </div>
+                    <div style="position:absolute;bottom:10px;left:10px;">
+                        <span class="badge" style="background:rgba(77,159,255,0.15);color:#4d9fff;border-color:rgba(77,159,255,0.4);">PATROL UNIT PASSING</span>
                     </div>
                 </div>
             </div>
 
-            <!-- Camera 3: CAM-03 SOUTH (9th St Overpass) -->
-            <div id="cam-card-3" class="tech-border blueprint-grid-sub industrial-panel border border-white/[0.08] tech-border shadow-sm rounded-[24px] overflow-hidden flex flex-col border border-white/[0.08] relative group h-[340px]">
-<div class="scanline"></div>
-                <div class="absolute top-0 left-0 right-0 p-3.5 flex justify-between items-center z-20 bg-gradient-to-b from-black/80 via-black/40 to-transparent">
-                    <div class="flex items-center gap-2">
-                        <span class="w-2.5 h-2.5 rounded-full bg-state-calm"></span>
-                        <span class="font-telemetry text-xs font-bold text-on-surface">CAM-03 (SOUTH :: OVERPASS)</span>
+            <!-- CAM-03 SOUTH -->
+            <div class="card" style="padding:0;overflow:hidden;position:relative;height:300px;">
+                <div class="cam-overlay" style="position:absolute;top:0;left:0;right:0;z-index:10;padding:10px 12px;display:flex;align-items:center;justify-content:space-between;">
+                    <div style="display:flex;align-items:center;gap:7px;">
+                        <span style="width:8px;height:8px;border-radius:50%;background:#00c97a;display:inline-block;"></span>
+                        <span style="font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;">CAM-03 · SOUTH · OVERPASS</span>
                     </div>
-                    <div class="flex items-center gap-2">
-                        <span class="font-telemetry text-xs text-state-calm bg-surface-container-lowest/90 px-2.5 py-1 rounded-full border border-white/[0.08] tabular-nums">25 <span class="font-label text-[9px] uppercase">FPS</span></span>
-                        <span class="font-telemetry text-xs text-on-surface-variant bg-surface-container-lowest/90 px-2.5 py-1 rounded-full border border-white/[0.08] tabular-nums">14 <span class="font-label text-[9px] uppercase">MS</span></span>
-                        <button onclick="toggleCamFocus(3)" class="p-1 rounded-full hover:bg-surface-container-highest text-on-surface-variant hover:text-on-surface transition-colors" title="Toggle Focus View">
-                            <span class="material-symbols-rounded-full text-lg">fullscreen</span>
-                        </button>
+                    <div style="display:flex;align-items:center;gap:6px;">
+                        <span class="badge badge-calm">25 FPS</span>
+                        <span class="badge badge-neutral">14 MS</span>
                     </div>
                 </div>
-
-                <!-- Feed Viewport -->
-                <div class="relative flex-1 bg-surface-container-lowest w-full h-full bg-cover bg-center" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAhVMYifTcU3r-GoZi5JSVwCqek0920Tmoqwj-8jJk1xurcD_GiiQHds0eK3Y9FZuXcvehhhdRR_3mMSXxBhq2PE1Tf6imhmgwPI3kYh0oWUOjGeI3vlbYNDXADSyitn_nY6AItTLIwL-qadOqYUYVryV13tosO_BeP0wd-LkF3saop1ccrnRwCID3MR0VcetqMUSwudJw2Aq9zpqTHGzf34v8wEK9-s91lbSKey7EY4a4LbUw4vww04g')">
-                    
-                    <!-- Two-Wheeler Box -->
-                    <div class="class-box class-two-wheeler absolute top-[48%] left-[38%] w-[12%] h-[24%] border-2 border-state-calm bg-state-calm/15 rounded-[24px]">
-                        <div class="absolute -top-7 left-0 bg-state-calm text-on-primary font-telemetry text-[11px] font-bold px-2 py-0.5 rounded-[24px]-full flex items-center gap-1">
-                            <span class="material-symbols-rounded-full text-xs">two_wheeler</span>
-                            two-wheeler (0.89)
-                        </div>
+                <div style="width:100%;height:100%;background-image:url('https://lh3.googleusercontent.com/aida-public/AB6AXuAhVMYifTcU3r-GoZi5JSVwCqek0920Tmoqwj-8jJk1xurcD_GiiQHds0eK3Y9FZuXcvehhhdRR_3mMSXxBhq2PE1Tf6imhmgwPI3kYh0oWUOjGeI3vlbYNDXADSyitn_nY6AItTLIwL-qadOqYUYVryV13tosO_BeP0wd-LkF3saop1ccrnRwCID3MR0VcetqMUSwudJw2Aq9zpqTHGzf34v8wEK9-s91lbSKey7EY4a4LbUw4vww04g');background-size:cover;background-position:center;position:relative;">
+                    <div class="class-box class-two-wheeler" style="position:absolute;top:48%;left:38%;width:12%;height:24%;border:2px solid #00c97a;background:rgba(0,201,122,0.12);border-radius:6px;">
+                        <div class="bbox-tag" style="background:#00c97a;color:#fff;">🛵 0.89</div>
                     </div>
-
-                    <!-- Standard Box -->
-                    <div class="class-box class-standard absolute top-[52%] left-[56%] w-[15%] h-[20%] border-2 border-on-surface-variant bg-surface-container-high/30 rounded-[24px]">
-                        <div class="absolute -top-7 left-0 bg-surface-container-highest text-on-surface font-telemetry text-[11px] font-medium px-2 py-0.5 rounded-[24px]-full">
-                            standard (0.92)
-                        </div>
+                    <div class="class-box class-standard" style="position:absolute;top:52%;left:56%;width:15%;height:20%;border:2px solid #9096a8;background:rgba(44,47,58,0.5);border-radius:6px;">
+                        <div class="bbox-tag" style="background:#2c2f3a;color:#e8eaf0;border:1px solid #2e3140;">standard 0.92</div>
                     </div>
-
-                    <!-- Calibration Overlay Lines -->
-                    <svg class="overlay-polygon absolute inset-0 w-full h-full pointer-events-none" preserveAspectRatio="none" viewBox="0 0 100 100">
-                        <rect x="20" y="40" width="60" height="40" fill="none" stroke="#e1e7f5" stroke-width="0.5" stroke-dasharray="1,2"/>
+                    <svg class="overlay-polygon" style="position:absolute;inset:0;width:100%;height:100%;display:none;" viewBox="0 0 100 100" preserveAspectRatio="none">
+                        <rect x="20" y="40" width="60" height="40" fill="none" stroke="#00c97a" stroke-width="0.5" stroke-dasharray="1,2"/>
                     </svg>
-
-                    <div class="absolute bottom-3 left-3 right-3 flex items-center justify-between z-20">
-                        <div class="flex items-center gap-1.5">
-                            <span class="px-2.5 py-1 rounded-full bg-surface-container-lowest/90 border border-white/[0.08] text-state-calm font-label text-[10px] uppercase font-bold tracking-wider">PEDESTRIAN CORRIDOR CLEAR</span>
-                        </div>
+                    <div style="position:absolute;bottom:10px;left:10px;">
+                        <span class="badge badge-calm">PEDESTRIAN CORRIDOR CLEAR</span>
                     </div>
                 </div>
             </div>
 
-            <!-- Camera 4: CAM-04 WEST (Degraded Thermal Feed) -->
-            <div id="cam-card-4" class="tech-border blueprint-grid-sub industrial-panel border border-white/[0.08] tech-border shadow-sm rounded-[24px] overflow-hidden flex flex-col border border-white/[0.08] relative group h-[340px]">
-<div class="scanline"></div>
-                <div class="absolute top-0 left-0 right-0 p-3.5 flex justify-between items-center z-20 bg-gradient-to-b from-black/80 via-black/40 to-transparent">
-                    <div class="flex items-center gap-2">
-                        <span class="w-2.5 h-2.5 rounded-full bg-state-building animate-pulse"></span>
-                        <span class="font-telemetry text-xs font-bold text-on-surface">CAM-04 (WEST :: THERMAL DEGRADED)</span>
+            <!-- CAM-04 WEST (Degraded) -->
+            <div class="card" style="padding:0;overflow:hidden;position:relative;height:300px;">
+                <div class="cam-overlay" style="position:absolute;top:0;left:0;right:0;z-index:10;padding:10px 12px;display:flex;align-items:center;justify-content:space-between;">
+                    <div style="display:flex;align-items:center;gap:7px;">
+                        <span style="width:8px;height:8px;border-radius:50%;background:#ffab1a;animation:pulse-ring 1.5s ease infinite;display:inline-block;"></span>
+                        <span style="font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;">CAM-04 · WEST · THERMAL ⚠</span>
                     </div>
-                    <div class="flex items-center gap-2">
-                        <span class="font-telemetry text-xs text-state-building bg-surface-container-lowest/90 px-2.5 py-1 rounded-full border border-white/[0.08] tabular-nums">14 <span class="font-label text-[9px] uppercase">FPS</span></span>
-                        <span class="font-telemetry text-xs text-state-building bg-surface-container-lowest/90 px-2.5 py-1 rounded-full border border-white/[0.08] tabular-nums">42 <span class="font-label text-[9px] uppercase">MS</span></span>
-                        <button onclick="toggleCamFocus(4)" class="p-1 rounded-full hover:bg-surface-container-highest text-on-surface-variant hover:text-on-surface transition-colors" title="Toggle Focus View">
-                            <span class="material-symbols-rounded-full text-lg">fullscreen</span>
-                        </button>
+                    <div style="display:flex;align-items:center;gap:6px;">
+                        <span class="badge badge-warn">14 FPS</span>
+                        <span class="badge badge-warn">42 MS</span>
                     </div>
                 </div>
-
-                <!-- Feed Viewport -->
-                <div class="relative flex-1 bg-surface-container-lowest w-full h-full bg-cover bg-center" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCQhfLF-ooQ1z6ZhfZ1G20Eyxf6V-xiAaTJVSs4LHgPe_Cw88BIiYV-b11EGYoHjquxbhBRVxfql8dGMTYpWmVc9FkLb-rQpMSSWQQObvaYcQRd8XiRmvfeqQa50rmoeeldn5tz5GLEriq0g9mai2BBEg94EbOT6iyP7EjfC7fGChzWdNqzqT7MuI7Q1eCdBO7dMyR-OPvCc_Doal4lPR53TsTi6WQX4Kc_M1UCFFCuOQ1nZvYfVHcvfQ')">
-                    
-                    <!-- Standard Truck Box -->
-                    <div class="class-box class-standard absolute top-[35%] left-[30%] w-[35%] h-[35%] border-2 border-state-building bg-state-building/15 rounded-[24px]">
-                        <div class="absolute -top-7 left-0 bg-state-building text-on-secondary font-telemetry text-[11px] font-bold px-2 py-0.5 rounded-[24px]-full">
-                            standard (0.85)
-                        </div>
+                <div style="width:100%;height:100%;background-image:url('https://lh3.googleusercontent.com/aida-public/AB6AXuCQhfLF-ooQ1z6ZhfZ1G20Eyxf6V-xiAaTJVSs4LHgPe_Cw88BIiYV-b11EGYoHjquxbhBRVxfql8dGMTYpWmVc9FkLb-rQpMSSWQQObvaYcQRd8XiRmvfeqQa50rmoeeldn5tz5GLEriq0g9mai2BBEg94EbOT6iyP7EjfC7fGChzWdNqzqT7MuI7Q1eCdBO7dMyR-OPvCc_Doal4lPR53TsTi6WQX4Kc_M1UCFFCuOQ1nZvYfVHcvfQ');background-size:cover;background-position:center;position:relative;">
+                    <div class="class-box class-standard" style="position:absolute;top:35%;left:30%;width:35%;height:35%;border:2px solid #ffab1a;background:rgba(255,171,26,0.12);border-radius:6px;">
+                        <div class="bbox-tag" style="background:#ffab1a;color:#111318;">standard 0.85</div>
                     </div>
-
-                    <div class="absolute inset-0 flex items-center justify-center pointer-events-none">
-                        <div class="bg-surface-container-lowest/90 backdrop-blur-md px-4 py-2 rounded-[24px] border border-state-building/40 flex items-center gap-2 shadow-lg">
-                            <span class="material-symbols-rounded-full text-state-building">warning</span>
-                            <span class="font-telemetry text-xs text-state-building font-semibold">FEED DEGRADED :: HIGH LATENCY</span>
+                    <!-- Degraded overlay -->
+                    <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;pointer-events:none;">
+                        <div style="background:rgba(13,15,19,0.85);backdrop-filter:blur(4px);padding:8px 14px;border-radius:8px;border:1px solid rgba(255,171,26,0.4);display:flex;align-items:center;gap:8px;">
+                            <span class="material-symbols-rounded" style="color:#ffab1a;font-size:18px;">warning</span>
+                            <span style="font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:600;color:#ffab1a;">FEED DEGRADED · HIGH LATENCY</span>
                         </div>
                     </div>
                 </div>
@@ -356,385 +317,233 @@
 
         </div>
 
-        <!-- Right Area: Performance Telemetry & Detection Analytics (Span 4) -->
-        <div class="lg:col-span-4 z-10 flex flex-col gap-6">
+        <!-- ── RIGHT PANEL: Analytics ────────────────────────────────── -->
+        <div style="display:flex;flex-direction:column;gap:14px;">
 
-            <!-- Model Performance Metrics Card -->
-            <div class="industrial-panel border border-white/[0.08] tech-border shadow-sm rounded-[24px] p-6 flex flex-col gap-4 border border-white/[0.08]">
-                <div class="flex justify-between items-center border-b border-white/[0.08] pb-4">
+            <!-- Model Health -->
+            <div class="card">
+                <div class="card-header">
+                    <span class="card-title">YOLOv8 Model Health</span>
+                    <span class="badge badge-calm">8.4 MS</span>
+                </div>
+                <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:14px;">
+                    <div class="metric-tile" style="text-align:center;">
+                        <span class="metric-label">mAP@50</span>
+                        <span class="metric-value calm" style="font-size:18px;">0.924</span>
+                    </div>
+                    <div class="metric-tile" style="text-align:center;">
+                        <span class="metric-label">Precision</span>
+                        <span class="metric-value neutral" style="font-size:18px;">0.891</span>
+                    </div>
+                    <div class="metric-tile" style="text-align:center;">
+                        <span class="metric-label">Recall</span>
+                        <span class="metric-value neutral" style="font-size:18px;">0.905</span>
+                    </div>
+                </div>
+                <!-- Engine status -->
+                <div style="display:flex;align-items:center;gap:8px;padding:8px 12px;background:rgba(0,201,122,0.08);border:1px solid rgba(0,201,122,0.25);border-radius:8px;">
+                    <span style="width:6px;height:6px;background:#00c97a;border-radius:50%;animation:pulse-ring 2s ease infinite;"></span>
+                    <span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:#9096a8;">YOLOv8 Edge Engine Active</span>
+                </div>
+            </div>
+
+            <!-- Vehicle Class Confidence -->
+            <div class="card">
+                <div class="card-header">
+                    <span class="card-title">Vehicle Class Confidence</span>
+                </div>
+                <div style="display:flex;flex-direction:column;gap:12px;">
+                    <!-- Ambulance -->
                     <div>
-                        <h3 class="font-display font-semibold text-lg text-on-surface">YOLOv8 Model Health</h3>
-                        <p class="font-body text-xs text-on-surface-variant mt-0.5">Real-time object detection telemetry</p>
+                        <div style="display:flex;justify-content:space-between;margin-bottom:5px;">
+                            <span style="font-size:12px;font-weight:600;color:#ff4060;">🚑 Ambulance</span>
+                            <span style="font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:700;color:#ff4060;">0.98</span>
+                        </div>
+                        <div class="progress-track"><div class="progress-fill crit" style="width:98%;"></div></div>
                     </div>
-                    <span class="px-2.5 py-1 rounded-full bg-state-calm/15 text-state-calm font-telemetry text-xs font-bold border border-state-calm/30">
-                        8.4 MS
-                    </span>
-                </div>
-
-                <div class="grid grid-cols-3 gap-3">
-                    <div class="bg-surface-container-lowest p-3 rounded-[24px] border border-white/[0.08] flex flex-col gap-1">
-                        <span class="font-label text-[10px] text-on-surface-variant uppercase tracking-widest">mAP@50</span>
-                        <span class="font-telemetry text-xl font-bold text-state-calm tabular-nums">0.924</span>
+                    <!-- Police -->
+                    <div>
+                        <div style="display:flex;justify-content:space-between;margin-bottom:5px;">
+                            <span style="font-size:12px;font-weight:600;color:#4d9fff;">🚔 Police</span>
+                            <span style="font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:700;color:#4d9fff;">0.96</span>
+                        </div>
+                        <div class="progress-track"><div class="progress-fill" style="width:96%;background:#4d9fff;"></div></div>
                     </div>
-                    <div class="bg-surface-container-lowest p-3 rounded-[24px] border border-white/[0.08] flex flex-col gap-1">
-                        <span class="font-label text-[10px] text-on-surface-variant uppercase tracking-widest">Precision</span>
-                        <span class="font-telemetry text-xl font-bold text-on-surface tabular-nums">0.891</span>
+                    <!-- School Van -->
+                    <div>
+                        <div style="display:flex;justify-content:space-between;margin-bottom:5px;">
+                            <span style="font-size:12px;font-weight:600;color:#ffab1a;">🚌 School Van</span>
+                            <span style="font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:700;color:#ffab1a;">0.95</span>
+                        </div>
+                        <div class="progress-track"><div class="progress-fill warn" style="width:95%;"></div></div>
                     </div>
-                    <div class="bg-surface-container-lowest p-3 rounded-[24px] border border-white/[0.08] flex flex-col gap-1">
-                        <span class="font-label text-[10px] text-on-surface-variant uppercase tracking-widest">Recall</span>
-                        <span class="font-telemetry text-xl font-bold text-on-surface tabular-nums">0.905</span>
+                    <!-- Standard -->
+                    <div>
+                        <div style="display:flex;justify-content:space-between;margin-bottom:5px;">
+                            <span style="font-size:12px;color:#9096a8;">Standard (Car/SUV)</span>
+                            <span style="font-family:'JetBrains Mono',monospace;font-size:12px;color:#9096a8;">0.91</span>
+                        </div>
+                        <div class="progress-track"><div class="progress-fill" style="width:91%;background:#9096a8;"></div></div>
                     </div>
-                </div>
-            </div>
-
-            <!-- Detection Confidence Class Breakdown Card -->
-            <div class="industrial-panel border border-white/[0.08] tech-border shadow-sm rounded-[24px] p-6 flex flex-col gap-4 border border-white/[0.08]">
-                <h3 class="font-display font-semibold text-base text-on-surface">Vehicle Class Confidence</h3>
-                
-                <div class="flex flex-col gap-3">
-                    <!-- Class 1: Ambulance -->
-                    <div class="flex flex-col gap-1">
-                        <div class="flex justify-between font-telemetry text-xs">
-                            <span class="text-state-preempted font-bold uppercase flex items-center gap-1">
-                                <span class="material-symbols-rounded-full text-sm">ambulance</span> Ambulance
-                            </span>
-                            <span class="text-state-preempted font-bold tabular-nums">0.98</span>
+                    <!-- Two-Wheeler -->
+                    <div>
+                        <div style="display:flex;justify-content:space-between;margin-bottom:5px;">
+                            <span style="font-size:12px;font-weight:600;color:#00c97a;">🛵 Two-Wheeler</span>
+                            <span style="font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:700;color:#00c97a;">0.88</span>
                         </div>
-                        <div class="w-full bg-surface-container-lowest h-2 rounded-[24px]-full overflow-hidden">
-                            <div class="bg-state-preempted h-full rounded-[24px]-full" style="width: 98%;"></div>
-                        </div>
-                    </div>
-
-                    <!-- Class 2: Police -->
-                    <div class="flex flex-col gap-1">
-                        <div class="flex justify-between font-telemetry text-xs">
-                            <span class="text-tertiary font-bold uppercase flex items-center gap-1">
-                                <span class="material-symbols-rounded-full text-sm">local_police</span> Police
-                            </span>
-                            <span class="text-tertiary font-bold tabular-nums">0.96</span>
-                        </div>
-                        <div class="w-full bg-surface-container-lowest h-2 rounded-[24px]-full overflow-hidden">
-                            <div class="bg-tertiary h-full rounded-[24px]-full" style="width: 96%;"></div>
-                        </div>
-                    </div>
-
-                    <!-- Class 3: School Van -->
-                    <div class="flex flex-col gap-1">
-                        <div class="flex justify-between font-telemetry text-xs">
-                            <span class="text-secondary font-bold uppercase flex items-center gap-1">
-                                <span class="material-symbols-rounded-full text-sm">airport_shuttle</span> School Van
-                            </span>
-                            <span class="text-secondary font-bold tabular-nums">0.95</span>
-                        </div>
-                        <div class="w-full bg-surface-container-lowest h-2 rounded-[24px]-full overflow-hidden">
-                            <div class="bg-secondary h-full rounded-[24px]-full" style="width: 95%;"></div>
-                        </div>
-                    </div>
-
-                    <!-- Class 4: Standard -->
-                    <div class="flex flex-col gap-1">
-                        <div class="flex justify-between font-telemetry text-xs">
-                            <span class="text-on-surface uppercase">Standard (Car/SUV)</span>
-                            <span class="text-on-surface tabular-nums">0.91</span>
-                        </div>
-                        <div class="w-full bg-surface-container-lowest h-2 rounded-[24px]-full overflow-hidden">
-                            <div class="bg-on-surface h-full rounded-[24px]-full" style="width: 91%;"></div>
-                        </div>
-                    </div>
-
-                    <!-- Class 5: Two-Wheeler -->
-                    <div class="flex flex-col gap-1">
-                        <div class="flex justify-between font-telemetry text-xs">
-                            <span class="text-state-calm uppercase flex items-center gap-1">
-                                <span class="material-symbols-rounded-full text-sm">two_wheeler</span> Two-Wheeler
-                            </span>
-                            <span class="text-state-calm tabular-nums">0.88</span>
-                        </div>
-                        <div class="w-full bg-surface-container-lowest h-2 rounded-[24px]-full overflow-hidden">
-                            <div class="bg-state-calm h-full rounded-[24px]-full" style="width: 88%;"></div>
-                        </div>
+                        <div class="progress-track"><div class="progress-fill calm" style="width:88%;"></div></div>
                     </div>
                 </div>
             </div>
 
-            <!-- Confusion Matrix Card -->
-            <div class="industrial-panel border border-white/[0.08] tech-border shadow-sm rounded-[24px] p-6 flex flex-col gap-3 border border-white/[0.08] flex-1">
-                <div class="flex justify-between items-center border-b border-white/[0.08] pb-3">
-                    <h3 class="font-display font-semibold text-base text-on-surface">Confusion Matrix</h3>
-                    <span class="font-label text-[10px] text-on-surface-variant uppercase tracking-widest">Normalized</span>
+            <!-- Confusion Matrix -->
+            <div class="card" style="flex:1;">
+                <div class="card-header">
+                    <span class="card-title">Confusion Matrix</span>
+                    <span style="font-size:10px;color:#9096a8;font-weight:500;">Normalized</span>
                 </div>
-
-                <div class="bg-surface-container-lowest p-3 rounded-[24px] border border-white/[0.08] overflow-x-auto">
-                    <div class="grid grid-cols-6 gap-1 font-telemetry text-[10px] text-center min-w-[240px]">
-                        <!-- Empty Top Left Cell -->
-                        <div class="col-span-1"></div>
-                        <div class="text-on-surface-variant font-bold">Sedan</div>
-                        <div class="text-on-surface-variant font-bold">SUV</div>
-                        <div class="text-on-surface-variant font-bold">Van</div>
-                        <div class="text-on-surface-variant font-bold">2Whl</div>
-                        <div class="text-on-surface-variant font-bold">Amb</div>
-
-                        <!-- Row 1 -->
-                        <div class="text-on-surface-variant text-right pr-1 font-bold">Sedan</div>
-                        <div class="bg-state-calm text-on-primary font-bold rounded-[24px] py-1">850</div>
-                        <div class="bg-state-calm/20 text-state-calm rounded-[24px] py-1">45</div>
-                        <div class="bg-surface-container-high text-on-surface-variant rounded-[24px] py-1">2</div>
-                        <div class="bg-surface-container-high text-on-surface-variant rounded-[24px] py-1">12</div>
-                        <div class="bg-surface-container-high text-on-surface-variant rounded-[24px] py-1">0</div>
-
-                        <!-- Row 2 -->
-                        <div class="text-on-surface-variant text-right pr-1 font-bold">SUV</div>
-                        <div class="bg-state-calm/30 text-state-calm rounded-[24px] py-1">52</div>
-                        <div class="bg-state-calm text-on-primary font-bold rounded-[24px] py-1">610</div>
-                        <div class="bg-state-calm/20 text-state-calm rounded-[24px] py-1">18</div>
-                        <div class="bg-surface-container-high text-on-surface-variant rounded-[24px] py-1">5</div>
-                        <div class="bg-surface-container-high text-on-surface-variant rounded-[24px] py-1">0</div>
-
-                        <!-- Row 3 -->
-                        <div class="text-on-surface-variant text-right pr-1 font-bold">Van</div>
-                        <div class="bg-surface-container-high text-on-surface-variant rounded-[24px] py-1">5</div>
-                        <div class="bg-state-calm/20 text-state-calm rounded-[24px] py-1">22</div>
-                        <div class="bg-state-calm text-on-primary font-bold rounded-[24px] py-1">145</div>
-                        <div class="bg-surface-container-high text-on-surface-variant rounded-[24px] py-1">1</div>
-                        <div class="bg-surface-container-high text-on-surface-variant rounded-[24px] py-1">0</div>
-
-                        <!-- Row 4 -->
-                        <div class="text-on-surface-variant text-right pr-1 font-bold">2Whl</div>
-                        <div class="bg-surface-container-high text-on-surface-variant rounded-[24px] py-1">15</div>
-                        <div class="bg-surface-container-high text-on-surface-variant rounded-[24px] py-1">3</div>
-                        <div class="bg-surface-container-high text-on-surface-variant rounded-[24px] py-1">0</div>
-                        <div class="bg-state-calm text-on-primary font-bold rounded-[24px] py-1">210</div>
-                        <div class="bg-surface-container-high text-on-surface-variant rounded-[24px] py-1">0</div>
-
-                        <!-- Row 5 -->
-                        <div class="text-on-surface-variant text-right pr-1 font-bold">Amb</div>
-                        <div class="bg-surface-container-high text-on-surface-variant rounded-[24px] py-1">0</div>
-                        <div class="bg-surface-container-high text-on-surface-variant rounded-[24px] py-1">1</div>
-                        <div class="bg-surface-container-high text-on-surface-variant rounded-[24px] py-1">0</div>
-                        <div class="bg-surface-container-high text-on-surface-variant rounded-[24px] py-1">0</div>
-                        <div class="bg-state-preempted text-on-error font-bold rounded-[24px] py-1">98</div>
-                    </div>
+                <div style="overflow-x:auto;">
+                    <table style="width:100%;border-collapse:separate;border-spacing:3px;font-family:'JetBrains Mono',monospace;font-size:10px;text-align:center;">
+                        <thead>
+                            <tr>
+                                <td></td>
+                                <td style="color:#9096a8;font-weight:700;padding:3px;">Sedan</td>
+                                <td style="color:#9096a8;font-weight:700;padding:3px;">SUV</td>
+                                <td style="color:#9096a8;font-weight:700;padding:3px;">Van</td>
+                                <td style="color:#9096a8;font-weight:700;padding:3px;">2Whl</td>
+                                <td style="color:#9096a8;font-weight:700;padding:3px;">Amb</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td style="color:#9096a8;font-weight:700;text-align:right;padding-right:6px;">Sedan</td>
+                                <td style="background:rgba(0,201,122,0.85);color:#fff;font-weight:700;border-radius:5px;padding:4px;">850</td>
+                                <td style="background:rgba(0,201,122,0.2);color:#00c97a;border-radius:5px;padding:4px;">45</td>
+                                <td style="background:#2c2f3a;color:#9096a8;border-radius:5px;padding:4px;">2</td>
+                                <td style="background:#2c2f3a;color:#9096a8;border-radius:5px;padding:4px;">12</td>
+                                <td style="background:#2c2f3a;color:#9096a8;border-radius:5px;padding:4px;">0</td>
+                            </tr>
+                            <tr>
+                                <td style="color:#9096a8;font-weight:700;text-align:right;padding-right:6px;">SUV</td>
+                                <td style="background:rgba(0,201,122,0.25);color:#00c97a;border-radius:5px;padding:4px;">52</td>
+                                <td style="background:rgba(0,201,122,0.85);color:#fff;font-weight:700;border-radius:5px;padding:4px;">610</td>
+                                <td style="background:rgba(0,201,122,0.15);color:#00c97a;border-radius:5px;padding:4px;">18</td>
+                                <td style="background:#2c2f3a;color:#9096a8;border-radius:5px;padding:4px;">5</td>
+                                <td style="background:#2c2f3a;color:#9096a8;border-radius:5px;padding:4px;">0</td>
+                            </tr>
+                            <tr>
+                                <td style="color:#9096a8;font-weight:700;text-align:right;padding-right:6px;">Van</td>
+                                <td style="background:#2c2f3a;color:#9096a8;border-radius:5px;padding:4px;">5</td>
+                                <td style="background:rgba(0,201,122,0.15);color:#00c97a;border-radius:5px;padding:4px;">22</td>
+                                <td style="background:rgba(0,201,122,0.85);color:#fff;font-weight:700;border-radius:5px;padding:4px;">145</td>
+                                <td style="background:#2c2f3a;color:#9096a8;border-radius:5px;padding:4px;">1</td>
+                                <td style="background:#2c2f3a;color:#9096a8;border-radius:5px;padding:4px;">0</td>
+                            </tr>
+                            <tr>
+                                <td style="color:#9096a8;font-weight:700;text-align:right;padding-right:6px;">2Whl</td>
+                                <td style="background:#2c2f3a;color:#9096a8;border-radius:5px;padding:4px;">15</td>
+                                <td style="background:#2c2f3a;color:#9096a8;border-radius:5px;padding:4px;">3</td>
+                                <td style="background:#2c2f3a;color:#9096a8;border-radius:5px;padding:4px;">0</td>
+                                <td style="background:rgba(0,201,122,0.85);color:#fff;font-weight:700;border-radius:5px;padding:4px;">210</td>
+                                <td style="background:#2c2f3a;color:#9096a8;border-radius:5px;padding:4px;">0</td>
+                            </tr>
+                            <tr>
+                                <td style="color:#9096a8;font-weight:700;text-align:right;padding-right:6px;">Amb</td>
+                                <td style="background:#2c2f3a;color:#9096a8;border-radius:5px;padding:4px;">0</td>
+                                <td style="background:#2c2f3a;color:#9096a8;border-radius:5px;padding:4px;">1</td>
+                                <td style="background:#2c2f3a;color:#9096a8;border-radius:5px;padding:4px;">0</td>
+                                <td style="background:#2c2f3a;color:#9096a8;border-radius:5px;padding:4px;">0</td>
+                                <td style="background:rgba(255,64,96,0.85);color:#fff;font-weight:700;border-radius:5px;padding:4px;">98</td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
 
         </div>
-
-    <footer class="fixed bottom-0 left-16 right-0 h-10 bg-[#0a0a0a] border-t border-white/[0.08] z-30 flex items-center px-3 overflow-hidden">
-            <div class="flex items-center gap-2 pr-4 border-r border-white/[0.08] shrink-0 bg-[#0a0a0a] z-10 h-full relative">
-                <span class="material-symbols-rounded text-on-surface-variant text-[14px]">terminal</span>
-                <span class="font-label text-[10px] uppercase tracking-widest text-on-surface-variant">Sys_Log</span>
-                <div class="absolute right-0 top-0 bottom-0 w-8 bg-gradient-to-r from-[#0a0a0a] to-transparent pointer-events-none translate-x-full"></div>
-            </div>
-            
-            <div class="ticker-wrap flex-1 ml-4 h-full flex items-center">
-                <div class="ticker-move flex items-center gap-6" style="animation-duration: 40s; width: max-content;">
-                    <div class="flex items-center gap-2 shrink-0">
-                        <span class="font-telemetry text-[10px] text-on-surface-variant">[14:02:41]</span>
-                        <span class="font-telemetry text-[10px] text-on-surface font-bold">IX104</span>
-                        <span class="px-1.5 py-0.5 rounded bg-state-preempted/10 text-state-preempted border-state-preempted/30 border font-telemetry text-[9px] uppercase tracking-widest">PREEMPT</span>
-                        <span class="font-telemetry text-[10px] text-on-surface-variant">Ambulance Override - Route Locked</span>
-                    </div>
-                    <div class="w-px h-3 bg-white/[0.12] shrink-0"></div>
-                    <div class="flex items-center gap-2 shrink-0">
-                        <span class="font-telemetry text-[10px] text-on-surface-variant">[14:02:38]</span>
-                        <span class="font-telemetry text-[10px] text-on-surface font-bold">IX102</span>
-                        <span class="px-1.5 py-0.5 rounded bg-state-building/10 text-state-building border-state-building/30 border font-telemetry text-[9px] uppercase tracking-widest">EXT</span>
-                        <span class="font-telemetry text-[10px] text-on-surface-variant">+4.2s Q buildup (Density 0.8)</span>
-                    </div>
-                    <div class="w-px h-3 bg-white/[0.12] shrink-0"></div>
-                    <div class="flex items-center gap-2 shrink-0">
-                        <span class="font-telemetry text-[10px] text-on-surface-variant">[14:02:15]</span>
-                        <span class="font-telemetry text-[10px] text-on-surface font-bold">IX101</span>
-                        <span class="px-1.5 py-0.5 rounded bg-state-calm/10 text-state-calm border-state-calm/30 border font-telemetry text-[9px] uppercase tracking-widest">SCHED</span>
-                        <span class="font-telemetry text-[10px] text-on-surface-variant">Ph 2 (30s rem) Nominal flow</span>
-                    </div>
-                    <div class="w-px h-3 bg-white/[0.12] shrink-0"></div>
-                    <div class="flex items-center gap-2 shrink-0">
-                        <span class="font-telemetry text-[10px] text-on-surface-variant">[14:01:55]</span>
-                        <span class="font-telemetry text-[10px] text-on-surface font-bold">IX106</span>
-                        <span class="px-1.5 py-0.5 rounded bg-state-calm/10 text-state-calm border-state-calm/30 border font-telemetry text-[9px] uppercase tracking-widest">SCHED</span>
-                        <span class="font-telemetry text-[10px] text-on-surface-variant">Grn wave lock initiated</span>
-                    </div>
-                    <div class="w-px h-3 bg-white/[0.12] shrink-0"></div>
-                    <div class="flex items-center gap-2 shrink-0">
-                        <span class="font-telemetry text-[10px] text-on-surface-variant">[14:01:42]</span>
-                        <span class="font-telemetry text-[10px] text-on-surface font-bold">SYS_O</span>
-                        <span class="px-1.5 py-0.5 rounded bg-state-building/10 text-state-building border-state-building/30 border font-telemetry text-[9px] uppercase tracking-widest">WARN</span>
-                        <span class="font-telemetry text-[10px] text-on-surface-variant">High packet loss on Sector 2 link</span>
-                    </div>
-                    <div class="w-px h-3 bg-white/[0.12] shrink-0"></div>
-                    <div class="flex items-center gap-2 shrink-0">
-                        <span class="font-telemetry text-[10px] text-on-surface-variant">[14:01:12]</span>
-                        <span class="font-telemetry text-[10px] text-on-surface font-bold">IX104</span>
-                        <span class="px-1.5 py-0.5 rounded bg-surface-container-high text-on-surface-variant border-white/[0.12] border font-telemetry text-[9px] uppercase tracking-widest">INFO</span>
-                        <span class="font-telemetry text-[10px] text-on-surface-variant">Camera feed 3 re-established</span>
-                    </div>
-                    <div class="w-px h-3 bg-white/[0.12] shrink-0"></div>
-                    <div class="flex items-center gap-2 shrink-0">
-                        <span class="font-telemetry text-[10px] text-on-surface-variant">[14:00:58]</span>
-                        <span class="font-telemetry text-[10px] text-on-surface font-bold">IX105</span>
-                        <span class="px-1.5 py-0.5 rounded bg-state-calm/10 text-state-calm border-state-calm/30 border font-telemetry text-[9px] uppercase tracking-widest">SCHED</span>
-                        <span class="font-telemetry text-[10px] text-on-surface-variant">Cycle transition complete</span>
-                    </div>
-                    <div class="w-px h-3 bg-white/[0.12] shrink-0"></div>
-                    <div class="flex items-center gap-2 shrink-0">
-                        <span class="font-telemetry text-[10px] text-on-surface-variant">[14:00:22]</span>
-                        <span class="font-telemetry text-[10px] text-on-surface font-bold">IX102</span>
-                        <span class="px-1.5 py-0.5 rounded bg-state-building/10 text-state-building border-state-building/30 border font-telemetry text-[9px] uppercase tracking-widest">EXT</span>
-                        <span class="font-telemetry text-[10px] text-on-surface-variant">Platoon detected (Northbound)</span>
-                    </div>
-                    <div class="w-px h-3 bg-white/[0.12] shrink-0"></div>
-                    <div class="flex items-center gap-2 shrink-0">
-                        <span class="font-telemetry text-[10px] text-on-surface-variant">[14:00:01]</span>
-                        <span class="font-telemetry text-[10px] text-on-surface font-bold">SYS_C</span>
-                        <span class="px-1.5 py-0.5 rounded bg-surface-container-high text-on-surface-variant border-white/[0.12] border font-telemetry text-[9px] uppercase tracking-widest">SYNC</span>
-                        <span class="font-telemetry text-[10px] text-on-surface-variant">NTP clock sync successful (Offset 0.2ms)</span>
-                    </div>
-                    <div class="w-px h-3 bg-white/[0.12] shrink-0"></div>
-                    <div class="flex items-center gap-2 shrink-0">
-                        <span class="font-telemetry text-[10px] text-on-surface-variant">[13:59:45]</span>
-                        <span class="font-telemetry text-[10px] text-on-surface font-bold">IX103</span>
-                        <span class="px-1.5 py-0.5 rounded bg-state-preempted/10 text-state-preempted border-state-preempted/30 border font-telemetry text-[9px] uppercase tracking-widest">PREEMPT</span>
-                        <span class="font-telemetry text-[10px] text-on-surface-variant">Fire Engine transit clear</span>
-                    </div>
-                    <div class="w-px h-3 bg-white/[0.12] shrink-0"></div>
-                    <div class="flex items-center gap-2 shrink-0">
-                        <span class="font-telemetry text-[10px] text-on-surface-variant">[14:02:41]</span>
-                        <span class="font-telemetry text-[10px] text-on-surface font-bold">IX104</span>
-                        <span class="px-1.5 py-0.5 rounded bg-state-preempted/10 text-state-preempted border-state-preempted/30 border font-telemetry text-[9px] uppercase tracking-widest">PREEMPT</span>
-                        <span class="font-telemetry text-[10px] text-on-surface-variant">Ambulance Override - Route Locked</span>
-                    </div>
-                    <div class="w-px h-3 bg-white/[0.12] shrink-0"></div>
-                    <div class="flex items-center gap-2 shrink-0">
-                        <span class="font-telemetry text-[10px] text-on-surface-variant">[14:02:38]</span>
-                        <span class="font-telemetry text-[10px] text-on-surface font-bold">IX102</span>
-                        <span class="px-1.5 py-0.5 rounded bg-state-building/10 text-state-building border-state-building/30 border font-telemetry text-[9px] uppercase tracking-widest">EXT</span>
-                        <span class="font-telemetry text-[10px] text-on-surface-variant">+4.2s Q buildup (Density 0.8)</span>
-                    </div>
-                    <div class="w-px h-3 bg-white/[0.12] shrink-0"></div>
-                    <div class="flex items-center gap-2 shrink-0">
-                        <span class="font-telemetry text-[10px] text-on-surface-variant">[14:02:15]</span>
-                        <span class="font-telemetry text-[10px] text-on-surface font-bold">IX101</span>
-                        <span class="px-1.5 py-0.5 rounded bg-state-calm/10 text-state-calm border-state-calm/30 border font-telemetry text-[9px] uppercase tracking-widest">SCHED</span>
-                        <span class="font-telemetry text-[10px] text-on-surface-variant">Ph 2 (30s rem) Nominal flow</span>
-                    </div>
-                    <div class="w-px h-3 bg-white/[0.12] shrink-0"></div>
-                    <div class="flex items-center gap-2 shrink-0">
-                        <span class="font-telemetry text-[10px] text-on-surface-variant">[14:01:55]</span>
-                        <span class="font-telemetry text-[10px] text-on-surface font-bold">IX106</span>
-                        <span class="px-1.5 py-0.5 rounded bg-state-calm/10 text-state-calm border-state-calm/30 border font-telemetry text-[9px] uppercase tracking-widest">SCHED</span>
-                        <span class="font-telemetry text-[10px] text-on-surface-variant">Grn wave lock initiated</span>
-                    </div>
-                    <div class="w-px h-3 bg-white/[0.12] shrink-0"></div>
-                    <div class="flex items-center gap-2 shrink-0">
-                        <span class="font-telemetry text-[10px] text-on-surface-variant">[14:01:42]</span>
-                        <span class="font-telemetry text-[10px] text-on-surface font-bold">SYS_O</span>
-                        <span class="px-1.5 py-0.5 rounded bg-state-building/10 text-state-building border-state-building/30 border font-telemetry text-[9px] uppercase tracking-widest">WARN</span>
-                        <span class="font-telemetry text-[10px] text-on-surface-variant">High packet loss on Sector 2 link</span>
-                    </div>
-                    <div class="w-px h-3 bg-white/[0.12] shrink-0"></div>
-                    <div class="flex items-center gap-2 shrink-0">
-                        <span class="font-telemetry text-[10px] text-on-surface-variant">[14:01:12]</span>
-                        <span class="font-telemetry text-[10px] text-on-surface font-bold">IX104</span>
-                        <span class="px-1.5 py-0.5 rounded bg-surface-container-high text-on-surface-variant border-white/[0.12] border font-telemetry text-[9px] uppercase tracking-widest">INFO</span>
-                        <span class="font-telemetry text-[10px] text-on-surface-variant">Camera feed 3 re-established</span>
-                    </div>
-                    <div class="w-px h-3 bg-white/[0.12] shrink-0"></div>
-                    <div class="flex items-center gap-2 shrink-0">
-                        <span class="font-telemetry text-[10px] text-on-surface-variant">[14:00:58]</span>
-                        <span class="font-telemetry text-[10px] text-on-surface font-bold">IX105</span>
-                        <span class="px-1.5 py-0.5 rounded bg-state-calm/10 text-state-calm border-state-calm/30 border font-telemetry text-[9px] uppercase tracking-widest">SCHED</span>
-                        <span class="font-telemetry text-[10px] text-on-surface-variant">Cycle transition complete</span>
-                    </div>
-                    <div class="w-px h-3 bg-white/[0.12] shrink-0"></div>
-                    <div class="flex items-center gap-2 shrink-0">
-                        <span class="font-telemetry text-[10px] text-on-surface-variant">[14:00:22]</span>
-                        <span class="font-telemetry text-[10px] text-on-surface font-bold">IX102</span>
-                        <span class="px-1.5 py-0.5 rounded bg-state-building/10 text-state-building border-state-building/30 border font-telemetry text-[9px] uppercase tracking-widest">EXT</span>
-                        <span class="font-telemetry text-[10px] text-on-surface-variant">Platoon detected (Northbound)</span>
-                    </div>
-                    <div class="w-px h-3 bg-white/[0.12] shrink-0"></div>
-                    <div class="flex items-center gap-2 shrink-0">
-                        <span class="font-telemetry text-[10px] text-on-surface-variant">[14:00:01]</span>
-                        <span class="font-telemetry text-[10px] text-on-surface font-bold">SYS_C</span>
-                        <span class="px-1.5 py-0.5 rounded bg-surface-container-high text-on-surface-variant border-white/[0.12] border font-telemetry text-[9px] uppercase tracking-widest">SYNC</span>
-                        <span class="font-telemetry text-[10px] text-on-surface-variant">NTP clock sync successful (Offset 0.2ms)</span>
-                    </div>
-                    <div class="w-px h-3 bg-white/[0.12] shrink-0"></div>
-                    <div class="flex items-center gap-2 shrink-0">
-                        <span class="font-telemetry text-[10px] text-on-surface-variant">[13:59:45]</span>
-                        <span class="font-telemetry text-[10px] text-on-surface font-bold">IX103</span>
-                        <span class="px-1.5 py-0.5 rounded bg-state-preempted/10 text-state-preempted border-state-preempted/30 border font-telemetry text-[9px] uppercase tracking-widest">PREEMPT</span>
-                        <span class="font-telemetry text-[10px] text-on-surface-variant">Fire Engine transit clear</span>
-                    </div>
-                    <div class="w-px h-3 bg-white/[0.12] shrink-0"></div>
-                </div>
-            </div>
-        </footer>
     </main>
 
-    <!-- Interactive JavaScript Logic -->
+    <!-- ── TICKER BAR ─────────────────────────────────────────────────── -->
+    <div class="ticker-bar">
+        <div class="ticker-bar-label">
+            <span class="material-symbols-rounded" style="font-size:14px;margin-right:6px;">terminal</span>
+            Sys_Log
+        </div>
+        <div class="ticker-wrap" style="flex:1;margin-left:16px;">
+            <div class="ticker-move">
+                <span style="font-family:'JetBrains Mono',monospace;font-size:10px;color:#9096a8;">[14:02:41]</span>
+                <span style="font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:700;">CAM-01</span>
+                <span class="badge badge-crit">PREEMPT</span>
+                <span style="font-family:'JetBrains Mono',monospace;font-size:10px;color:#9096a8;">Ambulance detected — EMS override active</span>
+                <span style="margin:0 12px;color:#2e3140;">|</span>
+                <span style="font-family:'JetBrains Mono',monospace;font-size:10px;color:#9096a8;">[14:02:38]</span>
+                <span style="font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:700;">CAM-02</span>
+                <span class="badge badge-warn">WARN</span>
+                <span style="font-family:'JetBrains Mono',monospace;font-size:10px;color:#9096a8;">FPS drop 30→14 · thermal sensor degraded</span>
+                <span style="margin:0 12px;color:#2e3140;">|</span>
+                <span style="font-family:'JetBrains Mono',monospace;font-size:10px;color:#9096a8;">[14:02:15]</span>
+                <span style="font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:700;">SYS</span>
+                <span class="badge badge-calm">OK</span>
+                <span style="font-family:'JetBrains Mono',monospace;font-size:10px;color:#9096a8;">Model checkpoint loaded — epoch 142</span>
+                <span style="margin:0 12px;color:#2e3140;">|</span>
+                <!-- duplicate for seamless loop -->
+                <span style="font-family:'JetBrains Mono',monospace;font-size:10px;color:#9096a8;">[14:02:41]</span>
+                <span style="font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:700;">CAM-01</span>
+                <span class="badge badge-crit">PREEMPT</span>
+                <span style="font-family:'JetBrains Mono',monospace;font-size:10px;color:#9096a8;">Ambulance detected — EMS override active</span>
+                <span style="margin:0 12px;color:#2e3140;">|</span>
+                <span style="font-family:'JetBrains Mono',monospace;font-size:10px;color:#9096a8;">[14:02:38]</span>
+                <span style="font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:700;">CAM-02</span>
+                <span class="badge badge-warn">WARN</span>
+                <span style="font-family:'JetBrains Mono',monospace;font-size:10px;color:#9096a8;">FPS drop 30→14 · thermal sensor degraded</span>
+                <span style="margin:0 12px;color:#2e3140;">|</span>
+                <span style="font-family:'JetBrains Mono',monospace;font-size:10px;color:#9096a8;">[14:02:15]</span>
+                <span style="font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:700;">SYS</span>
+                <span class="badge badge-calm">OK</span>
+                <span style="font-family:'JetBrains Mono',monospace;font-size:10px;color:#9096a8;">Model checkpoint loaded — epoch 142</span>
+            </div>
+        </div>
+    </div>
+
     <script>
-        // Polygon ROI Overlay Toggle
-        const toggle = document.getElementById('polygon-toggle');
-        const mainCanvas = document.getElementById('main-canvas');
-        
-        toggle.addEventListener('change', (e) => {
-            if(e.target.checked) {
-                mainCanvas.classList.add('show-polygons');
-            } else {
-                mainCanvas.classList.remove('show-polygons');
-            }
-        });
+        // ── Calibration overlay toggle ─────────────────────────────────
+        function toggleOverlay(el) {
+            el.classList.toggle('on');
+            const polys = document.querySelectorAll('.overlay-polygon');
+            const show = el.classList.contains('on');
+            polys.forEach(p => p.style.display = show ? 'block' : 'none');
+        }
 
-        // Vehicle Class Quick Filter
-        function filterClass(className) {
-            document.querySelectorAll('[id^="filter-"]').forEach(btn => {
-                btn.className = "px-3 py-1.5 rounded-md text-on-surface-variant hover:text-on-surface transition-colors";
+        // ── Vehicle class filter ───────────────────────────────────────
+        function setFilter(cls, btn) {
+            // Reset all pills
+            document.querySelectorAll('.filter-pill').forEach(p => {
+                p.className = 'filter-pill inactive';
             });
+            // Activate clicked
+            btn.classList.remove('inactive');
+            btn.classList.add('active-calm');
 
-            const activeBtn = document.getElementById('filter-' + className);
-            if (activeBtn) {
-                activeBtn.className = "px-3 py-1.5 rounded-md bg-state-calm/20 text-state-calm font-semibold border border-state-calm/40 transition-colors";
-            }
-
+            // Show/hide bounding boxes
             const boxes = document.querySelectorAll('.class-box');
-            boxes.forEach(box => {
-                if (className === 'all' || box.classList.contains('class-' + className)) {
-                    box.style.display = 'block';
+            boxes.forEach(b => {
+                if (cls === 'all') {
+                    b.style.display = '';
                 } else {
-                    box.style.display = 'none';
+                    b.style.display = b.classList.contains('class-' + cls) ? '' : 'none';
                 }
             });
         }
 
-        // Camera Focus Toggle (Single Cam Focus Mode)
-        let focusedCam = null;
-        function toggleCamFocus(camNum) {
-            const gridContainer = document.getElementById('camera-grid-container');
-            const cards = [1, 2, 3, 4].map(n => document.getElementById('cam-card-' + n));
-
-            if (focusedCam === camNum) {
-                // Return to 2x2 grid
-                gridContainer.className = "lg:col-span-8 z-10 grid grid-cols-1 md:grid-cols-2 gap-6 transition-all duration-300";
-                cards.forEach(card => card.classList.remove('hidden'));
-                focusedCam = null;
-            } else {
-                // Focus single camera
-                gridContainer.className = "lg:col-span-8 z-10 grid grid-cols-1 gap-6 transition-all duration-300";
-                cards.forEach((card, idx) => {
-                    if (idx + 1 === camNum) {
-                        card.classList.remove('hidden');
-                        card.classList.add('h-[680px]');
-                    } else {
-                        card.classList.add('hidden');
-                        card.classList.remove('h-[680px]');
-                    }
-                });
-                focusedCam = camNum;
-            }
-        }
+        // ── Simulated live telemetry ───────────────────────────────────
+        setInterval(() => {
+            const fps = (58 + Math.random() * 4).toFixed(1);
+            const objs = Math.round(38 + Math.random() * 10);
+            const fpsEl = document.getElementById('hdr-fps');
+            const objsEl = document.getElementById('hdr-objs');
+            if (fpsEl) fpsEl.textContent = fps;
+            if (objsEl) objsEl.textContent = objs;
+        }, 2000);
     </script>
 </body>
 </html>
-

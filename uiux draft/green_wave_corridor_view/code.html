@@ -4,745 +4,594 @@
     <meta charset="utf-8"/>
     <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
     <title>Green Wave Corridor View — Kinetica Control Room</title>
-    
-    <!-- Font Imports -->
+
+    <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://api.fontshare.com/v2/css?f[]=general-sans@400,500,600,700&f[]=supreme@400,500,700&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Commit+Mono:ital,wght@0,400;0,500;0,700;1,400&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link href="https://fonts.cdnfonts.com/css/neue-montreal" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Albert+Sans:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
 
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-        <script src="../shared/theme.js"></script>
-
+    <!-- Tailwind config BEFORE cdn -->
+    <script>
+      window.tailwind = window.tailwind || {};
+      window.tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "surface":                   "#111318",
+              "surface-dim":               "#0d0f13",
+              "surface-container-lowest":  "#0d0f13",
+              "surface-container-low":     "#161820",
+              "surface-container":         "#1c1e24",
+              "surface-container-high":    "#2c2f3a",
+              "surface-container-highest": "#363944",
+              "on-surface":                "#e8eaf0",
+              "on-surface-variant":        "#9096a8",
+              "outline":                   "#2e3140",
+              "outline-variant":           "#232535",
+              "primary":                   "#4d9fff",
+              "on-primary":                "#ffffff",
+              "state-calm":                "#00c97a",
+              "state-building":            "#ffab1a",
+              "state-preempted":           "#ff4060"
+            },
+            fontFamily: {
+              "sans":      ["Inter", "system-ui", "sans-serif"],
+              "display":   ["Albert Sans", "sans-serif"],
+              "body":      ["Inter", "system-ui", "sans-serif"],
+              "label":     ["Inter", "system-ui", "sans-serif"],
+              "mono":      ["JetBrains Mono", "monospace"],
+              "telemetry": ["JetBrains Mono", "monospace"]
+            },
+            borderRadius: {
+              "DEFAULT": "8px",
+              "md":  "10px",
+              "lg":  "14px",
+              "xl":  "18px",
+              "2xl": "24px",
+              "full":"9999px"
+            }
+          }
+        }
+      };
+    </script>
+    <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="../shared/theme.css">
-    <script src="../shared/sidebar.js"></script>
+    <script src="../shared/sidebar.js" defer></script>
 </head>
 
-<body class="bg-surface text-on-surface antialiased selection:bg-primary-container selection:text-on-primary-container min-h-screen flex flex-col blueprint-grid">
+<body style="background-color:#111318;color:#e8eaf0;" class="min-h-screen font-body">
+    <div id="sidebar-container"></div>
 
-    <!-- Top Navigation Bar -->
-    <header class="fixed top-0 right-0 left-16 z-40 h-14 bg-[#0a0a0a]/95 backdrop-blur-md border-b border-white/[0.08] flex items-center justify-between px-6">
-        <div class="flex items-center gap-4">
-            <div class="flex items-center gap-2.5">
-                <div class="w-8 h-8 rounded-[24px] bg-primary/10 border border-primary/30 flex items-center justify-center">
-                    <span class="material-symbols-rounded-full text-state-calm text-lg">waves</span>
-                </div>
-                <h1 class="font-display font-semibold text-lg text-on-surface tracking-tight">Kinetica Control Room</h1>
-            </div>
-            <div class="h-4 w-px bg-outline-variant/60 hidden sm:block"></div>
-            <span class="font-label text-xs uppercase tracking-[0.12em] text-on-surface-variant font-medium hidden sm:block">Corridor 7 — Green Wave Optimization</span>
-        </div>
-
-        <!-- Telemetry Indicators & Quick Actions -->
-        <div class="flex items-center gap-6">
-            <div class="hidden lg:flex items-center gap-5 font-telemetry text-xs tracking-tight text-on-surface-variant">
-                <div class="flex items-center gap-1.5">
-                    <span class="font-label text-[10px] text-on-surface-variant/70 uppercase tracking-widest">LANES</span>
-                    <span class="text-on-surface font-bold tabular-nums">12</span>
-                </div>
-                <div class="flex items-center gap-1.5">
-                    <span class="font-label text-[10px] text-on-surface-variant/70 uppercase tracking-widest">GREEN-EXT</span>
-                    <span class="text-state-calm font-bold tabular-nums">4.2<span class="font-label text-[9px] ml-0.5">S</span></span>
-                </div>
-                <div class="flex items-center gap-1.5">
-                    <span class="font-label text-[10px] text-on-surface-variant/70 uppercase tracking-widest">PREEMPTION</span>
-                    <span class="text-state-preempted font-bold tabular-nums">3 <span class="font-label text-[9px] text-state-preempted">ACTIVE</span></span>
-                </div>
-                <div class="flex items-center gap-1.5">
-                    <span class="font-label text-[10px] text-on-surface-variant/70 uppercase tracking-widest">P-VALUE</span>
-                    <span class="text-state-calm font-bold tabular-nums">0.042</span>
-                </div>
-            </div>
-
-            <div class="flex items-center gap-3">
-                <button class="bg-state-calm text-on-primary font-label text-xs font-semibold uppercase tracking-wider px-4 py-2 rounded-full hover:bg-primary/90 transition-all active:scale-95 border border-primary/30">
-                    Deploy Scenario
-                </button>
-                <a href="../benchmarks_system_health/code.html" class="bg-surface-container-high text-on-surface font-label text-xs font-semibold uppercase tracking-wider px-4 py-2 rounded-full border border-white/[0.08] hover:bg-surface-container-highest transition-all active:scale-95">
-                    System Health
-                </a>
-                <button class="p-2 rounded-full hover:bg-surface-container-high text-on-surface-variant transition-colors border border-transparent hover:border-white/[0.08]">
-                    <span class="material-symbols-rounded-full text-xl">notifications</span>
-                </button>
-                <div class="w-8 h-8 rounded-[24px]-full border border-white/10 overflow-hidden ml-1">
-                    <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuDPKrz74y0NvwvZNPBsJsYDl2ZB49aEDKKBWtllqKNOvokK3ik2CdPBYyV6dYRNT6rWIuSNZAyxqX6sOEWJ8L-TQ2rK9xJMvLV2znY0y_TgCtxs-czJE9g1_ax3zW_9nNt9Gsx8-vo57B3xn09GPlQu5m9nYHK0gFeHRcH9wUbk0sQy7jWrh15ob0HvvGcacfSiZibKF0ObOByNcFRZh0oqLDMYlDs5QYe9N5d-pV2zuhQLcVWIB1XZzQ" alt="Operator Avatar" class="w-full h-full object-cover">
-                </div>
-            </div>
-        </div>
-    </header>
-
-    <!-- Unified Industrial Side Nav Rail -->
-        <div id="sidebar-container"></div>
-
-    <!-- Unified Top Header Bar -->
-    <header class="fixed top-0 right-0 left-16 z-40 h-14 bg-[#0a0a0a]/95 border-b border-white/[0.08] flex items-center justify-between px-6">
-        <!-- Left: Page Title & Context Badge -->
-        <div class="flex items-center gap-4">
-            <div class="flex items-center gap-2.5">
+    <!-- ── TOP BAR ─────────────────────────────────────────────────────── -->
+    <header style="position:fixed;top:0;right:0;left:60px;height:52px;background:var(--surface,#1c1e24);border-bottom:1px solid var(--border,#2e3140);z-index:100;display:flex;align-items:center;justify-content:space-between;padding:0 20px;gap:12px;">
+        
+        <!-- Left: page identity -->
+        <div style="display:flex;align-items:center;gap:12px;min-width:0;">
+            <div style="display:flex;align-items:center;gap:8px;flex-shrink:0;">
                 <span class="led-pip led-pip-calm"></span>
-                <h1 class="font-display text-base font-semibold text-on-surface tracking-tight">Green Wave Corridor Synchronization</h1>
+                <span style="font-family:'Inter',sans-serif;font-size:13px;font-weight:600;letter-spacing:0.01em;white-space:nowrap;">Green Wave Corridor View</span>
             </div>
-            <span class="px-2.5 py-0.5 rounded-full bg-primary-container border border-primary/30 text-primary font-label text-[10px] uppercase tracking-[0.1em] font-semibold">Corridor 07 Active</span>
+            <div style="width:1px;height:18px;background:var(--border,#2e3140);flex-shrink:0;"></div>
+            <span style="font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--text-secondary,#9096a8);white-space:nowrap;">CORRIDOR 07 ACTIVE</span>
         </div>
 
-        <!-- Center: Standardized Telemetry KPI Ticker -->
-        <div class="hidden xl:flex items-center gap-6 border-x border-white/[0.08] px-6">
-            <div class="flex flex-col">
-                <span class="font-label text-[10px] text-on-surface-variant uppercase tracking-[0.12em]">Lead Clearance Time</span>
-                <span class="font-telemetry text-xs font-bold text-state-calm tabular-nums">4.2 <span class="font-label text-[9px] text-on-surface-variant uppercase">SEC</span></span>
+        <!-- Centre: telemetry pills — hidden on narrow screens -->
+        <div style="display:flex;align-items:center;gap:20px;flex-shrink:0;" class="hidden xl:flex">
+            <div style="display:flex;flex-direction:column;align-items:center;gap:1px;">
+                <span style="font-size:9px;font-weight:500;text-transform:uppercase;letter-spacing:0.07em;color:#9096a8;">Lead Clearance Time</span>
+                <span style="font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:700;color:#00c97a;">4.2s</span>
             </div>
-            <div class="h-4 w-px bg-white/[0.08]"></div>
-            <div class="flex flex-col">
-                <span class="font-label text-[10px] text-on-surface-variant uppercase tracking-[0.12em]">Progression Speed</span>
-                <span class="font-telemetry text-xs font-bold text-state-calm tabular-nums">54 <span class="font-label text-[9px] text-on-surface-variant uppercase">KM/H</span></span>
+            <div style="width:1px;height:20px;background:#2e3140;"></div>
+            <div style="display:flex;flex-direction:column;align-items:center;gap:1px;">
+                <span style="font-size:9px;font-weight:500;text-transform:uppercase;letter-spacing:0.07em;color:#9096a8;">Progression Speed</span>
+                <span style="font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:700;color:#00c97a;">54 km/h</span>
             </div>
-            <div class="h-4 w-px bg-white/[0.08]"></div>
-            <div class="flex flex-col">
-                <span class="font-label text-[10px] text-on-surface-variant uppercase tracking-[0.12em]">Bandwidth Efficiency</span>
-                <span class="font-telemetry text-xs font-bold text-state-calm tabular-nums">88 <span class="font-label text-[9px] text-on-surface-variant uppercase">%</span></span>
+            <div style="width:1px;height:20px;background:#2e3140;"></div>
+            <div style="display:flex;flex-direction:column;align-items:center;gap:1px;">
+                <span style="font-size:9px;font-weight:500;text-transform:uppercase;letter-spacing:0.07em;color:#9096a8;">Bandwidth Efficiency</span>
+                <span style="font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:700;color:#00c97a;">88%</span>
             </div>
         </div>
 
-        <!-- Right: Status, Quick Actions & Notification Bell -->
-        <div class="flex items-center gap-3">
-            <div class="hidden sm:flex items-center gap-2 px-3 py-1 rounded-[24px] industrial-panel border border-white/[0.08] tech-border">
-                <span class="w-1.5 h-1.5 rounded-full bg-state-calm animate-pulse"></span>
-                <span class="font-telemetry text-[11px] text-on-surface-variant">4.2ms • 14:02:45 UTC</span>
-            </div>
-
-            <a href="../benchmarks_system_health/code.html" class="px-3.5 py-1.5 rounded-full border border-white/[0.08] text-on-surface-variant hover:text-on-surface hover:border-primary/40 transition-colors font-body text-xs font-medium flex items-center gap-1.5">
-                <span class="material-symbols-rounded-full text-sm text-state-calm">monitor_heart</span>
-                <span class="font-label text-[11px] uppercase tracking-[0.1em]">Health</span>
+        <!-- Right: clock + actions -->
+        <div style="display:flex;align-items:center;gap:10px;flex-shrink:0;">
+            <span id="live-time" style="font-family:'JetBrains Mono',monospace;font-size:11px;color:#9096a8;"></span>
+            <div style="width:1px;height:20px;background:#2e3140;"></div>
+            <a href="../benchmarks_system_health/code.html" class="btn btn-ghost" style="padding:5px 12px;font-size:11px;">
+                <span class="material-symbols-rounded" style="font-size:14px;">monitor_heart</span>
+                Health
             </a>
-
-            <button class="p-2 text-on-surface-variant hover:text-state-preempted transition-colors rounded-full hover:bg-surface-container-high relative">
-                <span class="material-symbols-rounded-full text-lg">notifications</span>
-                <span class="absolute top-1.5 right-1.5 w-2 h-2 bg-state-preempted rounded-full animate-ping"></span>
-            </button>
         </div>
     </header>
 
-    <!-- Main Workspace Area -->
-    <main class="md:ml-16 mt-14 p-6 md:p-8 flex-1 grid grid-cols-1 lg:grid-cols-12 gap-6 relative">
+    <!-- ── MAIN CONTENT ──────────────────────────────────────────────── -->
+    <main style="margin-left:60px;margin-top:52px;padding:20px;display:grid;grid-template-columns:1fr 340px;grid-template-rows:auto 1fr;gap:16px;min-height:calc(100vh - 52px - 36px);">
 
-        <!-- Top Header & Live Preemption Banner (Span 12) -->
-        <div class="lg:col-span-12 z-10 flex flex-col md:flex-row items-start md:items-center justify-between gap-4 industrial-panel border border-white/[0.08] tech-border shadow-sm p-6 rounded-[24px] border border-white/[0.08] relative overflow-hidden">
-            <div class="absolute left-0 top-0 bottom-0 w-2 bg-state-preempted"></div>
-            <div class="pl-2">
-                <div class="flex items-center gap-3">
-                    <span class="px-3 py-1 rounded-full bg-state-preempted/15 border border-state-preempted/40 text-state-preempted font-label text-[10px] uppercase tracking-[0.12em] font-semibold flex items-center gap-2">
-                        <span class="w-2 h-2 rounded-full bg-state-preempted animate-ping"></span>
-                        Active Preemption Cascade
+        <!-- ── TOP HERO PANEL (full width) ───────────────────────────── -->
+        <div style="grid-column:1/-1;display:flex;align-items:center;justify-content:space-between;gap:20px;background:#1c1e24;border:1px solid #2e3140;border-radius:12px;padding:20px;position:relative;overflow:hidden;">
+            <div style="position:absolute;left:0;top:0;bottom:0;width:4px;background:#ff4060;"></div>
+            
+            <div style="display:flex;flex-direction:column;gap:8px;">
+                <div style="display:flex;align-items:center;gap:12px;">
+                    <span class="badge badge-crit" style="display:flex;align-items:center;gap:6px;">
+                        <span style="width:6px;height:6px;border-radius:50%;background:#fff;animation:pulse-ring 1.5s infinite;"></span>
+                        ACTIVE PREEMPTION CASCADE
                     </span>
-                    <span class="font-telemetry text-xs text-on-surface-variant">CORRIDOR-07 :: MAIN ST PH-A</span>
+                    <span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:#9096a8;">CORRIDOR-07 :: MAIN ST PH-A</span>
                 </div>
-                <h2 class="font-display font-semibold text-2xl text-on-surface mt-2 tracking-tight">
-                    Emergency Priority: EMS-914 (Ambulance Unit)
-                </h2>
-                <p class="font-body text-sm text-on-surface-variant mt-1">
-                    Multi-intersection preclearance engaged across 5 downstream nodes. Dynamic green wave lock active.
-                </p>
+                <h2 style="font-family:'Albert Sans',sans-serif;font-size:24px;font-weight:600;margin:0;">Emergency Priority: EMS-914 (Ambulance Unit)</h2>
+                <p style="font-size:13px;color:#9096a8;margin:0;">Multi-intersection preclearance engaged across 5 downstream nodes. Dynamic green wave lock active.</p>
             </div>
-
-            <!-- Header Quick Telemetry Stats -->
-            <div class="flex items-center gap-6 bg-surface-container-lowest px-6 py-3.5 rounded-[24px]-full border border-white/[0.08]">
-                <div>
-                    <div class="font-label text-[10px] text-on-surface-variant uppercase tracking-widest">Lead Clearance Time</div>
-                    <div class="font-telemetry text-xl font-bold text-state-calm tabular-nums">4.2 <span class="font-label text-xs font-normal uppercase">S</span></div>
+            
+            <!-- Quick stats within Hero -->
+            <div style="display:flex;align-items:center;gap:20px;background:#111318;padding:12px 20px;border-radius:12px;border:1px solid #2e3140;">
+                <div style="display:flex;flex-direction:column;">
+                    <span style="font-size:10px;text-transform:uppercase;letter-spacing:0.06em;color:#9096a8;">Lead Clearance Time</span>
+                    <span style="font-family:'JetBrains Mono',monospace;font-size:20px;font-weight:700;color:#00c97a;">4.2s</span>
                 </div>
-                <div class="h-8 w-px bg-white/[0.08]"></div>
-                <div>
-                    <div class="font-label text-[10px] text-on-surface-variant uppercase tracking-widest">Progression Speed</div>
-                    <div class="font-telemetry text-xl font-bold text-on-surface tabular-nums">54 <span class="font-label text-xs font-normal uppercase">KM/H</span></div>
+                <div style="width:1px;height:24px;background:#2e3140;"></div>
+                <div style="display:flex;flex-direction:column;">
+                    <span style="font-size:10px;text-transform:uppercase;letter-spacing:0.06em;color:#9096a8;">Progression Speed</span>
+                    <span style="font-family:'JetBrains Mono',monospace;font-size:20px;font-weight:700;color:#e8eaf0;">54 km/h</span>
                 </div>
-                <div class="h-8 w-px bg-white/[0.08]"></div>
-                <div>
-                    <div class="font-label text-[10px] text-on-surface-variant uppercase tracking-widest">Bandwidth Efficiency</div>
-                    <div class="font-telemetry text-xl font-bold text-state-calm tabular-nums">88 <span class="font-label text-xs font-normal uppercase">%</span></div>
+                <div style="width:1px;height:24px;background:#2e3140;"></div>
+                <div style="display:flex;flex-direction:column;">
+                    <span style="font-size:10px;text-transform:uppercase;letter-spacing:0.06em;color:#9096a8;">Bandwidth Efficiency</span>
+                    <span style="font-family:'JetBrains Mono',monospace;font-size:20px;font-weight:700;color:#00c97a;">88%</span>
                 </div>
             </div>
         </div>
 
-        <!-- Left Column: Interactive Time-Space Diagram & Controls (Span 8) -->
-        <div class="lg:col-span-8 z-10 flex flex-col gap-6">
-
-            <!-- Card 1: Interactive Time-Space Diagram (TSD) -->
-            <div class="industrial-panel border border-white/[0.08] tech-border shadow-sm rounded-[24px] p-6 flex flex-col gap-4 border border-white/[0.08] relative">
-                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 border-b border-white/[0.08] pb-4">
+        <!-- ── LEFT COLUMN: Interactive Diagrams ────────────────────────── -->
+        <div style="display:flex;flex-direction:column;gap:16px;">
+            
+            <!-- Card 1: Interactive Time-Space Diagram -->
+            <div class="card" style="display:flex;flex-direction:column;gap:16px;">
+                <div style="display:flex;justify-content:space-between;align-items:flex-start;border-bottom:1px solid #2e3140;padding-bottom:16px;">
                     <div>
-                        <div class="flex items-center gap-2">
-                            <span class="material-symbols-rounded-full text-state-calm">timeline</span>
-                            <h3 class="font-display font-semibold text-lg text-on-surface">Time-Space Diagram & Progression Bands</h3>
+                        <div style="display:flex;align-items:center;gap:8px;">
+                            <span class="material-symbols-rounded" style="color:#00c97a;">timeline</span>
+                            <h3 style="font-family:'Albert Sans',sans-serif;font-size:18px;font-weight:600;margin:0;">Time-Space Diagram &amp; Progression Bands</h3>
                         </div>
-                        <p class="font-body text-xs text-on-surface-variant mt-0.5">
-                            Visualizing distance across intersections (Y-Axis) over continuous time cycles (X-Axis).
-                        </p>
+                        <p style="font-size:12px;color:#9096a8;margin:4px 0 0;">Visualizing distance across intersections (Y-Axis) over continuous time cycles (X-Axis).</p>
                     </div>
-
-                    <!-- Speed & Bandwidth Presets -->
-                    <div class="flex items-center gap-2">
-                        <span class="font-label text-[10px] text-on-surface-variant uppercase tracking-widest">Target Speed:</span>
-                        <div class="flex bg-surface-container border border-white/[0.12] p-1 rounded-[24px] border border-white/[0.08] font-telemetry text-xs">
-                            <button id="btn-40" onclick="setSpeed(40)" class="px-3 py-1 rounded-full text-on-surface-variant hover:text-on-surface transition-colors">40 KM/H</button>
-                            <button id="btn-50" onclick="setSpeed(50)" class="px-3 py-1 rounded-full bg-state-calm/20 text-state-calm font-bold border border-state-calm/40 transition-colors">50 KM/H</button>
-                            <button id="btn-60" onclick="setSpeed(60)" class="px-3 py-1 rounded-full text-on-surface-variant hover:text-on-surface transition-colors">60 KM/H</button>
+                    <!-- Speed Presets -->
+                    <div style="display:flex;align-items:center;gap:8px;">
+                        <span style="font-size:10px;text-transform:uppercase;letter-spacing:0.06em;color:#9096a8;">Target Speed:</span>
+                        <div style="display:flex;background:#161820;border:1px solid #2e3140;padding:4px;border-radius:12px;font-family:'JetBrains Mono',monospace;font-size:11px;">
+                            <button id="btn-40" onclick="setSpeed(40)" style="padding:4px 10px;border-radius:8px;color:#9096a8;">40</button>
+                            <button id="btn-50" onclick="setSpeed(50)" style="padding:4px 10px;border-radius:8px;background:rgba(0,201,122,0.15);color:#00c97a;font-weight:700;border:1px solid rgba(0,201,122,0.3);">50</button>
+                            <button id="btn-60" onclick="setSpeed(60)" style="padding:4px 10px;border-radius:8px;color:#9096a8;">60</button>
                         </div>
                     </div>
                 </div>
 
                 <!-- TSD Canvas Render (SVG) -->
-                <div class="relative w-full h-[340px] bg-surface-container-lowest rounded-[24px] border border-white/[0.08] p-4 overflow-hidden">
-                    
-                    <!-- Axis Grid Lines & Intersection Labels -->
-                    <svg id="tsd-svg" class="w-full h-full" viewBox="0 0 800 300" preserveAspectRatio="none">
+                <div style="position:relative;width:100%;height:340px;background:#0d0f13;border-radius:8px;border:1px solid #2e3140;padding:16px;overflow:hidden;">
+                    <svg id="tsd-svg" style="width:100%;height:100%;" viewBox="0 0 800 300" preserveAspectRatio="none">
                         <defs>
-                            <!-- Linear Gradients for Green Wave & EMS trajectory -->
                             <linearGradient id="greenWaveBand" x1="0" y1="0" x2="1" y2="0">
-                                <stop offset="0%" stop-color="#10b981" stop-opacity="0.25"/>
-                                <stop offset="100%" stop-color="#10b981" stop-opacity="0.45"/>
+                                <stop offset="0%" stop-color="#00c97a" stop-opacity="0.25"/>
+                                <stop offset="100%" stop-color="#00c97a" stop-opacity="0.45"/>
                             </linearGradient>
                             <linearGradient id="emsPathGrad" x1="0" y1="1" x2="1" y2="0">
-                                <stop offset="0%" stop-color="#ef4444" stop-opacity="0.9"/>
-                                <stop offset="100%" stop-color="#f59e0b" stop-opacity="0.9"/>
+                                <stop offset="0%" stop-color="#ff4060" stop-opacity="0.9"/>
+                                <stop offset="100%" stop-color="#ffab1a" stop-opacity="0.9"/>
                             </linearGradient>
                         </defs>
 
-                        <!-- Background Grid lines -->
-                        <line x1="60" y1="40" x2="780" y2="40" stroke="#ffffff" stroke-opacity="0.05" stroke-dasharray="4"/>
-                        <line x1="60" y1="100" x2="780" y2="100" stroke="#ffffff" stroke-opacity="0.05" stroke-dasharray="4"/>
-                        <line x1="60" y1="160" x2="780" y2="160" stroke="#ffffff" stroke-opacity="0.05" stroke-dasharray="4"/>
-                        <line x1="60" y1="220" x2="780" y2="220" stroke="#ffffff" stroke-opacity="0.05" stroke-dasharray="4"/>
-                        <line x1="60" y1="270" x2="780" y2="270" stroke="#ffffff" stroke-opacity="0.05" stroke-dasharray="4"/>
+                        <!-- Grid -->
+                        <line x1="60" y1="40" x2="780" y2="40" stroke="#fff" stroke-opacity="0.05" stroke-dasharray="4"/>
+                        <line x1="60" y1="100" x2="780" y2="100" stroke="#fff" stroke-opacity="0.05" stroke-dasharray="4"/>
+                        <line x1="60" y1="160" x2="780" y2="160" stroke="#fff" stroke-opacity="0.05" stroke-dasharray="4"/>
+                        <line x1="60" y1="220" x2="780" y2="220" stroke="#fff" stroke-opacity="0.05" stroke-dasharray="4"/>
+                        <line x1="60" y1="270" x2="780" y2="270" stroke="#fff" stroke-opacity="0.05" stroke-dasharray="4"/>
 
-                        <!-- Vertical Time Markers (0s, 30s, 60s, 90s, 120s) -->
-                        <line x1="60" y1="20" x2="60" y2="280" stroke="#ffffff" stroke-opacity="0.08"/>
-                        <line x1="240" y1="20" x2="240" y2="280" stroke="#ffffff" stroke-opacity="0.05" stroke-dasharray="2"/>
-                        <line x1="420" y1="20" x2="420" y2="280" stroke="#ffffff" stroke-opacity="0.05" stroke-dasharray="2"/>
-                        <line x1="600" y1="20" x2="600" y2="280" stroke="#ffffff" stroke-opacity="0.05" stroke-dasharray="2"/>
-                        <line x1="780" y1="20" x2="780" y2="280" stroke="#ffffff" stroke-opacity="0.08"/>
+                        <line x1="60" y1="20" x2="60" y2="280" stroke="#fff" stroke-opacity="0.08"/>
+                        <line x1="240" y1="20" x2="240" y2="280" stroke="#fff" stroke-opacity="0.05" stroke-dasharray="2"/>
+                        <line x1="420" y1="20" x2="420" y2="280" stroke="#fff" stroke-opacity="0.05" stroke-dasharray="2"/>
+                        <line x1="600" y1="20" x2="600" y2="280" stroke="#fff" stroke-opacity="0.05" stroke-dasharray="2"/>
+                        <line x1="780" y1="20" x2="780" y2="280" stroke="#fff" stroke-opacity="0.08"/>
 
-                        <text x="60" y="295" font-family="Commit Mono" font-size="10" fill="#8e9bb4" text-anchor="middle">0S</text>
-                        <text x="240" y="295" font-family="Commit Mono" font-size="10" fill="#8e9bb4" text-anchor="middle">30S</text>
-                        <text x="420" y="295" font-family="Commit Mono" font-size="10" fill="#8e9bb4" text-anchor="middle">60S</text>
-                        <text x="600" y="295" font-family="Commit Mono" font-size="10" fill="#8e9bb4" text-anchor="middle">90S</text>
-                        <text x="780" y="295" font-family="Commit Mono" font-size="10" fill="#8e9bb4" text-anchor="middle">120S</text>
+                        <text x="60" y="295" font-family="'JetBrains Mono', monospace" font-size="10" fill="#9096a8" text-anchor="middle">0s</text>
+                        <text x="240" y="295" font-family="'JetBrains Mono', monospace" font-size="10" fill="#9096a8" text-anchor="middle">30s</text>
+                        <text x="420" y="295" font-family="'JetBrains Mono', monospace" font-size="10" fill="#9096a8" text-anchor="middle">60s</text>
+                        <text x="600" y="295" font-family="'JetBrains Mono', monospace" font-size="10" fill="#9096a8" text-anchor="middle">90s</text>
+                        <text x="780" y="295" font-family="'JetBrains Mono', monospace" font-size="10" fill="#9096a8" text-anchor="middle">120s</text>
 
-                        <!-- Y-Axis Node Distance Labels -->
-                        <text x="50" y="44" font-family="Commit Mono" font-size="10" fill="#e1e7f5" text-anchor="end">INT-E (15th)</text>
-                        <text x="50" y="104" font-family="Commit Mono" font-size="10" fill="#e1e7f5" text-anchor="end">INT-D (12th)</text>
-                        <text x="50" y="164" font-family="Commit Mono" font-size="10" fill="#e1e7f5" text-anchor="end">INT-C (9th)</text>
-                        <text x="50" y="224" font-family="Commit Mono" font-size="10" fill="#ef4444" font-weight="bold" text-anchor="end">INT-B (7th)</text>
-                        <text x="50" y="274" font-family="Commit Mono" font-size="10" fill="#10b981" text-anchor="end">INT-A (5th)</text>
+                        <!-- Node Distance Labels -->
+                        <text x="50" y="44" font-family="'JetBrains Mono', monospace" font-size="10" fill="#e8eaf0" text-anchor="end">INT-E (15th)</text>
+                        <text x="50" y="104" font-family="'JetBrains Mono', monospace" font-size="10" fill="#e8eaf0" text-anchor="end">INT-D (12th)</text>
+                        <text x="50" y="164" font-family="'JetBrains Mono', monospace" font-size="10" fill="#e8eaf0" text-anchor="end">INT-C (9th)</text>
+                        <text x="50" y="224" font-family="'JetBrains Mono', monospace" font-size="10" fill="#ff4060" font-weight="bold" text-anchor="end">INT-B (7th)</text>
+                        <text x="50" y="274" font-family="'JetBrains Mono', monospace" font-size="10" fill="#00c97a" text-anchor="end">INT-A (5th)</text>
 
-                        <!-- Dynamic Green Wave Bands (Dynamic polygon updated via JS) -->
-                        <polygon id="green-band-1" points="60,270 140,270 380,40 300,40" fill="url(#greenWaveBand)" stroke="#10b981" stroke-width="1.5" stroke-opacity="0.8"/>
-                        <polygon id="green-band-2" points="420,270 500,270 740,40 660,40" fill="url(#greenWaveBand)" stroke="#10b981" stroke-width="1.5" stroke-opacity="0.5"/>
+                        <!-- Dynamic Green Wave Bands -->
+                        <polygon id="green-band-1" points="60,270 140,270 380,40 300,40" fill="url(#greenWaveBand)" stroke="#00c97a" stroke-width="1.5" stroke-opacity="0.8"/>
+                        <polygon id="green-band-2" points="420,270 500,270 740,40 660,40" fill="url(#greenWaveBand)" stroke="#00c97a" stroke-width="1.5" stroke-opacity="0.5"/>
 
-                        <!-- Red Signal Phase Blocks along node lines -->
-                        <!-- INT-A Red -->
-                        <line x1="140" y1="270" x2="260" y2="270" stroke="#ef4444" stroke-width="5" stroke-opacity="0.6"/>
-                        <!-- INT-B Red -->
-                        <line x1="200" y1="220" x2="310" y2="220" stroke="#ef4444" stroke-width="5" stroke-opacity="0.6"/>
-                        <!-- INT-C Red -->
-                        <line x1="260" y1="160" x2="370" y2="160" stroke="#ef4444" stroke-width="5" stroke-opacity="0.6"/>
-                        <!-- INT-D Red -->
-                        <line x1="310" y1="100" x2="430" y2="100" stroke="#ef4444" stroke-width="5" stroke-opacity="0.6"/>
+                        <!-- Red Phases -->
+                        <line x1="140" y1="270" x2="260" y2="270" stroke="#ff4060" stroke-width="5" stroke-opacity="0.6"/>
+                        <line x1="200" y1="220" x2="310" y2="220" stroke="#ff4060" stroke-width="5" stroke-opacity="0.6"/>
+                        <line x1="260" y1="160" x2="370" y2="160" stroke="#ff4060" stroke-width="5" stroke-opacity="0.6"/>
+                        <line x1="310" y1="100" x2="430" y2="100" stroke="#ff4060" stroke-width="5" stroke-opacity="0.6"/>
 
-                        <!-- Preempted Emergency Pre-clearance Window (Highlighted Box at INT-B) -->
-                        <rect x="180" y="210" width="80" height="20" rx="6" fill="#ef4444" fill-opacity="0.2" stroke="#ef4444" stroke-width="1.5"/>
-                        <text x="220" y="224" font-family="Neue Montreal" font-size="9" fill="#ef4444" font-weight="bold" text-anchor="middle">EMS PRE-CLEAR</text>
+                        <!-- Preempted Emergency Window -->
+                        <rect x="180" y="210" width="80" height="20" rx="6" fill="#ff4060" fill-opacity="0.2" stroke="#ff4060" stroke-width="1.5"/>
+                        <text x="220" y="224" font-family="'Inter', sans-serif" font-size="9" fill="#ff4060" font-weight="bold" text-anchor="middle">EMS PRE-CLEAR</text>
 
-                        <!-- Vehicles Trajectory Lines -->
-                        <!-- Standard Vehicle Platoon 1 -->
-                        <path d="M 80,270 L 155,220 L 215,160 L 275,100 L 335,40" stroke="#10b981" stroke-width="2" fill="none"/>
-                        <!-- Standard Vehicle Platoon 2 -->
-                        <path d="M 110,270 L 185,220 L 245,160 L 305,100 L 365,40" stroke="#10b981" stroke-width="2" fill="none" stroke-dasharray="3 3"/>
+                        <!-- Trajectories -->
+                        <path d="M 80,270 L 155,220 L 215,160 L 275,100 L 335,40" stroke="#00c97a" stroke-width="2" fill="none"/>
+                        <path d="M 110,270 L 185,220 L 245,160 L 305,100 L 365,40" stroke="#00c97a" stroke-width="2" fill="none" stroke-dasharray="3 3"/>
                         
-                        <!-- EMS-914 Trajectory Line -->
-                        <path id="ems-trajectory" d="M 130,270 L 190,220 L 240,160 L 290,100 L 340,40" stroke="url(#emsPathGrad)" stroke-width="4" fill="none" class="edge-active"/>
-                        <circle cx="190" cy="220" r="6" fill="#ef4444" stroke="#ffffff" stroke-width="2">
+                        <!-- EMS Trajectory -->
+                        <path id="ems-trajectory" d="M 130,270 L 190,220 L 240,160 L 290,100 L 340,40" stroke="url(#emsPathGrad)" stroke-width="4" fill="none"/>
+                        <circle cx="190" cy="220" r="6" fill="#ff4060" stroke="#ffffff" stroke-width="2">
                             <animate attributeName="r" values="5;8;5" dur="1.5s" repeatCount="indefinite"/>
                         </circle>
                     </svg>
 
-                    <!-- Overlay Diagram Legend -->
-                    <div class="absolute bottom-3 right-4 flex items-center gap-4 bg-surface-container/90 px-3.5 py-1.5 rounded-[24px]-full border border-white/[0.08] font-label text-[11px] text-on-surface-variant">
-                        <div class="flex items-center gap-1.5">
-                            <span class="w-3 h-2 rounded-full bg-state-calm/40 border border-state-calm"></span>
+                    <!-- Legend Overlay -->
+                    <div style="position:absolute;bottom:12px;right:16px;display:flex;align-items:center;gap:16px;background:rgba(28,30,36,0.9);padding:6px 12px;border-radius:12px;border:1px solid #2e3140;font-size:11px;color:#9096a8;">
+                        <div style="display:flex;align-items:center;gap:6px;">
+                            <span style="width:12px;height:8px;border-radius:4px;background:rgba(0,201,122,0.4);border:1px solid #00c97a;display:inline-block;"></span>
                             <span>Green Band</span>
                         </div>
-                        <div class="flex items-center gap-1.5">
-                            <span class="w-3 h-0.5 bg-state-preempted"></span>
-                            <span class="text-state-preempted">EMS-914 Path</span>
+                        <div style="display:flex;align-items:center;gap:6px;">
+                            <span style="width:12px;height:2px;background:#ff4060;display:inline-block;"></span>
+                            <span style="color:#ff4060;font-weight:600;">EMS-914 Path</span>
                         </div>
-                        <div class="flex items-center gap-1.5">
-                            <span class="w-3 h-0.5 bg-state-calm"></span>
+                        <div style="display:flex;align-items:center;gap:6px;">
+                            <span style="width:12px;height:2px;background:#00c97a;display:inline-block;"></span>
                             <span>Platoon Trajectory</span>
                         </div>
                     </div>
                 </div>
 
                 <!-- Offset Control Sliders Bar -->
-                <div class="bg-surface-container-low p-4 rounded-[24px] border border-white/[0.08] flex flex-col gap-3">
-                    <div class="flex justify-between items-center">
-                        <span class="font-label text-xs uppercase tracking-wider text-on-surface font-semibold flex items-center gap-2">
-                            <span class="material-symbols-rounded-full text-state-calm text-base">tune</span>
+                <div style="background:#161820;padding:16px;border-radius:12px;border:1px solid #2e3140;display:flex;flex-direction:column;gap:12px;">
+                    <div style="display:flex;justify-content:space-between;align-items:center;">
+                        <span style="font-size:12px;font-weight:600;color:#e8eaf0;display:flex;align-items:center;gap:8px;">
+                            <span class="material-symbols-rounded" style="color:#00c97a;font-size:18px;">tune</span>
                             Live Signal Phase Offset Tuning (Seconds)
                         </span>
-                        <button onclick="resetOffsets()" class="font-label text-[11px] text-state-calm hover:underline uppercase tracking-wider">Reset MAXBAND Defaults</button>
+                        <button onclick="resetOffsets()" style="font-size:11px;color:#00c97a;background:transparent;border:none;cursor:pointer;text-decoration:underline;">Reset MAXBAND Defaults</button>
                     </div>
 
-                    <div class="grid grid-cols-1 sm:grid-cols-5 gap-3">
+                    <div style="display:grid;grid-template-columns:repeat(5, 1fr);gap:12px;">
                         <!-- INT-A Slider -->
-                        <div class="bg-surface-container p-2.5 rounded-[24px] border border-white/[0.08] flex flex-col gap-1">
-                            <div class="flex justify-between font-telemetry text-xs">
-                                <span class="text-on-surface-variant">INT-A</span>
-                                <span id="val-a" class="text-state-calm font-bold">0s</span>
+                        <div style="background:#1c1e24;padding:10px;border-radius:8px;border:1px solid #2e3140;display:flex;flex-direction:column;gap:6px;">
+                            <div style="display:flex;justify-content:space-between;font-family:'JetBrains Mono',monospace;font-size:12px;">
+                                <span style="color:#9096a8;">INT-A</span>
+                                <span id="val-a" style="color:#00c97a;font-weight:700;">0s</span>
                             </div>
-                            <input type="range" id="slider-a" min="0" max="40" value="0" oninput="updateDiagram()">
+                            <input type="range" id="slider-a" min="0" max="40" value="0" oninput="updateDiagram()" style="width:100%;">
                         </div>
 
                         <!-- INT-B Slider -->
-                        <div class="bg-surface-container p-2.5 rounded-[24px] border border-state-preempted/30 flex flex-col gap-1">
-                            <div class="flex justify-between font-telemetry text-xs">
-                                <span class="text-state-preempted font-bold">INT-B</span>
-                                <span id="val-b" class="text-state-preempted font-bold">18s</span>
+                        <div style="background:#1c1e24;padding:10px;border-radius:8px;border:1px solid rgba(255,64,96,0.3);display:flex;flex-direction:column;gap:6px;">
+                            <div style="display:flex;justify-content:space-between;font-family:'JetBrains Mono',monospace;font-size:12px;">
+                                <span style="color:#ff4060;font-weight:700;">INT-B</span>
+                                <span id="val-b" style="color:#ff4060;font-weight:700;">18s</span>
                             </div>
-                            <input type="range" id="slider-b" min="0" max="40" value="18" oninput="updateDiagram()">
+                            <input type="range" id="slider-b" min="0" max="40" value="18" oninput="updateDiagram()" style="width:100%;">
                         </div>
 
                         <!-- INT-C Slider -->
-                        <div class="bg-surface-container p-2.5 rounded-[24px] border border-white/[0.08] flex flex-col gap-1">
-                            <div class="flex justify-between font-telemetry text-xs">
-                                <span class="text-on-surface-variant">INT-C</span>
-                                <span id="val-c" class="text-state-calm font-bold">36s</span>
+                        <div style="background:#1c1e24;padding:10px;border-radius:8px;border:1px solid #2e3140;display:flex;flex-direction:column;gap:6px;">
+                            <div style="display:flex;justify-content:space-between;font-family:'JetBrains Mono',monospace;font-size:12px;">
+                                <span style="color:#9096a8;">INT-C</span>
+                                <span id="val-c" style="color:#00c97a;font-weight:700;">36s</span>
                             </div>
-                            <input type="range" id="slider-c" min="0" max="60" value="36" oninput="updateDiagram()">
+                            <input type="range" id="slider-c" min="0" max="60" value="36" oninput="updateDiagram()" style="width:100%;">
                         </div>
 
                         <!-- INT-D Slider -->
-                        <div class="bg-surface-container p-2.5 rounded-[24px] border border-white/[0.08] flex flex-col gap-1">
-                            <div class="flex justify-between font-telemetry text-xs">
-                                <span class="text-on-surface-variant">INT-D</span>
-                                <span id="val-d" class="text-state-calm font-bold">52s</span>
+                        <div style="background:#1c1e24;padding:10px;border-radius:8px;border:1px solid #2e3140;display:flex;flex-direction:column;gap:6px;">
+                            <div style="display:flex;justify-content:space-between;font-family:'JetBrains Mono',monospace;font-size:12px;">
+                                <span style="color:#9096a8;">INT-D</span>
+                                <span id="val-d" style="color:#00c97a;font-weight:700;">52s</span>
                             </div>
-                            <input type="range" id="slider-d" min="0" max="80" value="52" oninput="updateDiagram()">
+                            <input type="range" id="slider-d" min="0" max="80" value="52" oninput="updateDiagram()" style="width:100%;">
                         </div>
 
                         <!-- INT-E Slider -->
-                        <div class="bg-surface-container p-2.5 rounded-[24px] border border-white/[0.08] flex flex-col gap-1">
-                            <div class="flex justify-between font-telemetry text-xs">
-                                <span class="text-on-surface-variant">INT-E</span>
-                                <span id="val-e" class="text-state-calm font-bold">70s</span>
+                        <div style="background:#1c1e24;padding:10px;border-radius:8px;border:1px solid #2e3140;display:flex;flex-direction:column;gap:6px;">
+                            <div style="display:flex;justify-content:space-between;font-family:'JetBrains Mono',monospace;font-size:12px;">
+                                <span style="color:#9096a8;">INT-E</span>
+                                <span id="val-e" style="color:#00c97a;font-weight:700;">70s</span>
                             </div>
-                            <input type="range" id="slider-e" min="0" max="100" value="70" oninput="updateDiagram()">
+                            <input type="range" id="slider-e" min="0" max="100" value="70" oninput="updateDiagram()" style="width:100%;">
                         </div>
                     </div>
                 </div>
             </div>
 
             <!-- Card 2: Interactive Corridor Cascade Schematic Map -->
-            <div class="industrial-panel border border-white/[0.08] tech-border shadow-sm rounded-[24px] p-6 flex flex-col gap-4 border border-white/[0.08]">
-                <div class="flex justify-between items-center border-b border-white/[0.08] pb-4">
+            <div class="card" style="display:flex;flex-direction:column;gap:16px;">
+                <div style="display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #2e3140;padding-bottom:16px;">
                     <div>
-                        <div class="flex items-center gap-2">
-                            <span class="material-symbols-rounded-full text-state-calm">route</span>
-                            <h3 class="font-display font-semibold text-lg text-on-surface">Intersection Cascade & Vehicle Tracking</h3>
+                        <div style="display:flex;align-items:center;gap:8px;">
+                            <span class="material-symbols-rounded" style="color:#00c97a;">route</span>
+                            <h3 style="font-family:'Albert Sans',sans-serif;font-size:18px;font-weight:600;margin:0;">Intersection Cascade &amp; Vehicle Tracking</h3>
                         </div>
-                        <p class="font-body text-xs text-on-surface-variant mt-0.5">
-                            Real-time preclearance cascade across nodes INT-A through INT-E.
-                        </p>
+                        <p style="font-size:12px;color:#9096a8;margin:4px 0 0;">Real-time preclearance cascade across nodes INT-A through INT-E.</p>
                     </div>
-                    <div class="flex items-center gap-2 bg-surface-container px-3 py-1.5 rounded-[24px] border border-white/[0.08]">
-                        <span class="w-2 h-2 rounded-full bg-state-calm animate-pulse"></span>
-                        <span class="font-label text-[10px] uppercase tracking-wider text-state-calm font-semibold">Corridor Lock Active</span>
+                    <div style="display:flex;align-items:center;gap:8px;background:#1c1e24;padding:6px 12px;border-radius:12px;border:1px solid #2e3140;">
+                        <span style="width:8px;height:8px;border-radius:50%;background:#00c97a;animation:pulse-ring 1.5s infinite;"></span>
+                        <span style="font-size:10px;text-transform:uppercase;letter-spacing:0.06em;color:#00c97a;font-weight:600;">Corridor Lock Active</span>
                     </div>
                 </div>
 
                 <!-- Schematic SVG Route Canvas -->
-                <div class="relative w-full h-[260px] bg-surface-container-lowest rounded-[24px] border border-white/[0.08] p-4 overflow-hidden flex items-center justify-center">
-                    
+                <div style="position:relative;width:100%;height:260px;background:#0d0f13;border-radius:8px;border:1px solid #2e3140;padding:16px;overflow:hidden;display:flex;align-items:center;justify-content:center;">
                     <!-- Background Grid Pattern -->
-                    <div class="absolute inset-0 opacity-10" style="background-image: radial-gradient(#404e6b 1px, transparent 1px); background-size: 24px 24px;"></div>
+                    <div style="position:absolute;inset:0;opacity:0.1;background-image:radial-gradient(#404e6b 1px, transparent 1px);background-size:24px 24px;"></div>
 
-                    <svg class="w-full h-full z-10" viewBox="0 0 900 220" preserveAspectRatio="xMidYMid meet">
+                    <svg style="width:100%;height:100%;position:relative;z-index:10;" viewBox="0 0 900 220" preserveAspectRatio="xMidYMid meet">
                         <!-- Main Corridor Highway Line -->
-                        <path d="M 80 140 L 260 90 L 450 120 L 640 60 L 820 100" fill="none" stroke="#1e293b" stroke-width="8" stroke-linecap="round"/>
-                        <path d="M 80 140 L 260 90 L 450 120 L 640 60 L 820 100" fill="none" stroke="#10b981" stroke-width="4" stroke-linecap="round" class="edge-active"/>
+                        <path d="M 80 140 L 260 90 L 450 120 L 640 60 L 820 100" fill="none" stroke="#1c1e24" stroke-width="8" stroke-linecap="round"/>
+                        <path d="M 80 140 L 260 90 L 450 120 L 640 60 L 820 100" fill="none" stroke="#00c97a" stroke-width="4" stroke-linecap="round"/>
 
                         <!-- Cross Road Connectors -->
-                        <line x1="260" y1="90" x2="260" y2="20" stroke="#1e293b" stroke-width="3" stroke-dasharray="4"/>
-                        <line x1="450" y1="120" x2="450" y2="190" stroke="#1e293b" stroke-width="3" stroke-dasharray="4"/>
-                        <line x1="640" y1="60" x2="640" y2="130" stroke="#1e293b" stroke-width="3" stroke-dasharray="4"/>
+                        <line x1="260" y1="90" x2="260" y2="20" stroke="#1c1e24" stroke-width="3" stroke-dasharray="4"/>
+                        <line x1="450" y1="120" x2="450" y2="190" stroke="#1c1e24" stroke-width="3" stroke-dasharray="4"/>
+                        <line x1="640" y1="60" x2="640" y2="130" stroke="#1c1e24" stroke-width="3" stroke-dasharray="4"/>
 
                         <!-- Node A (Cleared) -->
-                        <g transform="translate(80, 140)" class="cursor-pointer hover:scale-110 transition-transform" onclick="selectNode('A')">
-                            <circle r="16" fill="#0f172a" stroke="#10b981" stroke-width="3"/>
-                            <circle r="8" fill="#10b981"/>
-                            <text y="-26" font-family="Commit Mono" font-size="11" font-weight="bold" fill="#e1e7f5" text-anchor="middle">INT-A</text>
-                            <text y="32" font-family="Neue Montreal" font-size="9" fill="#10b981" text-anchor="middle">CLEARED</text>
+                        <g transform="translate(80, 140)" style="cursor:pointer;" onclick="selectNode('A')">
+                            <circle r="16" fill="#0d0f13" stroke="#00c97a" stroke-width="3"/>
+                            <circle r="8" fill="#00c97a"/>
+                            <text y="-26" font-family="'JetBrains Mono', monospace" font-size="11" font-weight="bold" fill="#e8eaf0" text-anchor="middle">INT-A</text>
+                            <text y="32" font-family="'Inter', sans-serif" font-size="9" fill="#00c97a" text-anchor="middle">CLEARED</text>
                         </g>
 
                         <!-- Node B (Active Preemption) -->
-                        <g transform="translate(260, 90)" class="cursor-pointer hover:scale-110 transition-transform" onclick="selectNode('B')">
-                            <circle r="22" fill="#ef4444" fill-opacity="0.25" stroke="#ef4444" stroke-width="2" class="animate-ping"/>
-                            <circle r="18" fill="#0f172a" stroke="#ef4444" stroke-width="4"/>
-                            <circle r="9" fill="#ef4444"/>
-                            <text y="-28" font-family="Commit Mono" font-size="12" font-weight="bold" fill="#ef4444" text-anchor="middle">INT-B (7th)</text>
-                            <text y="34" font-family="Neue Montreal" font-size="10" font-weight="bold" fill="#ef4444" text-anchor="middle">PREEMPTING</text>
+                        <g transform="translate(260, 90)" style="cursor:pointer;" onclick="selectNode('B')">
+                            <circle r="22" fill="#ff4060" fill-opacity="0.25" stroke="#ff4060" stroke-width="2" class="animate-ping"/>
+                            <circle r="18" fill="#0d0f13" stroke="#ff4060" stroke-width="4"/>
+                            <circle r="9" fill="#ff4060"/>
+                            <text y="-28" font-family="'JetBrains Mono', monospace" font-size="12" font-weight="bold" fill="#ff4060" text-anchor="middle">INT-B (7th)</text>
+                            <text y="34" font-family="'Inter', sans-serif" font-size="10" font-weight="bold" fill="#ff4060" text-anchor="middle">PREEMPTING</text>
                         </g>
 
                         <!-- Node C (Pre-clearing) -->
-                        <g transform="translate(450, 120)" class="cursor-pointer hover:scale-110 transition-transform" onclick="selectNode('C')">
-                            <circle r="16" fill="#0f172a" stroke="#f59e0b" stroke-width="3"/>
-                            <circle r="8" fill="#f59e0b"/>
-                            <text y="-26" font-family="Commit Mono" font-size="11" font-weight="bold" fill="#e1e7f5" text-anchor="middle">INT-C</text>
-                            <text y="32" font-family="Neue Montreal" font-size="9" fill="#f59e0b" text-anchor="middle">PRE-CLEARING</text>
+                        <g transform="translate(450, 120)" style="cursor:pointer;" onclick="selectNode('C')">
+                            <circle r="16" fill="#0d0f13" stroke="#ffab1a" stroke-width="3"/>
+                            <circle r="8" fill="#ffab1a"/>
+                            <text y="-26" font-family="'JetBrains Mono', monospace" font-size="11" font-weight="bold" fill="#e8eaf0" text-anchor="middle">INT-C</text>
+                            <text y="32" font-family="'Inter', sans-serif" font-size="9" fill="#ffab1a" text-anchor="middle">PRE-CLEARING</text>
                         </g>
 
                         <!-- Node D (Pending) -->
-                        <g transform="translate(640, 60)" class="cursor-pointer hover:scale-110 transition-transform" onclick="selectNode('D')">
-                            <circle r="14" fill="#0f172a" stroke="#404e6b" stroke-width="3"/>
-                            <circle r="6" fill="#8e9bb4"/>
-                            <text y="-24" font-family="Commit Mono" font-size="11" fill="#8e9bb4" text-anchor="middle">INT-D</text>
-                            <text y="28" font-family="Neue Montreal" font-size="9" fill="#8e9bb4" text-anchor="middle">SCHEDULED</text>
+                        <g transform="translate(640, 60)" style="cursor:pointer;" onclick="selectNode('D')">
+                            <circle r="14" fill="#0d0f13" stroke="#2e3140" stroke-width="3"/>
+                            <circle r="6" fill="#9096a8"/>
+                            <text y="-24" font-family="'JetBrains Mono', monospace" font-size="11" fill="#9096a8" text-anchor="middle">INT-D</text>
+                            <text y="28" font-family="'Inter', sans-serif" font-size="9" fill="#9096a8" text-anchor="middle">SCHEDULED</text>
                         </g>
 
                         <!-- Node E (Pending) -->
-                        <g transform="translate(820, 100)" class="cursor-pointer hover:scale-110 transition-transform" onclick="selectNode('E')">
-                            <circle r="14" fill="#0f172a" stroke="#404e6b" stroke-width="3"/>
-                            <circle r="6" fill="#8e9bb4"/>
-                            <text y="-24" font-family="Commit Mono" font-size="11" fill="#8e9bb4" text-anchor="middle">INT-E</text>
-                            <text y="28" font-family="Neue Montreal" font-size="9" fill="#8e9bb4" text-anchor="middle">SCHEDULED</text>
+                        <g transform="translate(820, 100)" style="cursor:pointer;" onclick="selectNode('E')">
+                            <circle r="14" fill="#0d0f13" stroke="#2e3140" stroke-width="3"/>
+                            <circle r="6" fill="#9096a8"/>
+                            <text y="-24" font-family="'JetBrains Mono', monospace" font-size="11" fill="#9096a8" text-anchor="middle">INT-E</text>
+                            <text y="28" font-family="'Inter', sans-serif" font-size="9" fill="#9096a8" text-anchor="middle">SCHEDULED</text>
                         </g>
 
-                        <!-- Animated EMS Ambulance Marker traversing between INT-A and INT-B -->
+                        <!-- Animated EMS Ambulance Marker -->
                         <g id="ambulance-marker" transform="translate(200, 107)">
-                            <circle r="16" fill="#080c14" stroke="#ef4444" stroke-width="2.5"/>
-                            <text class="material-symbols-rounded" x="-10" y="8" font-size="20" fill="#ef4444">ambulance</text>
+                            <circle r="16" fill="#111318" stroke="#ff4060" stroke-width="2.5"/>
+                            <text font-family="'Material Symbols Rounded'" font-size="20" fill="#ff4060" text-anchor="middle" dominant-baseline="central">ambulance</text>
                             <animateTransform attributeName="transform" type="translate" values="120,130; 240,95; 200,107" dur="8s" repeatCount="indefinite"/>
                         </g>
                     </svg>
 
                     <!-- Interactive Floating Legend -->
-                    <div class="absolute bottom-3 left-4 flex items-center gap-4 bg-surface-container/90 px-4 py-2 rounded-[24px] border border-white/[0.08] font-label text-xs text-on-surface-variant">
-                        <div class="flex items-center gap-2">
-                            <span class="w-2.5 h-2.5 rounded-full bg-state-calm"></span>
+                    <div style="position:absolute;bottom:12px;left:16px;display:flex;align-items:center;gap:16px;background:rgba(28,30,36,0.9);padding:8px 16px;border-radius:12px;border:1px solid #2e3140;font-size:12px;color:#9096a8;">
+                        <div style="display:flex;align-items:center;gap:8px;">
+                            <span style="width:10px;height:10px;border-radius:50%;background:#00c97a;"></span>
                             <span>Cleared</span>
                         </div>
-                        <div class="flex items-center gap-2">
-                            <span class="w-2.5 h-2.5 rounded-full bg-state-preempted animate-pulse"></span>
-                            <span class="text-state-preempted font-semibold">Active Override</span>
+                        <div style="display:flex;align-items:center;gap:8px;">
+                            <span style="width:10px;height:10px;border-radius:50%;background:#ff4060;animation:pulse-ring 1.5s infinite;"></span>
+                            <span style="color:#ff4060;font-weight:600;">Active Override</span>
                         </div>
-                        <div class="flex items-center gap-2">
-                            <span class="w-2.5 h-2.5 rounded-full bg-state-building"></span>
+                        <div style="display:flex;align-items:center;gap:8px;">
+                            <span style="width:10px;height:10px;border-radius:50%;background:#ffab1a;"></span>
                             <span>Pre-clearing</span>
                         </div>
-                        <div class="flex items-center gap-2">
-                            <span class="w-2.5 h-2.5 rounded-full bg-outline"></span>
+                        <div style="display:flex;align-items:center;gap:8px;">
+                            <span style="width:10px;height:10px;border-radius:50%;background:#2e3140;"></span>
                             <span>Scheduled</span>
                         </div>
                     </div>
                 </div>
             </div>
-
         </div>
 
-        <!-- Right Column: Intersection Hop Telemetry & Corridor Metrics (Span 4) -->
-        <div class="lg:col-span-4 z-10 flex flex-col gap-6">
-
+        <!-- ── RIGHT COLUMN: Intersection Hop Telemetry ───────────────── -->
+        <div style="display:flex;flex-direction:column;gap:16px;">
+            
             <!-- Hop Arrival Breakdown Card -->
-            <div class="industrial-panel border border-white/[0.08] tech-border shadow-sm rounded-[24px] p-6 flex flex-col gap-4 border border-white/[0.08] flex-1">
-                <div class="flex justify-between items-center border-b border-white/[0.08] pb-4">
+            <div class="card" style="flex:1;display:flex;flex-direction:column;gap:16px;">
+                <div style="display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #2e3140;padding-bottom:16px;">
                     <div>
-                        <h3 class="font-display font-semibold text-lg text-on-surface">Downstream Hops</h3>
-                        <p class="font-body text-xs text-on-surface-variant mt-0.5">Estimated time of arrival & queue status</p>
+                        <h3 style="font-family:'Albert Sans',sans-serif;font-size:18px;font-weight:600;margin:0;">Downstream Hops</h3>
+                        <p style="font-size:12px;color:#9096a8;margin:4px 0 0;">Estimated time of arrival &amp; queue status</p>
                     </div>
-                    <span class="px-2.5 py-1 rounded-full industrial-panel border border-white/[0.08] tech-border font-telemetry text-xs text-state-calm font-bold">
-                        5 NODES
-                    </span>
+                    <span style="font-family:'JetBrains Mono',monospace;font-size:12px;color:#00c97a;font-weight:700;padding:4px 10px;border-radius:12px;background:rgba(0,201,122,0.15);border:1px solid rgba(0,201,122,0.3);">5 NODES</span>
                 </div>
 
                 <!-- Hop List Items -->
-                <div class="flex flex-col gap-3">
-                    
+                <div style="display:flex;flex-direction:column;gap:12px;">
                     <!-- Hop 1: Passed -->
-                    <div class="bg-surface-container-low p-4 rounded-[24px] border border-white/[0.08] opacity-60 flex items-center justify-between">
-                        <div class="flex items-center gap-3">
-                            <span class="material-symbols-rounded-full text-state-calm">check_circle</span>
+                    <div style="background:#161820;padding:16px;border-radius:12px;border:1px solid #2e3140;opacity:0.6;display:flex;justify-content:space-between;align-items:center;">
+                        <div style="display:flex;align-items:center;gap:12px;">
+                            <span class="material-symbols-rounded" style="color:#00c97a;font-size:24px;">check_circle</span>
                             <div>
-                                <div class="font-telemetry text-xs font-bold text-on-surface">INT-A (5th & Main)</div>
-                                <div class="font-label text-[10px] text-state-calm uppercase tracking-wider">PASSED :: CLEARED</div>
+                                <div style="font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:700;color:#e8eaf0;">INT-A (5th &amp; Main)</div>
+                                <div style="font-size:10px;text-transform:uppercase;letter-spacing:0.06em;color:#00c97a;margin-top:2px;">PASSED :: CLEARED</div>
                             </div>
                         </div>
-                        <div class="font-telemetry text-sm text-outline tabular-nums">--:--</div>
+                        <div style="font-family:'JetBrains Mono',monospace;font-size:14px;color:#2e3140;">--:--</div>
                     </div>
 
-                    <!-- Hop 2: Active Preemption (INT-B) -->
-                    <div class="bg-state-preempted/10 p-4 rounded-[24px] border border-state-preempted/40 relative overflow-hidden flex items-center justify-between">
-                        <div class="absolute left-0 top-0 bottom-0 w-1.5 bg-state-preempted"></div>
-                        <div class="flex items-center gap-3 pl-1">
-                            <span class="material-symbols-rounded-full text-state-preempted animate-pulse">emergency</span>
+                    <!-- Hop 2: Active Preemption -->
+                    <div style="background:rgba(255,64,96,0.1);padding:16px;border-radius:12px;border:1px solid rgba(255,64,96,0.4);position:relative;overflow:hidden;display:flex;justify-content:space-between;align-items:center;">
+                        <div style="position:absolute;left:0;top:0;bottom:0;width:4px;background:#ff4060;"></div>
+                        <div style="display:flex;align-items:center;gap:12px;padding-left:8px;">
+                            <span class="material-symbols-rounded" style="color:#ff4060;font-size:24px;animation:pulse-ring 1.5s infinite;">emergency</span>
                             <div>
-                                <div class="font-telemetry text-xs font-bold text-on-surface">INT-B (7th & Main)</div>
-                                <div class="font-label text-[10px] text-state-preempted uppercase tracking-wider font-semibold">PREEMPTING NOW</div>
+                                <div style="font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:700;color:#e8eaf0;">INT-B (7th &amp; Main)</div>
+                                <div style="font-size:10px;text-transform:uppercase;letter-spacing:0.06em;color:#ff4060;font-weight:600;margin-top:2px;">PREEMPTING NOW</div>
                             </div>
                         </div>
-                        <div class="text-right">
-                            <div class="font-telemetry text-lg font-bold text-state-preempted tabular-nums">T-0:14<span class="font-label text-xs">S</span></div>
-                            <div class="font-label text-[10px] text-on-surface-variant">DIST: <span class="font-telemetry text-xs text-on-surface">450<span class="font-label text-[9px]">M</span></span></div>
-                        </div>
-                    </div>
-
-                    <!-- Hop 3: Pre-clearing (INT-C) -->
-                    <div class="bg-surface-container p-4 rounded-[24px] border border-white/[0.08] flex items-center justify-between">
-                        <div class="flex items-center gap-3">
-                            <div class="w-7 h-7 rounded-[24px]-full bg-state-building/20 border border-state-building/50 flex items-center justify-center font-telemetry text-xs text-state-building font-bold">3</div>
-                            <div>
-                                <div class="font-telemetry text-xs font-bold text-on-surface">INT-C (9th & Main)</div>
-                                <div class="font-label text-[10px] text-state-building uppercase tracking-wider">PRE-CLEARING</div>
-                            </div>
-                        </div>
-                        <div class="text-right">
-                            <div class="font-telemetry text-base font-bold text-state-building tabular-nums">T-0:38<span class="font-label text-xs">S</span></div>
-                            <div class="font-label text-[10px] text-on-surface-variant">DIST: <span class="font-telemetry text-xs text-on-surface">980<span class="font-label text-[9px]">M</span></span></div>
+                        <div style="text-align:right;">
+                            <div style="font-family:'JetBrains Mono',monospace;font-size:18px;font-weight:700;color:#ff4060;">T-0:14s</div>
+                            <div style="font-size:10px;color:#9096a8;">DIST: <span style="font-family:'JetBrains Mono',monospace;color:#e8eaf0;">450m</span></div>
                         </div>
                     </div>
 
-                    <!-- Hop 4: Pending (INT-D) -->
-                    <div class="bg-surface-container-low p-4 rounded-[24px] border border-white/[0.08] flex items-center justify-between">
-                        <div class="flex items-center gap-3">
-                            <div class="w-7 h-7 rounded-[24px]-full industrial-panel border border-white/[0.08] tech-border flex items-center justify-center font-telemetry text-xs text-on-surface-variant">4</div>
+                    <!-- Hop 3: Pre-clearing -->
+                    <div style="background:#1c1e24;padding:16px;border-radius:12px;border:1px solid #2e3140;display:flex;justify-content:space-between;align-items:center;">
+                        <div style="display:flex;align-items:center;gap:12px;">
+                            <div style="width:28px;height:28px;border-radius:50%;background:rgba(255,171,26,0.2);border:1px solid rgba(255,171,26,0.5);display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:700;color:#ffab1a;">3</div>
                             <div>
-                                <div class="font-telemetry text-xs font-bold text-on-surface">INT-D (12th & Main)</div>
-                                <div class="font-label text-[10px] text-outline uppercase tracking-wider">SCHEDULED</div>
+                                <div style="font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:700;color:#e8eaf0;">INT-C (9th &amp; Main)</div>
+                                <div style="font-size:10px;text-transform:uppercase;letter-spacing:0.06em;color:#ffab1a;margin-top:2px;">PRE-CLEARING</div>
                             </div>
                         </div>
-                        <div class="text-right">
-                            <div class="font-telemetry text-sm text-on-surface-variant tabular-nums">T-1:15<span class="font-label text-xs">S</span></div>
+                        <div style="text-align:right;">
+                            <div style="font-family:'JetBrains Mono',monospace;font-size:16px;font-weight:700;color:#ffab1a;">T-0:38s</div>
+                            <div style="font-size:10px;color:#9096a8;">DIST: <span style="font-family:'JetBrains Mono',monospace;color:#e8eaf0;">980m</span></div>
                         </div>
                     </div>
 
-                    <!-- Hop 5: Pending (INT-E) -->
-                    <div class="bg-surface-container-low p-4 rounded-[24px] border border-white/[0.08] flex items-center justify-between">
-                        <div class="flex items-center gap-3">
-                            <div class="w-7 h-7 rounded-[24px]-full industrial-panel border border-white/[0.08] tech-border flex items-center justify-center font-telemetry text-xs text-on-surface-variant">5</div>
+                    <!-- Hop 4: Pending -->
+                    <div style="background:#161820;padding:16px;border-radius:12px;border:1px solid #2e3140;display:flex;justify-content:space-between;align-items:center;">
+                        <div style="display:flex;align-items:center;gap:12px;">
+                            <div style="width:28px;height:28px;border-radius:50%;background:#1c1e24;border:1px solid #2e3140;display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:12px;color:#9096a8;">4</div>
                             <div>
-                                <div class="font-telemetry text-xs font-bold text-on-surface">INT-E (15th & Main)</div>
-                                <div class="font-label text-[10px] text-outline uppercase tracking-wider">SCHEDULED</div>
+                                <div style="font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:700;color:#e8eaf0;">INT-D (12th &amp; Main)</div>
+                                <div style="font-size:10px;text-transform:uppercase;letter-spacing:0.06em;color:#2e3140;margin-top:2px;">SCHEDULED</div>
                             </div>
                         </div>
-                        <div class="text-right">
-                            <div class="font-telemetry text-sm text-on-surface-variant tabular-nums">T-1:52<span class="font-label text-xs">S</span></div>
+                        <div style="text-align:right;">
+                            <div style="font-family:'JetBrains Mono',monospace;font-size:14px;color:#9096a8;">T-1:15s</div>
+                        </div>
+                    </div>
+
+                    <!-- Hop 5: Pending -->
+                    <div style="background:#161820;padding:16px;border-radius:12px;border:1px solid #2e3140;display:flex;justify-content:space-between;align-items:center;">
+                        <div style="display:flex;align-items:center;gap:12px;">
+                            <div style="width:28px;height:28px;border-radius:50%;background:#1c1e24;border:1px solid #2e3140;display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:12px;color:#9096a8;">5</div>
+                            <div>
+                                <div style="font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:700;color:#e8eaf0;">INT-E (15th &amp; Main)</div>
+                                <div style="font-size:10px;text-transform:uppercase;letter-spacing:0.06em;color:#2e3140;margin-top:2px;">SCHEDULED</div>
+                            </div>
+                        </div>
+                        <div style="text-align:right;">
+                            <div style="font-family:'JetBrains Mono',monospace;font-size:14px;color:#9096a8;">T-1:52s</div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Corridor Optimization Metrics Cards -->
-            <div class="industrial-panel border border-white/[0.08] tech-border shadow-sm rounded-[24px] p-6 flex flex-col gap-4 border border-white/[0.08]">
-                <h4 class="font-label text-xs uppercase tracking-widest text-on-surface-variant font-semibold">Corridor Optimization Telemetry</h4>
-                
-                <div class="grid grid-cols-2 gap-3">
-                    <!-- Stat 1 -->
-                    <div class="bg-surface-container-lowest p-3.5 rounded-[24px] border border-white/[0.08]">
-                        <div class="font-label text-[10px] text-on-surface-variant uppercase tracking-widest">Platoon Ratio (q_p/q)</div>
-                        <div class="font-telemetry text-xl font-bold text-state-calm mt-1 tabular-nums">0.89</div>
-                        <div class="font-label text-[9px] text-on-surface-variant/70 mt-0.5">HIGH COHESION</div>
+            <!-- Corridor Optimization Metrics -->
+            <div class="card" style="display:flex;flex-direction:column;gap:16px;">
+                <h4 style="font-size:12px;text-transform:uppercase;letter-spacing:0.06em;color:#9096a8;font-weight:600;margin:0;">Corridor Optimization Telemetry</h4>
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+                    <div style="background:#0d0f13;padding:14px;border-radius:12px;border:1px solid #2e3140;">
+                        <div style="font-size:10px;text-transform:uppercase;letter-spacing:0.06em;color:#9096a8;">Platoon Ratio (q_p/q)</div>
+                        <div style="font-family:'JetBrains Mono',monospace;font-size:20px;font-weight:700;color:#00c97a;margin-top:4px;">0.89</div>
+                        <div style="font-size:9px;color:#9096a8;margin-top:2px;">HIGH COHESION</div>
                     </div>
-
-                    <!-- Stat 2 -->
-                    <div class="bg-surface-container-lowest p-3.5 rounded-[24px] border border-white/[0.08]">
-                        <div class="font-label text-[10px] text-on-surface-variant uppercase tracking-widest">Delay Reduction</div>
-                        <div class="font-telemetry text-xl font-bold text-state-calm mt-1 tabular-nums">-34.2<span class="font-label text-xs font-normal">%</span></div>
-                        <div class="font-label text-[9px] text-state-calm mt-0.5">VS FIXED TIME</div>
+                    <div style="background:#0d0f13;padding:14px;border-radius:12px;border:1px solid #2e3140;">
+                        <div style="font-size:10px;text-transform:uppercase;letter-spacing:0.06em;color:#9096a8;">Delay Reduction</div>
+                        <div style="font-family:'JetBrains Mono',monospace;font-size:20px;font-weight:700;color:#00c97a;margin-top:4px;">-34.2%</div>
+                        <div style="font-size:9px;color:#00c97a;margin-top:2px;">VS FIXED TIME</div>
                     </div>
-
-                    <!-- Stat 3 -->
-                    <div class="bg-surface-container-lowest p-3.5 rounded-[24px] border border-white/[0.08]">
-                        <div class="font-label text-[10px] text-on-surface-variant uppercase tracking-widest">Fuel Savings Est.</div>
-                        <div class="font-telemetry text-xl font-bold text-on-surface mt-1 tabular-nums">18.4 <span class="font-label text-xs font-normal">L/HR</span></div>
-                        <div class="font-label text-[9px] text-on-surface-variant/70 mt-0.5">CORRIDOR TOTAL</div>
+                    <div style="background:#0d0f13;padding:14px;border-radius:12px;border:1px solid #2e3140;">
+                        <div style="font-size:10px;text-transform:uppercase;letter-spacing:0.06em;color:#9096a8;">Fuel Savings Est.</div>
+                        <div style="font-family:'JetBrains Mono',monospace;font-size:20px;font-weight:700;color:#e8eaf0;margin-top:4px;">18.4 <span style="font-size:12px;font-weight:400;">L/HR</span></div>
+                        <div style="font-size:9px;color:#9096a8;margin-top:2px;">CORRIDOR TOTAL</div>
                     </div>
-
-                    <!-- Stat 4 -->
-                    <div class="bg-surface-container-lowest p-3.5 rounded-[24px] border border-white/[0.08]">
-                        <div class="font-label text-[10px] text-on-surface-variant uppercase tracking-widest">MAXBAND Status</div>
-                        <div class="font-telemetry text-sm font-bold text-state-calm mt-1">LOCKED</div>
-                        <div class="font-label text-[9px] text-state-calm mt-0.5">OPTIMAL SLOPING</div>
+                    <div style="background:#0d0f13;padding:14px;border-radius:12px;border:1px solid #2e3140;">
+                        <div style="font-size:10px;text-transform:uppercase;letter-spacing:0.06em;color:#9096a8;">MAXBAND Status</div>
+                        <div style="font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:700;color:#00c97a;margin-top:8px;">LOCKED</div>
+                        <div style="font-size:9px;color:#00c97a;margin-top:2px;">OPTIMAL SLOPING</div>
                     </div>
                 </div>
             </div>
-
         </div>
-
-    <footer class="fixed bottom-0 left-16 right-0 h-10 bg-[#0a0a0a] border-t border-white/[0.08] z-30 flex items-center px-3 overflow-hidden">
-            <div class="flex items-center gap-2 pr-4 border-r border-white/[0.08] shrink-0 bg-[#0a0a0a] z-10 h-full relative">
-                <span class="material-symbols-rounded text-on-surface-variant text-[14px]">terminal</span>
-                <span class="font-label text-[10px] uppercase tracking-widest text-on-surface-variant">Sys_Log</span>
-                <div class="absolute right-0 top-0 bottom-0 w-8 bg-gradient-to-r from-[#0a0a0a] to-transparent pointer-events-none translate-x-full"></div>
-            </div>
-            
-            <div class="ticker-wrap flex-1 ml-4 h-full flex items-center">
-                <div class="ticker-move flex items-center gap-6" style="animation-duration: 40s; width: max-content;">
-                    <div class="flex items-center gap-2 shrink-0">
-                        <span class="font-telemetry text-[10px] text-on-surface-variant">[14:02:41]</span>
-                        <span class="font-telemetry text-[10px] text-on-surface font-bold">IX104</span>
-                        <span class="px-1.5 py-0.5 rounded bg-state-preempted/10 text-state-preempted border-state-preempted/30 border font-telemetry text-[9px] uppercase tracking-widest">PREEMPT</span>
-                        <span class="font-telemetry text-[10px] text-on-surface-variant">Ambulance Override - Route Locked</span>
-                    </div>
-                    <div class="w-px h-3 bg-white/[0.12] shrink-0"></div>
-                    <div class="flex items-center gap-2 shrink-0">
-                        <span class="font-telemetry text-[10px] text-on-surface-variant">[14:02:38]</span>
-                        <span class="font-telemetry text-[10px] text-on-surface font-bold">IX102</span>
-                        <span class="px-1.5 py-0.5 rounded bg-state-building/10 text-state-building border-state-building/30 border font-telemetry text-[9px] uppercase tracking-widest">EXT</span>
-                        <span class="font-telemetry text-[10px] text-on-surface-variant">+4.2s Q buildup (Density 0.8)</span>
-                    </div>
-                    <div class="w-px h-3 bg-white/[0.12] shrink-0"></div>
-                    <div class="flex items-center gap-2 shrink-0">
-                        <span class="font-telemetry text-[10px] text-on-surface-variant">[14:02:15]</span>
-                        <span class="font-telemetry text-[10px] text-on-surface font-bold">IX101</span>
-                        <span class="px-1.5 py-0.5 rounded bg-state-calm/10 text-state-calm border-state-calm/30 border font-telemetry text-[9px] uppercase tracking-widest">SCHED</span>
-                        <span class="font-telemetry text-[10px] text-on-surface-variant">Ph 2 (30s rem) Nominal flow</span>
-                    </div>
-                    <div class="w-px h-3 bg-white/[0.12] shrink-0"></div>
-                    <div class="flex items-center gap-2 shrink-0">
-                        <span class="font-telemetry text-[10px] text-on-surface-variant">[14:01:55]</span>
-                        <span class="font-telemetry text-[10px] text-on-surface font-bold">IX106</span>
-                        <span class="px-1.5 py-0.5 rounded bg-state-calm/10 text-state-calm border-state-calm/30 border font-telemetry text-[9px] uppercase tracking-widest">SCHED</span>
-                        <span class="font-telemetry text-[10px] text-on-surface-variant">Grn wave lock initiated</span>
-                    </div>
-                    <div class="w-px h-3 bg-white/[0.12] shrink-0"></div>
-                    <div class="flex items-center gap-2 shrink-0">
-                        <span class="font-telemetry text-[10px] text-on-surface-variant">[14:01:42]</span>
-                        <span class="font-telemetry text-[10px] text-on-surface font-bold">SYS_O</span>
-                        <span class="px-1.5 py-0.5 rounded bg-state-building/10 text-state-building border-state-building/30 border font-telemetry text-[9px] uppercase tracking-widest">WARN</span>
-                        <span class="font-telemetry text-[10px] text-on-surface-variant">High packet loss on Sector 2 link</span>
-                    </div>
-                    <div class="w-px h-3 bg-white/[0.12] shrink-0"></div>
-                    <div class="flex items-center gap-2 shrink-0">
-                        <span class="font-telemetry text-[10px] text-on-surface-variant">[14:01:12]</span>
-                        <span class="font-telemetry text-[10px] text-on-surface font-bold">IX104</span>
-                        <span class="px-1.5 py-0.5 rounded bg-surface-container-high text-on-surface-variant border-white/[0.12] border font-telemetry text-[9px] uppercase tracking-widest">INFO</span>
-                        <span class="font-telemetry text-[10px] text-on-surface-variant">Camera feed 3 re-established</span>
-                    </div>
-                    <div class="w-px h-3 bg-white/[0.12] shrink-0"></div>
-                    <div class="flex items-center gap-2 shrink-0">
-                        <span class="font-telemetry text-[10px] text-on-surface-variant">[14:00:58]</span>
-                        <span class="font-telemetry text-[10px] text-on-surface font-bold">IX105</span>
-                        <span class="px-1.5 py-0.5 rounded bg-state-calm/10 text-state-calm border-state-calm/30 border font-telemetry text-[9px] uppercase tracking-widest">SCHED</span>
-                        <span class="font-telemetry text-[10px] text-on-surface-variant">Cycle transition complete</span>
-                    </div>
-                    <div class="w-px h-3 bg-white/[0.12] shrink-0"></div>
-                    <div class="flex items-center gap-2 shrink-0">
-                        <span class="font-telemetry text-[10px] text-on-surface-variant">[14:00:22]</span>
-                        <span class="font-telemetry text-[10px] text-on-surface font-bold">IX102</span>
-                        <span class="px-1.5 py-0.5 rounded bg-state-building/10 text-state-building border-state-building/30 border font-telemetry text-[9px] uppercase tracking-widest">EXT</span>
-                        <span class="font-telemetry text-[10px] text-on-surface-variant">Platoon detected (Northbound)</span>
-                    </div>
-                    <div class="w-px h-3 bg-white/[0.12] shrink-0"></div>
-                    <div class="flex items-center gap-2 shrink-0">
-                        <span class="font-telemetry text-[10px] text-on-surface-variant">[14:00:01]</span>
-                        <span class="font-telemetry text-[10px] text-on-surface font-bold">SYS_C</span>
-                        <span class="px-1.5 py-0.5 rounded bg-surface-container-high text-on-surface-variant border-white/[0.12] border font-telemetry text-[9px] uppercase tracking-widest">SYNC</span>
-                        <span class="font-telemetry text-[10px] text-on-surface-variant">NTP clock sync successful (Offset 0.2ms)</span>
-                    </div>
-                    <div class="w-px h-3 bg-white/[0.12] shrink-0"></div>
-                    <div class="flex items-center gap-2 shrink-0">
-                        <span class="font-telemetry text-[10px] text-on-surface-variant">[13:59:45]</span>
-                        <span class="font-telemetry text-[10px] text-on-surface font-bold">IX103</span>
-                        <span class="px-1.5 py-0.5 rounded bg-state-preempted/10 text-state-preempted border-state-preempted/30 border font-telemetry text-[9px] uppercase tracking-widest">PREEMPT</span>
-                        <span class="font-telemetry text-[10px] text-on-surface-variant">Fire Engine transit clear</span>
-                    </div>
-                    <div class="w-px h-3 bg-white/[0.12] shrink-0"></div>
-                    <div class="flex items-center gap-2 shrink-0">
-                        <span class="font-telemetry text-[10px] text-on-surface-variant">[14:02:41]</span>
-                        <span class="font-telemetry text-[10px] text-on-surface font-bold">IX104</span>
-                        <span class="px-1.5 py-0.5 rounded bg-state-preempted/10 text-state-preempted border-state-preempted/30 border font-telemetry text-[9px] uppercase tracking-widest">PREEMPT</span>
-                        <span class="font-telemetry text-[10px] text-on-surface-variant">Ambulance Override - Route Locked</span>
-                    </div>
-                    <div class="w-px h-3 bg-white/[0.12] shrink-0"></div>
-                    <div class="flex items-center gap-2 shrink-0">
-                        <span class="font-telemetry text-[10px] text-on-surface-variant">[14:02:38]</span>
-                        <span class="font-telemetry text-[10px] text-on-surface font-bold">IX102</span>
-                        <span class="px-1.5 py-0.5 rounded bg-state-building/10 text-state-building border-state-building/30 border font-telemetry text-[9px] uppercase tracking-widest">EXT</span>
-                        <span class="font-telemetry text-[10px] text-on-surface-variant">+4.2s Q buildup (Density 0.8)</span>
-                    </div>
-                    <div class="w-px h-3 bg-white/[0.12] shrink-0"></div>
-                    <div class="flex items-center gap-2 shrink-0">
-                        <span class="font-telemetry text-[10px] text-on-surface-variant">[14:02:15]</span>
-                        <span class="font-telemetry text-[10px] text-on-surface font-bold">IX101</span>
-                        <span class="px-1.5 py-0.5 rounded bg-state-calm/10 text-state-calm border-state-calm/30 border font-telemetry text-[9px] uppercase tracking-widest">SCHED</span>
-                        <span class="font-telemetry text-[10px] text-on-surface-variant">Ph 2 (30s rem) Nominal flow</span>
-                    </div>
-                    <div class="w-px h-3 bg-white/[0.12] shrink-0"></div>
-                    <div class="flex items-center gap-2 shrink-0">
-                        <span class="font-telemetry text-[10px] text-on-surface-variant">[14:01:55]</span>
-                        <span class="font-telemetry text-[10px] text-on-surface font-bold">IX106</span>
-                        <span class="px-1.5 py-0.5 rounded bg-state-calm/10 text-state-calm border-state-calm/30 border font-telemetry text-[9px] uppercase tracking-widest">SCHED</span>
-                        <span class="font-telemetry text-[10px] text-on-surface-variant">Grn wave lock initiated</span>
-                    </div>
-                    <div class="w-px h-3 bg-white/[0.12] shrink-0"></div>
-                    <div class="flex items-center gap-2 shrink-0">
-                        <span class="font-telemetry text-[10px] text-on-surface-variant">[14:01:42]</span>
-                        <span class="font-telemetry text-[10px] text-on-surface font-bold">SYS_O</span>
-                        <span class="px-1.5 py-0.5 rounded bg-state-building/10 text-state-building border-state-building/30 border font-telemetry text-[9px] uppercase tracking-widest">WARN</span>
-                        <span class="font-telemetry text-[10px] text-on-surface-variant">High packet loss on Sector 2 link</span>
-                    </div>
-                    <div class="w-px h-3 bg-white/[0.12] shrink-0"></div>
-                    <div class="flex items-center gap-2 shrink-0">
-                        <span class="font-telemetry text-[10px] text-on-surface-variant">[14:01:12]</span>
-                        <span class="font-telemetry text-[10px] text-on-surface font-bold">IX104</span>
-                        <span class="px-1.5 py-0.5 rounded bg-surface-container-high text-on-surface-variant border-white/[0.12] border font-telemetry text-[9px] uppercase tracking-widest">INFO</span>
-                        <span class="font-telemetry text-[10px] text-on-surface-variant">Camera feed 3 re-established</span>
-                    </div>
-                    <div class="w-px h-3 bg-white/[0.12] shrink-0"></div>
-                    <div class="flex items-center gap-2 shrink-0">
-                        <span class="font-telemetry text-[10px] text-on-surface-variant">[14:00:58]</span>
-                        <span class="font-telemetry text-[10px] text-on-surface font-bold">IX105</span>
-                        <span class="px-1.5 py-0.5 rounded bg-state-calm/10 text-state-calm border-state-calm/30 border font-telemetry text-[9px] uppercase tracking-widest">SCHED</span>
-                        <span class="font-telemetry text-[10px] text-on-surface-variant">Cycle transition complete</span>
-                    </div>
-                    <div class="w-px h-3 bg-white/[0.12] shrink-0"></div>
-                    <div class="flex items-center gap-2 shrink-0">
-                        <span class="font-telemetry text-[10px] text-on-surface-variant">[14:00:22]</span>
-                        <span class="font-telemetry text-[10px] text-on-surface font-bold">IX102</span>
-                        <span class="px-1.5 py-0.5 rounded bg-state-building/10 text-state-building border-state-building/30 border font-telemetry text-[9px] uppercase tracking-widest">EXT</span>
-                        <span class="font-telemetry text-[10px] text-on-surface-variant">Platoon detected (Northbound)</span>
-                    </div>
-                    <div class="w-px h-3 bg-white/[0.12] shrink-0"></div>
-                    <div class="flex items-center gap-2 shrink-0">
-                        <span class="font-telemetry text-[10px] text-on-surface-variant">[14:00:01]</span>
-                        <span class="font-telemetry text-[10px] text-on-surface font-bold">SYS_C</span>
-                        <span class="px-1.5 py-0.5 rounded bg-surface-container-high text-on-surface-variant border-white/[0.12] border font-telemetry text-[9px] uppercase tracking-widest">SYNC</span>
-                        <span class="font-telemetry text-[10px] text-on-surface-variant">NTP clock sync successful (Offset 0.2ms)</span>
-                    </div>
-                    <div class="w-px h-3 bg-white/[0.12] shrink-0"></div>
-                    <div class="flex items-center gap-2 shrink-0">
-                        <span class="font-telemetry text-[10px] text-on-surface-variant">[13:59:45]</span>
-                        <span class="font-telemetry text-[10px] text-on-surface font-bold">IX103</span>
-                        <span class="px-1.5 py-0.5 rounded bg-state-preempted/10 text-state-preempted border-state-preempted/30 border font-telemetry text-[9px] uppercase tracking-widest">PREEMPT</span>
-                        <span class="font-telemetry text-[10px] text-on-surface-variant">Fire Engine transit clear</span>
-                    </div>
-                    <div class="w-px h-3 bg-white/[0.12] shrink-0"></div>
-                </div>
-            </div>
-        </footer>
     </main>
 
-    <!-- Interactive JavaScript Logic -->
+    <!-- ── TICKER BAR ─────────────────────────────────────────────────── -->
+    <div class="ticker-bar">
+        <div class="ticker-bar-label">
+            <span class="material-symbols-rounded" style="font-size:14px;margin-right:6px;">terminal</span>
+            Sys_Log
+        </div>
+        <div class="ticker-wrap" style="flex:1;margin-left:16px;">
+            <div class="ticker-move">
+                <span style="font-family:'JetBrains Mono',monospace;font-size:10px;color:#9096a8;">[14:02:41]</span>
+                <span style="font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:700;">IX104</span>
+                <span class="badge badge-crit">PREEMPT</span>
+                <span style="font-family:'JetBrains Mono',monospace;font-size:10px;color:#9096a8;">Ambulance Override - Route Locked</span>
+                <span style="margin:0 12px;color:#2e3140;">|</span>
+                
+                <span style="font-family:'JetBrains Mono',monospace;font-size:10px;color:#9096a8;">[14:02:38]</span>
+                <span style="font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:700;">IX102</span>
+                <span class="badge badge-warn">EXT</span>
+                <span style="font-family:'JetBrains Mono',monospace;font-size:10px;color:#9096a8;">+4.2s Q buildup (Density 0.8)</span>
+                <span style="margin:0 12px;color:#2e3140;">|</span>
+
+                <span style="font-family:'JetBrains Mono',monospace;font-size:10px;color:#9096a8;">[14:02:15]</span>
+                <span style="font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:700;">IX101</span>
+                <span class="badge badge-calm">SCHED</span>
+                <span style="font-family:'JetBrains Mono',monospace;font-size:10px;color:#9096a8;">Ph 2 (30s rem) Nominal flow</span>
+                <span style="margin:0 12px;color:#2e3140;">|</span>
+
+                <!-- Duplicate for seamless scroll -->
+                <span style="font-family:'JetBrains Mono',monospace;font-size:10px;color:#9096a8;">[14:02:41]</span>
+                <span style="font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:700;">IX104</span>
+                <span class="badge badge-crit">PREEMPT</span>
+                <span style="font-family:'JetBrains Mono',monospace;font-size:10px;color:#9096a8;">Ambulance Override - Route Locked</span>
+                <span style="margin:0 12px;color:#2e3140;">|</span>
+                
+                <span style="font-family:'JetBrains Mono',monospace;font-size:10px;color:#9096a8;">[14:02:38]</span>
+                <span style="font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:700;">IX102</span>
+                <span class="badge badge-warn">EXT</span>
+                <span style="font-family:'JetBrains Mono',monospace;font-size:10px;color:#9096a8;">+4.2s Q buildup (Density 0.8)</span>
+                <span style="margin:0 12px;color:#2e3140;">|</span>
+
+                <span style="font-family:'JetBrains Mono',monospace;font-size:10px;color:#9096a8;">[14:02:15]</span>
+                <span style="font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:700;">IX101</span>
+                <span class="badge badge-calm">SCHED</span>
+                <span style="font-family:'JetBrains Mono',monospace;font-size:10px;color:#9096a8;">Ph 2 (30s rem) Nominal flow</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- JS Logic -->
     <script>
         // Speed Preset Switcher
         function setSpeed(speed) {
             document.querySelectorAll('[id^="btn-"]').forEach(btn => {
-                btn.className = "px-3 py-1 rounded-md text-on-surface-variant hover:text-on-surface transition-colors";
+                btn.style.background = 'transparent';
+                btn.style.color = '#9096a8';
+                btn.style.fontWeight = 'normal';
+                btn.style.border = 'none';
             });
             const activeBtn = document.getElementById('btn-' + speed);
             if (activeBtn) {
-                activeBtn.className = "px-3 py-1 rounded-md bg-state-calm/20 text-state-calm font-bold border border-state-calm/40 transition-colors";
+                activeBtn.style.background = 'rgba(0,201,122,0.15)';
+                activeBtn.style.color = '#00c97a';
+                activeBtn.style.fontWeight = '700';
+                activeBtn.style.border = '1px solid rgba(0,201,122,0.3)';
             }
             updateDiagram();
         }
@@ -785,4 +634,3 @@
     </script>
 </body>
 </html>
-

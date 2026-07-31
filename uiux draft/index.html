@@ -11,32 +11,78 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet">
     
-    <!-- Tailwind CSS -->
+
+    <!-- Tailwind config: MUST appear before cdn.tailwindcss.com -->
+    <script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "surface":                   "#111318",
+              "surface-dim":               "#0d0f13",
+              "surface-bright":            "#1c1e24",
+              "surface-container-lowest":  "#0d0f13",
+              "surface-container-low":     "#161820",
+              "surface-container":         "#1c1e24",
+              "surface-container-high":    "#2c2f3a",
+              "surface-container-highest": "#363944",
+              "on-surface":                "#e8eaf0",
+              "on-surface-variant":        "#9096a8",
+              "outline":                   "#2e3140",
+              "outline-variant":           "#232535",
+              "primary":                   "#4d9fff",
+              "on-primary":                "#ffffff",
+              "state-calm":                "#00c97a",
+              "state-building":            "#ffab1a",
+              "state-preempted":           "#ff4060"
+            },
+            fontFamily: {
+              "sans":      ["Inter",        "system-ui", "sans-serif"],
+              "display":   ["Albert Sans",  "sans-serif"],
+              "body":      ["Inter",        "system-ui", "sans-serif"],
+              "label":     ["Inter",        "system-ui", "sans-serif"],
+              "mono":      ["JetBrains Mono","monospace"],
+              "telemetry": ["JetBrains Mono","monospace"]
+            },
+            borderRadius: {
+              "DEFAULT": "8px",
+              "md":  "10px",
+              "lg":  "14px",
+              "xl":  "18px",
+              "2xl": "24px",
+              "full":"9999px"
+            }
+          }
+        }
+      };
+    </script>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="shared/theme.js"></script>
-    <link rel="stylesheet" href="shared/theme.css">
+    <link rel="stylesheet" href="./shared/theme.css">
+    <script src="./shared/sidebar.js" defer></script>
 </head>
-<body class="antialiased min-h-screen flex flex-col bg-surface grid-bg selection:bg-emerald-500/20">
+<body class="antialiased min-h-screen flex flex-col bg-surface selection:bg-state-calm/20" style="background-color:#111318;color:#e8eaf0;">
+    <div id="sidebar-container"></div>
 
     <!-- Top Industrial Header Bar -->
-    <header class="sticky top-0 z-50 bg-surface/95 border-b border-white/[0.08] backdrop-blur-md px-6 py-3.5">
+    <header class="sticky top-0 z-50 bg-surface/95 border-b border-outline backdrop-blur-md px-6 py-3.5">
         <div class="max-w-7xl mx-auto flex items-center justify-between gap-6">
             <div class="flex items-center gap-4">
                 <img src="logo.png" alt="Kinetica Logo" class="h-9 w-auto object-contain shrink-0 rounded">
                 <div class="h-6 w-px bg-surface-container-high"></div>
                 <div>
                     <div class="flex items-center gap-2">
-                        <span class="font-mono text-xs text-slate-100 font-bold tracking-tight">KINETICA CONTROL ROOM SUITE</span>
-                        <span class="px-2 py-0.5 rounded bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 font-mono text-[10px] uppercase font-semibold">v2.4 Production</span>
+                        <span class="font-mono text-xs text-on-surface font-bold tracking-tight">KINETICA CONTROL ROOM SUITE</span>
+                        <span class="px-2 py-0.5 rounded bg-state-calm/10 border border-emerald-500/30 text-state-calm font-mono text-[10px] uppercase font-semibold">v2.4 Production</span>
                     </div>
                     <p class="font-mono text-[10px] text-on-surface-variant uppercase tracking-wider">Mission Critical Transportation Telemetry & Max-Pressure Control</p>
                 </div>
             </div>
 
             <div class="flex items-center gap-4 font-mono text-xs text-on-surface-variant">
-                <div class="flex items-center gap-2 px-3 py-1 rounded bg-surface border border-white/[0.08]">
-                    <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-                    <span class="text-slate-300">SECTOR 4 ONLINE • 4.2ms</span>
+                <div class="flex items-center gap-2 px-3 py-1 rounded bg-surface border border-outline">
+                    <span class="w-2 h-2 rounded-full bg-state-calm animate-pulse"></span>
+                    <span class="text-on-surface-variant">SECTOR 4 ONLINE • 4.2ms</span>
                 </div>
             </div>
         </div>
@@ -46,13 +92,13 @@
     <main class="flex-1 max-w-7xl w-full mx-auto px-6 py-8">
         
         <!-- System Status Banner -->
-        <div class="panel p-6 rounded-lg mb-8 border border-white/[0.08] flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+        <div class="panel p-6 rounded-lg mb-8 border border-outline flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
             <div>
                 <div class="flex items-center gap-2 mb-2">
-                    <span class="px-2 py-0.5 rounded bg-surface-container-high text-emerald-400 font-mono text-[10px] uppercase tracking-wider font-semibold">ENTERPRISE DEPLOYMENT</span>
+                    <span class="px-2 py-0.5 rounded bg-surface-container-high text-state-calm font-mono text-[10px] uppercase tracking-wider font-semibold">ENTERPRISE DEPLOYMENT</span>
                     <span class="font-mono text-xs text-on-surface-variant">DISTRICT 07 · SECTOR 4 HIGHWAY CORRIDOR</span>
                 </div>
-                <h2 class="font-sans text-xl font-bold text-slate-100 tracking-tight mb-1">
+                <h2 class="font-sans text-xl font-bold text-on-surface tracking-tight mb-1">
                     Operational Control Modules
                 </h2>
                 <p class="font-sans text-on-surface-variant text-xs max-w-3xl leading-relaxed">
@@ -60,7 +106,7 @@
                 </p>
             </div>
 
-            <a href="command_center_overview/code.html" class="px-5 py-2.5 rounded bg-emerald-500 text-slate-950 font-sans font-bold text-xs hover:bg-emerald-400 transition-all shadow-sm flex items-center gap-2 shrink-0">
+            <a href="command_center_overview/code.html" class="px-5 py-2.5 rounded bg-state-calm text-slate-950 font-sans font-bold text-xs hover:bg-emerald-400 transition-all shadow-sm flex items-center gap-2 shrink-0">
                 <span>Launch Main Overview</span>
                 <span class="material-symbols-rounded text-base">arrow_forward</span>
             </a>
@@ -73,21 +119,21 @@
             <a href="command_center_overview/code.html" class="panel panel-hover rounded-lg p-5 transition-all group flex flex-col justify-between">
                 <div>
                     <div class="flex items-center justify-between mb-3">
-                        <div class="w-9 h-9 rounded bg-surface-container-high border border-white/[0.12] flex items-center justify-center text-emerald-400">
+                        <div class="w-9 h-9 rounded bg-surface-container-high border border-outline flex items-center justify-center text-state-calm">
                             <span class="material-symbols-rounded text-xl">dashboard</span>
                         </div>
-                        <span class="font-mono text-[10px] text-on-surface-variant uppercase tracking-wider border border-white/[0.08] px-2 py-0.5 rounded bg-surface">MOD-01</span>
+                        <span class="font-mono text-[10px] text-on-surface-variant uppercase tracking-wider border border-outline px-2 py-0.5 rounded bg-surface">MOD-01</span>
                     </div>
-                    <h3 class="font-sans text-base font-bold text-slate-100 mb-1 group-hover:text-emerald-400 transition-colors">
+                    <h3 class="font-sans text-base font-bold text-on-surface mb-1 group-hover:text-state-calm transition-colors">
                         Network Command Center
                     </h3>
                     <p class="font-sans text-xs text-on-surface-variant mb-4 leading-normal">
                         Spatial topology map with live node pressure states, emergency preemption corridor status, and telemetry ticker.
                     </p>
                 </div>
-                <div class="pt-3 border-t border-white/[0.08]/60 flex items-center justify-between text-xs font-mono text-on-surface-variant">
+                <div class="pt-3 border-t border-outline/60 flex items-center justify-between text-xs font-mono text-on-surface-variant">
                     <span>6 Active Nodes</span>
-                    <span class="text-emerald-400 font-semibold group-hover:translate-x-0.5 transition-transform flex items-center gap-1">Open Module <span class="material-symbols-rounded text-sm">arrow_forward</span></span>
+                    <span class="text-state-calm font-semibold group-hover:translate-x-0.5 transition-transform flex items-center gap-1">Open Module <span class="material-symbols-rounded text-sm">arrow_forward</span></span>
                 </div>
             </a>
 
@@ -95,21 +141,21 @@
             <a href="intersection_detail_ix_104/code.html" class="panel panel-hover rounded-lg p-5 transition-all group flex flex-col justify-between">
                 <div>
                     <div class="flex items-center justify-between mb-3">
-                        <div class="w-9 h-9 rounded bg-surface-container-high border border-white/[0.12] flex items-center justify-center text-emerald-400">
+                        <div class="w-9 h-9 rounded bg-surface-container-high border border-outline flex items-center justify-center text-state-calm">
                             <span class="material-symbols-rounded text-xl">schema</span>
                         </div>
-                        <span class="font-mono text-[10px] text-on-surface-variant uppercase tracking-wider border border-white/[0.08] px-2 py-0.5 rounded bg-surface">MOD-02</span>
+                        <span class="font-mono text-[10px] text-on-surface-variant uppercase tracking-wider border border-outline px-2 py-0.5 rounded bg-surface">MOD-02</span>
                     </div>
-                    <h3 class="font-sans text-base font-bold text-slate-100 mb-1 group-hover:text-emerald-400 transition-colors">
+                    <h3 class="font-sans text-base font-bold text-on-surface mb-1 group-hover:text-state-calm transition-colors">
                         Intersection Detail (IX-104)
                     </h3>
                     <p class="font-sans text-xs text-on-surface-variant mb-4 leading-normal">
                         Max-Pressure priority heap tree visualizer, active phase allocation breakdown, and emergency vehicle override controls.
                     </p>
                 </div>
-                <div class="pt-3 border-t border-white/[0.08]/60 flex items-center justify-between text-xs font-mono text-on-surface-variant">
+                <div class="pt-3 border-t border-outline/60 flex items-center justify-between text-xs font-mono text-on-surface-variant">
                     <span>Heap Depth: 4</span>
-                    <span class="text-emerald-400 font-semibold group-hover:translate-x-0.5 transition-transform flex items-center gap-1">Open Module <span class="material-symbols-rounded text-sm">arrow_forward</span></span>
+                    <span class="text-state-calm font-semibold group-hover:translate-x-0.5 transition-transform flex items-center gap-1">Open Module <span class="material-symbols-rounded text-sm">arrow_forward</span></span>
                 </div>
             </a>
 
@@ -117,21 +163,21 @@
             <a href="green_wave_corridor_view/code.html" class="panel panel-hover rounded-lg p-5 transition-all group flex flex-col justify-between">
                 <div>
                     <div class="flex items-center justify-between mb-3">
-                        <div class="w-9 h-9 rounded bg-surface-container-high border border-white/[0.12] flex items-center justify-center text-emerald-400">
+                        <div class="w-9 h-9 rounded bg-surface-container-high border border-outline flex items-center justify-center text-state-calm">
                             <span class="material-symbols-rounded text-xl">route</span>
                         </div>
-                        <span class="font-mono text-[10px] text-on-surface-variant uppercase tracking-wider border border-white/[0.08] px-2 py-0.5 rounded bg-surface">MOD-03</span>
+                        <span class="font-mono text-[10px] text-on-surface-variant uppercase tracking-wider border border-outline px-2 py-0.5 rounded bg-surface">MOD-03</span>
                     </div>
-                    <h3 class="font-sans text-base font-bold text-slate-100 mb-1 group-hover:text-emerald-400 transition-colors">
+                    <h3 class="font-sans text-base font-bold text-on-surface mb-1 group-hover:text-state-calm transition-colors">
                         Green Wave Corridor View
                     </h3>
                     <p class="font-sans text-xs text-on-surface-variant mb-4 leading-normal">
                         Interactive SVG Time-Space diagram, progression bandwidth sliders, and multi-intersection phase cascade graph.
                     </p>
                 </div>
-                <div class="pt-3 border-t border-white/[0.08]/60 flex items-center justify-between text-xs font-mono text-on-surface-variant">
+                <div class="pt-3 border-t border-outline/60 flex items-center justify-between text-xs font-mono text-on-surface-variant">
                     <span>5 Cascade Signals</span>
-                    <span class="text-emerald-400 font-semibold group-hover:translate-x-0.5 transition-transform flex items-center gap-1">Open Module <span class="material-symbols-rounded text-sm">arrow_forward</span></span>
+                    <span class="text-state-calm font-semibold group-hover:translate-x-0.5 transition-transform flex items-center gap-1">Open Module <span class="material-symbols-rounded text-sm">arrow_forward</span></span>
                 </div>
             </a>
 
@@ -139,21 +185,21 @@
             <a href="vision_feed_monitor/code.html" class="panel panel-hover rounded-lg p-5 transition-all group flex flex-col justify-between">
                 <div>
                     <div class="flex items-center justify-between mb-3">
-                        <div class="w-9 h-9 rounded bg-surface-container-high border border-white/[0.12] flex items-center justify-center text-emerald-400">
+                        <div class="w-9 h-9 rounded bg-surface-container-high border border-outline flex items-center justify-center text-state-calm">
                             <span class="material-symbols-rounded text-xl">videocam</span>
                         </div>
-                        <span class="font-mono text-[10px] text-on-surface-variant uppercase tracking-wider border border-white/[0.08] px-2 py-0.5 rounded bg-surface">MOD-04</span>
+                        <span class="font-mono text-[10px] text-on-surface-variant uppercase tracking-wider border border-outline px-2 py-0.5 rounded bg-surface">MOD-04</span>
                     </div>
-                    <h3 class="font-sans text-base font-bold text-slate-100 mb-1 group-hover:text-emerald-400 transition-colors">
+                    <h3 class="font-sans text-base font-bold text-on-surface mb-1 group-hover:text-state-calm transition-colors">
                         Vision Feed & Object Detection
                     </h3>
                     <p class="font-sans text-xs text-on-surface-variant mb-4 leading-normal">
                         Multi-camera AI edge feed grid, real-time object classification bounding boxes, vehicle filters, and camera inspector.
                     </p>
                 </div>
-                <div class="pt-3 border-t border-white/[0.08]/60 flex items-center justify-between text-xs font-mono text-on-surface-variant">
+                <div class="pt-3 border-t border-outline/60 flex items-center justify-between text-xs font-mono text-on-surface-variant">
                     <span>6 Live Feeds (60 FPS)</span>
-                    <span class="text-emerald-400 font-semibold group-hover:translate-x-0.5 transition-transform flex items-center gap-1">Open Module <span class="material-symbols-rounded text-sm">arrow_forward</span></span>
+                    <span class="text-state-calm font-semibold group-hover:translate-x-0.5 transition-transform flex items-center gap-1">Open Module <span class="material-symbols-rounded text-sm">arrow_forward</span></span>
                 </div>
             </a>
 
@@ -161,21 +207,21 @@
             <a href="analytics_validation/code.html" class="panel panel-hover rounded-lg p-5 transition-all group flex flex-col justify-between">
                 <div>
                     <div class="flex items-center justify-between mb-3">
-                        <div class="w-9 h-9 rounded bg-surface-container-high border border-white/[0.12] flex items-center justify-center text-emerald-400">
+                        <div class="w-9 h-9 rounded bg-surface-container-high border border-outline flex items-center justify-center text-state-calm">
                             <span class="material-symbols-rounded text-xl">analytics</span>
                         </div>
-                        <span class="font-mono text-[10px] text-on-surface-variant uppercase tracking-wider border border-white/[0.08] px-2 py-0.5 rounded bg-surface">MOD-05</span>
+                        <span class="font-mono text-[10px] text-on-surface-variant uppercase tracking-wider border border-outline px-2 py-0.5 rounded bg-surface">MOD-05</span>
                     </div>
-                    <h3 class="font-sans text-base font-bold text-slate-100 mb-1 group-hover:text-emerald-400 transition-colors">
+                    <h3 class="font-sans text-base font-bold text-on-surface mb-1 group-hover:text-state-calm transition-colors">
                         Analytics & Statistical Validation
                     </h3>
                     <p class="font-sans text-xs text-on-surface-variant mb-4 leading-normal">
                         Welch's U-test significance cards, kernel density probability plots, baseline comparison metrics, and confidence intervals.
                     </p>
                 </div>
-                <div class="pt-3 border-t border-white/[0.08]/60 flex items-center justify-between text-xs font-mono text-on-surface-variant">
+                <div class="pt-3 border-t border-outline/60 flex items-center justify-between text-xs font-mono text-on-surface-variant">
                     <span>p &lt; 0.001 Verified</span>
-                    <span class="text-emerald-400 font-semibold group-hover:translate-x-0.5 transition-transform flex items-center gap-1">Open Module <span class="material-symbols-rounded text-sm">arrow_forward</span></span>
+                    <span class="text-state-calm font-semibold group-hover:translate-x-0.5 transition-transform flex items-center gap-1">Open Module <span class="material-symbols-rounded text-sm">arrow_forward</span></span>
                 </div>
             </a>
 
@@ -183,21 +229,21 @@
             <a href="benchmarks_system_health/code.html" class="panel panel-hover rounded-lg p-5 transition-all group flex flex-col justify-between">
                 <div>
                     <div class="flex items-center justify-between mb-3">
-                        <div class="w-9 h-9 rounded bg-surface-container-high border border-white/[0.12] flex items-center justify-center text-emerald-400">
+                        <div class="w-9 h-9 rounded bg-surface-container-high border border-outline flex items-center justify-center text-state-calm">
                             <span class="material-symbols-rounded text-xl">monitor_heart</span>
                         </div>
-                        <span class="font-mono text-[10px] text-on-surface-variant uppercase tracking-wider border border-white/[0.08] px-2 py-0.5 rounded bg-surface">MOD-06</span>
+                        <span class="font-mono text-[10px] text-on-surface-variant uppercase tracking-wider border border-outline px-2 py-0.5 rounded bg-surface">MOD-06</span>
                     </div>
-                    <h3 class="font-sans text-base font-bold text-slate-100 mb-1 group-hover:text-emerald-400 transition-colors">
+                    <h3 class="font-sans text-base font-bold text-on-surface mb-1 group-hover:text-state-calm transition-colors">
                         System Health & Benchmarks
                     </h3>
                     <p class="font-sans text-xs text-on-surface-variant mb-4 leading-normal">
                         Sub-4.2ms decision latency distribution profiler, CPU core allocation, heap ops/sec telemetry, and live execution terminal.
                     </p>
                 </div>
-                <div class="pt-3 border-t border-white/[0.08]/60 flex items-center justify-between text-xs font-mono text-on-surface-variant">
+                <div class="pt-3 border-t border-outline/60 flex items-center justify-between text-xs font-mono text-on-surface-variant">
                     <span>Latency &lt; 3.8ms</span>
-                    <span class="text-emerald-400 font-semibold group-hover:translate-x-0.5 transition-transform flex items-center gap-1">Open Module <span class="material-symbols-rounded text-sm">arrow_forward</span></span>
+                    <span class="text-state-calm font-semibold group-hover:translate-x-0.5 transition-transform flex items-center gap-1">Open Module <span class="material-symbols-rounded text-sm">arrow_forward</span></span>
                 </div>
             </a>
 
@@ -205,7 +251,7 @@
     </main>
 
     <!-- Footer -->
-    <footer class="border-t border-white/[0.08] py-4 px-6 text-center text-xs font-mono text-slate-500">
+    <footer class="border-t border-outline py-4 px-6 text-center text-xs font-mono text-slate-500">
         KINETICA INTELLIGENT TRANSPORTATION SYSTEMS • ENTERPRISE CONTROL ROOM SUITE v2.4
     </footer>
 </body>

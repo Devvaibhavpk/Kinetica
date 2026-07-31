@@ -1,64 +1,174 @@
-// sidebar.js - Shared Unified Navigation Component
+// sidebar.js — Kinetica Control Room  
+// Renders the unified sidebar nav and live IST clock on every page.
 
-document.addEventListener("DOMContentLoaded", () => {
+(function () {
+  const MODULES = [
+    { key: "command_center_overview",    icon: "dashboard",     label: "Network Overview"   },
+    { key: "intersection_detail_ix_104", icon: "schema",        label: "Intersection IX-104"},
+    { key: "green_wave_corridor_view",   icon: "route",         label: "Green Wave"         },
+    { key: "vision_feed_monitor",        icon: "videocam",      label: "Vision Feed"        },
+    { key: "analytics_validation",       icon: "analytics",     label: "Analytics"          },
+    { key: "benchmarks_system_health",   icon: "monitor_heart", label: "System Health"      },
+  ];
+
+  // ── Resolve relative path to assets ──────────────────────────────────
+  const currentPath = window.location.pathname;
+  const depth = (currentPath.match(/\//g) || []).length - 1;
+  // index.html is at depth 1 (e.g. /uiux draft/index.html)
+  // page/code.html is at depth 2
+  const prefix = depth <= 1 ? "./" : "../";
+
+  function isActive(key) {
+    return currentPath.includes(key);
+  }
+
+  // ── Build nav items ───────────────────────────────────────────────────
+  const navItems = MODULES.map(m => {
+    const active = isActive(m.key);
+    return `
+      <a href="${prefix}${m.key}/code.html"
+         title="${m.label}"
+         class="nav-item${active ? " active" : ""}"
+         style="position:relative;">
+        <span class="material-symbols-rounded" style="font-size:20px;">${m.icon}</span>
+        <span class="nav-tooltip">${m.label}</span>
+      </a>`;
+  }).join("\n");
+
+  // ── Sidebar HTML ──────────────────────────────────────────────────────
+  const sidebarHTML = `
+<style>
+  .kinetica-sidebar {
+    position: fixed;
+    top: 0; left: 0;
+    width: 60px;
+    height: 100vh;
+    background: var(--surface, #1c1e24);
+    border-right: 1px solid var(--border, #2e3140);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 10px 0;
+    gap: 2px;
+    z-index: 200;
+    overflow: visible;
+  }
+  .kinetica-sidebar .logo-wrap {
+    width: 36px; height: 36px;
+    border-radius: 8px;
+    overflow: hidden;
+    background: rgba(77,159,255,0.12);
+    display: flex; align-items: center; justify-content: center;
+    margin-bottom: 14px;
+    flex-shrink: 0;
+  }
+  .kinetica-sidebar .logo-wrap img {
+    width: 28px; height: 28px; object-fit: contain;
+  }
+  .kinetica-sidebar .nav-item {
+    width: 44px; height: 44px;
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+    color: var(--text-secondary, #9096a8);
+    transition: background 0.14s, color 0.14s;
+    text-decoration: none;
+    position: relative;
+  }
+  .kinetica-sidebar .nav-item:hover {
+    background: var(--surface-high, #2c2f3a);
+    color: var(--text-primary, #e8eaf0);
+  }
+  .kinetica-sidebar .nav-item.active {
+    background: rgba(0, 201, 122, 0.12);
+    color: var(--calm, #00c97a);
+  }
+  /* Tooltip on hover */
+  .kinetica-sidebar .nav-tooltip {
+    position: absolute;
+    left: calc(100% + 10px);
+    top: 50%;
+    transform: translateY(-50%);
+    background: var(--surface-highest, #363944);
+    border: 1px solid var(--border, #2e3140);
+    border-radius: 6px;
+    padding: 4px 10px;
+    font-family: 'Inter', sans-serif;
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--text-primary, #e8eaf0);
+    white-space: nowrap;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.15s;
+    z-index: 300;
+  }
+  .kinetica-sidebar .nav-item:hover .nav-tooltip { opacity: 1; }
+
+  /* Emergency button at bottom */
+  .kinetica-sidebar .nav-emergency {
+    width: 44px; height: 44px;
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+    color: var(--crit, #ff4060);
+    background: rgba(255, 64, 96, 0.10);
+    border: 1px solid rgba(255, 64, 96, 0.30);
+    text-decoration: none;
+    margin-top: auto;
+    margin-bottom: 8px;
+    transition: all 0.14s;
+    position: relative;
+  }
+  .kinetica-sidebar .nav-emergency:hover {
+    background: rgba(255, 64, 96, 0.20);
+  }
+  .kinetica-sidebar .nav-divider {
+    width: 28px;
+    height: 1px;
+    background: var(--border, #2e3140);
+    margin: 4px 0;
+    flex-shrink: 0;
+  }
+</style>
+<nav class="kinetica-sidebar">
+  <div class="logo-wrap">
+    <img src="${prefix}logo.png" alt="K" onerror="this.style.display='none';this.parentNode.textContent='K';">
+  </div>
+  ${navItems}
+  <div class="nav-divider"></div>
+  <a href="${prefix}emergency_override/code.html"
+     class="nav-emergency"
+     title="Emergency Override">
+    <span class="material-symbols-rounded" style="font-size:20px;animation:pulse-icon 1.8s ease infinite;">warning</span>
+    <span class="nav-tooltip" style="color: var(--crit,#ff4060);">Emergency Override</span>
+  </a>
+</nav>
+<style>
+  @keyframes pulse-icon {
+    0%, 100% { opacity: 1; }
+    50%       { opacity: 0.5; }
+  }
+</style>`;
+
+  // ── Inject sidebar ────────────────────────────────────────────────────
+  document.addEventListener("DOMContentLoaded", function () {
     const container = document.getElementById("sidebar-container");
-    if (!container) return;
-
-    // Determine current active page based on URL
-    const currentPath = window.location.href;
-    const modules = {
-        "command_center_overview": { icon: "dashboard", label: "Network Overview" },
-        "intersection_detail_ix_104": { icon: "schema", label: "Intersection IX-104" },
-        "green_wave_corridor_view": { icon: "route", label: "Green Wave Corridor" },
-        "vision_feed_monitor": { icon: "videocam", label: "Vision Analytics" },
-        "analytics_validation": { icon: "analytics", label: "Analytics & Validation" },
-        "benchmarks_system_health": { icon: "monitor_heart", label: "System Health" }
-    };
-
-    const activeClass = "bg-white/[0.08] text-state-calm shadow-[inset_0_1px_0_0_rgba(255,255,255,0.05)] border-white/[0.12]";
-    const inactiveClass = "text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high";
-
-    let linksHTML = "";
-    
-    for (const [key, data] of Object.entries(modules)) {
-        const isActive = currentPath.includes(key);
-        const className = isActive ? activeClass : inactiveClass;
-        
-        linksHTML += `
-            <a href="../${key}/code.html" class="flex items-center gap-4 pl-3 pr-4 py-2.5 rounded-full ${className} transition-all border border-transparent group/link">
-                <span class="material-symbols-rounded text-xl shrink-0 flex justify-center w-6 text-center">${isActive ? `<span class="text-state-calm">${data.icon}</span>` : data.icon}</span>
-                <span class="font-body text-[13px] ${isActive ? 'font-semibold' : 'font-medium'} opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap">${data.label}</span>
-            </a>
-        `;
+    if (container) {
+      container.innerHTML = sidebarHTML;
     }
 
-    const sidebarHTML = `
-    <!-- Unified Industrial Side Nav Rail -->
-    <aside class="fixed left-0 top-0 h-full z-50 flex flex-col bg-[#0a0a0a] border-r border-white/[0.08] w-16 hover:w-64 transition-all duration-300 ease-in-out group shadow-2xl overflow-hidden">
-        <!-- Brand Header -->
-        <div class="h-14 flex items-center pl-4 border-b border-white/[0.08] shrink-0 overflow-hidden">
-            <div class="shrink-0 flex items-center">
-                <img src="../../logo.png" alt="Kinetica Logo" class="h-8 w-8 object-contain shrink-0">
-            </div>
-            <div class="ml-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-center overflow-hidden whitespace-nowrap">
-                <span class="font-display font-semibold text-on-surface text-[16px] tracking-tight leading-tight">Kinetica</span>
-            </div>
-        </div>
-
-        <!-- Navigation Links -->
-        <div class="flex-1 py-4 flex flex-col gap-2 px-2 overflow-y-auto overflow-x-hidden">
-            ${linksHTML}
-        </div>
-
-        <!-- Emergency Override -->
-        <div class="p-2 border-t border-white/[0.08] flex flex-col gap-2 shrink-0">
-            <a href="../emergency_override/code.html" class="w-full flex items-center gap-4 pl-3 pr-4 py-2.5 rounded-full bg-state-preempted-glow border border-state-preempted text-state-preempted hover:bg-state-preempted hover:text-[#0a0a0a] transition-all font-semibold active:scale-95 overflow-hidden">
-                <span class="material-symbols-rounded text-xl shrink-0 flex justify-center w-6 text-center animate-pulse">warning</span>
-                <span class="font-label text-[10px] tracking-wider uppercase opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap font-bold">EMERGENCY OVERRIDE</span>
-            </a>
-        </div>
-    </aside>
-    `;
-
-    container.innerHTML = sidebarHTML;
-});
+    // ── Live IST Clock ──────────────────────────────────────────────────
+    function updateClock() {
+      const el = document.getElementById("live-time");
+      if (!el) return;
+      const now = new Date();
+      const hh = now.toLocaleString("en-IN", { timeZone: "Asia/Kolkata", hour: "2-digit",   hour12: false });
+      const mm = now.toLocaleString("en-IN", { timeZone: "Asia/Kolkata", minute: "2-digit", hour12: false });
+      const ss = now.toLocaleString("en-IN", { timeZone: "Asia/Kolkata", second: "2-digit", hour12: false });
+      el.textContent = `${hh}:${mm}:${ss} IST`;
+    }
+    updateClock();
+    setInterval(updateClock, 1000);
+  });
+})();

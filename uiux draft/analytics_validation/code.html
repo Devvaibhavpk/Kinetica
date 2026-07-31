@@ -13,22 +13,66 @@
     <link href="https://fonts.googleapis.com/css2?family=Commit+Mono:ital,wght@0,400..700;1,400..700&amp;display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&amp;display=swap" rel="stylesheet" />
 
-    <!-- Tailwind CSS CDN -->
-    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 
-    <!-- Tailwind Configuration -->
-        <script src="../shared/theme.js"></script>
 
+    <!-- Tailwind config: MUST appear before cdn.tailwindcss.com -->
+    <script>
+      window.tailwind = window.tailwind || {};
+      window.tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "surface":                   "#111318",
+              "surface-dim":               "#0d0f13",
+              "surface-bright":            "#1c1e24",
+              "surface-container-lowest":  "#0d0f13",
+              "surface-container-low":     "#161820",
+              "surface-container":         "#1c1e24",
+              "surface-container-high":    "#2c2f3a",
+              "surface-container-highest": "#363944",
+              "on-surface":                "#e8eaf0",
+              "on-surface-variant":        "#9096a8",
+              "outline":                   "#2e3140",
+              "outline-variant":           "#232535",
+              "primary":                   "#4d9fff",
+              "on-primary":                "#ffffff",
+              "state-calm":                "#00c97a",
+              "state-building":            "#ffab1a",
+              "state-preempted":           "#ff4060"
+            },
+            fontFamily: {
+              "sans":      ["Inter",        "system-ui", "sans-serif"],
+              "display":   ["Albert Sans",  "sans-serif"],
+              "body":      ["Inter",        "system-ui", "sans-serif"],
+              "label":     ["Inter",        "system-ui", "sans-serif"],
+              "mono":      ["JetBrains Mono","monospace"],
+              "telemetry": ["JetBrains Mono","monospace"]
+            },
+            borderRadius: {
+              "DEFAULT": "8px",
+              "md":  "10px",
+              "lg":  "14px",
+              "xl":  "18px",
+              "2xl": "24px",
+              "full":"9999px"
+            }
+          }
+        }
+      };
+    </script>
+    <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="../shared/theme.css">
-    <script src="../shared/sidebar.js"></script>
+    <script src="../shared/sidebar.js" defer></script>
 </head>
-<body class="antialiased min-h-screen flex overflow-x-hidden blueprint-grid">
+<body class="antialiased min-h-screen flex overflow-x-hidden blueprint-grid" style="background-color:#111318;color:#e8eaf0;">
 
     <!-- Unified Industrial Side Nav Rail -->
         <div id="sidebar-container"></div>
 
     <!-- Unified Top Header Bar -->
-    <header class="fixed top-0 right-0 left-16 z-40 h-14 bg-[#0a0a0a]/95 backdrop-blur-md border-b border-white/[0.08] flex items-center justify-between px-6">
+    <header class="fixed top-0 right-0 left-16 z-40 h-14 bg-surface/95 backdrop-blur-md border-b border-outline flex items-center justify-between px-6">
         <!-- Left: Page Title & Context Badge -->
         <div class="flex items-center gap-4">
             <div class="flex items-center gap-2.5">
@@ -39,7 +83,7 @@
         </div>
 
         <!-- Center: Standardized Telemetry KPI Ticker -->
-        <div class="hidden xl:flex items-center gap-4 border-x border-white/[0.08] px-6">
+        <div class="hidden xl:flex items-center gap-4 border-x border-outline px-6">
             <div class="flex flex-col">
                 <span class="font-label text-[10px] text-on-surface-variant uppercase tracking-[0.12em]">Sample Size (N)</span>
                 <span class="font-telemetry text-xs font-bold text-state-calm tabular-nums" id="navSampleSize">14,204 <span class="font-label text-[9px] text-on-surface-variant uppercase">SAMPLES</span></span>
@@ -58,12 +102,12 @@
 
         <!-- Right: Status, Quick Actions & Notification Bell -->
         <div class="flex items-center gap-3">
-            <div class="hidden sm:flex items-center gap-2 px-3 py-1 rounded-[24px] industrial-panel border border-white/[0.08] tech-border">
+            <div class="hidden sm:flex items-center gap-2 px-3 py-1 rounded-[24px] industrial-panel border border-outline tech-border">
                 <span class="w-1.5 h-1.5 rounded-full bg-state-calm animate-pulse"></span>
                 <span class="font-telemetry text-[11px] text-on-surface-variant">CI: 95.0% Confidence</span>
             </div>
 
-            <button onclick="openScenarioModal()" class="px-3.5 py-1.5 rounded-full border border-white/[0.08] text-on-surface-variant hover:text-on-surface hover:border-primary/40 transition-colors font-body text-xs font-medium flex items-center gap-1.5">
+            <button onclick="openScenarioModal()" class="px-3.5 py-1.5 rounded-full border border-outline text-on-surface-variant hover:text-on-surface hover:border-primary/40 transition-colors font-body text-xs font-medium flex items-center gap-1.5">
                 <span class="material-symbols-rounded text-sm text-state-calm">tune</span>
                 <span class="font-label text-[11px] uppercase tracking-[0.1em]">Sandbox</span>
             </button>
@@ -110,7 +154,7 @@
         <div class="grid grid-cols-1 md:grid-cols-12 gap-4">
 
             <!-- Hero Module: Statistical Verdict -->
-            <div class="md:col-span-12 glass-card p-4 md:p-4 relative overflow-hidden border border-white/[0.08]">
+            <div class="md:col-span-12 glass-card p-4 md:p-4 relative overflow-hidden border border-outline">
                 <div class="flex flex-col lg:flex-row gap-4 items-start lg:items-center justify-between relative z-10">
                     <div class="flex-1">
                         <div class="flex items-center gap-3 mb-2">
@@ -130,13 +174,13 @@
 
                     <!-- Metric Tiles Grid -->
                     <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 lg:w-auto w-full">
-                        <div class="bg-surface-container rounded-[24px] p-3.5 border border-white/[0.08] min-w-[130px]">
+                        <div class="bg-surface-container rounded-[24px] p-3.5 border border-outline min-w-[130px]">
                             <div class="text-on-surface-variant font-label text-[10px] uppercase tracking-wider mb-1">TEST APPLIED</div>
                             <div class="font-telemetry text-sm font-semibold text-on-surface truncate" id="verdictTestName">Mann-Whitney U</div>
                             <div class="text-[10px] text-on-surface-variant font-telemetry mt-0.5">z = -5.82</div>
                         </div>
 
-                        <div class="bg-surface-container rounded-[24px] p-3.5 border border-white/[0.08] min-w-[130px]">
+                        <div class="bg-surface-container rounded-[24px] p-3.5 border border-outline min-w-[130px]">
                             <div class="text-on-surface-variant font-label text-[10px] uppercase tracking-wider mb-1">STATISTIC (U)</div>
                             <div class="font-telemetry text-base font-bold text-primary tabular-nums" id="verdictStat">14,203.5</div>
                             <div class="text-[10px] text-on-surface-variant font-telemetry mt-0.5">DF: 14,202</div>
@@ -148,7 +192,7 @@
                             <div class="text-[10px] text-state-calm font-label uppercase tracking-wider font-semibold mt-0.5">p &lt; 0.001 (SIG)</div>
                         </div>
 
-                        <div class="bg-surface-container rounded-[24px] p-3.5 border border-white/[0.08] min-w-[130px]">
+                        <div class="bg-surface-container rounded-[24px] p-3.5 border border-outline min-w-[130px]">
                             <div class="text-on-surface-variant font-label text-[10px] uppercase tracking-wider mb-1">EFFECT SIZE (R)</div>
                             <div class="font-telemetry text-base font-bold text-secondary tabular-nums" id="verdictEffect">0.42</div>
                             <div class="text-[10px] text-secondary font-label uppercase tracking-wider font-semibold mt-0.5">LARGE EFFECT</div>
@@ -157,11 +201,11 @@
                 </div>
 
                 <!-- Confidence Interval Footer Ribbon -->
-                <div class="mt-5 pt-3.5 border-t border-white/[0.08] flex flex-wrap items-center justify-between gap-4 text-xs font-telemetry">
+                <div class="mt-5 pt-3.5 border-t border-outline flex flex-wrap items-center justify-between gap-4 text-xs font-telemetry">
                     <div class="flex items-center gap-4 text-on-surface-variant">
-                        <span><span class="font-label text-slate-300 uppercase mr-1">95% CI FOR MEAN DELAY REDUCTION:</span> <strong class="text-primary" id="verdictCI">[-28.4s, -16.2s]</strong></span>
+                        <span><span class="font-label text-on-surface-variant uppercase mr-1">95% CI FOR MEAN DELAY REDUCTION:</span> <strong class="text-primary" id="verdictCI">[-28.4s, -16.2s]</strong></span>
                         <span>|</span>
-                        <span><span class="font-label text-slate-300 uppercase mr-1">MEAN WAIT TIME SAVINGS:</span> <strong class="text-state-calm" id="verdictMeanSaving">23.2s / veh</strong></span>
+                        <span><span class="font-label text-on-surface-variant uppercase mr-1">MEAN WAIT TIME SAVINGS:</span> <strong class="text-state-calm" id="verdictMeanSaving">23.2s / veh</strong></span>
                     </div>
                     <div class="flex items-center gap-2">
                         <span class="led-pip led-calm"></span>
@@ -183,13 +227,13 @@
 
                     <!-- Interactive Controls -->
                     <div class="flex flex-wrap items-center gap-2">
-                        <select id="baselineSelector" onchange="updateBaselineModel(this.value)" class="industrial-panel border border-white/[0.08] tech-border text-on-surface text-xs font-label uppercase tracking-wider rounded-full px-3 py-1.5 focus:ring-1 focus:ring-primary focus:outline-none">
+                        <select id="baselineSelector" onchange="updateBaselineModel(this.value)" class="industrial-panel border border-outline tech-border text-on-surface text-xs font-label uppercase tracking-wider rounded-full px-3 py-1.5 focus:ring-1 focus:ring-primary focus:outline-none">
                             <option value="fixed_timer">Baseline: Fixed Timer (90s)</option>
                             <option value="scats_actuated">Baseline: SCATS Actuated</option>
                             <option value="webster_optimal">Baseline: Webster Fixed-Cycle</option>
                         </select>
 
-                        <div class="flex bg-surface-container rounded-[24px] p-0.5 border border-white/[0.08] text-[10px] font-label uppercase">
+                        <div class="flex bg-surface-container rounded-[24px] p-0.5 border border-outline text-[10px] font-label uppercase">
                             <button onclick="setPlotMode('kde')" id="btnKde" class="px-3 py-1 rounded-full bg-primary text-on-primary font-bold">KDE</button>
                             <button onclick="setPlotMode('cdf')" id="btnCdf" class="px-3 py-1 rounded-full text-on-surface-variant hover:text-on-surface">CDF</button>
                         </div>
@@ -197,7 +241,7 @@
                 </div>
 
                 <!-- Dynamic Chart Container -->
-                <div class="relative w-full h-[300px] bg-surface-container-high rounded-[24px] p-4 border border-white/[0.08] flex flex-col justify-end">
+                <div class="relative w-full h-[300px] bg-surface-container-high rounded-[24px] p-4 border border-outline flex flex-col justify-end">
                     <!-- Y Axis Labels -->
                     <div class="absolute left-3 top-4 bottom-8 flex flex-col justify-between text-[10px] text-on-surface-variant font-telemetry">
                         <span>0.04</span>
@@ -208,10 +252,10 @@
                     </div>
 
                     <!-- Horizontal Grid lines -->
-                    <div class="absolute left-12 right-4 top-4 border-b border-white/[0.08]/50"></div>
-                    <div class="absolute left-12 right-4 top-1/4 border-b border-white/[0.08]/50"></div>
-                    <div class="absolute left-12 right-4 top-2/4 border-b border-white/[0.08]/50"></div>
-                    <div class="absolute left-12 right-4 top-3/4 border-b border-white/[0.08]/50"></div>
+                    <div class="absolute left-12 right-4 top-4 border-b border-outline/50"></div>
+                    <div class="absolute left-12 right-4 top-1/4 border-b border-outline/50"></div>
+                    <div class="absolute left-12 right-4 top-2/4 border-b border-outline/50"></div>
+                    <div class="absolute left-12 right-4 top-3/4 border-b border-outline/50"></div>
 
                     <!-- SVG Distribution Plot -->
                     <div class="ml-8 w-[calc(100%-2rem)] h-[220px] relative">
@@ -242,15 +286,15 @@
 
                         <!-- Floating Stat Badges on Graph -->
                         <div id="kineticaMeanBadge" class="absolute left-[30%] top-[8%] bg-surface-container-high/90 border border-primary/40 px-3 py-1 rounded-full text-xs font-telemetry text-primary shadow-lg backdrop-blur-md">
-                            Kinetica <span class="font-label text-[10px] text-slate-300">μ =</span> <strong id="valKineticaMean">58.2s</strong>
+                            Kinetica <span class="font-label text-[10px] text-on-surface-variant">μ =</span> <strong id="valKineticaMean">58.2s</strong>
                         </div>
                         <div id="baselineMeanBadge" class="absolute left-[50%] top-[18%] bg-surface-container-high/90 border border-secondary/40 px-3 py-1 rounded-full text-xs font-telemetry text-secondary shadow-lg backdrop-blur-md">
-                            Baseline <span class="font-label text-[10px] text-slate-300">μ =</span> <strong id="valBaselineMean">85.4s</strong>
+                            Baseline <span class="font-label text-[10px] text-on-surface-variant">μ =</span> <strong id="valBaselineMean">85.4s</strong>
                         </div>
                     </div>
 
                     <!-- X Axis Labels -->
-                    <div class="ml-8 w-[calc(100%-2rem)] flex justify-between text-[10px] text-on-surface-variant font-telemetry pt-2 border-t border-white/[0.08]">
+                    <div class="ml-8 w-[calc(100%-2rem)] flex justify-between text-[10px] text-on-surface-variant font-telemetry pt-2 border-t border-outline">
                         <span>0s</span>
                         <span>25s</span>
                         <span>50s</span>
@@ -262,7 +306,7 @@
                 </div>
 
                 <!-- Legend & Summary Footer -->
-                <div class="mt-4 flex flex-wrap items-center justify-between gap-4 pt-3 border-t border-white/[0.08] text-xs">
+                <div class="mt-4 flex flex-wrap items-center justify-between gap-4 pt-3 border-t border-outline text-xs">
                     <div class="flex items-center gap-4">
                         <div class="flex items-center gap-2">
                             <span class="w-2.5 h-2.5 rounded-full bg-secondary"></span>
@@ -358,7 +402,7 @@
                         </div>
                     </div>
 
-                    <div class="mt-5 pt-3 border-t border-white/[0.08] flex items-center justify-between text-xs font-telemetry text-on-surface-variant">
+                    <div class="mt-5 pt-3 border-t border-outline flex items-center justify-between text-xs font-telemetry text-on-surface-variant">
                         <span>bottleneck_model.py</span>
                         <span class="text-primary">RandomForest &amp; LightGBM</span>
                     </div>
@@ -371,14 +415,14 @@
                             <span class="material-symbols-rounded text-secondary">show_chart</span>
                             Poisson Arrival Fit Match
                         </h3>
-                        <span class="px-2 py-0.5 industrial-panel border border-white/[0.08] tech-border rounded-[24px] font-telemetry text-[10px] text-on-surface-variant">
+                        <span class="px-2 py-0.5 industrial-panel border border-outline tech-border rounded-[24px] font-telemetry text-[10px] text-on-surface-variant">
                             Poisson(λ=0.42)
                         </span>
                     </div>
 
                     <div class="flex items-center gap-3 my-2">
                         <!-- Mini Histogram Bars -->
-                        <div class="w-20 h-12 flex items-end gap-1 shrink-0 p-1 bg-surface-container-high rounded-[24px] border border-white/[0.08]">
+                        <div class="w-20 h-12 flex items-end gap-1 shrink-0 p-1 bg-surface-container-high rounded-[24px] border border-outline">
                             <div class="w-3 bg-secondary/40 h-[25%] rounded-t-sm"></div>
                             <div class="w-3 bg-secondary/70 h-[65%] rounded-t-sm"></div>
                             <div class="w-3 bg-secondary h-[100%] rounded-t-sm"></div>
@@ -403,7 +447,7 @@
             </div>
 
             <!-- Scenario Sandbox Control Panel (Col 12) -->
-            <div class="md:col-span-12 glass-card p-4 md:p-4 border border-white/[0.08]">
+            <div class="md:col-span-12 glass-card p-4 md:p-4 border border-outline">
                 <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-5">
                     <div>
                         <h3 class="font-display text-lg font-bold text-on-surface flex items-center gap-2">
@@ -413,7 +457,7 @@
                         <p class="text-xs text-on-surface-variant font-body mt-0.5">Adjust traffic arrival rate λ and maximum green extension buffer to observe real-time predicted delay savings and p-value stability.</p>
                     </div>
 
-                    <button onclick="resetSandbox()" class="px-4 py-2 bg-surface-container hover:industrial-panel border border-white/[0.08] tech-border text-on-surface text-xs font-label uppercase tracking-wider rounded-full transition-all flex items-center gap-2">
+                    <button onclick="resetSandbox()" class="px-4 py-2 bg-surface-container hover:industrial-panel border border-outline tech-border text-on-surface text-xs font-label uppercase tracking-wider rounded-full transition-all flex items-center gap-2">
                         <span class="material-symbols-rounded text-sm">refresh</span>
                         <span>Reset Parameters</span>
                     </button>
@@ -423,7 +467,7 @@
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
 
                     <!-- Slider 1: Traffic Volume Lambda -->
-                    <div class="bg-surface-container p-4.5 rounded-[24px] border border-white/[0.08]">
+                    <div class="bg-surface-container p-4.5 rounded-[24px] border border-outline">
                         <div class="flex justify-between items-center mb-2">
                             <span class="font-label text-xs text-on-surface-variant uppercase tracking-wider">TRAFFIC ARRIVAL RATE (λ)</span>
                             <span class="font-telemetry text-sm font-bold text-primary" id="sliderLambdaVal">0.42 <span class="font-label text-[10px] text-on-surface-variant">VEH/S</span></span>
@@ -437,7 +481,7 @@
                     </div>
 
                     <!-- Slider 2: Green Extension Buffer -->
-                    <div class="bg-surface-container p-4.5 rounded-[24px] border border-white/[0.08]">
+                    <div class="bg-surface-container p-4.5 rounded-[24px] border border-outline">
                         <div class="flex justify-between items-center mb-2">
                             <span class="font-label text-xs text-on-surface-variant uppercase tracking-wider">MAX GREEN EXTENSION BUFFER</span>
                             <span class="font-telemetry text-sm font-bold text-secondary" id="sliderBufferVal">4.2 <span class="font-label text-[10px] text-on-surface-variant">SEC</span></span>
@@ -477,8 +521,8 @@
             </div>
 
         </div>
-    <footer class="fixed bottom-0 left-16 right-0 h-10 bg-[#0a0a0a] border-t border-white/[0.08] z-30 flex items-center px-3 overflow-hidden">
-            <div class="flex items-center gap-2 pr-4 border-r border-white/[0.08] shrink-0 bg-[#0a0a0a] z-10 h-full relative">
+    <footer class="fixed bottom-0 left-16 right-0 h-10 bg-surface border-t border-outline z-30 flex items-center px-3 overflow-hidden">
+            <div class="flex items-center gap-2 pr-4 border-r border-outline shrink-0 bg-surface z-10 h-full relative">
                 <span class="material-symbols-rounded text-on-surface-variant text-[14px]">terminal</span>
                 <span class="font-label text-[10px] uppercase tracking-widest text-on-surface-variant">Sys_Log</span>
                 <div class="absolute right-0 top-0 bottom-0 w-8 bg-gradient-to-r from-[#0a0a0a] to-transparent pointer-events-none translate-x-full"></div>
@@ -524,7 +568,7 @@
                     <div class="flex items-center gap-2 shrink-0">
                         <span class="font-telemetry text-[10px] text-on-surface-variant">[14:01:12]</span>
                         <span class="font-telemetry text-[10px] text-on-surface font-bold">IX104</span>
-                        <span class="px-1.5 py-0.5 rounded bg-surface-container-high text-on-surface-variant border-white/[0.12] border font-telemetry text-[9px] uppercase tracking-widest">INFO</span>
+                        <span class="px-1.5 py-0.5 rounded bg-surface-container-high text-on-surface-variant border-outline border font-telemetry text-[9px] uppercase tracking-widest">INFO</span>
                         <span class="font-telemetry text-[10px] text-on-surface-variant">Camera feed 3 re-established</span>
                     </div>
                     <div class="w-px h-3 bg-white/[0.12] shrink-0"></div>
@@ -545,7 +589,7 @@
                     <div class="flex items-center gap-2 shrink-0">
                         <span class="font-telemetry text-[10px] text-on-surface-variant">[14:00:01]</span>
                         <span class="font-telemetry text-[10px] text-on-surface font-bold">SYS_C</span>
-                        <span class="px-1.5 py-0.5 rounded bg-surface-container-high text-on-surface-variant border-white/[0.12] border font-telemetry text-[9px] uppercase tracking-widest">SYNC</span>
+                        <span class="px-1.5 py-0.5 rounded bg-surface-container-high text-on-surface-variant border-outline border font-telemetry text-[9px] uppercase tracking-widest">SYNC</span>
                         <span class="font-telemetry text-[10px] text-on-surface-variant">NTP clock sync successful (Offset 0.2ms)</span>
                     </div>
                     <div class="w-px h-3 bg-white/[0.12] shrink-0"></div>
@@ -594,7 +638,7 @@
                     <div class="flex items-center gap-2 shrink-0">
                         <span class="font-telemetry text-[10px] text-on-surface-variant">[14:01:12]</span>
                         <span class="font-telemetry text-[10px] text-on-surface font-bold">IX104</span>
-                        <span class="px-1.5 py-0.5 rounded bg-surface-container-high text-on-surface-variant border-white/[0.12] border font-telemetry text-[9px] uppercase tracking-widest">INFO</span>
+                        <span class="px-1.5 py-0.5 rounded bg-surface-container-high text-on-surface-variant border-outline border font-telemetry text-[9px] uppercase tracking-widest">INFO</span>
                         <span class="font-telemetry text-[10px] text-on-surface-variant">Camera feed 3 re-established</span>
                     </div>
                     <div class="w-px h-3 bg-white/[0.12] shrink-0"></div>
@@ -615,7 +659,7 @@
                     <div class="flex items-center gap-2 shrink-0">
                         <span class="font-telemetry text-[10px] text-on-surface-variant">[14:00:01]</span>
                         <span class="font-telemetry text-[10px] text-on-surface font-bold">SYS_C</span>
-                        <span class="px-1.5 py-0.5 rounded bg-surface-container-high text-on-surface-variant border-white/[0.12] border font-telemetry text-[9px] uppercase tracking-widest">SYNC</span>
+                        <span class="px-1.5 py-0.5 rounded bg-surface-container-high text-on-surface-variant border-outline border font-telemetry text-[9px] uppercase tracking-widest">SYNC</span>
                         <span class="font-telemetry text-[10px] text-on-surface-variant">NTP clock sync successful (Offset 0.2ms)</span>
                     </div>
                     <div class="w-px h-3 bg-white/[0.12] shrink-0"></div>
@@ -640,7 +684,7 @@
             <h3 class="font-display text-xl font-bold text-on-surface mb-2">Initiate Emergency Preempt</h3>
             <p class="text-xs font-body text-on-surface-variant mb-6">Forces all active corridors into emergency green pre-clearance phase. Overrides adaptive optimization schedules.</p>
             <div class="flex gap-3 justify-end">
-                <button onclick="closeEmergencyModal()" class="px-4 py-2 rounded-full border border-white/[0.08] text-on-surface text-xs font-label uppercase tracking-wider hover:bg-surface-container-high transition-all">
+                <button onclick="closeEmergencyModal()" class="px-4 py-2 rounded-full border border-outline text-on-surface text-xs font-label uppercase tracking-wider hover:bg-surface-container-high transition-all">
                     Cancel
                 </button>
                 <button onclick="confirmEmergency()" class="px-4 py-2 rounded-full bg-state-preempted text-white text-xs font-label uppercase tracking-wider font-bold hover:opacity-90 transition-all">
@@ -652,7 +696,7 @@
 
     <!-- Scenario Modal -->
     <div id="scenarioModal" class="fixed inset-0 z-50 bg-surface-dim/80 backdrop-blur-md flex items-center justify-center hidden p-4">
-        <div class="glass-card-high max-w-lg w-full p-4 border border-white/[0.08] shadow-2xl relative">
+        <div class="glass-card-high max-w-lg w-full p-4 border border-outline shadow-2xl relative">
             <div class="flex justify-between items-center mb-4">
                 <h3 class="font-display text-lg font-bold text-on-surface">Deploy Validation Scenario</h3>
                 <button onclick="closeScenarioModal()" class="text-on-surface-variant hover:text-on-surface">
@@ -662,7 +706,7 @@
             <p class="text-xs font-body text-on-surface-variant mb-6">Select a pre-configured synthetic traffic load to run online statistical hypothesis testing.</p>
 
             <div class="space-y-3 mb-6">
-                <label class="flex items-center p-3 rounded-[24px] industrial-panel border border-white/[0.08] tech-border hover:border-primary/40 cursor-pointer transition-all">
+                <label class="flex items-center p-3 rounded-[24px] industrial-panel border border-outline tech-border hover:border-primary/40 cursor-pointer transition-all">
                     <input type="radio" name="scenarioSelect" value="heavy_peak" checked class="text-primary focus:ring-primary"/>
                     <div class="ml-3">
                         <div class="font-display text-sm font-bold text-on-surface">Heavy Evening Peak (λ = 0.85)</div>
@@ -670,7 +714,7 @@
                     </div>
                 </label>
 
-                <label class="flex items-center p-3 rounded-[24px] industrial-panel border border-white/[0.08] tech-border hover:border-primary/40 cursor-pointer transition-all">
+                <label class="flex items-center p-3 rounded-[24px] industrial-panel border border-outline tech-border hover:border-primary/40 cursor-pointer transition-all">
                     <input type="radio" name="scenarioSelect" value="emergency_platoon" class="text-primary focus:ring-primary"/>
                     <div class="ml-3">
                         <div class="font-display text-sm font-bold text-on-surface">Emergency Ambulance Platoon</div>
@@ -680,7 +724,7 @@
             </div>
 
             <div class="flex gap-3 justify-end">
-                <button onclick="closeScenarioModal()" class="px-4 py-2 rounded-full border border-white/[0.08] text-on-surface text-xs font-label uppercase tracking-wider hover:bg-surface-container-high transition-all">
+                <button onclick="closeScenarioModal()" class="px-4 py-2 rounded-full border border-outline text-on-surface text-xs font-label uppercase tracking-wider hover:bg-surface-container-high transition-all">
                     Cancel
                 </button>
                 <button onclick="closeScenarioModal()" class="px-4 py-2 rounded-full bg-primary text-on-primary text-xs font-label uppercase tracking-wider font-bold hover:opacity-90 transition-all">
