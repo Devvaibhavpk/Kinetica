@@ -423,6 +423,26 @@ The absolute final step involves running the entire presentation, complete with 
 
 ---
 
+## Phase 8 — Post-MVP Advanced Interactive Controls (Stretch Goal)
+*Target: Only after Phase 7 is fully complete and time permits.*
+
+### 8.1 Bidirectional WebSocket API Setup
+This task involves upgrading the read-only WebSocket (from Phase 3/7) to a fully bidirectional communication channel between Next.js and the Python backend. It is necessary to allow the dashboard to send command payloads (like overrides or parameter tweaks) back to the actuation engine securely. The deliverable is a functional two-way socket connection.
+
+### 8.2 Manual Phase Override (God Mode) Integration
+Here we implement a feature allowing the user to click a specific intersection in the `IntersectionDetailView` UI and force an immediate Green or Red phase. This overrides the max-heap and Poisson models temporarily. It requires building a backend listener that injects a manual `PhaseDecision` into the queue. The specific deliverable is a working manual toggle button on the dashboard.
+
+### 8.3 Live Parameter Tuning Sliders
+This step focuses on adding interactive sliders to the `SystemHealthView` that allow users to adjust core backend algorithms on the fly. Users will be able to tweak the `DEFAULT_SATURATION_FLOW_RATE` or the Exponential Moving Average alpha weight and watch the system instantly adapt its phase timings. The deliverable is a set of linked UI sliders and the corresponding backend state-update functions.
+
+### 8.4 Custom Emergency Route Drawing
+In this task, we add interactive mapping capabilities to the `CorridorView`, allowing a user to click a sequence of nodes to manually define an emergency vehicle's path. This bypasses the greedy heading-based path projection and forces the graph router to clear a specific custom corridor. The specific output is a point-and-click routing UI and its backend receiver.
+
+### 8.5 Live Synthetic Traffic Injection
+This final stretch goal adds a "Stress Test" button to the `OverviewView` that instantly injects a massive, synthetic platoon of vehicles into the simulation. It allows the presenter to dynamically prove the queue dissipation and dynamic green extension logic live during the demo, rather than relying solely on pre-recorded scenarios. The deliverable is a functional UI trigger connected to the synthetic generator.
+
+---
+
 ## Agent-Workflow Execution Notes
 
 For running this plan through an agentic coding tool phase-by-phase:
