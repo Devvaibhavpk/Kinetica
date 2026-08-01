@@ -55,11 +55,21 @@ dist/
 build/
 .npm/
 
-# Data
+# Data and ML Models
 data/*.csv
 data/*.json
 data/*.mp4
 data/*.avi
+data/dataset_*/
+data/**/*.yaml
+data/**/*.jpg
+data/**/*.png
+data/**/*.txt
+weights/
+runs_kinetica/
+runs/
+yolov8n.pt
+
 !data/DATASET_SOURCE.md
 !data/synthetic_generator.py
 !data/calibration/

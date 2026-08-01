@@ -1,7 +1,7 @@
 # Project Kinetica — Execution Plan
 
 **Course:** BCSE497J — Project I, Fall Semester 2026-2027
-**Team:** 23BDS1148, 23BDS1168 (Mithil Girish)
+**Team:** 23BDS1148(Vaibhav.P.K), 23BDS1168 (Mithil Girish)
 **Source documents:** `Project_Kinetica_Proposal.pdf`, `BCSE497J_Project_I_Guidelines_01.pdf`
 
 This plan is written to be executed by an agentic AI coding workflow (Claude Code / equivalent), one phase at a time. Each phase ends in a **verifiable artifact** — a script, a dataset, a metric, a document section — so an agent (or a reviewer) can check "done" without ambiguity. Phases map directly onto the four modules from the proposal (Vision → Actuation → Preemption → Predictive Validation) and are sequenced to land *before* each SCOPE review deadline with margin, not on the deadline itself.
