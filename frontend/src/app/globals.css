@@ -504,3 +504,40 @@ button:active { transform: scale(0.97); }
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: var(--surface-high); border-radius: 9999px; }
 ::-webkit-scrollbar-thumb:hover { background: var(--surface-highest); }
+
+/* ══════════════════════════════════════════════
+   14. LEAFLET MAP CUSTOM DARK THEME
+   ══════════════════════════════════════════════ */
+.leaflet-container {
+  background-color: #0c0e12 !important;
+  font-family: 'JetBrains Mono', monospace !important;
+}
+
+.leaflet-custom-tooltip {
+  background-color: #111318 !important;
+  border: 1px solid #2e3140 !important;
+  color: #e8eaf0 !important;
+  font-family: 'JetBrains Mono', monospace !important;
+  font-size: 10px !important;
+  padding: 4px 8px !important;
+  border-radius: 6px !important;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.6) !important;
+}
+
+.leaflet-custom-tooltip::before {
+  border-top-color: #2e3140 !important;
+}
+
+.leaflet-node-popup {
+  background-color: #111318 !important;
+  border: 1px solid #2e3140 !important;
+  color: #e8eaf0 !important;
+  border-radius: 8px !important;
+  padding: 2px !important;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.8) !important;
+}
+
+.custom-leaflet-marker {
+  background: transparent !important;
+  border: none !important;
+}

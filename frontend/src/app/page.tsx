@@ -15,6 +15,11 @@ import EmergencyOverrideView from "../components/views/EmergencyOverrideView";
 
 export default function Home() {
   const [activeModule, setActiveModule] = useState<ModuleKey>("overview");
+  const [isSidebarExpanded, setIsSidebarExpanded] = useState<boolean>(false);
+
+  const toggleSidebar = () => {
+    setIsSidebarExpanded((prev) => !prev);
+  };
 
   const getModuleTitle = (key: ModuleKey) => {
     switch (key) {
@@ -60,16 +65,29 @@ export default function Home() {
 
   return (
     <>
-      <Sidebar activeModule={activeModule} onSelectModule={setActiveModule} />
-      
-      <main className="ml-16 flex-1 flex flex-col relative h-full">
-        <Topbar moduleTitle={getModuleTitle(activeModule)} />
+      <Sidebar
+        activeModule={activeModule}
+        onSelectModule={setActiveModule}
+        isExpanded={isSidebarExpanded}
+        onToggleExpand={toggleSidebar}
+      />
+
+      <main
+        className={`flex-1 flex flex-col relative h-full transition-all duration-300 ease-in-out ${
+          isSidebarExpanded ? "ml-[264px]" : "ml-[64px]"
+        }`}
+      >
+        <Topbar
+          moduleTitle={getModuleTitle(activeModule)}
+          isSidebarExpanded={isSidebarExpanded}
+          onToggleSidebar={toggleSidebar}
+        />
 
         <div className="mt-14 p-6 overflow-y-auto flex-1 flex flex-col gap-6 pb-16">
           {renderActiveView()}
         </div>
 
-        <TickerBar />
+        <TickerBar isSidebarExpanded={isSidebarExpanded} />
       </main>
     </>
   );

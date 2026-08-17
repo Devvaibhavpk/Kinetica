@@ -4,9 +4,15 @@ import React, { useState, useEffect } from "react";
 
 interface TopbarProps {
   moduleTitle: string;
+  isSidebarExpanded?: boolean;
+  onToggleSidebar?: () => void;
 }
 
-export default function Topbar({ moduleTitle }: TopbarProps) {
+export default function Topbar({
+  moduleTitle,
+  isSidebarExpanded = false,
+  onToggleSidebar,
+}: TopbarProps) {
   const [time, setTime] = useState<string>("");
 
   useEffect(() => {
@@ -23,8 +29,25 @@ export default function Topbar({ moduleTitle }: TopbarProps) {
   }, []);
 
   return (
-    <header className="fixed top-0 right-0 left-[60px] z-40 h-14 bg-surface/95 backdrop-blur-md border-b border-outline flex items-center justify-between px-6">
-      <div className="flex items-center gap-4">
+    <header
+      className={`fixed top-0 right-0 z-40 h-14 bg-surface/95 backdrop-blur-md border-b border-outline flex items-center justify-between px-6 transition-all duration-300 ease-in-out ${
+        isSidebarExpanded ? "left-[264px]" : "left-[64px]"
+      }`}
+    >
+      <div className="flex items-center gap-3">
+        {onToggleSidebar && (
+          <button
+            onClick={onToggleSidebar}
+            className="w-8 h-8 rounded-md flex items-center justify-center text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-colors cursor-pointer mr-1"
+            title={isSidebarExpanded ? "Collapse Sidebar" : "Expand Sidebar"}
+            aria-label="Toggle Sidebar"
+          >
+            <span className="material-symbols-rounded text-[20px]">
+              {isSidebarExpanded ? "menu_open" : "menu"}
+            </span>
+          </button>
+        )}
+
         <div className="flex items-center gap-2">
           <span className="material-symbols-rounded text-state-calm text-[18px]">public</span>
           <h1 className="font-display text-sm font-semibold tracking-wide uppercase">{moduleTitle}</h1>

@@ -70,14 +70,14 @@ export default function VisionMonitorView() {
       {/* FILTER BAR */}
       <div style={{ gridColumn: '1/-1', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '12px', flexWrap: 'wrap' }}>
         <div>
-          <h2 style={{ fontFamily: '"Albert Sans", sans-serif', fontSize: '18px', fontWeight: 600, letterSpacing: '-0.01em', margin: 0 }}>AI Vision Feed &amp; Object Detection</h2>
-          <p style={{ fontSize: '12px', color: '#9096a8', margin: '2px 0 0' }}>Live YOLOv8 inference · District 7 intersections · 4-cam array</p>
+          <h2 style={{ fontFamily: '"Albert Sans", sans-serif', fontSize: '18px', fontWeight: 600, letterSpacing: '-0.01em', margin: 0 }}>Edge YOLOv8 Perception & Spatial Tracking</h2>
+          <p style={{ fontSize: '12px', color: '#9096a8', margin: '2px 0 0' }}>Chennai Metropolitan Area (CMA) Sector 4 · 4-Camera Multi-Lane Array</p>
         </div>
 
         <div style={{ display: 'flex', alignItems: 'center', gap: '6px', background: '#1c1e24', border: '1px solid #2e3140', borderRadius: '9999px', padding: '4px 6px' }}>
           {/* Overlay Toggle */}
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px', paddingRight: '10px', borderRight: '1px solid #2e3140' }}>
-            <span style={{ fontSize: '10px', fontWeight: 500, textTransform: 'uppercase', letterSpacing: '0.06em', color: '#9096a8', marginLeft: '6px' }}>Overlay</span>
+            <span style={{ fontSize: '10px', fontWeight: 500, textTransform: 'uppercase', letterSpacing: '0.06em', color: '#9096a8', marginLeft: '6px' }}>Bird's-Eye ROI</span>
             <div 
               onClick={() => setShowOverlay(!showOverlay)} 
               style={{ width: '36px', height: '20px', background: showOverlay ? '#00c97a' : '#2c2f3a', borderRadius: '9999px', position: 'relative', cursor: 'pointer', transition: 'background 0.2s' }}
@@ -87,7 +87,7 @@ export default function VisionMonitorView() {
           </div>
           
           <button className={`filter-pill ${activeFilter === 'all' ? 'active-calm' : 'inactive'}`} onClick={() => setActiveFilter('all')}>All</button>
-          <button className={`filter-pill ${activeFilter === 'ambulance' ? 'active-crit' : 'inactive'}`} onClick={() => setActiveFilter('ambulance')}>🚑 Ambulance</button>
+          <button className={`filter-pill ${activeFilter === 'ambulance' ? 'active-crit' : 'inactive'}`} onClick={() => setActiveFilter('ambulance')}>🚑 108 EMS</button>
           <button className={`filter-pill ${activeFilter === 'police' ? 'active-primary' : 'inactive'}`} onClick={() => setActiveFilter('police')}>🚔 Police</button>
           <button className={`filter-pill ${activeFilter === 'school_van' ? 'active-warn' : 'inactive'}`} onClick={() => setActiveFilter('school_van')}>🚌 School Van</button>
           <button className={`filter-pill ${activeFilter === 'two-wheeler' ? 'active-calm' : 'inactive'}`} onClick={() => setActiveFilter('two-wheeler')}>🛵 2-Wheeler</button>
@@ -101,7 +101,7 @@ export default function VisionMonitorView() {
           <div className="cam-overlay" style={{ position: 'absolute', top: 0, left: 0, right: 0, zIndex: 10, padding: '10px 12px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '7px' }}>
               <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#ff4060', animation: 'pulse-ring-crit 1.5s ease infinite', display: 'inline-block' }}></span>
-              <span style={{ fontFamily: '"JetBrains Mono", monospace', fontSize: '11px', fontWeight: 700 }}>CAM-01 · NORTH · MAIN ST</span>
+              <span style={{ fontFamily: '"JetBrains Mono", monospace', fontSize: '11px', fontWeight: 700 }}>CAM-01 · SHOLINGANALLUR (OMR NORTH)</span>
             </div>
             <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
               <span className="badge badge-calm">30 FPS</span>
@@ -137,7 +137,7 @@ export default function VisionMonitorView() {
           <div className="cam-overlay" style={{ position: 'absolute', top: 0, left: 0, right: 0, zIndex: 10, padding: '10px 12px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '7px' }}>
               <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#00c97a', display: 'inline-block' }}></span>
-              <span style={{ fontFamily: '"JetBrains Mono", monospace', fontSize: '11px', fontWeight: 700 }}>CAM-02 · EAST · 7TH AVE</span>
+              <span style={{ fontFamily: '"JetBrains Mono", monospace', fontSize: '11px', fontWeight: 700 }}>CAM-02 · MADHYA KAILASH (SARDAR PATEL RD)</span>
             </div>
             <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
               <span className="badge badge-calm">30 FPS</span>
@@ -169,7 +169,7 @@ export default function VisionMonitorView() {
           <div className="cam-overlay" style={{ position: 'absolute', top: 0, left: 0, right: 0, zIndex: 10, padding: '10px 12px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '7px' }}>
               <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#00c97a', display: 'inline-block' }}></span>
-              <span style={{ fontFamily: '"JetBrains Mono", monospace', fontSize: '11px', fontWeight: 700 }}>CAM-03 · SOUTH · OVERPASS</span>
+              <span style={{ fontFamily: '"JetBrains Mono", monospace', fontSize: '11px', fontWeight: 700 }}>CAM-03 · TIDEL PARK (OMR FAST-LANE)</span>
             </div>
             <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
               <span className="badge badge-calm">25 FPS</span>
@@ -201,7 +201,7 @@ export default function VisionMonitorView() {
           <div className="cam-overlay" style={{ position: 'absolute', top: 0, left: 0, right: 0, zIndex: 10, padding: '10px 12px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '7px' }}>
               <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#ffab1a', animation: 'pulse-ring-warn 1.5s ease infinite', display: 'inline-block' }}></span>
-              <span style={{ fontFamily: '"JetBrains Mono", monospace', fontSize: '11px', fontWeight: 700 }}>CAM-04 · WEST · THERMAL ⚠</span>
+              <span style={{ fontFamily: '"JetBrains Mono", monospace', fontSize: '11px', fontWeight: 700 }}>CAM-04 · KATHIPARA FLYOVER (GST HWY)</span>
             </div>
             <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
               <span className="badge badge-warn">14 FPS</span>

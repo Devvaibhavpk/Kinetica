@@ -1,6 +1,12 @@
+"use client";
+
 import React from "react";
 
-export default function TickerBar() {
+interface TickerBarProps {
+  isSidebarExpanded?: boolean;
+}
+
+export default function TickerBar({ isSidebarExpanded = false }: TickerBarProps) {
   const mockTickerData = [
     { time: "14:02:41", id: "IX104", type: "PREEMPT", msg: "Ambulance Override - Route Locked", colorClass: "bg-state-preempted/10 text-state-preempted border-state-preempted/30" },
     { time: "14:02:38", id: "IX102", type: "EXT", msg: "+4.2s Q buildup (Density 0.8)", colorClass: "bg-state-building/10 text-state-building border-state-building/30" },
@@ -15,7 +21,11 @@ export default function TickerBar() {
   ];
 
   return (
-    <footer className="fixed bottom-0 left-[60px] right-0 h-10 bg-surface border-t border-outline z-30 flex items-center px-3 overflow-hidden">
+    <footer
+      className={`fixed bottom-0 right-0 h-10 bg-surface border-t border-outline z-30 flex items-center px-3 overflow-hidden transition-all duration-300 ease-in-out ${
+        isSidebarExpanded ? "left-[264px]" : "left-[64px]"
+      }`}
+    >
       <div className="flex items-center gap-2 pr-4 border-r border-outline shrink-0 bg-surface z-10 h-full relative">
         <span className="material-symbols-rounded text-on-surface-variant text-[14px]">terminal</span>
         <span className="font-label text-[10px] uppercase tracking-widest text-on-surface-variant">Sys_Log</span>

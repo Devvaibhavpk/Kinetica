@@ -96,7 +96,7 @@ export default function CorridorView() {
                 color: "#9096a8",
               }}
             >
-              CORRIDOR-07 :: MAIN ST PH-A
+              OMR EXPRESSWAY (SH-49A) :: RAJIV GANDHI SALAI
             </span>
           </div>
           <h2
@@ -108,10 +108,10 @@ export default function CorridorView() {
               color: "#e8eaf0",
             }}
           >
-            Emergency Priority: EMS-914 (Ambulance Unit)
+            108 EMS Priority: Ambulance Corridor Wave
           </h2>
           <p style={{ fontSize: "13px", color: "#9096a8", margin: 0 }}>
-            Multi-intersection preclearance engaged across 5 downstream nodes. Dynamic green wave lock active.
+            Multi-intersection preclearance engaged from Madhya Kailash past TIDEL Park to Sholinganallur.
           </p>
         </div>
 
@@ -603,44 +603,44 @@ export default function CorridorView() {
               <line x1="450" y1="120" x2="450" y2="190" stroke="#1c1e24" strokeWidth="3" strokeDasharray="4" />
               <line x1="640" y1="60" x2="640" y2="130" stroke="#1c1e24" strokeWidth="3" strokeDasharray="4" />
 
-              {/* Node A (Cleared) */}
-              <g transform="translate(80, 140)" style={{ cursor: "pointer" }} onClick={() => console.log('Selected Node A')}>
+              {/* Node IX-101 (Cleared) */}
+              <g transform="translate(80, 140)" style={{ cursor: "pointer" }}>
                 <circle r="16" fill="#0d0f13" stroke="#00c97a" strokeWidth="3" />
                 <circle r="8" fill="#00c97a" />
-                <text y="-26" fontFamily="'JetBrains Mono', monospace" fontSize="11" fontWeight="bold" fill="#e8eaf0" textAnchor="middle">INT-A</text>
+                <text y="-26" fontFamily="'JetBrains Mono', monospace" fontSize="11" fontWeight="bold" fill="#e8eaf0" textAnchor="middle">IX-101 (Adyar)</text>
                 <text y="32" fontFamily="'Inter', sans-serif" fontSize="9" fill="#00c97a" textAnchor="middle">CLEARED</text>
               </g>
 
-              {/* Node B (Active Preemption) */}
-              <g transform="translate(260, 90)" style={{ cursor: "pointer" }} onClick={() => console.log('Selected Node B')}>
+              {/* Node IX-102 (Active Preemption) */}
+              <g transform="translate(260, 90)" style={{ cursor: "pointer" }}>
                 <circle r="22" fill="#ff4060" fillOpacity="0.25" stroke="#ff4060" strokeWidth="2" className="animate-ping" style={{ animationDuration: '2s' }} />
                 <circle r="18" fill="#0d0f13" stroke="#ff4060" strokeWidth="4" />
                 <circle r="9" fill="#ff4060" />
-                <text y="-28" fontFamily="'JetBrains Mono', monospace" fontSize="12" fontWeight="bold" fill="#ff4060" textAnchor="middle">INT-B (7th)</text>
+                <text y="-28" fontFamily="'JetBrains Mono', monospace" fontSize="12" fontWeight="bold" fill="#ff4060" textAnchor="middle">IX-102 (TIDEL)</text>
                 <text y="34" fontFamily="'Inter', sans-serif" fontSize="10" fontWeight="bold" fill="#ff4060" textAnchor="middle">PREEMPTING</text>
               </g>
 
-              {/* Node C (Pre-clearing) */}
-              <g transform="translate(450, 120)" style={{ cursor: "pointer" }} onClick={() => console.log('Selected Node C')}>
+              {/* Node IX-103 (Pre-clearing) */}
+              <g transform="translate(450, 120)" style={{ cursor: "pointer" }}>
                 <circle r="16" fill="#0d0f13" stroke="#ffab1a" strokeWidth="3" />
                 <circle r="8" fill="#ffab1a" />
-                <text y="-26" fontFamily="'JetBrains Mono', monospace" fontSize="11" fontWeight="bold" fill="#e8eaf0" textAnchor="middle">INT-C</text>
+                <text y="-26" fontFamily="'JetBrains Mono', monospace" fontSize="11" fontWeight="bold" fill="#e8eaf0" textAnchor="middle">IX-103 (SRP)</text>
                 <text y="32" fontFamily="'Inter', sans-serif" fontSize="9" fill="#ffab1a" textAnchor="middle">PRE-CLEARING</text>
               </g>
 
-              {/* Node D (Pending) */}
-              <g transform="translate(640, 60)" style={{ cursor: "pointer" }} onClick={() => console.log('Selected Node D')}>
+              {/* Node IX-104 (Pending) */}
+              <g transform="translate(640, 60)" style={{ cursor: "pointer" }}>
                 <circle r="14" fill="#0d0f13" stroke="#2e3140" strokeWidth="3" />
                 <circle r="6" fill="#9096a8" />
-                <text y="-24" fontFamily="'JetBrains Mono', monospace" fontSize="11" fill="#9096a8" textAnchor="middle">INT-D</text>
-                <text y="28" fontFamily="'Inter', sans-serif" fontSize="9" fill="#9096a8" textAnchor="middle">SCHEDULED</text>
+                <text y="-24" fontFamily="'JetBrains Mono', monospace" fontSize="11" fill="#9096a8" textAnchor="middle">IX-104 (Sholinga)</text>
+                <text y="28" fontFamily="'Inter', sans-serif" fontSize="9" fill="#9096a8" textAnchor="middle">LOCKED</text>
               </g>
 
-              {/* Node E (Pending) */}
-              <g transform="translate(820, 100)" style={{ cursor: "pointer" }} onClick={() => console.log('Selected Node E')}>
+              {/* Node IX-109 (Pending) */}
+              <g transform="translate(820, 100)" style={{ cursor: "pointer" }}>
                 <circle r="14" fill="#0d0f13" stroke="#2e3140" strokeWidth="3" />
                 <circle r="6" fill="#9096a8" />
-                <text y="-24" fontFamily="'JetBrains Mono', monospace" fontSize="11" fill="#9096a8" textAnchor="middle">INT-E</text>
+                <text y="-24" fontFamily="'JetBrains Mono', monospace" fontSize="11" fill="#9096a8" textAnchor="middle">IX-109 (Siruseri)</text>
                 <text y="28" fontFamily="'Inter', sans-serif" fontSize="9" fill="#9096a8" textAnchor="middle">SCHEDULED</text>
               </g>
 
