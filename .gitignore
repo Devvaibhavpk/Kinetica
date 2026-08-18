@@ -68,7 +68,8 @@ data/**/*.txt
 weights/
 runs_kinetica/
 runs/
-yolov8n.pt
+*.pt
+*.onnx
 
 !data/DATASET_SOURCE.md
 !data/synthetic_generator.py
