@@ -21,8 +21,16 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Kinetica Control Room | Closed-Loop ITS Traffic Platform",
-  description: "Perception-driven, priority-aware adaptive traffic signal control system for Project Kinetica.",
+  title: "Kinetica",
+  description: "Perception-driven, priority-aware adaptive traffic signal control platform.",
+  icons: {
+    icon: [
+      { url: "/favicon.ico?v=2" },
+      { url: "/logo.png?v=2", type: "image/png" },
+    ],
+    shortcut: "/favicon.ico?v=2",
+    apple: "/logo.png?v=2",
+  },
 };
 
 export default function RootLayout({
@@ -36,6 +44,9 @@ export default function RootLayout({
       className={`${albertSans.variable} ${inter.variable} ${jetbrainsMono.variable} h-full antialiased dark`}
     >
       <head>
+        <link rel="icon" href="/favicon.ico?v=2" sizes="any" />
+        <link rel="icon" href="/logo.png?v=2" type="image/png" />
+        <link rel="apple-touch-icon" href="/logo.png?v=2" />
         <link
           rel="stylesheet"
           href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
