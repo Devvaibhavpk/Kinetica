@@ -1,0 +1,10 @@
+{
+  "4_lanes_avg_op_ms": 0.00053,
+  "4_lanes_total_time_s": 0.0021,
+  "8_lanes_avg_op_ms": 0.000502,
+  "8_lanes_total_time_s": 0.004,
+  "16_lanes_avg_op_ms": 0.000598,
+  "16_lanes_total_time_s": 0.0096,
+  "32_lanes_avg_op_ms": 0.000527,
+  "32_lanes_total_time_s": 0.0169
+}

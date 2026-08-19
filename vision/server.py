@@ -138,12 +138,14 @@ async def websocket_vision_endpoint(websocket: WebSocket):
     try:
         while True:
             message = await websocket.receive()
-            
+            if message.get("type") == "websocket.disconnect":
+                break
+
             img_bgr = None
             allow_all = False
             conf_thresh = 0.30
-            
-            if "text" in message:
+
+            if "text" in message and message["text"]:
                 try:
                     data = json.loads(message["text"])
                     b64_str = data.get("image", "")
@@ -153,17 +155,21 @@ async def websocket_vision_endpoint(websocket: WebSocket):
                 except Exception as e:
                     await websocket.send_json({"error": f"Decode error: {str(e)}"})
                     continue
-            elif "bytes" in message:
+            elif "bytes" in message and message["bytes"]:
                 np_arr = np.frombuffer(message["bytes"], np.uint8)
                 img_bgr = cv2.imdecode(np_arr, cv2.IMREAD_COLOR)
-                
+
             if img_bgr is None:
                 continue
-                
+
             res = _process_frame(img_bgr, allow_all, conf_thresh)
             await websocket.send_json(res)
-            
+
     except WebSocketDisconnect:
         pass
     except Exception as e:
         print(f"[WS Error]: {e}")
+
+if __name__ == "__main__":
+    import uvicorn
+    uvicorn.run("vision.server:app", host="0.0.0.0", port=8000, reload=False)

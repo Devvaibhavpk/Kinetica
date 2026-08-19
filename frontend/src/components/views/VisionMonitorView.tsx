@@ -188,7 +188,9 @@ export default function VisionMonitorView() {
   const runArrayInference = async () => {
     setIsArrayDetecting(true);
     try {
-      const res = await fetch("http://localhost:8000/api/detect_batch", {
+      const rawHost = typeof window !== "undefined" && window.location.hostname ? window.location.hostname : "127.0.0.1";
+      const apiHost = rawHost === "localhost" ? "127.0.0.1" : rawHost;
+      const res = await fetch(`http://${apiHost}:8000/api/detect_batch`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -300,7 +302,10 @@ export default function VisionMonitorView() {
     const connectWs = () => {
       setWsStatus("connecting");
       try {
-        ws = new WebSocket("ws://localhost:8000/ws/vision");
+        const rawHost = typeof window !== "undefined" && window.location.hostname ? window.location.hostname : "127.0.0.1";
+        const host = rawHost === "localhost" ? "127.0.0.1" : rawHost;
+        const wsUrl = `ws://${host}:8000/ws/vision`;
+        ws = new WebSocket(wsUrl);
         wsRef.current = ws;
 
         ws.onopen = () => {
@@ -417,7 +422,7 @@ export default function VisionMonitorView() {
 
         ws.onerror = () => {
           setWsStatus("disconnected");
-          setStreamError("FastAPI WebSocket server unreachable at ws://localhost:8000/ws/vision");
+          setStreamError(`FastAPI WebSocket server unreachable at ws://${host}:8000/ws/vision`);
         };
       } catch (err: any) {
         setWsStatus("disconnected");
