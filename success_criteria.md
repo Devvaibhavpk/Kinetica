@@ -2,8 +2,9 @@
 
 As per AGENTS.md, a checkbox here is ONLY flipped to `[x]` when its exact corresponding Pytest ID is run and observed to PASS.
 
-- [ ] **SC1: Green phase duration is a function of measured queue length (not a constant)**
+- [x] **SC1: Green phase duration is a function of measured queue length (not a constant)**
       Test ID: `actuation/tests/test_engine.py::test_green_duration_scales_with_queue`
+
 
 - [ ] **SC2: A detected priority-class vehicle changes phase ordering ahead of FIFO/queue-length ordering**
       Test ID: `preemption/tests/test_heap.py::test_priority_event_forces_root`
