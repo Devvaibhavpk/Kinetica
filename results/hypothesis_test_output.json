@@ -1,7 +1,7 @@
 {
-  "test_used": "insufficient_sample",
+  "test_used": "Mann-Whitney U test",
   "statistic": 0.0,
-  "p_value": 0.001,
+  "p_value": 0.0,
   "h0_rejected": true,
-  "effect_size": 52.5
+  "effect_size": 58.37
 }
