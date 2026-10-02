@@ -33,9 +33,17 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "Missing imageBase64 or imagePath" }, { status: 400 });
     }
 
-    const pythonBin = fs.existsSync("C:\\Python312\\python.exe")
-      ? "C:\\Python312\\python.exe"
-      : "python";
+    const venvPythonPath = path.join(rootDir, ".venv", "bin", "python");
+    const venvPythonWin = path.join(rootDir, ".venv", "Scripts", "python.exe");
+
+    let pythonBin = "python3";
+    if (fs.existsSync(venvPythonPath)) {
+      pythonBin = venvPythonPath;
+    } else if (fs.existsSync(venvPythonWin)) {
+      pythonBin = venvPythonWin;
+    } else if (fs.existsSync("C:\\Python312\\python.exe")) {
+      pythonBin = "C:\\Python312\\python.exe";
+    }
 
     return new Promise<NextResponse>((resolve) => {
       const pyProcess = spawn(pythonBin, ["-m", "vision.infer_json", inputArg, cameraId], {

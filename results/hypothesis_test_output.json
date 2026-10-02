@@ -1,0 +1,7 @@
+{
+  "test_used": "Mann-Whitney U test",
+  "statistic": 11549.0,
+  "p_value": 0.0,
+  "h0_rejected": true,
+  "effect_size": 18.06
+}
