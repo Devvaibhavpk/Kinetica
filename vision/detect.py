@@ -1,14 +1,14 @@
 import os
 import numpy as np
-from ultralytics import YOLO
 
 # Global cache for detector
 _MODEL_CACHE = {}
 
-def load_detector(model_name: str = "yolov8n.onnx") -> YOLO:
+def load_detector(model_name: str = "yolov8n.onnx"):
     """
     Loads and caches high-performance YOLOv8 detector (uses ONNX runtime for 55+ FPS when available).
     """
+    from ultralytics import YOLO
     global _MODEL_CACHE
     if model_name not in _MODEL_CACHE:
         # Check if ONNX model exists for 18ms inference, fallback to PT if not
@@ -19,7 +19,7 @@ def load_detector(model_name: str = "yolov8n.onnx") -> YOLO:
         _MODEL_CACHE[model_name] = model
     return _MODEL_CACHE[model_name]
 
-def detect_frame(model: YOLO, frame: np.ndarray, allow_all: bool = False, conf_thresh: float = 0.30) -> list[dict]:
+def detect_frame(model, frame: np.ndarray, allow_all: bool = False, conf_thresh: float = 0.30) -> list[dict]:
     """
     Runs ultra-fast YOLO inference (18ms / 55 FPS) with strict roadway vehicle filtering and normalized bboxes.
     """

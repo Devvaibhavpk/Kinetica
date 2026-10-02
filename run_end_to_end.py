@@ -1,23 +1,43 @@
-import os
-import json
+"""Project Kinetica — End-to-End Integrated Simulation Pipeline.
+
+Orchestrates the complete closed-loop pipeline across all four project modules:
+1. Vision / Synthetic Scenario Generation (`data.synthetic_generator`)
+2. Demand-Responsive Signal Actuation (`actuation.engine` & `actuation.arrival_model`)
+3. Fixed-Timer Baseline Control Group (`actuation.baseline_fixed_timer`)
+4. Green-Wave Priority Preemption (`preemption.heap`, `preemption.override`, `preemption.graph_router`)
+5. Predictive Analytics, Hypothesis Testing & Plotting (`analytics`)
+"""
+
 from datetime import datetime
-from data.synthetic_generator import generate_scenario
-from actuation.arrival_model import goodness_of_fit_check, ArrivalRateEstimator
-from actuation.engine import next_phase_decision
-from actuation.baseline_fixed_timer import fixed_timer_phase_decision
-from preemption.heap import LanePriorityHeap
-from preemption.override import apply_override
-from preemption.graph_router import build_city_graph, project_downstream_path, preclear_corridor
-from analytics.hypothesis_test import run_comparison
-from analytics.bottleneck_model import train_bottleneck_model
+import json
+import os
+from pathlib import Path
+
 import pandas as pd
 
-def run_pipeline():
-    print("=" * 60)
-    print("      PROJECT KINETICA — END-TO-END PIPELINE SIMULATION")
-    print("=" * 60)
+from actuation.arrival_model import ArrivalRateEstimator, goodness_of_fit_check
+from actuation.baseline_fixed_timer import fixed_timer_phase_decision
+from actuation.engine import next_phase_decision
+from analytics.bottleneck_model import train_bottleneck_model
+from analytics.generate_plots import generate_all_plots
+from analytics.hypothesis_test import run_comparison
+from data.synthetic_generator import generate_scenario
+from preemption.graph_router import (
+    build_city_graph,
+    preclear_corridor,
+    project_downstream_path,
+)
+from preemption.heap import LanePriorityHeap
+from preemption.override import apply_override
+
+
+def run_pipeline() -> dict:
+    print("=" * 68)
+    print("      PROJECT KINETICA -- END-TO-END PIPELINE SIMULATION")
+    print("=" * 68)
 
     os.makedirs("results", exist_ok=True)
+    os.makedirs("results/figures", exist_ok=True)
 
     # 1. Generate Corridor Ambulance Scenario
     print("\n[1/5] Ingesting Synthetic Scenario ('corridor_ambulance')...")
@@ -25,7 +45,7 @@ def run_pipeline():
         scenario_name="corridor_ambulance",
         duration_s=120,
         ambulance_injection_time_s=30,
-        ambulance_lane="lane_E"
+        ambulance_lane="lane_E",
     ))
 
     obs_logs = []
@@ -33,7 +53,7 @@ def run_pipeline():
     kinetica_waits = []
     baseline_waits = []
     inter_arrivals = []
-    
+
     estimator = ArrivalRateEstimator(window_s=60)
     heap = LanePriorityHeap()
     last_arrival_t = None
@@ -46,15 +66,15 @@ def run_pipeline():
                 "timestamp": item.timestamp.isoformat() if isinstance(item.timestamp, datetime) else str(item.timestamp),
                 "vehicle_count": item.vehicle_count,
                 "queue_length_m": item.queue_length_m,
-                "density_veh_per_m": item.density_veh_per_m
+                "density_veh_per_m": item.density_veh_per_m,
             })
             estimator.update(item)
-            
-            # Compute score and update heap
+
+            # Compute urgency score and update priority heap
             score = heap.compute_score(
                 wait_time_s=float(item.vehicle_count * 2),
                 density_veh_per_m=item.density_veh_per_m,
-                priority_multiplier=1.0
+                priority_multiplier=1.0,
             )
             heap.push_or_update(item.lane_id, score)
 
@@ -67,10 +87,10 @@ def run_pipeline():
                 "active_lane_id": dec_dyn.active_lane_id,
                 "phase_start": dec_dyn.phase_start.isoformat(),
                 "phase_end": dec_dyn.phase_end.isoformat(),
-                "reason": dec_dyn.reason.value
+                "reason": dec_dyn.reason.value,
             })
 
-            # Calculate wait metrics
+            # Calculate vehicle wait metrics
             kinetica_waits.append(max(5.0, item.queue_length_m * 0.8))
             baseline_waits.append(max(20.0, item.queue_length_m * 2.2))
 
@@ -81,17 +101,17 @@ def run_pipeline():
 
         elif hasattr(item, "vehicle_class"):
             # PriorityEvent (Ambulance)
-            print(f"  🚨 Priority Event Detected! Class={item.vehicle_class.value} on {item.lane_id}")
+            print(f"  [PRIORITY] Priority Event Detected: Class={item.vehicle_class.value} on {item.lane_id}")
             mult = apply_override(item, is_school_zone=False)
-            amb_score = heap.compute_score(wait_time_s=10, density_veh_per_m=0.5, priority_multiplier=mult)
+            amb_score = heap.compute_score(wait_time_s=10.0, density_veh_per_m=0.5, priority_multiplier=mult)
             heap.push_or_update(item.lane_id, amb_score)
 
     print(f"  Processed {len(obs_logs)} observations successfully.")
 
     # Write simulation logs for analytics
-    with open("results/obs_log.json", "w") as f:
+    with open("results/obs_log.json", "w", encoding="utf-8") as f:
         json.dump(obs_logs, f, indent=2)
-    with open("results/dec_log.json", "w") as f:
+    with open("results/dec_log.json", "w", encoding="utf-8") as f:
         json.dump(dec_logs, f, indent=2)
 
     # 2. Goodness-of-fit test
@@ -120,6 +140,12 @@ def run_pipeline():
     model, importances = train_bottleneck_model(df_sim)
     print(f"  Feature Importances: {importances}")
 
+    # Generate comparison figures
+    print("\n[PLOTS] Generating publication-quality figures in results/figures/...")
+    generate_all_plots()
+    print("  Generated: wait_time_comparison.png, queue_length_timeline.png,")
+    print("             bottleneck_feature_importances.png, poisson_inter_arrival_fit.png")
+
     # Summary JSON
     summary = {
         "status": "SUCCESS",
@@ -128,14 +154,17 @@ def run_pipeline():
         "poisson_fit": fit_res,
         "hypothesis_test": hypo_res,
         "corridor_path": path,
-        "feature_importances": importances
+        "feature_importances": importances,
     }
-    with open("results/end_to_end_summary.json", "w") as f:
+    with open("results/end_to_end_summary.json", "w", encoding="utf-8") as f:
         json.dump(summary, f, indent=2)
 
-    print("\n" + "=" * 60)
-    print("  ✅ END-TO-END PIPELINE SIMULATION COMPLETED SUCCESSFULLY")
-    print("=" * 60)
+    print("\n" + "=" * 68)
+    print("  [SUCCESS] END-TO-END PIPELINE SIMULATION COMPLETED SUCCESSFULLY")
+    print("=" * 68)
+
+    return summary
+
 
 if __name__ == "__main__":
     run_pipeline()

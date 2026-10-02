@@ -1,5 +1,7 @@
 {
   "density_veh_per_m": 0.0,
-  "vehicle_count": 0.5853,
-  "queue_length_m": 0.4147
+  "vehicle_count": 0.0213,
+  "queue_length_m": 0.9787,
+  "is_preempted": 0.0,
+  "hour_of_day": 0.0
 }

@@ -3,7 +3,6 @@ import numpy as np
 from datetime import datetime
 from schemas.lane_state import LaneObservation, PriorityEvent, VehicleClass
 from vision.ingest import ingest_source
-from vision.detect import load_detector, detect_frame
 from vision.project import load_calibration, project_to_lane_metrics
 from vision.classify import classify_priority
 
