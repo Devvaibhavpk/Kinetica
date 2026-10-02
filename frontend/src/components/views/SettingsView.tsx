@@ -106,7 +106,7 @@ export default function SettingsView() {
       <div>
         <div className="flex items-center gap-2.5 mb-1">
           <span className="px-2.5 py-0.5 rounded-full bg-primary/10 border border-primary/30 font-label text-[10px] text-primary uppercase tracking-wider">
-            SUB-PHASE 7.15 : SIMULATION ENGINE
+            SIMULATION ENGINE CONTROLS
           </span>
           <span className="text-xs text-on-surface-variant font-telemetry">
             STATUS: {triggerStatus.toUpperCase()}

@@ -69,6 +69,14 @@ export default function Sidebar({
       description: "Directed-graph multi-node corridor preemption",
     },
     {
+      key: "emergency",
+      icon: "emergency",
+      label: "Emergency Override",
+      category: "operations",
+      tag: "OVERRIDE",
+      description: "Ambulance & high-priority corridor preemption",
+    },
+    {
       key: "analytics",
       icon: "query_stats",
       label: "Predictive Analytics",

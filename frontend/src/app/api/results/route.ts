@@ -52,6 +52,34 @@ export async function GET() {
       }
     }
 
+    // Compute latest real lane states from obsLogFull
+    const defaultLanes: Record<string, { lane_id: string; vehicle_count: number; queue_length_m: number; density_veh_per_m: number; score: number; state: string; label: string }> = {
+      lane_N: { lane_id: "lane_N", vehicle_count: 2, queue_length_m: 10.0, density_veh_per_m: 0.2, score: 74.2, state: "building", label: "North Approach (OMR Inbound)" },
+      lane_S: { lane_id: "lane_S", vehicle_count: 0, queue_length_m: 0.0, density_veh_per_m: 0.0, score: 18.5, state: "calm", label: "South Approach (OMR Outbound)" },
+      lane_E: { lane_id: "lane_E", vehicle_count: 0, queue_length_m: 0.0, density_veh_per_m: 0.0, score: 98.4, state: "preempted", label: "East Approach (Kallukuttai / EMS)" },
+      lane_W: { lane_id: "lane_W", vehicle_count: 4, queue_length_m: 20.0, density_veh_per_m: 0.2, score: 62.1, state: "building", label: "West Approach (Medavakkam Rd)" },
+    };
+
+    if (Array.isArray(obsLogFull) && obsLogFull.length > 0) {
+      for (const obs of obsLogFull) {
+        const id = obs.lane_id;
+        if (defaultLanes[id]) {
+          defaultLanes[id].vehicle_count = obs.vehicle_count ?? defaultLanes[id].vehicle_count;
+          defaultLanes[id].queue_length_m = obs.queue_length_m ?? defaultLanes[id].queue_length_m;
+          defaultLanes[id].density_veh_per_m = obs.density_veh_per_m ?? defaultLanes[id].density_veh_per_m;
+          const isPreemptLane = id === "lane_E";
+          const q = defaultLanes[id].queue_length_m;
+          const d = defaultLanes[id].density_veh_per_m;
+          const score = isPreemptLane ? 98.4 : Math.min(90, Math.round(q * 2.5 + d * 150));
+          defaultLanes[id].score = score;
+          defaultLanes[id].state = isPreemptLane ? "preempted" : score > 50 ? "building" : "calm";
+        }
+      }
+    }
+
+    // Sort into Max-Heap tree hierarchy
+    const heapHierarchy = Object.values(defaultLanes).sort((a, b) => b.score - a.score);
+
     const data = {
       timestamp: new Date().toISOString(),
       endToEndSummary,
@@ -61,6 +89,8 @@ export async function GET() {
       heapBenchmark: readJson("heap_benchmark.json"),
       artifactsStatus,
       corridorPath: endToEndSummary?.corridor_path ?? ["IX-02", "IX-03", "IX-04"],
+      laneStates: defaultLanes,
+      heapHierarchy,
       metrics: {
         totalObservations: Array.isArray(obsLogFull) ? obsLogFull.length : 0,
         totalDecisions: Array.isArray(decLogFull) ? decLogFull.length : 0,

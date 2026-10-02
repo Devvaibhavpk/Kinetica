@@ -220,13 +220,6 @@ export default function ChennaiRealMap({
           attributionControl: false,
         });
 
-        // Add Base Tile Layer (CartoDB Dark Matter)
-        const darkTiles = L.tileLayer(
-          "https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png",
-          { maxZoom: 19, subdomains: "abcd" }
-        );
-        darkTiles.addTo(map);
-
         // Layer Groups
         corridorsLayerRef.current = L.layerGroup().addTo(map);
         markersLayerRef.current = L.layerGroup().addTo(map);
@@ -244,16 +237,40 @@ export default function ChennaiRealMap({
         }
       });
 
+      // Helper to add clean dark canvas (No API key required, zero watermark)
+      const addDarkTiles = (targetMap: Map) => {
+        const cartoKey = process.env.NEXT_PUBLIC_CARTO_API_KEY;
+        if (cartoKey) {
+          L.tileLayer(
+            `https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png?key=${cartoKey}`,
+            { maxZoom: 19, subdomains: "abcd" }
+          ).addTo(targetMap);
+        } else {
+          // ESRI World Dark Gray Canvas: crisp, dark, 100% free, no API key required
+          L.tileLayer(
+            "https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Base/MapServer/tile/{z}/{y}/{x}",
+            {
+              maxZoom: 18,
+              attribution: "Esri, HERE, Garmin, © OpenStreetMap contributors",
+            }
+          ).addTo(targetMap);
+          L.tileLayer(
+            "https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Reference/MapServer/tile/{z}/{y}/{x}",
+            {
+              maxZoom: 18,
+              opacity: 0.85,
+            }
+          ).addTo(targetMap);
+        }
+      };
+
       if (mapType === "satellite") {
         L.tileLayer(
           "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
           { maxZoom: 18 }
         ).addTo(map);
       } else {
-        L.tileLayer(
-          "https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png",
-          { maxZoom: 19, subdomains: "abcd" }
-        ).addTo(map);
+        addDarkTiles(map);
       }
 
       // ── DRAW 100% ROAD-SNAPPED POLYLINES (628+ EXACT OSM WAYPOINTS) ──
@@ -506,102 +523,112 @@ export default function ChennaiRealMap({
 
   return (
     <div className="relative w-full h-full min-h-[480px] bg-[#0c0e12] rounded-2xl overflow-hidden flex flex-col justify-between">
-      {/* ── MAP HEADER HUD CONTROLS ───────────────────────────── */}
-      <div className="absolute top-3 left-3 z-[400] flex flex-wrap items-center gap-2 pointer-events-auto">
-        <div className="bg-[#111318]/95 backdrop-blur-md border border-[#2e3140] px-3 py-1.5 rounded-lg flex items-center gap-2.5 shadow-xl">
-          <span className="w-2.5 h-2.5 rounded-full bg-[#00c97a] animate-pulse" />
-          <span className="font-mono text-xs font-bold text-[#e8eaf0] tracking-wide uppercase">
-            CHENNAI ARTERIAL ROAD NETWORK (CMA)
+      {/* ── CLEAN DECLUTTERED TOP HUD CONTROLS ───────────────────────────── */}
+      <div className="absolute top-3 left-3 z-[400] pointer-events-auto">
+        <div className="bg-[#111318]/90 backdrop-blur-md border border-[#2e3140] px-3 py-1.5 rounded-lg flex items-center gap-2 shadow-lg">
+          <span className="w-2 h-2 rounded-full bg-[#00c97a] animate-pulse" />
+          <span className="font-mono text-[11px] font-bold text-[#e8eaf0] tracking-wider uppercase">
+            Chennai Arterial Link
           </span>
-          <span className="font-mono text-[9px] px-1.5 py-0.2 rounded bg-[#1c1e24] text-[#00c97a] border border-[#2e3140] font-semibold">
-            100% ROAD-SNAPPED (OSM ENGINE)
-          </span>
-        </div>
-
-        {/* Quick Corridor Fly-To Buttons */}
-        <div className="hidden lg:flex items-center gap-1 bg-[#111318]/95 backdrop-blur-md border border-[#2e3140] p-1 rounded-lg">
-          <button
-            onClick={() => flyToLocation(12.955, 80.241, 13.2)}
-            className="px-2.5 py-1 rounded text-[10px] font-mono text-[#9096a8] hover:text-[#e8eaf0] hover:bg-[#1c1e24] transition-colors cursor-pointer"
-          >
-            OMR IT Corridor (SH-49A)
-          </button>
-          <button
-            onClick={() => flyToLocation(13.0076, 80.2032, 14.5)}
-            className="px-2.5 py-1 rounded text-[10px] font-mono text-[#9096a8] hover:text-[#e8eaf0] hover:bg-[#1c1e24] transition-colors cursor-pointer"
-          >
-            Kathipara Cloverleaf (GST)
-          </button>
-          <button
-            onClick={() => flyToLocation(12.975, 80.23, 12.4)}
-            className="px-2.5 py-1 rounded text-[10px] font-mono text-[#9096a8] hover:text-[#e8eaf0] hover:bg-[#1c1e24] transition-colors cursor-pointer"
-          >
-            Full CMA Overview
-          </button>
         </div>
       </div>
 
-      {/* ── MAP VIEW MODE & LAYER CONTROLS (TOP RIGHT) ───────────────────────────── */}
-      <div className="absolute top-3 right-3 z-[400] flex items-center gap-2 pointer-events-auto">
-        <div className="flex items-center bg-[#111318]/95 backdrop-blur-md border border-[#2e3140] p-1 rounded-lg">
-          <button
-            onClick={() => setMapType("dark")}
-            className={`px-2.5 py-1 rounded text-[10px] font-mono uppercase tracking-wider transition-all cursor-pointer ${
-              mapType === "dark"
-                ? "bg-[#4d9fff]/20 text-[#4d9fff] border border-[#4d9fff]/40 font-bold"
-                : "text-[#9096a8] hover:text-[#e8eaf0]"
-            }`}
-          >
-            Dark Vector
-          </button>
-          <button
-            onClick={() => setMapType("satellite")}
-            className={`px-2.5 py-1 rounded text-[10px] font-mono uppercase tracking-wider transition-all cursor-pointer ${
-              mapType === "satellite"
-                ? "bg-[#4d9fff]/20 text-[#4d9fff] border border-[#4d9fff]/40 font-bold"
-                : "text-[#9096a8] hover:text-[#e8eaf0]"
-            }`}
-          >
-            Satellite
-          </button>
-        </div>
-
-        <div className="flex items-center bg-[#111318]/95 backdrop-blur-md border border-[#2e3140] p-1 rounded-lg">
-          <button
-            onClick={() => setShowCorridors((p) => !p)}
-            className={`px-2.5 py-1 rounded text-[10px] font-mono uppercase tracking-wider transition-all cursor-pointer ${
-              showCorridors
-                ? "bg-[#00c97a]/20 text-[#00c97a] border border-[#00c97a]/40 font-bold"
-                : "text-[#9096a8] hover:text-[#e8eaf0]"
-            }`}
-            title="Toggle Primary OMR Green Wave Spine"
-          >
-            OMR Corridor
-          </button>
-          <button
-            onClick={() => setShowRadialArteries((p) => !p)}
-            className={`px-2.5 py-1 rounded text-[10px] font-mono uppercase tracking-wider transition-all cursor-pointer ${
-              showRadialArteries
-                ? "bg-[#4d9fff]/20 text-[#4d9fff] border border-[#4d9fff]/40 font-bold"
-                : "text-[#9096a8] hover:text-[#e8eaf0]"
-            }`}
-            title="Toggle Radial Highways (GST, Sardar Patel, 200ft, Bypass)"
-          >
-            Radial Roads
-          </button>
-          {scenario === "preempted" && (
+      {/* ── UNIFIED STREAMLINED CONTROL DECK (TOP RIGHT) ───────────────────────────── */}
+      <div className="absolute top-3 right-3 z-[400] pointer-events-auto">
+        <div className="flex items-center gap-2 bg-[#111318]/90 backdrop-blur-md border border-[#2e3140] px-2 py-1.5 rounded-lg shadow-lg text-[10px] font-mono">
+          {/* Quick Focus Section */}
+          <div className="flex items-center gap-0.5">
             <button
-              onClick={() => setShowLiveVehicle((p) => !p)}
-              className={`px-2.5 py-1 rounded text-[10px] font-mono uppercase tracking-wider transition-all cursor-pointer ${
-                showLiveVehicle
-                  ? "bg-[#ff4060]/20 text-[#ff4060] border border-[#ff4060]/40 font-bold"
+              onClick={() => flyToLocation(12.955, 80.241, 13.2)}
+              className="px-2 py-1 rounded text-[#9096a8] hover:text-[#e8eaf0] hover:bg-[#1c1e24] transition-colors"
+              title="Focus on OMR Corridor"
+            >
+              OMR
+            </button>
+            <button
+              onClick={() => flyToLocation(13.0076, 80.2032, 14.5)}
+              className="px-2 py-1 rounded text-[#9096a8] hover:text-[#e8eaf0] hover:bg-[#1c1e24] transition-colors"
+              title="Focus on Kathipara Junction"
+            >
+              Kathipara
+            </button>
+            <button
+              onClick={() => flyToLocation(12.975, 80.23, 12.4)}
+              className="px-2 py-1 rounded text-[#9096a8] hover:text-[#e8eaf0] hover:bg-[#1c1e24] transition-colors"
+              title="Reset to Full Overview"
+            >
+              Reset
+            </button>
+          </div>
+
+          <div className="w-px h-3.5 bg-[#2e3140]" />
+
+          {/* Overlay Layer Toggles */}
+          <div className="flex items-center gap-1">
+            <button
+              onClick={() => setShowCorridors((p) => !p)}
+              className={`px-2 py-1 rounded transition-all flex items-center gap-1.5 ${
+                showCorridors
+                  ? "bg-[#00c97a]/15 text-[#00c97a] border border-[#00c97a]/30 font-bold"
                   : "text-[#9096a8] hover:text-[#e8eaf0]"
               }`}
-              title="Toggle Live Ambulance Transit Tracking"
+              title="Toggle OMR Green Wave Spine"
             >
-              🚑 108 EMS
+              <span className={`w-1.5 h-1.5 rounded-full ${showCorridors ? "bg-[#00c97a]" : "bg-[#555c70]"}`} />
+              <span>OMR</span>
             </button>
-          )}
+            <button
+              onClick={() => setShowRadialArteries((p) => !p)}
+              className={`px-2 py-1 rounded transition-all flex items-center gap-1.5 ${
+                showRadialArteries
+                  ? "bg-[#4d9fff]/15 text-[#4d9fff] border border-[#4d9fff]/30 font-bold"
+                  : "text-[#9096a8] hover:text-[#e8eaf0]"
+              }`}
+              title="Toggle Arterial Radial Roads"
+            >
+              <span className={`w-1.5 h-1.5 rounded-full ${showRadialArteries ? "bg-[#4d9fff]" : "bg-[#555c70]"}`} />
+              <span>Arteries</span>
+            </button>
+            {scenario === "preempted" && (
+              <button
+                onClick={() => setShowLiveVehicle((p) => !p)}
+                className={`px-1.5 py-1 rounded transition-all flex items-center ${
+                  showLiveVehicle
+                    ? "bg-[#ff4060]/20 text-[#ff4060] border border-[#ff4060]/40 font-bold"
+                    : "text-[#9096a8] hover:text-[#e8eaf0]"
+                }`}
+                title="Toggle Live Ambulance Transit"
+              >
+                <span>🚑</span>
+              </button>
+            )}
+          </div>
+
+          <div className="w-px h-3.5 bg-[#2e3140]" />
+
+          {/* Basemap Switcher */}
+          <div className="flex items-center bg-[#0c0e12] rounded p-0.5 border border-[#2e3140]/60">
+            <button
+              onClick={() => setMapType("dark")}
+              className={`px-2 py-0.5 rounded transition-all ${
+                mapType === "dark"
+                  ? "bg-[#2c2f3a] text-[#e8eaf0] font-bold shadow-sm"
+                  : "text-[#9096a8] hover:text-[#e8eaf0]"
+              }`}
+            >
+              Dark
+            </button>
+            <button
+              onClick={() => setMapType("satellite")}
+              className={`px-2 py-0.5 rounded transition-all ${
+                mapType === "satellite"
+                  ? "bg-[#4d9fff]/20 text-[#4d9fff] font-bold shadow-sm"
+                  : "text-[#9096a8] hover:text-[#e8eaf0]"
+              }`}
+            >
+              Sat
+            </button>
+          </div>
         </div>
       </div>
 

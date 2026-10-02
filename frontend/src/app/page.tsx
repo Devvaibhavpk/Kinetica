@@ -25,23 +25,23 @@ export default function Home() {
   const getModuleTitle = (key: ModuleKey) => {
     switch (key) {
       case "overview":
-        return "SECTOR 4 : NETWORK OVERVIEW";
+        return "Network Overview";
       case "intersection":
-        return "INTERSECTION IX-104 : DEEP INSPECTOR";
+        return "Intersection Telemetry & Queues";
       case "corridor":
-        return "GREEN WAVE : ARTERIAL CORRIDOR ROUTER";
+        return "Green Wave Corridor Routing";
       case "vision":
-        return "VISION FEED : EDGE YOLO PERCEPTION";
+        return "Vision Perception Feed";
       case "analytics":
-        return "ANALYTICS : REGRESSION & HYPOTHESIS TEST";
+        return "Predictive Analytics & Validation";
       case "health":
-        return "SYSTEM HEALTH : O(LOG N) HEAP BENCHMARK";
+        return "System Health & SLA Telemetry";
       case "emergency":
-        return "EMERGENCY OVERRIDE : HIGH PRIORITY CONTROLLER";
+        return "Emergency Priority Override";
       case "settings":
-        return "CONTROL & SCENARIOS : SIMULATION ENGINE";
+        return "Simulation Controls & Settings";
       default:
-        return "KINETICA CONTROL ROOM";
+        return "Kinetica Control Room";
     }
   };
 
@@ -85,7 +85,6 @@ export default function Home() {
         <Topbar
           moduleTitle={getModuleTitle(activeModule)}
           isSidebarExpanded={isSidebarExpanded}
-          onToggleSidebar={toggleSidebar}
         />
 
         <div className="mt-14 p-6 overflow-y-auto flex-1 flex flex-col gap-6 pb-16">

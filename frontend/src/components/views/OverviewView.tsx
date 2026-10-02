@@ -42,7 +42,7 @@ const ChennaiRealMap = dynamic(() => import("../ChennaiRealMap"), {
   loading: () => (
     <div className="w-full h-full min-h-[460px] bg-[#0c0e12] flex flex-col items-center justify-center gap-3 text-on-surface-variant font-mono text-xs">
       <div className="w-6 h-6 border-2 border-[#4d9fff] border-t-transparent rounded-full animate-spin"></div>
-      <span>Loading Chennai Geospatial Map (CartoDB Tiles)...</span>
+      <span>Loading Chennai Geospatial Map (Arterial Network)...</span>
     </div>
   ),
 });
