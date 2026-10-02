@@ -423,23 +423,76 @@ The absolute final step involves running the entire presentation, complete with 
 
 ---
 
-## Phase 8 — Post-MVP Advanced Interactive Controls (Stretch Goal)
-*Target: Only after Phase 7 is fully complete and time permits.*
+## Phase 8 — Intelligent Traffic Management System: Perception-Driven Edge AI for Urban Intersection Control
 
-### 8.1 Bidirectional WebSocket API Setup
-This task involves upgrading the read-only WebSocket (from Phase 3/7) to a fully bidirectional communication channel between Next.js and the Python backend. It is necessary to allow the dashboard to send command payloads (like overrides or parameter tweaks) back to the actuation engine securely. The deliverable is a functional two-way socket connection.
+### 8.0 Architectural Specification & System Overview
 
-### 8.2 Manual Phase Override (God Mode) Integration
-Here we implement a feature allowing the user to click a specific intersection in the `IntersectionDetailView` UI and force an immediate Green or Red phase. This overrides the max-heap and Poisson models temporarily. It requires building a backend listener that injects a manual `PhaseDecision` into the queue. The specific deliverable is a working manual toggle button on the dashboard.
+#### 1. Executive Summary
+Traditional traffic light systems rely on fixed time cycles, causing inefficiencies such as empty lanes receiving green lights while congested lanes wait indefinitely. This phase establishes an intelligent, computer-vision-based system that replaces static timers with adaptive, real-time control.
 
-### 8.3 Live Parameter Tuning Sliders
-This step focuses on adding interactive sliders to the `SystemHealthView` that allow users to adjust core backend algorithms on the fly. Users will be able to tweak the `DEFAULT_SATURATION_FLOW_RATE` or the Exponential Moving Average alpha weight and watch the system instantly adapt its phase timings. The deliverable is a set of linked UI sliders and the corresponding backend state-update functions.
+By feeding live CCTV footage into edge-deployed AI models, the system dynamically calculates vehicle accumulation and queue density. It adjusts green light durations in real-time to optimize flow and includes a mission-critical override function to detect emergency vehicles and instantly preempt the signal sequence.
 
-### 8.4 Custom Emergency Route Drawing
-In this task, we add interactive mapping capabilities to the `CorridorView`, allowing a user to click a sequence of nodes to manually define an emergency vehicle's path. This bypasses the greedy heading-based path projection and forces the graph router to clear a specific custom corridor. The specific output is a point-and-click routing UI and its backend receiver.
+#### 2. System Architecture
+The system operates as a closed-loop perception and control pipeline divided into three layers:
+* **Layer 1: Edge Perception** — Cameras stream RTSP video to an edge compute node. Computer vision models divide the scene into rigid *Regions of Interest (ROI)* and detect bounding boxes for every vehicle.
+* **Layer 2: State Tracking** — Object tracking algorithms assign unique IDs to detected vehicles, preventing double-counting and accurately calculating flow rate and total queue length.
+* **Layer 3: Control Logic & Actuation** — A central logic node ingests queue lengths from all directions, calculates the optimal signal state, and sends actuation commands to the physical traffic light controller.
 
-### 8.5 Live Synthetic Traffic Injection
-This final stretch goal adds a "Stress Test" button to the `OverviewView` that instantly injects a massive, synthetic platoon of vehicles into the simulation. It allows the presenter to dynamically prove the queue dissipation and dynamic green extension logic live during the demo, rather than relying solely on pre-recorded scenarios. The deliverable is a functional UI trigger connected to the synthetic generator.
+#### 3. Accumulation & Routing Algorithms
+Instead of a linear timer, the system utilizes three dynamic strategies based on real-time accumulation data:
+* **A. Proportional Volume Allocation:** Divides a fixed total cycle time based on the exact ratio of waiting vehicles in each lane. *(Example: If North-South has 40 waiting vehicles and East-West has 10, the 100-second cycle budget is split 80/20 — 80s for N/S, 20s for E/W).*
+* **B. Dynamic Extension (Gap Detection):** Gives every lane a short minimum green time. The system monitors a "Decision Zone" before the stop line. The light extends in short increments as long as cars keep crossing. If the AI detects a gap in traffic (the zone empties), it terminates the green phase early.
+* **C. Phase Skipping:** If the tracking model reports **0 vehicles** in a dedicated lane (e.g., a left-turn lane), the system entirely skips that phase and moves to the next one to reduce idle time.
+
+#### 4. Priority Routing (Emergency Override)
+Standard logic is suspended upon detecting an emergency vehicle:
+1. **Detection:** The perception model identifies Ambulances, Fire Trucks, or Police Cars with high confidence (>85%).
+2. **Safe Transition:** Conflicting lanes rapidly cycle through standard Yellow phases (3 seconds) to clear the intersection.
+3. **Green Corridor:** The target lane is held Green until the emergency vehicle's unique tracking ID clears the intersection ROI.
+
+#### 5. AI Models & Technology Stack
+* **Perception (Vehicle Detection):** YOLOv8 / YOLOv10 (industry standards for real-time edge inference, optimal speed/accuracy balance); RT-DETR (Vision Transformer alternative to YOLO eliminating NMS, superior in dense overlapping traffic scenes); MobileNetV3-SSD (lightweight offline-first model for constrained embedded hardware).
+* **State Tracking (Handling Occlusions):** DeepSORT / ByteTrack (standard persistent ID association); OC-SORT (Observation-Centric SORT, recovers vehicle tracks when occluded by larger vehicles like buses/trucks); BoT-SORT (integrates camera motion compensation for vibrating or elevated mast cameras).
+* **Control Logic (Decision Engine):** Rule-Based Logic (Proportional Allocation, Gap Detection); Reinforcement Learning (DQN / PPO agents trained in SUMO simulation); LightGBM / XGBoost (time-series queue forecasting).
+* **Backend & Hardware:** FastAPI (Python asynchronous video streams and ML inference concurrently); NVIDIA Jetson Orin Nano / NX (TensorRT FP16/INT8 GPU acceleration for 30+ FPS edge execution); Industrial GPIO / IP Relays for physical LED signal head actuation.
+
+#### 6. Implementation Roadmap
+1. **Data Gathering & Annotation:** Collect static intersection video and annotate standard/emergency vehicles using Roboflow.
+2. **Perception Pipeline:** Combine OpenCV, YOLO/RT-DETR, and OC-SORT over drawn Regions of Interest.
+3. **Logic Simulation:** Build a visual simulation that alters lights based on live video counts before wiring physical hardware.
+4. **Hardware Integration:** Connect logic outputs via GPIO or IP relays to control physical LED traffic lights.
+
+---
+
+### 8.1 Edge Perception & Multi-Lane ROI Calibration
+This task implements the video ingestion and spatial partitioning engine that divides video frames into strict, non-overlapping polygonal Regions of Interest (ROIs) corresponding to intersection approaches and turn lanes. It is necessary because spatial bounding boxes must be mapped to specific physical traffic approaches to compute accurate directional queue metrics. We will use OpenCV polygon masks, NumPy vectorized point-in-polygon tests, and homography calibration to map pixel coordinates to real-world ground distances. The specific deliverable is `vision/roi_manager.py` accompanied by standard intersection ROI definitions in `data/calibration/intersection_rois.json`.
+
+### 8.2 Multi-Model Detector Zoo (YOLOv8/v10, RT-DETR, MobileNetV3-SSD)
+Here we build a unified model zoo abstraction that enables seamless swapping between edge-optimized object detectors based on hardware capability and scene complexity. It is required to support both high-accuracy transformer-based detection (RT-DETR) for dense urban scenes and ultra-low-power models (MobileNetV3-SSD) for embedded edge nodes. The implementation utilizes a common abstract base class `BaseDetector` in Python, with implementations for YOLOv8/v10, RT-DETR via ONNX Runtime / TensorRT, and MobileNetV3. The specific deliverable is `vision/model_zoo.py` with multi-model unit tests in `vision/tests/test_model_zoo.py`.
+
+### 8.3 Occlusion-Resistant State Tracking (OC-SORT & ByteTrack)
+This step implements object tracking with persistent integer IDs to eliminate double-counting and maintain track continuity across visual occlusions. It is critical because in dense traffic queues, smaller vehicles (cars, two-wheelers) are frequently occluded by large vehicles (buses, trucks), which would cause naive detectors to oscillate queue counts. We implement Observation-Centric SORT (OC-SORT) and ByteTrack algorithms that leverage momentum-based Kalman filters and observation-centric recovery during occlusions. The deliverable is `vision/tracker.py` outputting consistent tracked vehicle trajectories and instantaneous approach flow rates.
+
+### 8.4 Strategy A: Proportional Volume Allocation Engine
+This task builds the first of the three core dynamic accumulation strategies: Proportional Volume Allocation. It is necessary to distribute available cycle time fairly and efficiently in proportion to actual waiting vehicular volume across conflicting approaches, preventing green-time waste on underutilized lanes. The algorithm ingests tracked queue counts $\{v_i\}$ for each approach $i$ and dynamically solves for green splits $g_i = \text{clamp}\left(C \times \frac{v_i}{\sum_k v_k}, g_{\min}, g_{\max}\right)$ subject to minimum pedestrian clearance and cycle budget constraints. The deliverable is `actuation/strategies/proportional.py` with comprehensive mathematical verification tests in `actuation/tests/test_proportional.py`.
+
+### 8.5 Strategy B: Dynamic Extension with Gap Detection
+Here we implement the second dynamic strategy: Dynamic Extension with Stop-Line Decision Zone Gap Detection. It is essential for maximizing lane discharge capacity by sustaining green lights only while vehicles actively cross, terminating the phase immediately when headways between successive vehicles indicate flow depletion. The implementation defines a pre-stop-line "Decision Zone" spatial polygon; green time is extended in short $\Delta t$ increments (e.g., $+2.0\text{s}$) as long as vehicle detections persist within the critical headway gap ($t_{\text{gap}} \le 2.5\text{s}$), and terminates early upon gap-out. The deliverable is `actuation/strategies/gap_extension.py` and test cases verifying early termination upon headway gaps in `actuation/tests/test_gap_extension.py`.
+
+### 8.6 Strategy C: Zero-Demand Phase Skipping
+This step creates the Phase Skipping module that inspects tracked vehicle states across all scheduled phases and eliminates dead-time cycles. It is necessary because dedicated turning phases or low-demand approaches often have zero waiting vehicles, and cycling through red-yellow-green sequences for empty lanes creates systemic arterial delay. The module queries the tracking state, identifies approaches with $v_i = 0$, and bypasses their phase intervals entirely, advancing immediately to the next approach with pending demand. The deliverable is `actuation/strategies/phase_skipping.py` integrated into the actuation decision engine.
+
+### 8.7 Priority Routing with Safe Yellow Clearance & Track-ID Green Corridor Hold
+This task implements the mission-critical emergency override controller supporting Ambulances, Fire Trucks, and Police units. It is necessary to ensure both immediate priority preemption and collision-free intersection safety. The module enforces a strict two-stage transition: (1) upon emergency classification confidence exceeding 85%, all conflicting active phases enter a mandatory 3.0-second Yellow clearance interval; (2) the target emergency lane is granted Green and held indefinitely until the emergency vehicle's unique `track_id` is tracked passing the stop line and fully exiting the intersection bounding polygon. The deliverable is `preemption/emergency_hold.py` and safety verification tests in `preemption/tests/test_emergency_hold.py`.
+
+### 8.8 FastAPI Asynchronous Video Streaming & Edge Actuation Gateway
+Here we build a high-throughput asynchronous backend service using FastAPI to coordinate RTSP camera feeds, edge ML inference, and real-time telemetry streaming. It is required to decouple high-frame-rate video capture from control decision loops, enabling sub-millisecond API response times and live WebSocket telemetry broadcast. The implementation leverages async Python tasks, WebSockets for live bounding-box streaming, and REST endpoints for remote manual interventions and parameter updates. The deliverable is `edge_gateway.py` with complete OpenAPI documentation and integration tests.
+
+### 8.9 Physical Hardware Actuation Interface (GPIO & IP-Relay Controller)
+This step builds the hardware abstraction layer bridging software phase decisions with physical traffic signal equipment. It is necessary to translate digital `PhaseDecision` events into physical electrical switching signals for real-world LED signal heads and NEMA TS2 / 170 / 2070 traffic cabinets. The module provides dual drivers: a Jetson / Raspberry Pi GPIO driver for direct transistor/relay switching and an industrial Modbus/HTTP IP-relay driver for commercial network-managed signal hardware, backed by a safe simulated mock driver for unit testing. The deliverable is `actuation/hardware_relay.py` and hardware test suite in `actuation/tests/test_hardware_relay.py`.
+
+### 8.10 Edge Hardware Deployment & TensorRT Optimization
+The final task of Phase 8 focuses on benchmarking and deploying the entire perception-to-actuation pipeline onto physical edge hardware (NVIDIA Jetson Orin Nano / Orin NX). It is essential to prove that the full closed-loop system operates comfortably above 30 FPS with total end-to-end latency below 33 milliseconds without dropped frames or thermal throttling. The technique involves compiling models to TensorRT FP16/INT8 precision engines, profiling CUDA memory usage, and executing sustained 60-minute stress tests. The deliverable is `scripts/export_tensorrt.py`, `benchmarks/edge_benchmark.py`, and verified execution logs in `results/edge_hardware_benchmark.json`.
 
 ---
 

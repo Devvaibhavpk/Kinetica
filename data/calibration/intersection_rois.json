@@ -1,0 +1,105 @@
+{
+  "intersection_id": "IX-104",
+  "name": "Sholinganallur Junction (OMR & Medavakkam Link)",
+  "resolution": [1920, 1080],
+  "pixels_per_meter": 20.0,
+  "homography_matrix": [
+    [1.0, 0.0, 0.0],
+    [0.0, 1.0, 0.0],
+    [0.0, 0.0, 1.0]
+  ],
+  "approaches": {
+    "lane_N": {
+      "name": "North Approach (OMR Inbound from Madhya Kailash)",
+      "polygon": [
+        [800, 50],
+        [1120, 50],
+        [1100, 420],
+        [820, 420]
+      ],
+      "decision_zone": [
+        [820, 340],
+        [1100, 340],
+        [1100, 420],
+        [820, 420]
+      ],
+      "exit_roi": [
+        [820, 420],
+        [1100, 420],
+        [1150, 680],
+        [770, 680]
+      ],
+      "stop_line_y": 420,
+      "flow_direction": "SOUTHBOUND"
+    },
+    "lane_S": {
+      "name": "South Approach (OMR Outbound to Siruseri)",
+      "polygon": [
+        [820, 660],
+        [1100, 660],
+        [1180, 1030],
+        [740, 1030]
+      ],
+      "decision_zone": [
+        [820, 660],
+        [1100, 660],
+        [1080, 740],
+        [840, 740]
+      ],
+      "exit_roi": [
+        [780, 400],
+        [1140, 400],
+        [1100, 660],
+        [820, 660]
+      ],
+      "stop_line_y": 660,
+      "flow_direction": "NORTHBOUND"
+    },
+    "lane_W": {
+      "name": "West Approach (Medavakkam Rd Connector)",
+      "polygon": [
+        [50, 420],
+        [740, 440],
+        [740, 640],
+        [50, 660]
+      ],
+      "decision_zone": [
+        [640, 440],
+        [740, 440],
+        [740, 640],
+        [640, 640]
+      ],
+      "exit_roi": [
+        [740, 440],
+        [1180, 420],
+        [1180, 660],
+        [740, 640]
+      ],
+      "stop_line_x": 740,
+      "flow_direction": "EASTBOUND"
+    },
+    "lane_E": {
+      "name": "East Approach (Kallukuttai / ECR Link)",
+      "polygon": [
+        [1180, 420],
+        [1870, 400],
+        [1870, 680],
+        [1180, 660]
+      ],
+      "decision_zone": [
+        [1180, 420],
+        [1280, 420],
+        [1280, 660],
+        [1180, 660]
+      ],
+      "exit_roi": [
+        [740, 440],
+        [1180, 420],
+        [1180, 660],
+        [740, 640]
+      ],
+      "stop_line_x": 1180,
+      "flow_direction": "WESTBOUND"
+    }
+  }
+}
