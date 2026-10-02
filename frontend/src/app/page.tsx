@@ -12,6 +12,7 @@ import CorridorView from "../components/views/CorridorView";
 import AnalyticsView from "../components/views/AnalyticsView";
 import SystemHealthView from "../components/views/SystemHealthView";
 import EmergencyOverrideView from "../components/views/EmergencyOverrideView";
+import SettingsView from "../components/views/SettingsView";
 
 export default function Home() {
   const [activeModule, setActiveModule] = useState<ModuleKey>("overview");
@@ -37,6 +38,8 @@ export default function Home() {
         return "SYSTEM HEALTH : O(LOG N) HEAP BENCHMARK";
       case "emergency":
         return "EMERGENCY OVERRIDE : HIGH PRIORITY CONTROLLER";
+      case "settings":
+        return "CONTROL & SCENARIOS : SIMULATION ENGINE";
       default:
         return "KINETICA CONTROL ROOM";
     }
@@ -58,6 +61,8 @@ export default function Home() {
         return <SystemHealthView />;
       case "emergency":
         return <EmergencyOverrideView />;
+      case "settings":
+        return <SettingsView />;
       default:
         return <OverviewView />;
     }

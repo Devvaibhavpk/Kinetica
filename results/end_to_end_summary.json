@@ -1,6 +1,6 @@
 {
   "status": "SUCCESS",
-  "timestamp": "2026-10-03T01:55:04.172673",
+  "timestamp": "2026-10-03T02:16:45.570997",
   "total_observations": 480,
   "poisson_fit": {
     "p_value": 0.0,
@@ -12,10 +12,10 @@
   },
   "hypothesis_test": {
     "test_used": "Mann-Whitney U test",
-    "statistic": 20665.0,
+    "statistic": 2424.5,
     "p_value": 0.0,
     "h0_rejected": true,
-    "effect_size": 21.64
+    "effect_size": 16.38
   },
   "corridor_path": [
     "IX-02",
@@ -24,8 +24,8 @@
   ],
   "feature_importances": {
     "density_veh_per_m": 0.0,
-    "vehicle_count": 0.2918,
-    "queue_length_m": 0.7082,
+    "vehicle_count": 0.1238,
+    "queue_length_m": 0.8762,
     "is_preempted": 0.0,
     "hour_of_day": 0.0
   }

@@ -10,7 +10,8 @@ export type ModuleKey =
   | "vision"
   | "analytics"
   | "health"
-  | "emergency";
+  | "emergency"
+  | "settings";
 
 interface SidebarProps {
   activeModule: ModuleKey;
@@ -82,6 +83,14 @@ export default function Sidebar({
       category: "system",
       tag: "O(log N)",
       description: "Max-Heap benchmark & hardware telemetry",
+    },
+    {
+      key: "settings",
+      icon: "tune",
+      label: "Control & Scenarios",
+      category: "system",
+      tag: "CFG",
+      description: "Trigger synthetic runs & parameter config",
     },
   ];
 
