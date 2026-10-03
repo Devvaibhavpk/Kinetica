@@ -22,9 +22,9 @@ app.add_middleware(
 )
 
 # Preload high-speed ONNX / YOLOv8 model in memory
-print("[Kinetica Vision Server] Preloading ultra-fast ONNX / YOLOv8 model into memory...")
-MODEL = load_detector("yolov8n.onnx")
-print("[Kinetica Vision Server] Model active (55+ FPS ONNX runtime engine)!")
+print("[Kinetica Vision Server] Preloading custom fine-tuned Kinetica detector into memory...")
+MODEL = load_detector()
+print(f"[Kinetica Vision Server] Model active! Classes: {list(getattr(MODEL, 'names', {}).values())}")
 
 class DetectRequest(BaseModel):
     image: Optional[str] = None # Base64 or URL
@@ -38,7 +38,15 @@ class BatchDetectRequest(BaseModel):
 
 @app.get("/health")
 async def health():
-    return {"status": "ok", "model": "yolov8n.onnx", "engine": "onnxruntime", "service": "kinetica-vision-ws"}
+    model_name = getattr(MODEL, "ckpt_path", getattr(MODEL, "model_name", "custom_kinetica_model"))
+    classes = list(getattr(MODEL, "names", {}).values())
+    return {
+        "status": "ok",
+        "model": str(model_name),
+        "classes": classes,
+        "engine": "onnxruntime" if str(model_name).endswith(".onnx") else "pytorch",
+        "service": "kinetica-vision-ws",
+    }
 
 def _decode_image(b64_or_url: str) -> Optional[np.ndarray]:
     try:
@@ -75,7 +83,9 @@ def _process_frame(img_bgr: np.ndarray, allow_all: bool, conf_thresh: float):
         conf = det["confidence"]
         norm_bbox = det["normalized_bbox"]
         
-        if coco_cls in ["car", "bus", "truck"]:
+        if coco_cls in ["ambulance", "police"]:
+            final_class = coco_cls
+        elif coco_cls in ["car", "bus", "truck"]:
             priority_cls = classify_priority(det, img_bgr)
             final_class = priority_cls.value.lower() if priority_cls.value != "STANDARD" else coco_cls
         else:

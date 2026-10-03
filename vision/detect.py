@@ -4,12 +4,31 @@ import numpy as np
 # Global cache for detector
 _MODEL_CACHE = {}
 
-def load_detector(model_name: str = "yolov8n.onnx"):
+def load_detector(model_name: str | None = None):
     """
-    Loads and caches high-performance YOLOv8 detector (uses ONNX runtime for 55+ FPS when available).
+    Loads and caches high-performance YOLOv8 detector.
+    Automatically prioritizes custom trained edge weights (weights/best.onnx or weights/best.pt)
+    when available, falling back to base models.
     """
     from ultralytics import YOLO
     global _MODEL_CACHE
+
+    if model_name is None or model_name in ["yolov8n.onnx", "yolov8n.pt", "default", "yolov8n"]:
+        # Check custom trained weights in order of priority
+        candidates = [
+            os.path.join("weights", "best.onnx"),
+            os.path.join("weights", "best.pt"),
+            "best.pt",
+            "yolov8n.onnx",
+            "yolov8n.pt",
+        ]
+        resolved = None
+        for cand in candidates:
+            if os.path.exists(cand):
+                resolved = cand
+                break
+        model_name = resolved if resolved else "yolov8n.pt"
+
     if model_name not in _MODEL_CACHE:
         # Check if ONNX model exists for 18ms inference, fallback to PT if not
         if model_name.endswith(".onnx") and not os.path.exists(model_name):
@@ -21,8 +40,15 @@ def load_detector(model_name: str = "yolov8n.onnx"):
 
 def detect_frame(model, frame: np.ndarray, allow_all: bool = False, conf_thresh: float = 0.30) -> list[dict]:
     """
-    Runs ultra-fast YOLO inference (18ms / 55 FPS) with strict roadway vehicle filtering and normalized bboxes.
+    Runs ultra-fast YOLO inference with strict roadway vehicle filtering and normalized bboxes.
+    Seamlessly supports both custom 7-class Kinetica models and standard COCO pretrained models.
     """
+    model_names = getattr(model, "names", {})
+    # Determine if this model is the custom fine-tuned Kinetica 7-class model
+    is_custom_kinetica = False
+    if isinstance(model_names, dict) and any(c in model_names.values() for c in ["ambulance", "auto_rickshaw"]):
+        is_custom_kinetica = True
+
     TRAFFIC_CLASSES = {
         2: 'car',
         3: 'motorcycle',
@@ -48,13 +74,16 @@ def detect_frame(model, frame: np.ndarray, allow_all: bool = False, conf_thresh:
             
         for box in boxes:
             class_id = int(box.cls[0].item())
-            class_name = model.names.get(class_id, f"class_{class_id}")
+            class_name = model_names.get(class_id, f"class_{class_id}")
             
-            if class_name in DISALLOWED_CLASSES:
-                continue
-                
-            if not allow_all and class_id not in TRAFFIC_CLASSES:
-                continue
+            if is_custom_kinetica:
+                mapped_class = class_name
+            else:
+                if class_name in DISALLOWED_CLASSES:
+                    continue
+                if not allow_all and class_id not in TRAFFIC_CLASSES:
+                    continue
+                mapped_class = TRAFFIC_CLASSES.get(class_id, class_name)
                 
             x1, y1, x2, y2 = box.xyxy[0].tolist()
             conf = float(box.conf[0].item())
@@ -72,8 +101,6 @@ def detect_frame(model, frame: np.ndarray, allow_all: bool = False, conf_thresh:
             norm_y = max(0.0, min(1.0, y1 / h))
             norm_w = max(0.0, min(1.0, box_w / w))
             norm_h = max(0.0, min(1.0, box_h / h))
-            
-            mapped_class = TRAFFIC_CLASSES.get(class_id, class_name)
             
             detections.append({
                 'bbox': [bx1, by1, bx2, by2],

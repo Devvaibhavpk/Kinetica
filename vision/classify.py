@@ -19,7 +19,13 @@ def classify_priority(detection: dict, frame: np.ndarray) -> VehicleClass:
     Returns VehicleClass.AMBULANCE, VehicleClass.POLICE, or VehicleClass.STANDARD.
     """
     x1, y1, x2, y2 = detection['bbox']
-    coco_cls = detection.get('coco_class', 'car')
+    coco_cls = str(detection.get('coco_class') or detection.get('class', 'car')).lower()
+    
+    # Direct model detection check for fine-tuned Kinetica models
+    if coco_cls == 'ambulance':
+        return VehicleClass.AMBULANCE
+    if coco_cls == 'police':
+        return VehicleClass.POLICE
     
     h, w = frame.shape[:2]
     x1, y1 = max(0, x1), max(0, y1)
