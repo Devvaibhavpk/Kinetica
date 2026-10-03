@@ -64,7 +64,9 @@ data/dataset_*/
 data/**/*.yaml
 data/**/*.jpg
 data/**/*.png
-data/**/*.txt
+data/*.zip
+data/raw/
+data/kinetica_dataset/
 weights/
 runs_kinetica/
 runs/
@@ -88,4 +90,3 @@ coverage.xml
 *.py,cover
 .hypothesis/
 .pytest_cache/
-docs/*.md
