@@ -62,8 +62,8 @@ def detect_frame(model, frame: np.ndarray, allow_all: bool = False, conf_thresh:
     
     h, w = frame.shape[:2]
     
-    # Run YOLO with lightweight input size (320px) for maximum FPS
-    results = model.predict(frame, imgsz=320, conf=conf_thresh, iou=0.45, max_det=20, verbose=False)
+    # Run YOLO with standard 640px input size (compatible with fixed-dimension ONNX exports)
+    results = model.predict(frame, imgsz=640, conf=conf_thresh, iou=0.45, max_det=20, verbose=False)
     
     detections = []
     

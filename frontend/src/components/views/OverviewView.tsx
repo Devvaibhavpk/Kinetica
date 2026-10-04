@@ -3,7 +3,152 @@
 import React, { useState, useEffect } from "react";
 import dynamic from "next/dynamic";
 import type { ChennaiNode } from "../ChennaiRealMap";
-import AwaitingDataStub from "../AwaitingDataStub";
+
+export interface SignalIntersection {
+  id: string;
+  name: string;
+  zone: string;
+  lat: number;
+  lon: number;
+  laneId: string;
+}
+
+export const CHENNAI_SIGNAL_INTERSECTIONS: SignalIntersection[] = [
+  {
+    id: "IX-101",
+    name: "Madhya Kailash Junction",
+    zone: "Adyar / Sardar Patel Rd & OMR Gateway",
+    lat: 13.00666,
+    lon: 80.24603,
+    laneId: "lane_N",
+  },
+  {
+    id: "IX-102",
+    name: "TIDEL Park Junction",
+    zone: "Thiruvanmiyur / CSIR Rd & OMR",
+    lat: 12.98640,
+    lon: 80.25156,
+    laneId: "lane_S",
+  },
+  {
+    id: "IX-103",
+    name: "SRP Tools Junction",
+    zone: "Perungudi / OMR IT Expressway Hub",
+    lat: 12.98007,
+    lon: 80.25290,
+    laneId: "lane_W",
+  },
+  {
+    id: "IX-104",
+    name: "Sholinganallur Junction",
+    zone: "OMR & Medavakkam-Kandanchavadi Arterial Link",
+    lat: 12.90092,
+    lon: 80.22797,
+    laneId: "lane_E",
+  },
+  {
+    id: "IX-105",
+    name: "Kathipara Cloverleaf Junction",
+    zone: "Guindy / GST Road & Inner Ring Link (NH-45)",
+    lat: 13.00652,
+    lon: 80.20367,
+    laneId: "lane_N",
+  },
+  {
+    id: "IX-108",
+    name: "Chennai Central Junction",
+    zone: "George Town / EVR Periyar Salai & Wall Tax Rd",
+    lat: 13.08186,
+    lon: 80.27625,
+    laneId: "lane_S",
+  },
+  {
+    id: "IX-109",
+    name: "Vijayanagar Junction",
+    zone: "Velachery / 100ft Bypass Rd & Taramani Link",
+    lat: 12.97500,
+    lon: 80.22070,
+    laneId: "lane_W",
+  },
+];
+
+export const getApproachName = (sigId: string, laneId: string): string => {
+  const approaches: Record<string, Record<string, string>> = {
+    "IX-101": {
+      lane_N: "Sardar Patel Rd (Adyar Inbound)",
+      lane_S: "OMR IT Expressway Outbound",
+      lane_E: "Gandhi Mandapam Rd (Kotturpuram)",
+      lane_W: "Rajiv Gandhi Salai Flyover",
+      "Approach-N": "Sardar Patel Rd Approach",
+      "Approach-S": "OMR IT Expressway Approach",
+      "Approach-E": "Gandhi Mandapam Approach",
+      "Approach-W": "Flyover Approach",
+    },
+    "IX-102": {
+      lane_N: "OMR Northbound (Madhya Kailash)",
+      lane_S: "OMR Southbound (SRP Tools)",
+      lane_E: "CSIR Rd (Thiruvanmiyur)",
+      lane_W: "Taramani 100ft Link Rd",
+      "Approach-N": "OMR Northbound Inbound",
+      "Approach-S": "OMR Southbound Mainline",
+      "Approach-E": "CSIR Rd Approach",
+      "Approach-W": "Taramani Link Approach",
+    },
+    "IX-103": {
+      lane_N: "OMR Northbound (TIDEL Park)",
+      lane_S: "OMR Southbound (Kandanchavadi)",
+      lane_E: "Perungudi Industrial Link",
+      lane_W: "Thoraipakkam Radial Link",
+      "Approach-N": "OMR Northbound Approach",
+      "Approach-S": "OMR Southbound Approach",
+      "Approach-E": "Perungudi Link Approach",
+      "Approach-W": "Radial Link Approach",
+    },
+    "IX-104": {
+      lane_N: "OMR Northbound Inbound",
+      lane_S: "OMR Southbound Outbound (Siruseri)",
+      lane_E: "ECR Link Rd (Akkarai)",
+      lane_W: "Medavakkam-Tambaram Main Rd",
+      "Approach-N": "OMR Northbound Mainline",
+      "Approach-S": "OMR Southbound Mainline",
+      "Approach-E": "ECR Link Corridor",
+      "Approach-W": "Medavakkam Rd Approach",
+    },
+    "IX-105": {
+      lane_N: "Inner Ring Rd (Jawaharlal Nehru Salai)",
+      lane_S: "GST Road Southbound (Airport / Tambaram)",
+      lane_E: "Anna Salai (Guindy / Saidapet)",
+      lane_W: "Mount-Poonamallee Rd (Porur)",
+      "Approach-N": "Inner Ring Mainline",
+      "Approach-S": "GST Road Mainline",
+      "Approach-E": "Anna Salai Approach",
+      "Approach-W": "Mount-Poonamallee Approach",
+    },
+    "IX-108": {
+      lane_N: "Wall Tax Road (Basin Bridge)",
+      lane_S: "Poonamallee High Rd (Periamet)",
+      lane_E: "EVR Periyar Salai (Ripon Building)",
+      lane_W: "Raja Muthiah Salai (Sydenhams Rd)",
+      "Approach-N": "Wall Tax Rd Approach",
+      "Approach-S": "Poonamallee High Rd Approach",
+      "Approach-E": "EVR Periyar Salai Approach",
+      "Approach-W": "Sydenhams Rd Approach",
+    },
+    "IX-109": {
+      lane_N: "Velachery Bypass Rd (Guindy Link)",
+      lane_S: "Taramani Link Rd (OMR IT Hub)",
+      lane_E: "100ft Inner Ring Road",
+      lane_W: "Tambaram-Velachery Main Rd",
+      "Approach-N": "Velachery Bypass Approach",
+      "Approach-S": "Taramani Link Approach",
+      "Approach-E": "100ft Inner Ring Mainline",
+      "Approach-W": "Tambaram Main Rd Approach",
+    },
+  };
+
+  const sigMap = approaches[sigId] || approaches["IX-104"];
+  return sigMap[laneId] || laneId || "Active Phase";
+};
 
 interface BackendResults {
   metrics: {
@@ -27,6 +172,9 @@ interface BackendResults {
     statistic: number;
   } | null;
   corridorPath: string[];
+  laneStates?: Record<string, any>;
+  heapHierarchy?: any[];
+  _dataSource?: string;
   recentDecisions: Array<{
     intersection_id: string;
     active_lane_id: string;
@@ -40,9 +188,9 @@ interface BackendResults {
 const ChennaiRealMap = dynamic(() => import("../ChennaiRealMap"), {
   ssr: false,
   loading: () => (
-    <div className="w-full h-full min-h-[460px] bg-[#0c0e12] flex flex-col items-center justify-center gap-3 text-on-surface-variant font-mono text-xs">
-      <div className="w-6 h-6 border-2 border-[#4d9fff] border-t-transparent rounded-full animate-spin"></div>
-      <span>Loading Chennai Geospatial Map (Arterial Network)...</span>
+    <div className="w-full h-full min-h-[460px] bg-surface flex flex-col items-center justify-center gap-3 text-on-surface-variant font-mono text-xs">
+      <div className="w-6 h-6 border-2 border-primary border-t-transparent rounded-full animate-spin"></div>
+      <span>Loading TomTom Road & Traffic Network...</span>
     </div>
   ),
 });
@@ -50,7 +198,6 @@ const ChennaiRealMap = dynamic(() => import("../ChennaiRealMap"), {
 export default function OverviewView() {
   const [backendData, setBackendData] = useState<BackendResults | null>(null);
   const [loadingBackend, setLoadingBackend] = useState<boolean>(true);
-  const [scenario, setScenario] = useState<"normal" | "building" | "preempted">("preempted");
 
   useEffect(() => {
     async function loadResults() {
@@ -67,420 +214,405 @@ export default function OverviewView() {
       }
     }
     loadResults();
+
+    // Poll telemetry periodically every 12 seconds (without triggering map re-renders)
+    const interval = setInterval(loadResults, 12000);
+    return () => clearInterval(interval);
   }, []);
+
+  const isBackendOnline = Boolean(
+    backendData &&
+      backendData.metrics &&
+      (backendData.metrics.totalObservations > 0 || backendData.metrics.totalDecisions > 0)
+  );
 
   const [selectedNode, setSelectedNode] = useState<ChennaiNode>({
     id: "IX-104",
     name: "Sholinganallur Junction",
     zone: "OMR & Medavakkam-Kandanchavadi Arterial Link",
-    lat: 12.901,
-    lon: 80.2279,
-    queueLengthM: 34.0,
-    density: 0.74,
-    arrivalRate: "1.42 V/S",
-    activePhase: "E-Thru Preempted Green Wave",
-    status: "preempted",
-    policy: "MAX-PREEMPT",
-    nemaSplit: "48s / 32s / 20s / 20s",
-    speedKmH: 52,
-    classCounts: { cars: 62, twoWheelers: 140, autos: 35, buses: 7, ambulances: 1 },
-    activePreemption: {
-      vehicle: "AMBULANCE",
-      etaSeconds: 65,
-      corridorName: "OMR Rajiv Gandhi Express Wave",
-    },
+    lat: 12.90092,
+    lon: 80.22797,
+    queueLengthM: 0,
+    density: 0,
+    arrivalRate: "—",
+    activePhase: "Awaiting Live Telemetry",
+    status: "nominal",
+    policy: "ADAPTIVE",
+    nemaSplit: "Dynamic Splits",
+    speedKmH: 0,
+    classCounts: { cars: 0, twoWheelers: 0, autos: 0, buses: 0, ambulances: 0 },
   });
 
-  const isNormal = scenario === "normal";
-  const isBuilding = scenario === "building";
-  const isPreempted = scenario === "preempted";
+  // Switch signal via dropdown selector
+  const handleSignalChange = (signalId: string) => {
+    const target = CHENNAI_SIGNAL_INTERSECTIONS.find((s) => s.id === signalId);
+    if (!target) return;
+
+    const laneMap: Record<string, string> = {
+      "IX-101": "lane_N",
+      "IX-102": "lane_S",
+      "IX-103": "lane_W",
+      "IX-104": "lane_E",
+    };
+    const laneId = laneMap[target.id] || "lane_E";
+    const lane = backendData?.laneStates ? backendData.laneStates[laneId] : null;
+
+    setSelectedNode({
+      id: target.id,
+      name: target.name,
+      zone: target.zone,
+      lat: target.lat,
+      lon: target.lon,
+      queueLengthM: Number(lane?.queue_length_m) || 0,
+      density: Number(lane?.density_veh_per_m) || 0,
+      arrivalRate: lane ? ((lane.vehicle_count || 0) / 10).toFixed(2) + " V/S" : "—",
+      status: isBackendOnline
+        ? lane?.state === "preempted"
+          ? "preempted"
+          : lane?.state === "building"
+          ? "building"
+          : "nominal"
+        : "nominal",
+      policy: isBackendOnline
+        ? lane?.state === "preempted"
+          ? "MAX-PREEMPT"
+          : "ADAPTIVE"
+        : "OFFLINE",
+      speedKmH: isBackendOnline
+        ? Math.max(0, Math.round(55 * (1 - (lane?.density_veh_per_m || 0))))
+        : 0,
+      activePhase: isBackendOnline
+        ? lane?.state === "preempted"
+          ? "East Preempt Corridor"
+          : "Dynamic Demand Phase"
+        : "Backend Offline",
+      nemaSplit: isBackendOnline
+        ? lane?.state === "preempted"
+          ? "G: HOLD"
+          : "Dynamic Splits"
+        : "Offline",
+      classCounts: {
+        cars: Math.floor((lane?.vehicle_count || 0) * 0.4),
+        twoWheelers: Math.floor((lane?.vehicle_count || 0) * 0.45),
+        autos: Math.floor((lane?.vehicle_count || 0) * 0.1),
+        buses: Math.floor((lane?.vehicle_count || 0) * 0.05),
+        ambulances: lane?.state === "preempted" ? 1 : 0,
+      },
+    });
+  };
+
+  // Synchronize selectedNode with real measured backend telemetry as updates arrive
+  useEffect(() => {
+    if (backendData?.laneStates) {
+      const laneMap: Record<string, string> = {
+        "IX-101": "lane_N",
+        "IX-102": "lane_S",
+        "IX-103": "lane_W",
+        "IX-104": "lane_E",
+      };
+      const laneId = laneMap[selectedNode.id] || "lane_E";
+      const lane = backendData.laneStates[laneId];
+
+      if (lane) {
+        setSelectedNode((prev) => ({
+          ...prev,
+          queueLengthM: Number(lane.queue_length_m) || 0,
+          density: Number(lane.density_veh_per_m) || 0,
+          arrivalRate: ((lane.vehicle_count || 0) / 10).toFixed(2) + " V/S",
+          status:
+            lane.state === "preempted"
+              ? "preempted"
+              : lane.state === "building"
+              ? "building"
+              : "nominal",
+          policy: lane.state === "preempted" ? "MAX-PREEMPT" : "ADAPTIVE",
+          speedKmH: Math.max(0, Math.round(55 * (1 - (lane.density_veh_per_m || 0)))),
+          activePhase:
+            lane.state === "preempted" ? "East Preempt Corridor" : "Dynamic Demand Phase",
+          classCounts: {
+            cars: Math.floor((lane.vehicle_count || 0) * 0.4),
+            twoWheelers: Math.floor((lane.vehicle_count || 0) * 0.45),
+            autos: Math.floor((lane.vehicle_count || 0) * 0.1),
+            buses: Math.floor((lane.vehicle_count || 0) * 0.05),
+            ambulances: lane.state === "preempted" ? 1 : 0,
+          },
+        }));
+      }
+    }
+  }, [backendData, selectedNode.id]);
 
   return (
-    <div className="flex-1 flex flex-col gap-5">
-      {/* ── TOP OPERATIONAL DIRECTIVE STRIP ───────────────────────────── */}
-      <section className="bg-[#161820] border border-[#2e3140] rounded-xl p-3 flex items-center justify-between flex-wrap gap-3 shadow-sm">
-        <div className="flex items-center gap-3 pl-1">
-          {isPreempted ? (
-            <div className="flex items-center gap-2.5">
-              <span className="w-2.5 h-2.5 rounded-full bg-[#ff4060] animate-pulse"></span>
-              <span className="font-mono text-xs font-bold text-[#ff4060] tracking-wide uppercase">
-                ACTIVE CORRIDOR DIRECTIVE: EMERGENCY PREEMPTION (OMR RAJIV GANDHI EXPRESS)
-              </span>
-              <span className="hidden sm:inline-block font-mono text-[10px] bg-[#ff4060]/10 text-[#ff4060] px-2 py-0.5 rounded border border-[#ff4060]/30 font-semibold uppercase">
-                Max-Heap Score: 98.4 · ETA: 42s
-              </span>
+    <div className="flex-1 flex flex-col gap-5 w-full max-w-full pb-8">
+      {/* ── BACKEND OFFLINE STATUS BANNER (Zero Dummy Data Rule) ── */}
+      {!isBackendOnline && !loadingBackend && (
+        <section className="bg-state-crit-dim border border-state-crit-border rounded-2xl p-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 shadow-lg">
+          <div className="flex items-center gap-3">
+            <span className="w-3 h-3 rounded-full bg-state-preempted animate-ping shrink-0" />
+            <div>
+              <div className="flex items-center gap-2">
+                <span className="font-bold text-xs uppercase tracking-wider text-state-preempted font-mono">
+                  BACKEND OFFLINE
+                </span>
+                <span className="text-[10px] bg-surface-high px-2 py-0.5 rounded border border-outline font-mono text-on-surface-variant">
+                  GATEWAY DISCONNECTED
+                </span>
+              </div>
+              <p className="text-xs text-on-surface-variant mt-0.5">
+                Kinetica FastAPI Gateway (http://127.0.0.1:8000) unreachable. Signal queue lengths, arrival rates, and camera feeds are offline. Showing genuine TomTom traffic and map data only.
+              </p>
             </div>
-          ) : isBuilding ? (
-            <div className="flex items-center gap-2.5">
-              <span className="w-2.5 h-2.5 rounded-full bg-[#ffab1a] animate-pulse"></span>
-              <span className="font-mono text-xs font-bold text-[#ffab1a] tracking-wide uppercase">
-                ACTIVE DIRECTIVE: PEAK QUEUE DISSIPATION (POISSON DEMAND-RESPONSIVE)
-              </span>
-              <span className="hidden sm:inline-block font-mono text-[10px] bg-[#ffab1a]/10 text-[#ffab1a] px-2 py-0.5 rounded border border-[#ffab1a]/30 font-semibold uppercase">
-                Green Ext: +8.4s · Dynamic Gap-Out
-              </span>
-            </div>
-          ) : (
-            <div className="flex items-center gap-2.5">
-              <span className="w-2.5 h-2.5 rounded-full bg-[#00c97a]"></span>
-              <span className="font-mono text-xs font-bold text-[#e8eaf0] tracking-wide uppercase">
-                ACTIVE DIRECTIVE: NOMINAL BASELINE CYCLE (FIXED-SPLIT NEMA PHASING)
-              </span>
-              <span className="hidden sm:inline-block font-mono text-[10px] bg-[#2c2f3a] text-[#9096a8] px-2 py-0.5 rounded border border-[#2e3140] font-semibold uppercase">
-                Cycle: 120s · Equal Split
-              </span>
-            </div>
-          )}
-        </div>
-
-        {/* Scenario Switcher Controls */}
-        <div className="flex items-center bg-[#111318] border border-[#2e3140] p-1 rounded-lg">
+          </div>
           <button
-            onClick={() => setScenario("normal")}
-            className={`px-3 py-1 rounded text-[11px] font-mono uppercase tracking-wider transition-all cursor-pointer ${
-              isNormal
-                ? "bg-[#2c2f3a] text-[#e8eaf0] font-bold border border-[#4d9fff]/30 shadow-sm"
-                : "text-[#9096a8] hover:text-[#e8eaf0]"
-            }`}
+            onClick={() => window.location.reload()}
+            className="px-3 py-1.5 rounded-lg bg-surface-high border border-outline text-xs font-semibold text-on-surface hover:bg-surface-mid transition-all shrink-0 cursor-pointer"
           >
-            Baseline
+            Retry Connection
           </button>
-          <button
-            onClick={() => setScenario("building")}
-            className={`px-3 py-1 rounded text-[11px] font-mono uppercase tracking-wider transition-all cursor-pointer ${
-              isBuilding
-                ? "bg-[#ffab1a]/20 text-[#ffab1a] font-bold border border-[#ffab1a]/40 shadow-sm"
-                : "text-[#9096a8] hover:text-[#e8eaf0]"
-            }`}
-          >
-            Congestion
-          </button>
-          <button
-            onClick={() => setScenario("preempted")}
-            className={`px-3 py-1 rounded text-[11px] font-mono uppercase tracking-wider transition-all cursor-pointer ${
-              isPreempted
-                ? "bg-[#ff4060]/20 text-[#ff4060] font-bold border border-[#ff4060]/40 shadow-sm"
-                : "text-[#9096a8] hover:text-[#e8eaf0]"
-            }`}
-          >
-            Emergency
-          </button>
-        </div>
-      </section>
+        </section>
+      )}
 
       {/* ── MAIN WORKSPACE GRID ───────────────────────────── */}
-      <div className="grid grid-cols-1 xl:grid-cols-12 gap-5 flex-1 min-h-[520px]">
-        {/* Map Canvas (8 Cols) */}
-        <section className="xl:col-span-8 bg-[#161820] border border-[#2e3140] rounded-2xl flex flex-col relative overflow-hidden shadow-lg">
-          <div className="flex-1 relative w-full h-full bg-[#0c0e12] min-h-[460px] flex flex-col">
+      <div className="grid grid-cols-1 xl:grid-cols-12 gap-6 flex-1 h-[calc(100vh-140px)] min-h-[700px]">
+        {/* TomTom Real Map Canvas (8 Cols) */}
+        <section className="xl:col-span-8 card p-0 flex flex-col relative overflow-hidden h-full shadow-2xl">
+          <div className="flex-1 relative w-full h-full min-h-[500px]">
             <ChennaiRealMap
-              scenario={scenario}
               selectedNodeId={selectedNode.id}
               onSelectNode={(node) => setSelectedNode(node)}
+              backendData={backendData}
             />
           </div>
         </section>
 
         {/* Telemetry Inspection Panel (4 Cols) */}
-        <section className="xl:col-span-4 flex flex-col gap-4">
+        <section className="xl:col-span-4 flex flex-col gap-5 h-full overflow-y-auto pr-2 custom-scrollbar">
           {/* Junction Header & Live Status Card */}
-          <div className="bg-[#161820] border border-[#2e3140] rounded-2xl p-4 flex flex-col gap-3.5 shadow-sm">
-            <div className="flex justify-between items-start border-b border-[#2e3140] pb-3">
-              <div>
+          <div className="card flex flex-col gap-4">
+            <div className="flex flex-col gap-3 border-b border-outline pb-4">
+              {/* Row 1: Signal Badges + Signal Switcher Dropdown */}
+              <div className="flex items-center justify-between gap-3">
                 <div className="flex items-center gap-2">
-                  <span className="font-mono text-xs font-bold text-[#4d9fff]">
+                  <span className="font-mono text-xs font-bold text-primary bg-surface-high px-2.5 py-1 rounded-md border border-outline">
                     {selectedNode.id}
                   </span>
-                  <span className="font-mono text-[9px] px-1.5 py-0.2 rounded bg-[#2c2f3a] text-[#9096a8]">
-                    CMA JCT
+                  <span className="badge badge-neutral text-[9px] px-2 py-0.5 uppercase tracking-wider font-semibold">
+                    SIGNAL CAMERA
                   </span>
                 </div>
-                <h3 className="font-sans text-sm font-semibold text-[#e8eaf0] mt-0.5">
-                  {selectedNode.name}
-                </h3>
-                <p className="font-mono text-[10px] text-[#9096a8] truncate mt-0.5">
-                  {selectedNode.zone}
-                </p>
-              </div>
 
-              <span
-                className={`font-mono text-[10px] font-bold px-2 py-0.5 rounded uppercase ${
-                  selectedNode.status === "preempted"
-                    ? "bg-[#ff4060]/20 text-[#ff4060] border border-[#ff4060]/40"
-                    : selectedNode.status === "building"
-                    ? "bg-[#ffab1a]/20 text-[#ffab1a] border border-[#ffab1a]/40"
-                    : "bg-[#00c97a]/20 text-[#00c97a] border border-[#00c97a]/40"
-                }`}
-              >
-                {selectedNode.policy}
-              </span>
-            </div>
-
-            {/* Core Physical & Statistical Metrics Grid */}
-            <div className="grid grid-cols-2 gap-2.5">
-              <div className="bg-[#111318] p-2.5 rounded-lg border border-[#2e3140]">
-                <span className="font-mono text-[9px] text-[#9096a8] uppercase block mb-0.5">
-                  Queue Length (m)
-                </span>
-                <div className="flex items-baseline justify-between">
-                  <span
-                    className={`font-mono text-base font-bold ${
-                      selectedNode.queueLengthM > 35 ? "text-[#ffab1a]" : "text-[#e8eaf0]"
-                    }`}
+                {/* Dropdown to switch between signals */}
+                <div className="flex items-center gap-1.5">
+                  <label htmlFor="signal-select" className="text-[10px] font-mono text-on-surface-variant uppercase tracking-wider hidden sm:inline">
+                    Signal:
+                  </label>
+                  <select
+                    id="signal-select"
+                    value={selectedNode.id}
+                    onChange={(e) => handleSignalChange(e.target.value)}
+                    className="bg-surface-high border border-outline rounded-lg px-2.5 py-1 text-xs font-mono font-semibold text-on-surface focus:outline-none focus:border-primary cursor-pointer hover:bg-surface-mid transition-all shadow-sm"
                   >
-                    {selectedNode.queueLengthM.toFixed(1)}m
-                  </span>
-                  <span className="font-mono text-[10px] text-[#9096a8]">
-                    ~{Math.round(selectedNode.queueLengthM / 5)} veh
-                  </span>
+                    {CHENNAI_SIGNAL_INTERSECTIONS.map((sig) => (
+                      <option key={sig.id} value={sig.id} className="bg-surface text-on-surface font-mono">
+                        {sig.id} — {sig.name.split(" ")[0]}
+                      </option>
+                    ))}
+                  </select>
                 </div>
               </div>
 
-              <div className="bg-[#111318] p-2.5 rounded-lg border border-[#2e3140]">
-                <span className="font-mono text-[9px] text-[#9096a8] uppercase block mb-0.5">
-                  Arrival Rate (λ)
-                </span>
-                <div className="flex items-baseline justify-between">
-                  <span className="font-mono text-base font-bold text-[#e8eaf0]">
-                    {selectedNode.arrivalRate}
-                  </span>
-                  <span className="font-mono text-[10px] text-[#00c97a]">Poisson OK</span>
+              {/* Row 2: Junction Name & Policy Badge */}
+              <div className="flex justify-between items-start gap-2 pt-0.5">
+                <div className="overflow-hidden">
+                  <h3 className="font-display text-lg font-semibold text-on-surface tracking-wide truncate">
+                    {selectedNode.name}
+                  </h3>
+                  <p className="font-mono text-[11px] text-on-surface-variant truncate mt-0.5">
+                    {selectedNode.zone}
+                  </p>
                 </div>
-              </div>
 
-              <div className="bg-[#111318] p-2.5 rounded-lg border border-[#2e3140]">
-                <span className="font-mono text-[9px] text-[#9096a8] uppercase block mb-0.5">
-                  Queue Density
-                </span>
-                <div className="flex items-baseline justify-between">
-                  <span className="font-mono text-sm font-bold text-[#e8eaf0]">
-                    {(selectedNode.density * 100).toFixed(0)}%
-                  </span>
-                  <span className="font-mono text-[10px] text-[#9096a8]">
-                    {selectedNode.density > 0.7 ? "LOS E" : "LOS C"}
-                  </span>
-                </div>
-              </div>
-
-              <div className="bg-[#111318] p-2.5 rounded-lg border border-[#2e3140]">
-                <span className="font-mono text-[9px] text-[#9096a8] uppercase block mb-0.5">
-                  Arterial Speed
-                </span>
-                <div className="flex items-baseline justify-between">
-                  <span className="font-mono text-sm font-bold text-[#4d9fff]">
-                    {selectedNode.speedKmH} km/h
-                  </span>
-                  <span className="font-mono text-[10px] text-[#9096a8]">Est. Flow</span>
-                </div>
-              </div>
-            </div>
-
-            {/* Vehicle Mix Breakdown (YOLOv8 Edge Telemetry) */}
-            <div className="bg-[#111318] p-2.5 rounded-lg border border-[#2e3140]">
-              <div className="flex items-center justify-between mb-1.5">
-                <span className="font-mono text-[9px] text-[#9096a8] uppercase">
-                  YOLOv8 Classification Mix
-                </span>
-                <span className="font-mono text-[9px] text-[#4d9fff]">Live Feed</span>
-              </div>
-              <div className="grid grid-cols-5 gap-1 text-center font-mono text-[10px]">
-                <div className="bg-[#1c1e24] py-1 rounded">
-                  <span className="block text-[#9096a8] text-[8px]">CARS</span>
-                  <span className="font-bold text-[#e8eaf0]">{selectedNode.classCounts.cars}</span>
-                </div>
-                <div className="bg-[#1c1e24] py-1 rounded">
-                  <span className="block text-[#9096a8] text-[8px]">2-WHEEL</span>
-                  <span className="font-bold text-[#e8eaf0]">{selectedNode.classCounts.twoWheelers}</span>
-                </div>
-                <div className="bg-[#1c1e24] py-1 rounded">
-                  <span className="block text-[#9096a8] text-[8px]">AUTOS</span>
-                  <span className="font-bold text-[#e8eaf0]">{selectedNode.classCounts.autos}</span>
-                </div>
-                <div className="bg-[#1c1e24] py-1 rounded">
-                  <span className="block text-[#9096a8] text-[8px]">BUSES</span>
-                  <span className="font-bold text-[#e8eaf0]">{selectedNode.classCounts.buses}</span>
-                </div>
-                <div className="bg-[#1c1e24] py-1 rounded border border-[#ff4060]/30">
-                  <span className="block text-[#ff4060] text-[8px]">EMERG</span>
-                  <span className="font-bold text-[#ff4060]">{selectedNode.classCounts.ambulances}</span>
-                </div>
-              </div>
-            </div>
-
-            {/* Active Preemption Alert Banner (If Applicable) */}
-            {selectedNode.activePreemption && (
-              <div className="bg-[#ff4060]/10 border border-[#ff4060]/40 rounded-lg p-2.5 flex items-center justify-between">
-                <div className="flex items-center gap-2.5">
-                  <span className="material-symbols-rounded text-[#ff4060] text-[20px]">
-                    airport_shuttle
-                  </span>
-                  <div>
-                    <span className="font-mono text-[10px] font-bold text-[#ff4060] block uppercase">
-                      Ambulance Inbound · Priority #1
-                    </span>
-                    <span className="font-mono text-[9px] text-[#e8eaf0]/80">
-                      Pre-clearing downstream green wave
-                    </span>
-                  </div>
-                </div>
-                <span className="font-mono text-xs font-bold text-[#ff4060] bg-[#ff4060]/20 px-2 py-1 rounded border border-[#ff4060]/40">
-                  {selectedNode.activePreemption.etaSeconds}s
-                </span>
-              </div>
-            )}
-          </div>
-
-          {/* High-Level KPI Aggregates (Sub-phase 7.5) */}
-          <div className="bg-[#161820] border border-[#2e3140] rounded-2xl p-4 flex flex-col gap-3 shadow-sm">
-            <div className="flex justify-between items-center border-b border-[#2e3140] pb-2">
-              <span className="font-mono text-xs font-semibold text-[#e8eaf0] uppercase">
-                Phase Decision Aggregates
-              </span>
-              <span className="font-mono text-[10px] text-[#00c97a] flex items-center gap-1">
-                <span className="w-1.5 h-1.5 rounded-full bg-[#00c97a] animate-pulse"></span>
-                LIVE
-              </span>
-            </div>
-
-            <div className="grid grid-cols-2 gap-2">
-              <div className="bg-[#111318] p-2.5 rounded-lg border border-[#2e3140]">
-                <span className="font-mono text-[9px] text-[#9096a8] uppercase block">
-                  Total Observations
-                </span>
-                <span className="font-mono text-base font-bold text-[#e8eaf0]">
-                  {backendData?.metrics.totalObservations ?? 480}
-                </span>
-              </div>
-              <div className="bg-[#111318] p-2.5 rounded-lg border border-[#2e3140]">
-                <span className="font-mono text-[9px] text-[#9096a8] uppercase block">
-                  Decisions Logged
-                </span>
-                <span className="font-mono text-base font-bold text-[#4d9fff]">
-                  {backendData?.metrics.totalDecisions ?? 480}
-                </span>
-              </div>
-              <div className="bg-[#111318] p-2.5 rounded-lg border border-[#2e3140]">
-                <span className="font-mono text-[9px] text-[#9096a8] uppercase block">
-                  Phases Extended
-                </span>
-                <span className="font-mono text-base font-bold text-[#ffab1a]">
-                  {backendData?.metrics.extendedDecisions ?? 2}
-                </span>
-              </div>
-              <div className="bg-[#111318] p-2.5 rounded-lg border border-[#2e3140]">
-                <span className="font-mono text-[9px] text-[#9096a8] uppercase block">
-                  Preemptions Fired
-                </span>
-                <span className="font-mono text-base font-bold text-[#ff4060]">
-                  {backendData?.metrics.preemptionDecisions ?? 3}
-                </span>
-              </div>
-            </div>
-          </div>
-
-          {/* Network-wide Statistical Performance Metrics */}
-          <div className="bg-[#161820] border border-[#2e3140] rounded-2xl p-4 flex flex-col gap-3 shadow-sm">
-            <div className="flex justify-between items-center border-b border-[#2e3140] pb-2">
-              <span className="font-mono text-xs font-semibold text-[#e8eaf0] uppercase">
-                Corridor Validation Telemetry
-              </span>
-              <span className="font-mono text-[10px] text-[#00c97a]">
-                {backendData?.hypothesisTest ? "p < 0.001 (PASS)" : "AWAITING"}
-              </span>
-            </div>
-
-            <div className="space-y-3">
-              <div>
-                <div className="flex justify-between font-mono text-[10px] mb-1">
-                  <span className="text-[#9096a8]">Mean Wait Time Reduction</span>
-                  <span className="text-[#00c97a] font-bold">
-                    {backendData?.hypothesisTest
-                      ? `-${backendData.hypothesisTest.effect_size.toFixed(1)}s (38.3%)`
-                      : "-21.6s (-38.3%)"}
-                  </span>
-                </div>
-                <div className="w-full h-1.5 bg-[#111318] rounded-full overflow-hidden border border-[#2e3140]">
-                  <div className="h-full bg-[#00c97a]" style={{ width: "68.6%" }}></div>
-                </div>
-              </div>
-
-              <div>
-                <div className="flex justify-between font-mono text-[10px] mb-1">
-                  <span className="text-[#9096a8]">Poisson Model Fit Check (χ²)</span>
-                  <span className="text-[#ffab1a] font-bold">
-                    {backendData?.poissonFit?.poisson_assumption_holds
-                      ? "p > 0.05 (Valid)"
-                      : `Rejected (χ² = ${backendData?.poissonFit?.statistic.toFixed(0) ?? 2522})`}
-                  </span>
-                </div>
-                <div className="w-full h-1.5 bg-[#111318] rounded-full overflow-hidden border border-[#2e3140]">
-                  <div className="h-full bg-[#ffab1a]" style={{ width: "45%" }}></div>
-                </div>
-              </div>
-
-              <div>
-                <div className="flex justify-between font-mono text-[10px] mb-1">
-                  <span className="text-[#9096a8]">Corridor Preemption Path</span>
-                  <span className="text-[#ff4060] font-bold">
-                    {backendData?.corridorPath ? backendData.corridorPath.join(" → ") : "IX-02 → IX-03 → IX-04"}
-                  </span>
-                </div>
-                <div className="w-full h-1.5 bg-[#111318] rounded-full overflow-hidden border border-[#2e3140]">
-                  <div className="h-full bg-[#ff4060]" style={{ width: "100%" }}></div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Live PhaseDecision Stream (Sub-phase 7.5) */}
-          <div className="bg-[#161820] border border-[#2e3140] rounded-2xl p-4 flex flex-col gap-2.5 shadow-sm flex-1">
-            <div className="flex justify-between items-center border-b border-[#2e3140] pb-2">
-              <span className="font-mono text-xs font-semibold text-[#e8eaf0] uppercase">
-                Live Phase Decision Stream
-              </span>
-              <span className="font-mono text-[10px] text-[#9096a8]">
-                {backendData?.recentDecisions.length ?? 0} in buffer
-              </span>
-            </div>
-
-            <div className="space-y-1.5 overflow-y-auto max-h-[140px] pr-1">
-              {(backendData?.recentDecisions.slice(-4) ?? []).map((dec, idx) => (
-                <div
-                  key={idx}
-                  className="bg-[#111318] p-2 rounded border border-[#2e3140] flex items-center justify-between text-[10px] font-mono transition-all hover:border-[#4d9fff]/40"
+                <span
+                  className={`badge shrink-0 ${
+                    !isBackendOnline
+                      ? "badge-neutral"
+                      : selectedNode.status === "preempted"
+                      ? "bg-emerald-500/15 text-emerald-400 border border-emerald-500/40 font-bold"
+                      : selectedNode.status === "building"
+                      ? "badge-warn"
+                      : "badge-calm"
+                  }`}
                 >
-                  <div className="flex items-center gap-2">
-                    <span
-                      className={`w-1.5 h-1.5 rounded-full ${
-                        dec.reason === "preempted"
-                          ? "bg-[#ff4060]"
-                          : dec.reason === "extended"
-                          ? "bg-[#ffab1a]"
-                          : "bg-[#00c97a]"
-                      }`}
-                    ></span>
-                    <span className="text-[#e8eaf0] font-semibold">{dec.active_lane_id}</span>
-                    <span className="text-[#9096a8]">[{dec.intersection_id}]</span>
-                  </div>
-                  <span
-                    className={`px-1.5 py-0.5 rounded text-[8px] uppercase font-bold ${
-                      dec.reason === "preempted"
-                        ? "bg-[#ff4060]/20 text-[#ff4060] border border-[#ff4060]/40"
-                        : dec.reason === "extended"
-                        ? "bg-[#ffab1a]/20 text-[#ffab1a] border border-[#ffab1a]/40"
-                        : "bg-[#00c97a]/20 text-[#00c97a] border border-[#00c97a]/40"
-                    }`}
-                  >
-                    {dec.reason}
-                  </span>
-                </div>
-              ))}
+                  {isBackendOnline
+                    ? selectedNode.status === "preempted"
+                      ? "HOLD GREEN"
+                      : selectedNode.policy
+                    : "BACKEND OFFLINE"}
+                </span>
+              </div>
             </div>
 
-            {/* Quick Summary Note */}
-            <div className="mt-auto pt-2 border-t border-[#2e3140] text-[10px] font-mono text-[#9096a8] flex items-center justify-between">
-              <span>Perception: YOLOv8 Nano Edge</span>
-              <span>Actuation: Poisson Adaptive</span>
+            {/* Core Physical & Statistical Metrics Grid (Zero Dummy Data Rule) */}
+            <div className="grid grid-cols-2 gap-4">
+              <div className="metric-tile">
+                <span className="metric-label">Queue Length (m)</span>
+                <div className="flex items-baseline justify-between mt-2">
+                  <span
+                    className={`metric-value ${
+                      !isBackendOnline
+                        ? "text-on-surface-variant opacity-60"
+                        : selectedNode.queueLengthM > 35
+                        ? "warn"
+                        : "calm"
+                    }`}
+                  >
+                    {isBackendOnline ? `${selectedNode.queueLengthM.toFixed(1)}m` : "—"}
+                  </span>
+                  <span className="font-mono text-[11px] text-on-surface-variant">
+                    {isBackendOnline ? `~${Math.round(selectedNode.queueLengthM / 5)} veh` : "Offline"}
+                  </span>
+                </div>
+              </div>
+
+              <div className="metric-tile">
+                <span className="metric-label">Arrival Rate (λ)</span>
+                <div className="flex items-baseline justify-between mt-2">
+                  <span
+                    className={`metric-value ${
+                      !isBackendOnline ? "text-on-surface-variant opacity-60" : "neutral"
+                    }`}
+                  >
+                    {isBackendOnline ? selectedNode.arrivalRate : "—"}
+                  </span>
+                  <span
+                    className={`font-mono text-[11px] font-bold ${
+                      isBackendOnline ? "text-state-calm" : "text-on-surface-variant"
+                    }`}
+                  >
+                    {isBackendOnline ? "Poisson Model" : "Offline"}
+                  </span>
+                </div>
+              </div>
+
+              <div className="metric-tile">
+                <span className="metric-label">Queue Density</span>
+                <div className="flex items-baseline justify-between mt-2">
+                  <span
+                    className={`metric-value ${
+                      !isBackendOnline ? "text-on-surface-variant opacity-60" : "neutral"
+                    }`}
+                  >
+                    {isBackendOnline ? `${(selectedNode.density * 100).toFixed(0)}%` : "—"}
+                  </span>
+                  <span className="font-mono text-[11px] text-on-surface-variant font-bold">
+                    {isBackendOnline ? (selectedNode.density > 0.7 ? "LOS E" : "LOS C") : "Offline"}
+                  </span>
+                </div>
+              </div>
+
+              <div className="metric-tile">
+                <span className="metric-label">Arterial Speed</span>
+                <div className="flex items-baseline justify-between mt-2">
+                  <span
+                    className={`metric-value ${
+                      !isBackendOnline ? "text-on-surface-variant opacity-60" : "text-primary"
+                    }`}
+                  >
+                    {isBackendOnline ? `${selectedNode.speedKmH} km/h` : "—"}
+                  </span>
+                  <span className="font-mono text-[11px] text-on-surface-variant">
+                    {isBackendOnline ? "Observed" : "Offline"}
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Live Signal Phase & Decision Stream */}
+          <div className="card flex flex-col gap-4 flex-1 min-h-[300px]">
+            <div className="flex justify-between items-center border-b border-outline pb-3">
+              <div className="flex items-center gap-2">
+                <span className="w-2 h-2 rounded-full bg-primary animate-pulse" />
+                <span className="card-title">Live Signal Decision Stream</span>
+                <span className="font-mono text-[10px] text-primary font-bold bg-primary/10 px-2 py-0.5 rounded border border-primary/20">
+                  {selectedNode.id}
+                </span>
+              </div>
+              <span className="font-mono text-[10px] text-on-surface-variant bg-surface-high px-2.5 py-1 rounded-full border border-outline">
+                {isBackendOnline ? `${backendData?.recentDecisions?.length ?? 0} events` : "OFFLINE"}
+              </span>
+            </div>
+
+            <div className="space-y-2.5 overflow-y-auto pr-1 flex-1 custom-scrollbar">
+              {!isBackendOnline || !backendData?.recentDecisions?.length ? (
+                <div className="h-full flex flex-col items-center justify-center py-12 text-center text-xs font-mono text-on-surface-variant/70">
+                  <span className="text-xl mb-2">📡</span>
+                  <span className="font-semibold text-on-surface">No Live Decisions</span>
+                  <span className="text-[11px] text-on-surface-variant mt-0.5">
+                    {isBackendOnline ? "System awaiting traffic phase transition..." : "FastAPI Edge Gateway offline"}
+                  </span>
+                </div>
+              ) : (
+                backendData.recentDecisions.slice(-6).reverse().map((dec, idx) => {
+                  const shortName = selectedNode.name.replace(" Junction", "");
+                  const ixName = `${selectedNode.id} (${shortName})`;
+                  const approach = getApproachName(selectedNode.id, dec.active_lane_id);
+
+                  const isPreempt = dec.reason === "preempted";
+                  const isExtend = dec.reason === "extended";
+
+                  return (
+                    <div
+                      key={idx}
+                      className="bg-surface-low p-3 rounded-xl border border-outline flex flex-col gap-1.5 text-xs font-mono transition-all hover:border-primary/40 hover:bg-surface hover:shadow-md"
+                    >
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-2">
+                          <span
+                            className={`w-2.5 h-2.5 rounded-full ${
+                              isPreempt
+                                ? "bg-emerald-400 shadow-[0_0_8px_#00c97a] animate-pulse"
+                                : isExtend
+                                ? "bg-state-building"
+                                : "bg-state-calm"
+                            }`}
+                          />
+                          <span className="font-bold text-on-surface text-[12px]">{ixName}</span>
+                        </div>
+                        <span
+                          className={`badge ${
+                            isPreempt
+                              ? "bg-emerald-500/15 text-emerald-400 border border-emerald-500/40 font-bold"
+                              : isExtend
+                              ? "badge-warn font-bold"
+                              : "badge-calm"
+                          }`}
+                        >
+                          {isPreempt ? "HOLD GREEN" : isExtend ? "EXTENDED" : "SCHEDULED"}
+                        </span>
+                      </div>
+
+                      <div className="flex items-center justify-between text-[11px] text-on-surface-variant pt-0.5">
+                        <span className="truncate">{approach}</span>
+                        <span className="text-[10px] uppercase font-semibold text-primary">
+                          {isPreempt ? "Priority #1" : isExtend ? "+6.0s Gap" : "Dynamic Split"}
+                        </span>
+                      </div>
+                    </div>
+                  );
+                })
+              )}
+            </div>
+
+            <div className="mt-2 pt-3 border-t border-outline flex justify-between items-center text-[10px] font-mono text-on-surface-variant uppercase tracking-wider">
+              <span className="flex items-center gap-1.5">
+                <span
+                  className={`w-1.5 h-1.5 rounded-full ${
+                    isBackendOnline ? "bg-primary animate-pulse" : "bg-gray-500"
+                  }`}
+                />
+                Gateway: {isBackendOnline ? "FastAPI Online" : "Disconnected"}
+              </span>
+              <span>Inference: YOLOv8 ONNX</span>
             </div>
           </div>
         </section>

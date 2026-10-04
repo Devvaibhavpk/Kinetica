@@ -85,3 +85,16 @@ def test_websocket_telemetry_broadcast(client):
         assert "queue_counts" in data
         assert "green_splits" in data
         assert isinstance(data["tracks"], list)
+
+
+def test_get_results_endpoint(client):
+    res = client.get("/api/results")
+    assert res.status_code == 200
+    data = res.json()
+    assert "metrics" in data
+    assert "laneStates" in data
+    assert "heapHierarchy" in data
+    assert "corridorPath" in data
+    assert "recentDecisions" in data
+    assert isinstance(data["heapHierarchy"], list)
+

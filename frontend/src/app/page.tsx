@@ -3,7 +3,6 @@
 import React, { useState } from "react";
 import Sidebar, { ModuleKey } from "../components/Sidebar";
 import Topbar from "../components/Topbar";
-import TickerBar from "../components/TickerBar";
 
 import OverviewView from "../components/views/OverviewView";
 import IntersectionDetailView from "../components/views/IntersectionDetailView";
@@ -87,11 +86,9 @@ export default function Home() {
           isSidebarExpanded={isSidebarExpanded}
         />
 
-        <div className="mt-14 p-6 overflow-y-auto flex-1 flex flex-col gap-6 pb-16">
+        <div className="mt-14 p-6 overflow-y-auto flex-1 flex flex-col gap-6 pb-6">
           {renderActiveView()}
         </div>
-
-        <TickerBar isSidebarExpanded={isSidebarExpanded} />
       </main>
     </>
   );

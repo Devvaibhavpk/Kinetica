@@ -2,43 +2,43 @@
 
 ```yaml
 ---
-name: Kinetica Control Room (Astryx Theme)
+name: Kinetica Control Room (Haulix Logistics Inspired)
 colors:
-  surface: '#000000'
-  surface-dim: '#0a0a0a'
-  surface-bright: '#242526'
-  surface-container-lowest: '#000000'
-  surface-container-low: '#18191a'
-  surface-container: '#242526'
-  surface-container-high: '#3a3b3c'
-  surface-container-highest: '#4e4f50'
-  on-surface: '#e4e6eb'
-  on-surface-variant: '#b0b3b8'
-  outline: '#3e4042'
-  outline-variant: '#2d2f31'
+  surface: '#090B10'
+  surface-dim: '#050608'
+  surface-bright: '#1D2230'
+  surface-container-lowest: '#090B10'
+  surface-container-low: '#0D1016'
+  surface-container: '#12151E'
+  surface-container-high: '#1D2230'
+  surface-container-highest: '#262C3D'
+  on-surface: '#F8FAFC'
+  on-surface-variant: '#94A3B8'
+  outline: '#1E293B'
+  outline-variant: '#0F172A'
   
-  primary: '#0866ff'
+  primary: '#3B82F6'
   on-primary: '#ffffff'
-  primary-container: '#23334c'
-  on-primary-container: '#e7f3ff'
+  primary-container: 'rgba(59, 130, 246, 0.15)'
+  on-primary-container: '#EFF6FF'
 
-  secondary: '#333333'
+  secondary: '#475569'
   on-secondary: '#ffffff'
-  secondary-container: '#e4e6eb'
-  on-secondary-container: '#050505'
+  secondary-container: '#1E293B'
+  on-secondary-container: '#F8FAFC'
 
-  error: '#e41e3f'
+  error: '#EF4444'
   on-error: '#ffffff'
-  error-container: '#ffebe9'
-  on-error-container: '#b30020'
+  error-container: 'rgba(239, 68, 68, 0.15)'
+  on-error-container: '#FEF2F2'
 
   # --- state-ramp: the one gimmick every screen reuses ---
-  state-calm: '#00a86b'
-  state-calm-glow: 'rgba(0,168,107,0.35)'
-  state-building: '#f5a623'
-  state-building-glow: 'rgba(245,166,35,0.35)'
-  state-preempted: '#e41e3f'
-  state-preempted-glow: 'rgba(228,30,63,0.45)'
+  state-calm: '#10B981'
+  state-calm-glow: 'rgba(16, 185, 129, 0.3)'
+  state-building: '#F59E0B'
+  state-building-glow: 'rgba(245, 158, 11, 0.3)'
+  state-preempted: '#EF4444'
+  state-preempted-glow: 'rgba(239, 68, 68, 0.4)'
 
 typography:
   display-lg:
@@ -75,17 +75,17 @@ typography:
     lineHeight: 16px
     letterSpacing: 0.04em
   telemetry-lg:
-    fontFamily: JetBrains Mono
+    fontFamily: Inter
     fontSize: 28px
     fontWeight: '500'
     lineHeight: 32px
   telemetry-md:
-    fontFamily: JetBrains Mono
+    fontFamily: Inter
     fontSize: 14px
     fontWeight: '500'
     lineHeight: 20px
   telemetry-sm:
-    fontFamily: JetBrains Mono
+    fontFamily: Inter
     fontSize: 11px
     fontWeight: '500'
     lineHeight: 14px
@@ -95,15 +95,15 @@ fonts:
     display_headline: "Albert Sans, sans-serif"
     body: "Inter, system-ui, sans-serif"
     label: "Inter, system-ui, sans-serif"
-    telemetry: "JetBrains Mono, monospace"
+    telemetry: "Inter, monospace"
 
 rounded:
-  sm: 0.5rem
-  DEFAULT: 8px
+  sm: 8px
+  DEFAULT: 12px
   md: 12px
   lg: 16px
-  xl: 20px
-  2xl: 24px
+  xl: 24px
+  2xl: 32px
   full: 9999px
 
 spacing:
@@ -129,23 +129,23 @@ motion:
 
 ## Brand & Style
 
-The Kinetica Control Room adopts the **Astryx Design System** (by Meta) as its visual foundation, utilizing its native **Dark Mode**. Moving away from the heavy "industrial control" aesthetic, the system embraces a clean, agent-ready environment. The background (`#000000`) acts as a pure black canvas, allowing dark cards (`#242526`) with subtle shadows and borders to lift the content. State changes (Calm, Building, Preempted) are communicated through sharp, deliberate accents rather than overwhelming glowing backgrounds.
+The Kinetica Control Room adopts a **Modern Logistics Dashboard (Haulix Inspired)** aesthetic. Moving away from heavy industrial flats, the system embraces a sleek, glassmorphic, deep-blue-tinted dark environment (`#090B10`). Structural components sit on translucent dark grey-blue cards (`rgba(18, 21, 30, 0.7)`) with subtle inner borders and backdrop blurs to lift content. State changes (Calm, Building, Preempted) are communicated through highly vibrant, neon accents with soft surrounding glows.
 
 ## Colors
 
-The Astryx neutral dark palette is the foundation, complemented by Kinetica's three semantic state colors.
+The deep logistics neutral palette is the foundation, complemented by Kinetica's three semantic state colors.
 
-- **Calm (Normal):** `state-calm` (#00a86b), a clean emerald green.
-- **Building (Queue/Warning):** `state-building` (#f5a623), a sharp warning amber.
-- **Preempted (Emergency):** `state-preempted` (#e41e3f), a vivid crimson red.
-- **Surfaces:** Pure black wash (`surface` #000000) serves as the backdrop, while structural components sit on dark grey (`surface-container` #242526) with delicate borders (`#3e4042`).
-- **Primary:** Astryx Blue (`primary` #0866ff) is used for core interactions.
+- **Calm (Normal):** `state-calm` (#10B981), a neon emerald green.
+- **Building (Queue/Warning):** `state-building` (#F59E0B), a sharp warning amber.
+- **Preempted (Emergency):** `state-preempted` (#EF4444), a vivid rose/red.
+- **Surfaces:** Deep blue/grey wash (`surface` #090B10) serves as the backdrop, while structural components sit on glassmorphic backgrounds with delicate borders (`#1E293B`).
+- **Primary:** Vibrant Blue (`primary` #3B82F6) is used for core interactions.
 
 ## Typography
 
-**Albert Sans** carries headers, page titles, and card titles. 
-**Inter** is the neutral workhorse for body copy, tags, and labels.
-**JetBrains Mono** is reserved exclusively for numbers that were *measured*: telemetry values, timers, logs.
+We employ a completely sans-serif typographic stack to ensure maximum legibility without leaning into the clichéd "hacker/AI" monospace aesthetic.
+- **Display/Headlines:** `Albert Sans` for sharp, geometric authority.
+- **Data/Telemetry & Body:** `Inter` utilizing tabular numeric variants (`tnum`) to align data streams cleanly while maintaining a premium sans-serif look.
 
 ## Layout, Shapes & Depth
 

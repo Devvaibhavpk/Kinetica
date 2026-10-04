@@ -74,10 +74,10 @@ export default function EmergencyOverrideView() {
   }
 
   const corridorNodes = [
-    { id: "IX-101", name: "Madhya Kailash", status: "CLEARED", color: "#00c97a" },
-    { id: "IX-102", name: "TIDEL Park", status: "ACTIVE OVERRIDE", color: "#ff4060", active: true },
-    { id: "IX-103", name: "SRP Tools", status: "PRE-CLEARING", color: "#ffab1a" },
-    { id: "IX-104", name: "Sholinganallur", status: "LOCKED WAVE", color: "#4d9fff" },
+    { id: "IX-101", name: "Madhya Kailash", status: "HOLD GREEN", color: "#00c97a", active: true },
+    { id: "IX-102", name: "TIDEL Park", status: "HOLD GREEN", color: "#00c97a", active: true },
+    { id: "IX-103", name: "SRP Tools", status: "HOLD GREEN", color: "#00c97a", active: true },
+    { id: "IX-104", name: "Sholinganallur", status: "GREEN WAVE", color: "#00c97a" },
   ];
 
   const preemptionCount = data?.metrics?.preemptionDecisions ?? 3;
@@ -187,7 +187,7 @@ export default function EmergencyOverrideView() {
                 return (
                   <g key={node.id} transform={`translate(${coords.x}, ${coords.y})`} className="cursor-pointer">
                     {node.active && (
-                      <circle r="22" fill="#ff4060" fillOpacity="0.3" stroke="#ff4060" strokeWidth="2" className="animate-ping" />
+                      <circle r="22" fill="#00c97a" fillOpacity="0.25" stroke="#00c97a" strokeWidth="2" className="animate-ping" />
                     )}
                     <circle r="16" fill="#111318" stroke={node.color} strokeWidth="3.5" />
                     <circle r="6" fill={node.color} />

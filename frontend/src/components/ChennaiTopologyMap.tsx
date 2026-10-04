@@ -259,7 +259,7 @@ export default function ChennaiTopologyMap({
       onMouseMove={handleMouseMove}
       onMouseUp={handleMouseUp}
       onMouseLeave={handleMouseUp}
-      className="relative w-full h-full min-h-[460px] bg-[#0c0e12] rounded-b-[24px] overflow-hidden select-none cursor-grab active:cursor-grabbing flex flex-col justify-between"
+      className="relative w-full h-full min-h-[460px] bg-[var(--bg)] rounded-b-[24px] overflow-hidden select-none cursor-grab active:cursor-grabbing flex flex-col justify-between"
       style={{
         backgroundImage: `
           radial-gradient(circle at 50% 50%, rgba(77, 159, 255, 0.04) 0%, transparent 80%),
@@ -271,24 +271,24 @@ export default function ChennaiTopologyMap({
     >
       {/* ── MAP HEADER OVERLAY ───────────────────────────── */}
       <div className="absolute top-4 left-4 z-20 flex flex-wrap items-center gap-2 pointer-events-auto">
-        <div className="bg-[#161820]/90 backdrop-blur-md border border-[#2e3140] px-3 py-1.5 rounded-lg flex items-center gap-2.5 shadow-lg">
-          <span className="w-2 h-2 rounded-full bg-[#00c97a] animate-pulse" />
-          <span className="font-mono text-xs font-bold text-[#e8eaf0] tracking-wide uppercase">
+        <div className="card/90 backdrop-blur-md border border-outline px-3 py-1.5 rounded-lg flex items-center gap-2.5 shadow-lg">
+          <span className="w-2 h-2 rounded-full bg-state-calm animate-pulse" />
+          <span className="font-mono text-xs font-bold text-on-surface tracking-wide uppercase">
             CHENNAI METROPOLITAN SECTOR 4
           </span>
-          <span className="font-mono text-[10px] px-1.5 py-0.2 rounded bg-[#2c2f3a] text-[#9096a8]">
+          <span className="font-mono text-[10px] px-1.5 py-0.2 rounded bg-[#2c2f3a] text-on-surface-variant">
             OMR / GST CORRIDORS
           </span>
         </div>
 
         {/* Layer Filter Toggles */}
-        <div className="hidden sm:flex items-center gap-1 bg-[#161820]/90 backdrop-blur-md border border-[#2e3140] p-1 rounded-lg">
+        <div className="hidden sm:flex items-center gap-1 card/90 backdrop-blur-md border border-outline p-1 rounded-lg">
           <button
             onClick={() => setShowGreenWave((p) => !p)}
             className={`px-2.5 py-1 rounded text-[10px] font-mono uppercase tracking-wider transition-all cursor-pointer ${
               showGreenWave
-                ? "bg-[#ff4060]/20 text-[#ff4060] border border-[#ff4060]/40 font-semibold"
-                : "text-[#9096a8] hover:text-[#e8eaf0]"
+                ? "bg-state-preempted/20 text-state-preempted border border-state-crit-border font-semibold"
+                : "text-on-surface-variant hover:text-on-surface"
             }`}
           >
             Green Wave
@@ -297,8 +297,8 @@ export default function ChennaiTopologyMap({
             onClick={() => setShowDensityHeat((p) => !p)}
             className={`px-2.5 py-1 rounded text-[10px] font-mono uppercase tracking-wider transition-all cursor-pointer ${
               showDensityHeat
-                ? "bg-[#00c97a]/20 text-[#00c97a] border border-[#00c97a]/40 font-semibold"
-                : "text-[#9096a8] hover:text-[#e8eaf0]"
+                ? "bg-state-calm/20 text-state-calm border border-state-calm-border font-semibold"
+                : "text-on-surface-variant hover:text-on-surface"
             }`}
           >
             Density Heat
@@ -307,8 +307,8 @@ export default function ChennaiTopologyMap({
             onClick={() => setShowCameras((p) => !p)}
             className={`px-2.5 py-1 rounded text-[10px] font-mono uppercase tracking-wider transition-all cursor-pointer ${
               showCameras
-                ? "bg-[#4d9fff]/20 text-[#4d9fff] border border-[#4d9fff]/40 font-semibold"
-                : "text-[#9096a8] hover:text-[#e8eaf0]"
+                ? "bg-primary/20 text-primary border border-primary/40 font-semibold"
+                : "text-on-surface-variant hover:text-on-surface"
             }`}
           >
             YOLO Cams
@@ -320,21 +320,21 @@ export default function ChennaiTopologyMap({
       <div className="absolute top-4 right-4 z-20 flex flex-col gap-1.5 pointer-events-auto">
         <button
           onClick={() => handleZoom(0.2)}
-          className="w-8 h-8 rounded-lg bg-[#161820]/90 backdrop-blur-md border border-[#2e3140] text-[#e8eaf0] hover:bg-[#2c2f3a] flex items-center justify-center text-sm font-bold shadow-md cursor-pointer transition-colors"
+          className="w-8 h-8 rounded-lg card/90 backdrop-blur-md border border-outline text-on-surface hover:bg-[#2c2f3a] flex items-center justify-center text-sm font-bold shadow-md cursor-pointer transition-colors"
           title="Zoom In"
         >
           +
         </button>
         <button
           onClick={() => handleZoom(-0.2)}
-          className="w-8 h-8 rounded-lg bg-[#161820]/90 backdrop-blur-md border border-[#2e3140] text-[#e8eaf0] hover:bg-[#2c2f3a] flex items-center justify-center text-sm font-bold shadow-md cursor-pointer transition-colors"
+          className="w-8 h-8 rounded-lg card/90 backdrop-blur-md border border-outline text-on-surface hover:bg-[#2c2f3a] flex items-center justify-center text-sm font-bold shadow-md cursor-pointer transition-colors"
           title="Zoom Out"
         >
           -
         </button>
         <button
           onClick={handleReset}
-          className="w-8 h-8 rounded-lg bg-[#161820]/90 backdrop-blur-md border border-[#2e3140] text-[#9096a8] hover:text-[#e8eaf0] hover:bg-[#2c2f3a] flex items-center justify-center shadow-md cursor-pointer transition-colors"
+          className="w-8 h-8 rounded-lg card/90 backdrop-blur-md border border-outline text-on-surface-variant hover:text-on-surface hover:bg-[#2c2f3a] flex items-center justify-center shadow-md cursor-pointer transition-colors"
           title="Reset Map View"
         >
           <span className="material-symbols-rounded text-[16px]">restart_alt</span>
@@ -614,28 +614,28 @@ export default function ChennaiTopologyMap({
       </div>
 
       {/* ── BOTTOM HUD TELEMETRY STRIP ───────────────────────────── */}
-      <div className="relative z-20 bg-[#111318]/95 border-t border-[#2e3140] px-4 py-2.5 flex flex-wrap items-center justify-between gap-4 text-xs font-mono">
+      <div className="relative z-20 bg-surface-low/95 border-t border-outline px-4 py-2.5 flex flex-wrap items-center justify-between gap-4 text-xs font-mono">
         <div className="flex items-center gap-4">
           <div className="flex items-center gap-2">
-            <span className="text-[#9096a8]">Selected:</span>
-            <span className="font-bold text-[#e8eaf0] bg-[#1c1e24] px-2 py-0.5 rounded border border-[#2e3140]">
+            <span className="text-on-surface-variant">Selected:</span>
+            <span className="font-bold text-on-surface bg-surface-mid px-2 py-0.5 rounded border border-outline">
               {selectedNode.id} · {selectedNode.name}
             </span>
           </div>
-          <div className="hidden md:flex items-center gap-2 text-[#9096a8]">
+          <div className="hidden md:flex items-center gap-2 text-on-surface-variant">
             <span>Zone:</span>
-            <span className="text-[#e8eaf0]">{selectedNode.zone}</span>
+            <span className="text-on-surface">{selectedNode.zone}</span>
           </div>
         </div>
 
         <div className="flex items-center gap-4">
           <div className="flex items-center gap-2">
-            <span className="text-[#9096a8]">Coord:</span>
-            <span className="text-[#4d9fff]">{selectedNode.lat}, {selectedNode.lon}</span>
+            <span className="text-on-surface-variant">Coord:</span>
+            <span className="text-primary">{selectedNode.lat}, {selectedNode.lon}</span>
           </div>
           <div className="flex items-center gap-2">
-            <span className="text-[#9096a8]">Queue:</span>
-            <span className={`font-bold ${selectedNode.queueLengthM > 30 ? 'text-[#ffab1a]' : 'text-[#00c97a]'}`}>
+            <span className="text-on-surface-variant">Queue:</span>
+            <span className={`font-bold ${selectedNode.queueLengthM > 30 ? 'text-state-building' : 'text-state-calm'}`}>
               {selectedNode.queueLengthM.toFixed(1)}m
             </span>
           </div>

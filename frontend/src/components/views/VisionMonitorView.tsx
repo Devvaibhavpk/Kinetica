@@ -526,49 +526,49 @@ export default function VisionMonitorView() {
   };
 
   return (
-    <div className="flex flex-col gap-4 h-full text-[#e8eaf0] pb-8 overflow-y-auto font-sans">
+    <div className="flex-1 flex flex-col gap-6 w-full max-w-full pb-8">
       {/* ── TOP CONTROL BAR ───────────────────────────── */}
-      <div className="bg-[#161820]/90 backdrop-blur-md border border-[#2e3140] rounded-2xl p-4 flex items-center justify-between flex-wrap gap-4 shadow-lg">
+      <div className="glass-panel-elevated p-4 flex items-center justify-between flex-wrap gap-4 shadow-lg z-10 w-full">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl bg-[#00c97a]/10 border border-[#00c97a]/30 flex items-center justify-center text-[#00c97a]">
+          <div className="w-10 h-10 rounded-xl bg-state-calm/10 border border-state-calm-border flex items-center justify-center text-state-calm">
             <span className="material-symbols-rounded text-2xl">videocam</span>
           </div>
           <div>
             <div className="flex items-center gap-2">
-              <h2 className="text-base font-bold text-[#e8eaf0] tracking-tight">
+              <h2 className="text-base font-bold text-on-surface tracking-tight">
                 Edge YOLOv8 Perception & Spatial Homography
               </h2>
               <span
                 className={`font-mono text-[10px] px-2.5 py-0.5 rounded-full border font-bold uppercase tracking-wider flex items-center gap-1.5 ${
                   wsStatus === "connected"
-                    ? "bg-[#00c97a]/15 text-[#00c97a] border-[#00c97a]/40 shadow-[0_0_8px_rgba(0,201,122,0.2)]"
+                    ? "bg-state-calm/15 text-state-calm border-state-calm-border shadow-[0_0_8px_rgba(0,201,122,0.2)]"
                     : wsStatus === "connecting"
-                    ? "bg-[#ffab1a]/15 text-[#ffab1a] border-[#ffab1a]/40"
-                    : "bg-[#ff4060]/15 text-[#ff4060] border-[#ff4060]/40"
+                    ? "bg-state-building/15 text-state-building border-state-warn-border"
+                    : "bg-state-preempted/15 text-state-preempted border-state-crit-border"
                 }`}
               >
                 <span
                   className={`w-1.5 h-1.5 rounded-full ${
-                    wsStatus === "connected" ? "bg-[#00c97a] animate-ping" : "bg-[#ff4060]"
+                    wsStatus === "connected" ? "bg-state-calm animate-ping" : "bg-state-preempted"
                   }`}
                 ></span>
                 WS {wsStatus.toUpperCase()} (PORT 8000)
               </span>
             </div>
-            <p className="font-mono text-xs text-[#9096a8] mt-0.5">
+            <p className="font-mono text-xs text-on-surface-variant mt-0.5">
               Chennai Metropolitan Area (CMA) Sector 4 · 4-Camera Multi-Lane Array & Live Stream
             </p>
           </div>
         </div>
 
         {/* Mode Selector Tabs */}
-        <div className="flex items-center bg-[#111318] border border-[#2e3140] p-1 rounded-xl shadow-inner">
+        <div className="flex items-center bg-surface-low border border-outline p-1 rounded-xl shadow-inner">
           <button
             onClick={() => setActiveTab("webcam")}
             className={`px-4 py-2 rounded-lg text-xs font-mono font-bold uppercase tracking-wider transition-all cursor-pointer flex items-center gap-2 ${
               activeTab === "webcam"
-                ? "bg-[#00c97a]/20 text-[#00c97a] border border-[#00c97a]/40 shadow-sm"
-                : "text-[#9096a8] hover:text-[#e8eaf0]"
+                ? "bg-state-calm/20 text-state-calm border border-state-calm-border shadow-sm"
+                : "text-on-surface-variant hover:text-on-surface"
             }`}
           >
             <span className="material-symbols-rounded text-[18px]">videocam</span>
@@ -581,8 +581,8 @@ export default function VisionMonitorView() {
             }}
             className={`px-4 py-2 rounded-lg text-xs font-mono font-bold uppercase tracking-wider transition-all cursor-pointer flex items-center gap-2 ${
               activeTab === "array"
-                ? "bg-[#2c2f3a] text-[#e8eaf0] border border-[#4d9fff]/30 shadow-sm"
-                : "text-[#9096a8] hover:text-[#e8eaf0]"
+                ? "bg-[#2c2f3a] text-on-surface border border-primary/30 shadow-sm"
+                : "text-on-surface-variant hover:text-on-surface"
             }`}
           >
             <span className="material-symbols-rounded text-[18px]">grid_view</span>
@@ -595,22 +595,22 @@ export default function VisionMonitorView() {
       {activeTab === "webcam" && (
         <div className="grid grid-cols-1 xl:grid-cols-12 gap-4 flex-1 items-start">
           {/* Live Video Viewport (8 Cols) */}
-          <div className="xl:col-span-8 bg-[#161820] border border-[#2e3140] rounded-2xl p-4 flex flex-col gap-3 shadow-xl">
+          <div className="xl:col-span-8 card p-4 flex flex-col gap-3 shadow-xl">
             {/* Viewport Header Bar */}
-            <div className="flex justify-between items-center border-b border-[#2e3140] pb-3 flex-wrap gap-2">
+            <div className="flex justify-between items-center border-b border-outline pb-3 flex-wrap gap-2">
               <div className="flex items-center gap-3">
                 <span
                   className={`w-3 h-3 rounded-full ${
-                    isStreaming ? "bg-[#00c97a] animate-pulse" : "bg-[#9096a8]"
+                    isStreaming ? "bg-state-calm animate-pulse" : "bg-[#9096a8]"
                   }`}
                 ></span>
-                <span className="font-mono text-xs font-bold text-[#e8eaf0] uppercase tracking-wider">
+                <span className="font-mono text-xs font-bold text-on-surface uppercase tracking-wider">
                   {isStreaming
                     ? `LIVE ${streamSource?.toUpperCase()} STREAM -> PYTHON YOLOv8`
                     : "INPUT FEED STANDBY"}
                 </span>
                 {isStreaming && (
-                  <span className="font-mono text-[10px] bg-[#111318] text-[#9096a8] px-2.5 py-0.5 rounded-full border border-[#2e3140]">
+                  <span className="font-mono text-[10px] bg-surface-low text-on-surface-variant px-2.5 py-0.5 rounded-full border border-outline">
                     Frame #{frameCount}
                   </span>
                 )}
@@ -618,11 +618,11 @@ export default function VisionMonitorView() {
 
               {isStreaming && (
                 <div className="flex items-center gap-2">
-                  <div className="flex items-center gap-1.5 font-mono text-[11px] bg-[#00c97a]/15 text-[#00c97a] px-3 py-1 rounded-lg border border-[#00c97a]/30 font-bold">
+                  <div className="flex items-center gap-1.5 font-mono text-[11px] bg-state-calm/15 text-state-calm px-3 py-1 rounded-lg border border-state-calm-border font-bold">
                     <span className="material-symbols-rounded text-sm">bolt</span>
                     <span>{liveLatency} ms</span>
                   </div>
-                  <div className="flex items-center gap-1.5 font-mono text-[11px] bg-[#4d9fff]/15 text-[#4d9fff] px-3 py-1 rounded-lg border border-[#4d9fff]/30 font-bold">
+                  <div className="flex items-center gap-1.5 font-mono text-[11px] bg-primary/15 text-primary px-3 py-1 rounded-lg border border-primary/30 font-bold">
                     <span className="material-symbols-rounded text-sm">speed</span>
                     <span>{liveFps} FPS</span>
                   </div>
@@ -631,7 +631,7 @@ export default function VisionMonitorView() {
             </div>
 
             {/* Video Canvas Container with HUD Viewfinder */}
-            <div className="relative w-full h-[480px] bg-[#0c0e12] rounded-xl overflow-hidden border border-[#2e3140] flex items-center justify-center">
+            <div className="relative w-full h-[480px] bg-[var(--bg)] rounded-xl overflow-hidden border border-outline flex items-center justify-center">
               {/* HUD Corner Viewfinder Reticles */}
               <div className="absolute top-3 left-3 w-4 h-4 border-l-2 border-t-2 border-[#00c97a]/60 pointer-events-none z-20"></div>
               <div className="absolute top-3 right-3 w-4 h-4 border-r-2 border-t-2 border-[#00c97a]/60 pointer-events-none z-20"></div>
@@ -701,13 +701,13 @@ export default function VisionMonitorView() {
               {!isStreaming && (
                 <div className="flex flex-col justify-between items-center w-full h-full p-6 text-center z-10">
                   <div className="flex flex-col items-center">
-                    <span className="font-mono text-[10px] bg-[#00c97a]/15 text-[#00c97a] px-3 py-1 rounded-full border border-[#00c97a]/30 font-bold uppercase tracking-widest inline-block mb-1.5">
+                    <span className="font-mono text-[10px] bg-state-calm/15 text-state-calm px-3 py-1 rounded-full border border-state-calm-border font-bold uppercase tracking-widest inline-block mb-1.5">
                       Kinetica Computer Vision Subsystem
                     </span>
-                    <h3 className="text-xl font-bold text-[#e8eaf0] tracking-tight">
+                    <h3 className="text-xl font-bold text-on-surface tracking-tight">
                       Live Vehicle Inference & Priority Tracker
                     </h3>
-                    <p className="font-mono text-xs text-[#9096a8] max-w-xl mx-auto mt-1 leading-relaxed">
+                    <p className="font-mono text-xs text-on-surface-variant max-w-xl mx-auto mt-1 leading-relaxed">
                       Stream high-definition traffic camera feeds or physical cameras into Python YOLOv8 in real-time.
                     </p>
                   </div>
@@ -717,26 +717,26 @@ export default function VisionMonitorView() {
                     {/* Card 1: YouTube Tab / Screen Share */}
                     <div
                       onClick={startScreenShareStream}
-                      className="group bg-gradient-to-br from-[#ff4060]/10 via-[#161820] to-[#111318] hover:from-[#ff4060]/20 border border-[#ff4060]/30 hover:border-[#ff4060] p-5 rounded-2xl cursor-pointer transition-all duration-200 text-left flex flex-col justify-between shadow-xl hover:scale-[1.02]"
+                      className="group bg-gradient-to-br from-[#ff4060]/10 via-[#161820] to-[#111318] hover:from-[#ff4060]/20 border border-state-crit-border hover:border-[#ff4060] p-5 rounded-2xl cursor-pointer transition-all duration-200 text-left flex flex-col justify-between shadow-xl hover:scale-[1.02]"
                     >
                       <div>
                         <div className="flex justify-between items-start mb-3">
-                          <div className="w-11 h-11 rounded-xl bg-[#ff4060]/20 text-[#ff4060] flex items-center justify-center group-hover:scale-110 transition-transform shadow-inner">
+                          <div className="w-11 h-11 rounded-xl bg-state-preempted/20 text-state-preempted flex items-center justify-center group-hover:scale-110 transition-transform shadow-inner">
                             <span className="material-symbols-rounded text-2xl">screen_share</span>
                           </div>
-                          <span className="font-mono text-[9px] bg-[#ff4060]/20 text-[#ff4060] px-2.5 py-0.5 rounded-full font-bold uppercase tracking-wider">
+                          <span className="font-mono text-[9px] bg-state-preempted/20 text-state-preempted px-2.5 py-0.5 rounded-full font-bold uppercase tracking-wider">
                             Recommended
                           </span>
                         </div>
-                        <h4 className="text-base font-bold text-[#e8eaf0] group-hover:text-[#ff4060] transition-colors">
+                        <h4 className="text-base font-bold text-on-surface group-hover:text-state-preempted transition-colors">
                           Share YouTube Tab
                         </h4>
-                        <p className="font-mono text-xs text-[#9096a8] mt-1.5 leading-relaxed">
+                        <p className="font-mono text-xs text-on-surface-variant mt-1.5 leading-relaxed">
                           Stream 1080p/4K YouTube traffic footage, OMR CCTV, or drone videos directly into YOLO.
                         </p>
                       </div>
 
-                      <div className="mt-5 pt-3 border-t border-[#2e3140] flex items-center justify-between text-xs font-mono font-bold text-[#ff4060]">
+                      <div className="mt-5 pt-3 border-t border-outline flex items-center justify-between text-xs font-mono font-bold text-state-preempted">
                         <span>Launch Tab Stream</span>
                         <span className="material-symbols-rounded text-base group-hover:translate-x-1 transition-transform">arrow_forward</span>
                       </div>
@@ -745,26 +745,26 @@ export default function VisionMonitorView() {
                     {/* Card 2: Physical Webcam */}
                     <div
                       onClick={startWebcamStream}
-                      className="group bg-gradient-to-br from-[#00c97a]/10 via-[#161820] to-[#111318] hover:from-[#00c97a]/20 border border-[#00c97a]/30 hover:border-[#00c97a] p-5 rounded-2xl cursor-pointer transition-all duration-200 text-left flex flex-col justify-between shadow-xl hover:scale-[1.02]"
+                      className="group bg-gradient-to-br from-[#00c97a]/10 via-[#161820] to-[#111318] hover:from-[#00c97a]/20 border border-state-calm-border hover:border-[#00c97a] p-5 rounded-2xl cursor-pointer transition-all duration-200 text-left flex flex-col justify-between shadow-xl hover:scale-[1.02]"
                     >
                       <div>
                         <div className="flex justify-between items-start mb-3">
-                          <div className="w-11 h-11 rounded-xl bg-[#00c97a]/20 text-[#00c97a] flex items-center justify-center group-hover:scale-110 transition-transform shadow-inner">
+                          <div className="w-11 h-11 rounded-xl bg-state-calm/20 text-state-calm flex items-center justify-center group-hover:scale-110 transition-transform shadow-inner">
                             <span className="material-symbols-rounded text-2xl">videocam</span>
                           </div>
-                          <span className="font-mono text-[9px] bg-[#00c97a]/20 text-[#00c97a] px-2.5 py-0.5 rounded-full font-bold uppercase tracking-wider">
+                          <span className="font-mono text-[9px] bg-state-calm/20 text-state-calm px-2.5 py-0.5 rounded-full font-bold uppercase tracking-wider">
                             Hardware
                           </span>
                         </div>
-                        <h4 className="text-base font-bold text-[#e8eaf0] group-hover:text-[#00c97a] transition-colors">
+                        <h4 className="text-base font-bold text-on-surface group-hover:text-state-calm transition-colors">
                           Start Physical Webcam
                         </h4>
-                        <p className="font-mono text-xs text-[#9096a8] mt-1.5 leading-relaxed">
+                        <p className="font-mono text-xs text-on-surface-variant mt-1.5 leading-relaxed">
                           Use your laptop camera or external USB camera feed for live edge vehicle recognition.
                         </p>
                       </div>
 
-                      <div className="mt-5 pt-3 border-t border-[#2e3140] flex items-center justify-between text-xs font-mono font-bold text-[#00c97a]">
+                      <div className="mt-5 pt-3 border-t border-outline flex items-center justify-between text-xs font-mono font-bold text-state-calm">
                         <span>Start Camera Feed</span>
                         <span className="material-symbols-rounded text-base group-hover:translate-x-1 transition-transform">arrow_forward</span>
                       </div>
@@ -776,12 +776,12 @@ export default function VisionMonitorView() {
 
             {/* Error Message */}
             {streamError && (
-              <div className="p-3.5 rounded-xl bg-[#ff4060]/15 border border-[#ff4060]/40 text-[#ff4060] text-xs font-mono flex items-center justify-between shadow-md">
+              <div className="p-3.5 rounded-xl bg-state-preempted/15 border border-state-crit-border text-state-preempted text-xs font-mono flex items-center justify-between shadow-md">
                 <div className="flex items-center gap-2">
                   <span className="material-symbols-rounded text-base">warning</span>
                   <span>{streamError}</span>
                 </div>
-                <span className="font-bold bg-[#ff4060]/20 px-2 py-0.5 rounded">FastAPI :8000</span>
+                <span className="font-bold bg-state-preempted/20 px-2 py-0.5 rounded">FastAPI :8000</span>
               </div>
             )}
           </div>
@@ -789,16 +789,16 @@ export default function VisionMonitorView() {
           {/* Control & Stream Telemetry Panel (4 Cols) */}
           <div className="xl:col-span-4 flex flex-col gap-4">
             {/* Stream Action Controls Card */}
-            <div className="bg-[#161820] border border-[#2e3140] rounded-2xl p-4 flex flex-col gap-3.5 shadow-sm">
-              <span className="font-mono text-xs font-bold text-[#e8eaf0] uppercase tracking-wider flex items-center gap-2">
-                <span className="material-symbols-rounded text-sm text-[#4d9fff]">tune</span>
+            <div className="card p-4 flex flex-col gap-3.5 shadow-sm">
+              <span className="font-mono text-xs font-bold text-on-surface uppercase tracking-wider flex items-center gap-2">
+                <span className="material-symbols-rounded text-sm text-primary">tune</span>
                 <span>Stream Controller</span>
               </span>
 
               {isStreaming ? (
                 <button
                   onClick={stopStream}
-                  className="w-full py-3 bg-[#ff4060] hover:bg-[#e03554] text-white font-mono text-xs font-bold rounded-xl uppercase tracking-wider transition-all cursor-pointer flex items-center justify-center gap-2 shadow-lg hover:shadow-[0_0_16px_rgba(255,64,96,0.4)]"
+                  className="w-full py-3 bg-state-preempted hover:bg-[#e03554] text-white font-mono text-xs font-bold rounded-xl uppercase tracking-wider transition-all cursor-pointer flex items-center justify-center gap-2 shadow-lg hover:shadow-[0_0_16px_rgba(255,64,96,0.4)]"
                 >
                   <span className="material-symbols-rounded text-base">stop_circle</span>
                   <span>Terminate Active Stream</span>
@@ -807,7 +807,7 @@ export default function VisionMonitorView() {
                 <div className="space-y-2">
                   <button
                     onClick={startScreenShareStream}
-                    className="w-full py-2.5 bg-[#ff4060] hover:bg-[#e03554] text-white font-mono text-xs font-bold rounded-xl uppercase tracking-wider transition-all cursor-pointer flex items-center justify-center gap-2 shadow-md"
+                    className="w-full py-2.5 bg-state-preempted hover:bg-[#e03554] text-white font-mono text-xs font-bold rounded-xl uppercase tracking-wider transition-all cursor-pointer flex items-center justify-center gap-2 shadow-md"
                   >
                     <span className="material-symbols-rounded text-sm">screen_share</span>
                     <span>Share YouTube Tab</span>
@@ -815,7 +815,7 @@ export default function VisionMonitorView() {
 
                   <button
                     onClick={startWebcamStream}
-                    className="w-full py-2.5 bg-[#00c97a] hover:bg-[#00b06b] text-[#0a0c10] font-mono text-xs font-bold rounded-xl uppercase tracking-wider transition-all cursor-pointer flex items-center justify-center gap-2 shadow-md"
+                    className="w-full py-2.5 bg-state-calm hover:bg-[#00b06b] text-[#0a0c10] font-mono text-xs font-bold rounded-xl uppercase tracking-wider transition-all cursor-pointer flex items-center justify-center gap-2 shadow-md"
                   >
                     <span className="material-symbols-rounded text-sm">videocam</span>
                     <span>Start Physical Webcam</span>
@@ -824,17 +824,17 @@ export default function VisionMonitorView() {
               )}
 
               {/* Class Detection Scope Selector */}
-              <div className="flex items-center justify-between p-2.5 bg-[#111318] border border-[#2e3140] rounded-xl">
+              <div className="flex items-center justify-between p-2.5 bg-surface-low border border-outline rounded-xl">
                 <div className="flex items-center gap-2">
-                  <span className="material-symbols-rounded text-sm text-[#9096a8]">filter_alt</span>
-                  <span className="font-mono text-xs text-[#9096a8]">Scope:</span>
+                  <span className="material-symbols-rounded text-sm text-on-surface-variant">filter_alt</span>
+                  <span className="font-mono text-xs text-on-surface-variant">Scope:</span>
                 </div>
                 <button
                   onClick={() => setAllowAllClasses(!allowAllClasses)}
                   className={`px-3 py-1 rounded-lg text-[10px] font-mono font-bold uppercase transition-all cursor-pointer ${
                     allowAllClasses
-                      ? "bg-[#4d9fff]/20 text-[#4d9fff] border border-[#4d9fff]/40"
-                      : "bg-[#00c97a]/20 text-[#00c97a] border border-[#00c97a]/40"
+                      ? "bg-primary/20 text-primary border border-primary/40"
+                      : "bg-state-calm/20 text-state-calm border border-state-calm-border"
                   }`}
                 >
                   {allowAllClasses ? "All 80 COCO" : "Traffic Only"}
@@ -842,10 +842,10 @@ export default function VisionMonitorView() {
               </div>
 
               {/* Confidence Threshold Slider */}
-              <div className="p-3 bg-[#111318] border border-[#2e3140] rounded-xl flex flex-col gap-2">
+              <div className="p-3 bg-surface-low border border-outline rounded-xl flex flex-col gap-2">
                 <div className="flex justify-between font-mono text-xs">
-                  <span className="text-[#9096a8]">Confidence Threshold:</span>
-                  <span className="text-[#00c97a] font-bold">{(confThreshold * 100).toFixed(0)}%</span>
+                  <span className="text-on-surface-variant">Confidence Threshold:</span>
+                  <span className="text-state-calm font-bold">{(confThreshold * 100).toFixed(0)}%</span>
                 </div>
                 <input
                   type="range"
@@ -856,7 +856,7 @@ export default function VisionMonitorView() {
                   onChange={(e) => setConfThreshold(parseFloat(e.target.value))}
                   className="w-full accent-[#00c97a] cursor-pointer"
                 />
-                <div className="flex justify-between font-mono text-[9px] text-[#9096a8]">
+                <div className="flex justify-between font-mono text-[9px] text-on-surface-variant">
                   <span>10% (Dense)</span>
                   <span>32% (Optimal)</span>
                   <span>80% (Strict)</span>
@@ -867,14 +867,14 @@ export default function VisionMonitorView() {
             {/* Emergency Priority Alert Banner */}
             {hasEmergencyVehicle && (
               <div className="bg-gradient-to-r from-[#ff4060]/20 via-[#ff4060]/10 to-transparent border border-[#ff4060] rounded-2xl p-3.5 flex items-center gap-3 animate-pulse shadow-[0_0_18px_rgba(255,64,96,0.3)]">
-                <div className="w-10 h-10 rounded-xl bg-[#ff4060] text-white flex items-center justify-center font-bold text-lg">
+                <div className="w-10 h-10 rounded-xl bg-state-preempted text-white flex items-center justify-center font-bold text-lg">
                   🚨
                 </div>
                 <div>
-                  <span className="font-mono text-xs font-bold text-[#ff4060] uppercase block">
+                  <span className="font-mono text-xs font-bold text-state-preempted uppercase block">
                     Priority Preemption Triggered
                   </span>
-                  <span className="font-mono text-[11px] text-[#e8eaf0]">
+                  <span className="font-mono text-[11px] text-on-surface">
                     108 Emergency / Police detected in corridor
                   </span>
                 </div>
@@ -882,16 +882,16 @@ export default function VisionMonitorView() {
             )}
 
             {/* Dual-Mode Live Spectrum & Cumulative Session Ledger Card */}
-            <div className="bg-[#161820] border border-[#2e3140] rounded-2xl p-4 flex flex-col gap-3 shadow-sm flex-1">
+            <div className="card p-4 flex flex-col gap-3 shadow-sm flex-1">
               {/* Header & Mode Switcher */}
               <div className="flex justify-between items-center flex-wrap gap-2">
-                <div className="flex items-center gap-1 bg-[#111318] p-1 rounded-xl border border-[#2e3140]">
+                <div className="flex items-center gap-1 bg-surface-low p-1 rounded-xl border border-outline">
                   <button
                     onClick={() => setTelemetryMode("cumulative")}
                     className={`px-2.5 py-1 rounded-lg text-[10px] font-mono font-bold uppercase transition-all cursor-pointer flex items-center gap-1 ${
                       telemetryMode === "cumulative"
-                        ? "bg-[#00c97a]/20 text-[#00c97a] border border-[#00c97a]/40"
-                        : "text-[#9096a8] hover:text-[#e8eaf0]"
+                        ? "bg-state-calm/20 text-state-calm border border-state-calm-border"
+                        : "text-on-surface-variant hover:text-on-surface"
                     }`}
                   >
                     <span className="material-symbols-rounded text-xs">receipt_long</span>
@@ -901,8 +901,8 @@ export default function VisionMonitorView() {
                     onClick={() => setTelemetryMode("instant")}
                     className={`px-2.5 py-1 rounded-lg text-[10px] font-mono font-bold uppercase transition-all cursor-pointer flex items-center gap-1 ${
                       telemetryMode === "instant"
-                        ? "bg-[#4d9fff]/20 text-[#4d9fff] border border-[#4d9fff]/40"
-                        : "text-[#9096a8] hover:text-[#e8eaf0]"
+                        ? "bg-primary/20 text-primary border border-primary/40"
+                        : "text-on-surface-variant hover:text-on-surface"
                     }`}
                   >
                     <span className="material-symbols-rounded text-xs">bolt</span>
@@ -914,7 +914,7 @@ export default function VisionMonitorView() {
                 <button
                   onClick={resetCumulativeStats}
                   title="Reset Session Inflow Counters"
-                  className="p-1.5 bg-[#111318] hover:bg-[#2c2f3a] text-[#9096a8] hover:text-[#e8eaf0] rounded-lg border border-[#2e3140] transition-colors cursor-pointer flex items-center gap-1 text-[10px] font-mono"
+                  className="p-1.5 bg-surface-low hover:bg-[#2c2f3a] text-on-surface-variant hover:text-on-surface rounded-lg border border-outline transition-colors cursor-pointer flex items-center gap-1 text-[10px] font-mono"
                 >
                   <span className="material-symbols-rounded text-xs">rotate_left</span>
                   <span>Reset</span>
@@ -925,19 +925,19 @@ export default function VisionMonitorView() {
               {telemetryMode === "cumulative" && (
                 <div className="flex flex-col gap-3 flex-1">
                   {/* Big Hero Inflow Readout */}
-                  <div className="bg-gradient-to-br from-[#00c97a]/15 via-[#111318] to-[#161820] p-3.5 rounded-xl border border-[#00c97a]/30 flex items-center justify-between shadow-inner">
+                  <div className="bg-gradient-to-br from-[#00c97a]/15 via-[#111318] to-[#161820] p-3.5 rounded-xl border border-state-calm-border flex items-center justify-between shadow-inner">
                     <div>
-                      <span className="text-[10px] font-mono font-bold text-[#00c97a] uppercase tracking-wider block">
+                      <span className="text-[10px] font-mono font-bold text-state-calm uppercase tracking-wider block">
                         Total Unique Inflow (Start → End)
                       </span>
-                      <span className="text-3xl font-bold font-mono text-[#e8eaf0] tracking-tight">
+                      <span className="text-3xl font-bold font-mono text-on-surface tracking-tight">
                         {cumulativeVehicleCount}{" "}
-                        <span className="text-xs text-[#9096a8] font-normal">vehicles</span>
+                        <span className="text-xs text-on-surface-variant font-normal">vehicles</span>
                       </span>
                     </div>
                     <div className="text-right font-mono">
-                      <span className="text-[9px] text-[#9096a8] uppercase block">Session Time</span>
-                      <span className="text-sm font-bold text-[#4d9fff]">
+                      <span className="text-[9px] text-on-surface-variant uppercase block">Session Time</span>
+                      <span className="text-sm font-bold text-primary">
                         {formatDuration(streamDurationSec)}
                       </span>
                     </div>
@@ -945,35 +945,35 @@ export default function VisionMonitorView() {
 
                   {/* Secondary Metric Grid */}
                   <div className="grid grid-cols-2 gap-2 text-center font-mono">
-                    <div className="bg-[#111318] p-2.5 rounded-xl border border-[#2e3140]">
-                      <span className="text-[9px] text-[#9096a8] uppercase block">Peak Density</span>
-                      <span className="text-lg font-bold text-[#ffab1a]">
+                    <div className="metric-tile">
+                      <span className="text-[9px] text-on-surface-variant uppercase block">Peak Density</span>
+                      <span className="text-lg font-bold text-state-building">
                         {peakDensity} veh/frame
                       </span>
                     </div>
-                    <div className="bg-[#111318] p-2.5 rounded-xl border border-[#2e3140]">
-                      <span className="text-[9px] text-[#9096a8] uppercase block">Active In Frame</span>
-                      <span className="text-lg font-bold text-[#00c97a]">
+                    <div className="metric-tile">
+                      <span className="text-[9px] text-on-surface-variant uppercase block">Active In Frame</span>
+                      <span className="text-lg font-bold text-state-calm">
                         {liveDetections.length}
                       </span>
                     </div>
                   </div>
 
                   {/* Cumulative Classification Ledger */}
-                  <div className="bg-[#111318] p-3 rounded-xl border border-[#2e3140] flex flex-col gap-2 flex-1">
+                  <div className="metric-tile flex flex-col gap-2 flex-1">
                     <div className="flex justify-between items-center">
-                      <span className="font-mono text-[9px] text-[#9096a8] uppercase">
+                      <span className="font-mono text-[9px] text-on-surface-variant uppercase">
                         Cumulative Class Ledger
                       </span>
-                      <span className="font-mono text-[9px] text-[#00c97a] font-bold">
+                      <span className="font-mono text-[9px] text-state-calm font-bold">
                         {cumulativeVehicleCount} Passed
                       </span>
                     </div>
 
                     {Object.keys(cumulativeClassCounts).length === 0 ? (
                       <div className="flex flex-col items-center justify-center my-auto py-5 text-center">
-                        <span className="material-symbols-rounded text-xl text-[#9096a8] mb-1">history_toggle_off</span>
-                        <span className="font-mono text-[11px] text-[#9096a8]">
+                        <span className="material-symbols-rounded text-xl text-on-surface-variant mb-1">history_toggle_off</span>
+                        <span className="font-mono text-[11px] text-on-surface-variant">
                           Start streaming to accumulate traffic inflow
                         </span>
                       </div>
@@ -984,14 +984,14 @@ export default function VisionMonitorView() {
                           return (
                             <div
                               key={cls}
-                              className="bg-[#1c1e24] p-2 rounded-lg border border-[#2e3140] flex justify-between items-center"
+                              className="bg-surface-mid p-2 rounded-lg border border-outline flex justify-between items-center"
                             >
                               <div className="flex items-center gap-1.5 truncate">
                                 <span
                                   className="w-2 h-2 rounded-full"
                                   style={{ backgroundColor: color }}
                                 ></span>
-                                <span className="text-[#e8eaf0] uppercase truncate text-[11px]">{cls}</span>
+                                <span className="text-on-surface uppercase truncate text-[11px]">{cls}</span>
                               </div>
                               <span
                                 style={{ backgroundColor: `${color}20`, color: color }}
@@ -1012,29 +1012,29 @@ export default function VisionMonitorView() {
               {telemetryMode === "instant" && (
                 <div className="flex flex-col gap-3 flex-1">
                   <div className="grid grid-cols-2 gap-2 text-center font-mono">
-                    <div className="bg-[#111318] p-3 rounded-xl border border-[#2e3140]">
-                      <span className="text-[9px] text-[#9096a8] uppercase block">Active Targets</span>
-                      <span className="text-2xl font-bold text-[#00c97a]">
+                    <div className="metric-tile">
+                      <span className="text-[9px] text-on-surface-variant uppercase block">Active Targets</span>
+                      <span className="text-2xl font-bold text-state-calm">
                         {liveDetections.length}
                       </span>
                     </div>
-                    <div className="bg-[#111318] p-3 rounded-xl border border-[#2e3140]">
-                      <span className="text-[9px] text-[#9096a8] uppercase block">Edge Latency</span>
-                      <span className="text-2xl font-bold text-[#4d9fff]">
+                    <div className="metric-tile">
+                      <span className="text-[9px] text-on-surface-variant uppercase block">Edge Latency</span>
+                      <span className="text-2xl font-bold text-primary">
                         {liveLatency} ms
                       </span>
                     </div>
                   </div>
 
-                  <div className="bg-[#111318] p-3 rounded-xl border border-[#2e3140] flex flex-col gap-2 flex-1">
-                    <span className="font-mono text-[9px] text-[#9096a8] uppercase block">
+                  <div className="metric-tile flex flex-col gap-2 flex-1">
+                    <span className="font-mono text-[9px] text-on-surface-variant uppercase block">
                       Current Frame Distribution
                     </span>
 
                     {Object.keys(liveClassCounts).length === 0 ? (
                       <div className="flex flex-col items-center justify-center my-auto py-6 text-center">
-                        <span className="material-symbols-rounded text-2xl text-[#9096a8] mb-1">radar</span>
-                        <span className="font-mono text-xs text-[#9096a8]">
+                        <span className="material-symbols-rounded text-2xl text-on-surface-variant mb-1">radar</span>
+                        <span className="font-mono text-xs text-on-surface-variant">
                           {isStreaming ? "Scanning incoming video frames..." : "Standby for video feed input"}
                         </span>
                       </div>
@@ -1045,14 +1045,14 @@ export default function VisionMonitorView() {
                           return (
                             <div
                               key={cls}
-                              className="bg-[#1c1e24] p-2 rounded-lg border border-[#2e3140] flex justify-between items-center"
+                              className="bg-surface-mid p-2 rounded-lg border border-outline flex justify-between items-center"
                             >
                               <div className="flex items-center gap-1.5 truncate">
                                 <span
                                   className="w-2 h-2 rounded-full"
                                   style={{ backgroundColor: color }}
                                 ></span>
-                                <span className="text-[#e8eaf0] uppercase truncate">{cls}</span>
+                                <span className="text-on-surface uppercase truncate">{cls}</span>
                               </div>
                               <span
                                 style={{ backgroundColor: `${color}20`, color: color }}
@@ -1077,16 +1077,16 @@ export default function VisionMonitorView() {
       {activeTab === "array" && (
         <div className="flex flex-col gap-4">
           {/* FILTER & ROI OVERLAY BAR */}
-          <div className="bg-[#161820] border border-[#2e3140] rounded-xl p-3 flex items-center justify-between gap-3 flex-wrap">
+          <div className="card p-3 flex items-center justify-between gap-3 flex-wrap">
             <div className="flex items-center gap-2 flex-wrap">
-              <span className="font-mono text-xs text-[#9096a8] uppercase">Class Filter:</span>
+              <span className="font-mono text-xs text-on-surface-variant uppercase">Class Filter:</span>
               <div className="flex items-center gap-1.5 flex-wrap">
                 <button
                   onClick={() => setArrayFilter("all")}
                   className={`px-3 py-1 rounded-full font-mono text-xs transition-all cursor-pointer ${
                     arrayFilter === "all"
-                      ? "bg-[#00c97a]/20 text-[#00c97a] border border-[#00c97a]/40 font-bold"
-                      : "bg-[#111318] text-[#9096a8] hover:text-[#e8eaf0] border border-[#2e3140]"
+                      ? "bg-state-calm/20 text-state-calm border border-state-calm-border font-bold"
+                      : "bg-surface-low text-on-surface-variant hover:text-on-surface border border-outline"
                   }`}
                 >
                   All
@@ -1095,8 +1095,8 @@ export default function VisionMonitorView() {
                   onClick={() => setArrayFilter("ambulance")}
                   className={`px-3 py-1 rounded-full font-mono text-xs transition-all cursor-pointer ${
                     arrayFilter === "ambulance"
-                      ? "bg-[#ff4060]/20 text-[#ff4060] border border-[#ff4060]/40 font-bold"
-                      : "bg-[#111318] text-[#9096a8] hover:text-[#e8eaf0] border border-[#2e3140]"
+                      ? "bg-state-preempted/20 text-state-preempted border border-state-crit-border font-bold"
+                      : "bg-surface-low text-on-surface-variant hover:text-on-surface border border-outline"
                   }`}
                 >
                   🚑 108 EMS
@@ -1105,8 +1105,8 @@ export default function VisionMonitorView() {
                   onClick={() => setArrayFilter("police")}
                   className={`px-3 py-1 rounded-full font-mono text-xs transition-all cursor-pointer ${
                     arrayFilter === "police"
-                      ? "bg-[#4d9fff]/20 text-[#4d9fff] border border-[#4d9fff]/40 font-bold"
-                      : "bg-[#111318] text-[#9096a8] hover:text-[#e8eaf0] border border-[#2e3140]"
+                      ? "bg-primary/20 text-primary border border-primary/40 font-bold"
+                      : "bg-surface-low text-on-surface-variant hover:text-on-surface border border-outline"
                   }`}
                 >
                   🚔 Police
@@ -1115,8 +1115,8 @@ export default function VisionMonitorView() {
                   onClick={() => setArrayFilter("school_van")}
                   className={`px-3 py-1 rounded-full font-mono text-xs transition-all cursor-pointer ${
                     arrayFilter === "school_van"
-                      ? "bg-[#ffab1a]/20 text-[#ffab1a] border border-[#ffab1a]/40 font-bold"
-                      : "bg-[#111318] text-[#9096a8] hover:text-[#e8eaf0] border border-[#2e3140]"
+                      ? "bg-state-building/20 text-state-building border border-state-warn-border font-bold"
+                      : "bg-surface-low text-on-surface-variant hover:text-on-surface border border-outline"
                   }`}
                 >
                   🚌 School Van
@@ -1125,8 +1125,8 @@ export default function VisionMonitorView() {
                   onClick={() => setArrayFilter("motorcycle")}
                   className={`px-3 py-1 rounded-full font-mono text-xs transition-all cursor-pointer ${
                     arrayFilter === "motorcycle" || arrayFilter === "two-wheeler"
-                      ? "bg-[#00c97a]/20 text-[#00c97a] border border-[#00c97a]/40 font-bold"
-                      : "bg-[#111318] text-[#9096a8] hover:text-[#e8eaf0] border border-[#2e3140]"
+                      ? "bg-state-calm/20 text-state-calm border border-state-calm-border font-bold"
+                      : "bg-surface-low text-on-surface-variant hover:text-on-surface border border-outline"
                   }`}
                 >
                   🛵 2-Wheeler
@@ -1139,7 +1139,7 @@ export default function VisionMonitorView() {
               <button
                 onClick={runArrayInference}
                 disabled={isArrayDetecting}
-                className="px-3 py-1 bg-[#00c97a]/15 hover:bg-[#00c97a]/25 text-[#00c97a] border border-[#00c97a]/40 rounded-lg text-xs font-mono font-bold flex items-center gap-1.5 transition-all cursor-pointer disabled:opacity-50"
+                className="px-3 py-1 bg-state-calm/15 hover:bg-state-calm/25 text-state-calm border border-state-calm-border rounded-lg text-xs font-mono font-bold flex items-center gap-1.5 transition-all cursor-pointer disabled:opacity-50"
               >
                 <span className={`material-symbols-rounded text-sm ${isArrayDetecting ? "animate-spin" : ""}`}>
                   sync
@@ -1163,21 +1163,21 @@ export default function VisionMonitorView() {
                 return (
                   <div
                     key={cam.id}
-                    className="bg-[#1c1e24] border border-[#2e3140] rounded-xl overflow-hidden relative h-[270px] shadow-md flex flex-col justify-between"
+                    className="bg-surface-mid border border-outline rounded-xl overflow-hidden relative h-[270px] shadow-md flex flex-col justify-between"
                   >
                     {/* Header */}
                     <div className="bg-gradient-to-b from-[#0d0f13]/90 via-[#0d0f13]/50 to-transparent p-3 flex justify-between items-center z-10">
                       <div className="flex items-center gap-2">
                         <span
                           className={`w-2 h-2 rounded-full ${
-                            hasPreemption ? "bg-[#ff4060] animate-pulse" : "bg-[#00c97a]"
+                            hasPreemption ? "bg-state-preempted animate-pulse" : "bg-state-calm"
                           }`}
                         ></span>
-                        <span className="font-mono text-xs font-bold text-[#e8eaf0]">
+                        <span className="font-mono text-xs font-bold text-on-surface">
                           {cam.name} ({cam.road})
                         </span>
                       </div>
-                      <span className="font-mono text-[9px] bg-[#00c97a]/20 text-[#00c97a] px-2 py-0.5 rounded border border-[#00c97a]/30 font-bold">
+                      <span className="font-mono text-[9px] bg-state-calm/20 text-state-calm px-2 py-0.5 rounded border border-state-calm-border font-bold">
                         {fps.toFixed(0)} FPS · {latency} MS
                       </span>
                     </div>
@@ -1229,7 +1229,7 @@ export default function VisionMonitorView() {
                         /* Fallback Mock Overlay if Network Loading */
                         <div className="absolute inset-0 flex items-center justify-center">
                           {isArrayDetecting && (
-                            <div className="bg-[#111318]/80 backdrop-blur-sm px-3 py-1.5 rounded-lg border border-[#2e3140] font-mono text-xs text-[#00c97a] flex items-center gap-2">
+                            <div className="bg-surface-low/80 backdrop-blur-sm px-3 py-1.5 rounded-lg border border-outline font-mono text-xs text-state-calm flex items-center gap-2">
                               <span className="material-symbols-rounded text-sm animate-spin">sync</span>
                               <span>Computing YOLOv8...</span>
                             </div>
@@ -1243,13 +1243,13 @@ export default function VisionMonitorView() {
                       <span
                         className={`font-mono text-[9px] px-2 py-0.5 rounded border font-bold uppercase ${
                           hasPreemption
-                            ? "bg-[#ff4060]/20 text-[#ff4060] border-[#ff4060]/40 animate-pulse"
-                            : "bg-[#00c97a]/20 text-[#00c97a] border-[#00c97a]/40"
+                            ? "bg-state-preempted/20 text-state-preempted border-state-crit-border animate-pulse"
+                            : "bg-state-calm/20 text-state-calm border-state-calm-border"
                         }`}
                       >
                         {hasPreemption ? "108 EMS PREEMPTION ACTIVE" : cam.defaultStatus}
                       </span>
-                      <span className="font-mono text-[9px] bg-[#111318]/90 text-[#9096a8] px-2 py-0.5 rounded border border-[#2e3140]">
+                      <span className="font-mono text-[9px] bg-surface-low/90 text-on-surface-variant px-2 py-0.5 rounded border border-outline">
                         HOMOGRAPHY: {cam.homography}
                       </span>
                     </div>
@@ -1261,112 +1261,112 @@ export default function VisionMonitorView() {
             {/* Right Telemetry Column (4 Cols) */}
             <div className="xl:col-span-4 flex flex-col gap-4">
               {/* YOLOv8 Edge Model Health Card */}
-              <div className="bg-[#161820] border border-[#2e3140] rounded-2xl p-4 shadow-sm">
+              <div className="card p-4 shadow-sm">
                 <div className="flex justify-between items-center mb-3">
-                  <span className="font-mono text-xs font-bold text-[#e8eaf0] uppercase tracking-wider flex items-center gap-2">
-                    <span className="material-symbols-rounded text-sm text-[#00c97a]">memory</span>
+                  <span className="font-mono text-xs font-bold text-on-surface uppercase tracking-wider flex items-center gap-2">
+                    <span className="material-symbols-rounded text-sm text-state-calm">memory</span>
                     <span>YOLOv8 Edge Engine Health</span>
                   </span>
-                  <span className="font-mono text-[10px] bg-[#00c97a]/20 text-[#00c97a] px-2 py-0.5 rounded border border-[#00c97a]/30 font-bold">
+                  <span className="font-mono text-[10px] bg-state-calm/20 text-state-calm px-2 py-0.5 rounded border border-state-calm-border font-bold">
                     55 FPS ONNX
                   </span>
                 </div>
 
                 <div className="grid grid-cols-3 gap-2 text-center font-mono mb-3">
-                  <div className="bg-[#111318] p-2 rounded-xl border border-[#2e3140]">
-                    <span className="text-[9px] text-[#9096a8] block">mAP@50</span>
-                    <span className="text-base font-bold text-[#00c97a]">0.924</span>
+                  <div className="metric-tile">
+                    <span className="text-[9px] text-on-surface-variant block">mAP@50</span>
+                    <span className="text-base font-bold text-state-calm">0.924</span>
                   </div>
-                  <div className="bg-[#111318] p-2 rounded-xl border border-[#2e3140]">
-                    <span className="text-[9px] text-[#9096a8] block">Precision</span>
-                    <span className="text-base font-bold text-[#e8eaf0]">0.891</span>
+                  <div className="metric-tile">
+                    <span className="text-[9px] text-on-surface-variant block">Precision</span>
+                    <span className="text-base font-bold text-on-surface">0.891</span>
                   </div>
-                  <div className="bg-[#111318] p-2 rounded-xl border border-[#2e3140]">
-                    <span className="text-[9px] text-[#9096a8] block">Recall</span>
-                    <span className="text-base font-bold text-[#e8eaf0]">0.905</span>
+                  <div className="metric-tile">
+                    <span className="text-[9px] text-on-surface-variant block">Recall</span>
+                    <span className="text-base font-bold text-on-surface">0.905</span>
                   </div>
                 </div>
 
-                <div className="text-[10px] font-mono text-[#9096a8] bg-[#111318] p-2.5 rounded-xl border border-[#2e3140] flex items-center justify-between">
+                <div className="text-[10px] font-mono text-on-surface-variant metric-tile flex items-center justify-between">
                   <span>Model: YOLOv8n (ONNX Runtime)</span>
                   <span>Params: 3.2M</span>
                 </div>
               </div>
 
               {/* Vehicle Class Confidence Distribution */}
-              <div className="bg-[#161820] border border-[#2e3140] rounded-2xl p-4 shadow-sm flex flex-col gap-3">
-                <span className="font-mono text-xs font-bold text-[#e8eaf0] uppercase tracking-wider flex items-center gap-2">
-                  <span className="material-symbols-rounded text-sm text-[#4d9fff]">bar_chart</span>
+              <div className="card p-4 shadow-sm flex flex-col gap-3">
+                <span className="font-mono text-xs font-bold text-on-surface uppercase tracking-wider flex items-center gap-2">
+                  <span className="material-symbols-rounded text-sm text-primary">bar_chart</span>
                   <span>Vehicle Class Confidence</span>
                 </span>
 
                 <div className="space-y-2.5 font-mono text-xs">
                   <div>
                     <div className="flex justify-between text-[11px] mb-1">
-                      <span className="text-[#ff4060] font-bold">🚑 108 Ambulance</span>
-                      <span className="text-[#ff4060] font-bold">0.98</span>
+                      <span className="text-state-preempted font-bold">🚑 108 Ambulance</span>
+                      <span className="text-state-preempted font-bold">0.98</span>
                     </div>
-                    <div className="w-full h-1.5 bg-[#111318] rounded-full overflow-hidden border border-[#2e3140]">
-                      <div className="h-full bg-[#ff4060]" style={{ width: "98%" }}></div>
-                    </div>
-                  </div>
-
-                  <div>
-                    <div className="flex justify-between text-[11px] mb-1">
-                      <span className="text-[#4d9fff] font-bold">🚔 Police Unit</span>
-                      <span className="text-[#4d9fff] font-bold">0.96</span>
-                    </div>
-                    <div className="w-full h-1.5 bg-[#111318] rounded-full overflow-hidden border border-[#2e3140]">
-                      <div className="h-full bg-[#4d9fff]" style={{ width: "96%" }}></div>
+                    <div className="w-full h-1.5 bg-surface-low rounded-full overflow-hidden border border-outline">
+                      <div className="h-full bg-state-preempted" style={{ width: "98%" }}></div>
                     </div>
                   </div>
 
                   <div>
                     <div className="flex justify-between text-[11px] mb-1">
-                      <span className="text-[#ffab1a] font-bold">🚌 School Van / Bus</span>
-                      <span className="text-[#ffab1a] font-bold">0.95</span>
+                      <span className="text-primary font-bold">🚔 Police Unit</span>
+                      <span className="text-primary font-bold">0.96</span>
                     </div>
-                    <div className="w-full h-1.5 bg-[#111318] rounded-full overflow-hidden border border-[#2e3140]">
-                      <div className="h-full bg-[#ffab1a]" style={{ width: "95%" }}></div>
-                    </div>
-                  </div>
-
-                  <div>
-                    <div className="flex justify-between text-[11px] mb-1">
-                      <span className="text-[#e8eaf0]">🚗 Standard Car / Taxi</span>
-                      <span className="text-[#e8eaf0]">0.91</span>
-                    </div>
-                    <div className="w-full h-1.5 bg-[#111318] rounded-full overflow-hidden border border-[#2e3140]">
-                      <div className="h-full bg-[#4d9fff]" style={{ width: "91%" }}></div>
+                    <div className="w-full h-1.5 bg-surface-low rounded-full overflow-hidden border border-outline">
+                      <div className="h-full bg-primary" style={{ width: "96%" }}></div>
                     </div>
                   </div>
 
                   <div>
                     <div className="flex justify-between text-[11px] mb-1">
-                      <span className="text-[#00c97a] font-bold">🛵 Two-Wheeler</span>
-                      <span className="text-[#00c97a] font-bold">0.89</span>
+                      <span className="text-state-building font-bold">🚌 School Van / Bus</span>
+                      <span className="text-state-building font-bold">0.95</span>
                     </div>
-                    <div className="w-full h-1.5 bg-[#111318] rounded-full overflow-hidden border border-[#2e3140]">
-                      <div className="h-full bg-[#00c97a]" style={{ width: "89%" }}></div>
+                    <div className="w-full h-1.5 bg-surface-low rounded-full overflow-hidden border border-outline">
+                      <div className="h-full bg-state-building" style={{ width: "95%" }}></div>
+                    </div>
+                  </div>
+
+                  <div>
+                    <div className="flex justify-between text-[11px] mb-1">
+                      <span className="text-on-surface">🚗 Standard Car / Taxi</span>
+                      <span className="text-on-surface">0.91</span>
+                    </div>
+                    <div className="w-full h-1.5 bg-surface-low rounded-full overflow-hidden border border-outline">
+                      <div className="h-full bg-primary" style={{ width: "91%" }}></div>
+                    </div>
+                  </div>
+
+                  <div>
+                    <div className="flex justify-between text-[11px] mb-1">
+                      <span className="text-state-calm font-bold">🛵 Two-Wheeler</span>
+                      <span className="text-state-calm font-bold">0.89</span>
+                    </div>
+                    <div className="w-full h-1.5 bg-surface-low rounded-full overflow-hidden border border-outline">
+                      <div className="h-full bg-state-calm" style={{ width: "89%" }}></div>
                     </div>
                   </div>
                 </div>
               </div>
 
               {/* Spatial Homography & Queue Estimation */}
-              <div className="bg-[#161820] border border-[#2e3140] rounded-2xl p-4 shadow-sm font-mono text-xs flex flex-col gap-2">
-                <span className="font-bold text-[#e8eaf0] uppercase tracking-wider flex items-center gap-2">
-                  <span className="material-symbols-rounded text-sm text-[#ffab1a]">straighten</span>
+              <div className="card p-4 shadow-sm font-mono text-xs flex flex-col gap-2">
+                <span className="font-bold text-on-surface uppercase tracking-wider flex items-center gap-2">
+                  <span className="material-symbols-rounded text-sm text-state-building">straighten</span>
                   <span>Spatial Homography Extents</span>
                 </span>
                 <div className="grid grid-cols-2 gap-2 text-center mt-1">
-                  <div className="bg-[#111318] p-2.5 rounded-xl border border-[#2e3140]">
-                    <span className="text-[9px] text-[#9096a8] uppercase block">Queue Dist</span>
-                    <span className="text-base font-bold text-[#ffab1a]">48.2 m</span>
+                  <div className="metric-tile">
+                    <span className="text-[9px] text-on-surface-variant uppercase block">Queue Dist</span>
+                    <span className="text-base font-bold text-state-building">48.2 m</span>
                   </div>
-                  <div className="bg-[#111318] p-2.5 rounded-xl border border-[#2e3140]">
-                    <span className="text-[9px] text-[#9096a8] uppercase block">Flow Rate</span>
-                    <span className="text-base font-bold text-[#00c97a]">84 v/min</span>
+                  <div className="metric-tile">
+                    <span className="text-[9px] text-on-surface-variant uppercase block">Flow Rate</span>
+                    <span className="text-base font-bold text-state-calm">84 v/min</span>
                   </div>
                 </div>
               </div>

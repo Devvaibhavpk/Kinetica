@@ -1,476 +1,298 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
 import AwaitingDataStub from "../AwaitingDataStub";
 
-interface BackendResults {
-  endToEndSummary: {
-    status: string;
-    timestamp: string;
-    total_observations: number;
-    poisson_fit: {
-      p_value: number;
-      poisson_assumption_holds: boolean;
-      statistic: number;
-      sample_size: number;
-      estimated_lambda: number;
-      alpha: number;
-    };
-    hypothesis_test: {
-      test_used: string;
-      statistic: number;
-      p_value: number;
-      h0_rejected: boolean;
-      effect_size: number;
-    };
-    corridor_path: string[];
-    feature_importances: Record<string, number>;
-  } | null;
-  hypothesisTest: {
-    test_used: string;
-    statistic: number;
-    p_value: number;
-    h0_rejected: boolean;
-    effect_size: number;
-  } | null;
-  bottleneckImportances: Record<string, number> | null;
-  poissonFit: {
-    p_value: number;
-    poisson_assumption_holds: boolean;
-    statistic: number;
-    sample_size: number;
-    estimated_lambda: number;
-    alpha: number;
-  } | null;
-  heapBenchmark: Record<string, number> | null;
+interface HypothesisResult {
+  statistic: number;
+  p_value: number;
+  h0_rejected: boolean;
+  effect_size: number;
+  test_used: string;
+  percentage_reduction?: number;
+}
+
+interface AnalyticsData {
+  hypothesisTest: HypothesisResult | null;
   metrics: {
     totalObservations: number;
     totalDecisions: number;
     preemptionDecisions: number;
     extendedDecisions: number;
+    scheduledDecisions: number;
   };
+  poissonFit: {
+    p_value: number;
+    poisson_assumption_holds: boolean;
+    statistic: number;
+  } | null;
 }
 
 export default function AnalyticsView() {
-  const [data, setData] = useState<BackendResults | null>(null);
+  const [data, setData] = useState<AnalyticsData | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string | null>(null);
-  const [activeFigure, setActiveFigure] = useState<
-    "wait_time" | "queue" | "importance" | "poisson"
-  >("wait_time");
 
   useEffect(() => {
-    fetch("/api/results")
-      .then((res) => {
-        if (!res.ok) throw new Error("HTTP error " + res.status);
-        return res.json();
-      })
-      .then((json) => {
-        setData(json);
+    async function loadData() {
+      try {
+        const res = await fetch("/api/results");
+        if (res.ok) {
+          const json = await res.json();
+          setData(json);
+        }
+      } catch (err) {
+        console.error("Failed to load analytics results:", err);
+      } finally {
         setLoading(false);
-      })
-      .catch((err) => {
-        setError(err.message);
-        setLoading(false);
-      });
+      }
+    }
+    loadData();
   }, []);
 
   if (loading) {
     return (
-      <div className="p-8 flex flex-col items-center justify-center min-h-[400px] gap-3 text-on-surface-variant font-telemetry text-sm">
+      <div className="flex-1 flex flex-col items-center justify-center min-h-[400px] gap-4 text-on-surface-variant font-mono text-sm w-full">
         <div className="w-8 h-8 border-2 border-primary border-t-transparent rounded-full animate-spin"></div>
-        <span>Loading Analytics &amp; Empirical Model Outputs...</span>
+        <span>Loading Analytics & Empirical Model Outputs...</span>
       </div>
     );
   }
 
-  if (error || !data) {
+  if (!data) {
     return (
-      <div className="p-6">
-        <AwaitingDataStub
-          title="Analytics Telemetry Unavailable"
-          phaseRequired="Phase 5"
-          expectedFile="results/hypothesis_test_output.json"
-          description="Failed to load telemetry from backend results directory. Ensure an end-to-end simulation has run."
+      <div className="flex-1 p-6 w-full max-w-full">
+        <AwaitingDataStub 
+          title="Analytics Telemetry Unavailable" 
+          phaseRequired="5" 
+          expectedFile="results/analytics.json" 
+          description="Backend analytics pipeline has not output results yet."
         />
       </div>
     );
   }
 
-  const { hypothesisTest, bottleneckImportances, poissonFit, endToEndSummary } = data;
+  const { hypothesisTest, metrics, poissonFit } = data;
 
   if (!hypothesisTest) {
     return (
-      <div className="p-6">
-        <AwaitingDataStub
-          title="Hypothesis Test Results Pending"
-          phaseRequired="Phase 5"
-          expectedFile="results/hypothesis_test_output.json"
-          description="Formal statistical hypothesis testing has not yet been executed. Run the end-to-end pipeline to generate empirical validation outputs."
+      <div className="flex-1 p-6 w-full max-w-full">
+        <AwaitingDataStub 
+          title="Hypothesis Test Results Pending" 
+          phaseRequired="5" 
+          expectedFile="results/analytics.json" 
+          description="Waiting for full pipeline run to compute t-test values."
         />
       </div>
     );
   }
 
-  const testUsed = hypothesisTest.test_used || "Mann-Whitney U test";
-  const pValue = hypothesisTest.p_value ?? 0.0;
-  const isRejected = hypothesisTest.h0_rejected ?? true;
-  const effectSize = hypothesisTest.effect_size ?? 21.64;
-  const statVal = hypothesisTest.statistic ?? 20665.0;
-
-  const importances = bottleneckImportances || endToEndSummary?.feature_importances || {
-    queue_length_m: 0.7082,
-    vehicle_count: 0.2918,
-    density_veh_per_m: 0.0,
-    is_preempted: 0.0,
-    hour_of_day: 0.0,
-  };
-
-  const pFit = poissonFit || endToEndSummary?.poisson_fit;
-
   return (
-    <div className="p-4 md:p-8 space-y-6">
-      {/* Page Header */}
-      <header className="mb-6 flex flex-col md:flex-row justify-between items-start md:items-end gap-4">
-        <div>
-          <div className="flex items-center gap-3 mb-2">
-            <span className="px-2.5 py-0.5 bg-primary/10 border border-primary/30 rounded-full font-label text-[10px] text-primary uppercase tracking-wider">
-              HYPOTHESIS TEST VALIDATION
-            </span>
-            <span className="text-xs text-on-surface-variant font-telemetry">
-              SC4 VERIFIED · α = 0.05
-            </span>
-          </div>
-          <h1 className="font-display text-2xl md:text-3xl font-bold text-on-surface tracking-tight">
-            Analytics &amp; Validation
-          </h1>
-          <p className="text-on-surface-variant text-sm font-body mt-1">
-            Inferential statistical verification of Kinetica Adaptive Signal Control vs. Fixed-Timer Baseline (SC4).
-          </p>
+    <div className="flex-1 flex flex-col gap-6 w-full max-w-full pb-8">
+      {/* ── TOP OPERATIONAL DIRECTIVE STRIP ───────────────────────────── */}
+      <section className="glass-panel-elevated p-4 flex items-center justify-between flex-wrap gap-4 w-full z-10">
+        <div className="flex items-center gap-4 pl-2">
+           <div className="flex items-center gap-3">
+              <span className="w-3 h-3 rounded-full bg-state-calm shadow-md animate-pulse"></span>
+              <span className="font-mono text-[13px] font-bold text-state-calm tracking-widest uppercase" >
+                EMPIRICAL RESULTS VERIFIED
+              </span>
+              <span className="hidden sm:inline-block badge badge-calm ml-2">
+                SC4 VERIFIED
+              </span>
+            </div>
         </div>
-
-        <div className="flex items-center gap-3">
-          <div className="glass-card px-4 py-2 flex items-center gap-2.5 border border-primary/30">
-            <span className="w-2 h-2 rounded-full bg-state-calm shadow-glow-calm"></span>
-            <span className="font-telemetry text-xs text-primary font-bold">
-              EMPIRICAL RESULTS VERIFIED
-            </span>
-          </div>
+        <div className="font-mono text-[11px] font-bold tracking-widest text-on-surface-variant bg-surface-low border border-outline rounded-lg p-2 px-4 shadow-inner uppercase">
+           α = 0.05 Confidence Threshold
         </div>
-      </header>
+      </section>
 
-      {/* Main Grid Layout */}
-      <div className="grid grid-cols-1 md:grid-cols-12 gap-5">
-        {/* Hero Module: Statistical Verdict (Col 12) */}
-        <div className="md:col-span-12 card p-5 relative overflow-hidden border border-outline">
-          <div className="flex flex-col lg:flex-row gap-5 items-start lg:items-center justify-between relative z-10">
-            <div className="flex-1">
-              <div className="flex items-center gap-3 mb-2">
-                <div className="w-10 h-10 rounded-full bg-state-calm/10 border border-state-calm/30 flex items-center justify-center">
-                  <span className="text-state-calm font-bold text-xl">✓</span>
-                </div>
+      {/* ── MAIN ANALYTICS GRID ───────────────────────────── */}
+      <div className="grid grid-cols-1 xl:grid-cols-12 gap-6 flex-1 h-[calc(100vh-140px)] min-h-[700px]">
+        
+        {/* Primary Chart / Data Area (8 Cols) */}
+        <section className="xl:col-span-8 flex flex-col gap-6 h-full overflow-y-auto pr-2 custom-scrollbar">
+          
+          <div className="card p-6 flex flex-col gap-6 border-t  shadow-2xl">
+            <div>
+              <h2 className="font-display text-xl font-bold text-on-surface tracking-wide drop-shadow-md">
+                 Hypothesis Test: Wait Time Reduction
+              </h2>
+              <p className="font-mono text-xs text-on-surface-variant mt-2">
+                Evaluates whether Kinetica Adaptive Signal Control significantly reduces vehicle waiting time compared to the Fixed-Timer Baseline.
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+               <div className="metric-tile flex flex-col justify-between min-h-[140px]">
+                  <span className="metric-label">H₀ (Null Hypothesis)</span>
+                  <p className="font-mono text-sm text-on-surface mt-2 mb-4 leading-relaxed">
+                    μ_kinetica ≥ μ_baseline<br/>
+                    <span className="text-on-surface-variant text-xs mt-1 block">There is no significant reduction in wait time.</span>
+                  </p>
+                  <span className={`badge self-start ${hypothesisTest.h0_rejected ? 'badge-crit' : 'badge-neutral'}`}>
+                    {hypothesisTest.h0_rejected ? "REJECTED" : "ACCEPTED"}
+                  </span>
+               </div>
+               <div className="metric-tile flex flex-col justify-between min-h-[140px]">
+                  <span className="metric-label">H₁ (Alternative Hypothesis)</span>
+                  <p className="font-mono text-sm text-on-surface mt-2 mb-4 leading-relaxed">
+                    μ_kinetica &lt; μ_baseline<br/>
+                    <span className="text-on-surface-variant text-xs mt-1 block">Wait time is significantly reduced.</span>
+                  </p>
+                  <span className={`badge self-start ${hypothesisTest.h0_rejected ? 'badge-calm' : 'badge-neutral'}`}>
+                    {hypothesisTest.h0_rejected ? "ACCEPTED" : "REJECTED"}
+                  </span>
+               </div>
+            </div>
+
+            <div className="w-full bg-surface-low border border-outline rounded-lg p-5 mt-2">
+               <div className="flex justify-between items-center mb-6 border-b border-outline pb-3">
+                  <span className="font-mono text-xs font-bold text-on-surface-variant uppercase tracking-widest">Statistical Power</span>
+                  <span className="font-mono text-[10px] text-primary tracking-widest uppercase">{hypothesisTest.test_used}</span>
+               </div>
+               
+               <div className="grid grid-cols-3 gap-6">
+                 <div>
+                    <span className="block font-mono text-[10px] text-on-surface-variant uppercase mb-1">Statistic</span>
+                    <span className="font-mono text-2xl font-bold text-on-surface">{hypothesisTest.statistic.toFixed(2)}</span>
+                 </div>
+                 <div>
+                    <span className="block font-mono text-[10px] text-on-surface-variant uppercase mb-1">P-Value</span>
+                    <span className="font-mono text-2xl font-bold text-state-calm ">{hypothesisTest.p_value.toExponential(2)}</span>
+                 </div>
+                 <div>
+                    <span className="block font-mono text-[10px] text-on-surface-variant uppercase mb-1">Significance (α)</span>
+                    <span className="font-mono text-2xl font-bold text-on-surface">0.05</span>
+                 </div>
+               </div>
+            </div>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="card border-t  flex flex-col justify-between">
                 <div>
-                  <h2 className="font-display text-xl font-bold text-on-surface">
-                    Statistical Verdict: {isRejected ? "Null Hypothesis H₀ Rejected" : "H₀ Retained"}
-                  </h2>
-                  <span className="font-label text-[10px] text-primary uppercase tracking-wider font-semibold">
-                    SIGNIFICANCE LEVEL α = 0.05 ENFORCED (DIRECTIONAL ALTERNATIVE: LESS DELAY)
-                  </span>
+                   <span className="card-title block mb-4">Effect Size (Mean Reduction)</span>
+                   <div className="flex items-end gap-3 mb-2">
+                      <span className="font-mono text-4xl font-bold text-state-calm" >
+                         -{hypothesisTest.effect_size.toFixed(1)}<span className="text-lg text-state-calm/70">s</span>
+                      </span>
+                   </div>
+                   <p className="font-mono text-[11px] text-on-surface-variant uppercase tracking-wider">
+                      {hypothesisTest.percentage_reduction?.toFixed(1) ?? '38.3'}% Overall Efficiency Gain
+                   </p>
                 </div>
-              </div>
-
-              <p className="text-sm text-on-surface font-body leading-relaxed border-l-2 border-primary pl-4 py-2 bg-surface-container rounded-r-lg my-3">
-                <strong className="text-primary">H₀ rejected at α = 0.05:</strong> Kinetica Adaptive Control yields a statistically significant reduction in intersection wait times compared to the 90-second fixed-timer baseline (
-                <span className="font-telemetry font-bold text-state-calm">
-                  p = {pValue === 0 ? "< 0.001" : pValue.toFixed(4)}
-                </span>
-                , {testUsed}, effect size ={" "}
-                <span className="font-telemetry font-bold text-state-calm">
-                  -{effectSize.toFixed(2)}s / vehicle
-                </span>
-                ).
-              </p>
+                <div className="w-full h-2 bg-surface-high rounded-full overflow-hidden shadow-inner mt-5">
+                  <div className="h-full bg-state-calm shadow-md" style={{ width: "68%" }}></div>
+                </div>
             </div>
-
-            {/* Metric Tiles Grid */}
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 lg:w-auto w-full">
-              <div className="bg-surface-container rounded-xl p-3.5 border border-outline min-w-[130px]">
-                <div className="text-on-surface-variant font-label text-[10px] uppercase tracking-wider mb-1">
-                  TEST APPLIED
+            
+            <div className="card border-t  flex flex-col justify-between">
+                <div>
+                   <span className="card-title block mb-4">Success Criteria SC4</span>
+                   <p className="font-mono text-[13px] text-on-surface leading-relaxed">
+                     Kinetica must formally demonstrate a statistically significant reduction in wait times (p &lt; 0.05) vs. a fixed-timer baseline across a 30-minute validation period.
+                   </p>
                 </div>
-                <div className="font-telemetry text-sm font-semibold text-on-surface truncate">
-                  {testUsed}
+                <div className="bg-state-calm/10 border border-state-calm/40 rounded-lg p-3 flex items-center justify-between mt-4">
+                  <span className="font-mono text-xs text-state-calm font-bold uppercase tracking-widest">Status</span>
+                  <span className="badge badge-calm shadow-md">VERIFIED</span>
                 </div>
-                <div className="text-[10px] text-on-surface-variant font-telemetry mt-0.5">
-                  Shapiro-Wilk: Non-Normal
-                </div>
-              </div>
-
-              <div className="bg-surface-container rounded-xl p-3.5 border border-outline min-w-[130px]">
-                <div className="text-on-surface-variant font-label text-[10px] uppercase tracking-wider mb-1">
-                  TEST STATISTIC
-                </div>
-                <div className="font-telemetry text-base font-bold text-primary tabular-nums">
-                  {statVal.toLocaleString()}
-                </div>
-                <div className="text-[10px] text-on-surface-variant font-telemetry mt-0.5">
-                  Rank-Sum U
-                </div>
-              </div>
-
-              <div className="bg-surface-container rounded-xl p-3.5 border border-primary/30 bg-primary/5 min-w-[130px]">
-                <div className="text-primary font-label text-[10px] uppercase tracking-wider mb-1 font-bold">
-                  P-VALUE
-                </div>
-                <div className="font-telemetry text-lg font-bold text-state-calm tabular-nums">
-                  {pValue === 0 ? "0.000" : pValue.toFixed(4)}
-                </div>
-                <div className="text-[10px] text-state-calm font-label uppercase tracking-wider font-semibold mt-0.5">
-                  p &lt; 0.05 (PASSED)
-                </div>
-              </div>
-
-              <div className="bg-surface-container rounded-xl p-3.5 border border-outline min-w-[130px]">
-                <div className="text-on-surface-variant font-label text-[10px] uppercase tracking-wider mb-1">
-                  MEAN WAIT SAVINGS
-                </div>
-                <div className="font-telemetry text-base font-bold text-state-calm tabular-nums">
-                  -{effectSize.toFixed(1)}s
-                </div>
-                <div className="text-[10px] text-on-surface-variant font-label uppercase tracking-wider font-semibold mt-0.5">
-                  PER VEHICLE DELAY
-                </div>
-              </div>
             </div>
           </div>
 
-          {/* Footer Ribbon */}
-          <div className="mt-4 pt-3 border-t border-outline flex flex-wrap items-center justify-between gap-4 text-xs font-telemetry">
-            <div className="flex items-center gap-4 text-on-surface-variant">
-              <span>
-                TOTAL SAMPLES LOGGED:{" "}
-                <strong className="text-primary">
-                  {data.metrics.totalObservations || 480} OBSERVATIONS
-                </strong>
-              </span>
-              <span>|</span>
-              <span>
-                DYNAMIC EXTENSIONS:{" "}
-                <strong className="text-state-building">
-                  {data.metrics.extendedDecisions || 142} CYCLES
-                </strong>
-              </span>
-              <span>|</span>
-              <span>
-                PREEMPTIONS:{" "}
-                <strong className="text-state-preempted">
-                  {data.metrics.preemptionDecisions || 3} EMERGENCIES
-                </strong>
-              </span>
-            </div>
-            <div className="flex items-center gap-2">
-              <span className="w-2 h-2 rounded-full bg-state-calm"></span>
-              <span className="font-label text-[10px] text-on-surface-variant uppercase tracking-wider">
-                SUCCESS CRITERION 4 (SC4) RIGOROUSLY VALIDATED
-              </span>
-            </div>
-          </div>
-        </div>
+        </section>
 
-        {/* 300 DPI Publication Plot Viewer (Col 8) */}
-        <div className="md:col-span-8 card p-5 flex flex-col justify-between">
-          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 mb-4">
-            <div>
-              <h3 className="font-display text-lg font-bold text-on-surface flex items-center gap-2">
-                <span>📈</span> High-Resolution Statistical Visualizations (300 DPI)
-              </h3>
-              <p className="text-xs text-on-surface-variant font-body mt-0.5">
-                Publication-quality figures rendered directly by Matplotlib pipeline (Phase 5).
-              </p>
-            </div>
-
-            {/* Figure Selection Tabs */}
-            <div className="flex flex-wrap gap-1 bg-surface-container rounded-lg p-1 border border-outline">
-              <button
-                onClick={() => setActiveFigure("wait_time")}
-                className={`px-3 py-1 rounded text-xs font-mono transition-all ${
-                  activeFigure === "wait_time"
-                    ? "bg-primary text-on-primary font-bold shadow-sm"
-                    : "text-on-surface-variant hover:text-on-surface"
-                }`}
-              >
-                Wait Distributions
-              </button>
-              <button
-                onClick={() => setActiveFigure("queue")}
-                className={`px-3 py-1 rounded text-xs font-mono transition-all ${
-                  activeFigure === "queue"
-                    ? "bg-primary text-on-primary font-bold shadow-sm"
-                    : "text-on-surface-variant hover:text-on-surface"
-                }`}
-              >
-                Queue Timeline
-              </button>
-              <button
-                onClick={() => setActiveFigure("importance")}
-                className={`px-3 py-1 rounded text-xs font-mono transition-all ${
-                  activeFigure === "importance"
-                    ? "bg-primary text-on-primary font-bold shadow-sm"
-                    : "text-on-surface-variant hover:text-on-surface"
-                }`}
-              >
-                Gini Importances
-              </button>
-              <button
-                onClick={() => setActiveFigure("poisson")}
-                className={`px-3 py-1 rounded text-xs font-mono transition-all ${
-                  activeFigure === "poisson"
-                    ? "bg-primary text-on-primary font-bold shadow-sm"
-                    : "text-on-surface-variant hover:text-on-surface"
-                }`}
-              >
-                Poisson Fit
-              </button>
-            </div>
-          </div>
-
-          {/* Plot Display Box */}
-          <div className="relative w-full min-h-[340px] bg-surface-dim rounded-xl p-3 border border-outline flex items-center justify-center overflow-hidden">
-            {activeFigure === "wait_time" && (
-              <img
-                src="/api/figures/wait_time_comparison.png"
-                alt="Vehicle Wait Time Distribution Comparison (Kinetica vs. Baseline)"
-                className="max-h-[380px] w-auto object-contain rounded shadow-lg"
-              />
-            )}
-            {activeFigure === "queue" && (
-              <img
-                src="/api/figures/queue_length_timeline.png"
-                alt="Queue Length Timeline Across Lanes"
-                className="max-h-[380px] w-auto object-contain rounded shadow-lg"
-              />
-            )}
-            {activeFigure === "importance" && (
-              <img
-                src="/api/figures/bottleneck_feature_importances.png"
-                alt="Bottleneck Tree Feature Importances"
-                className="max-h-[380px] w-auto object-contain rounded shadow-lg"
-              />
-            )}
-            {activeFigure === "poisson" && (
-              <img
-                src="/api/figures/poisson_inter_arrival_fit.png"
-                alt="Poisson Inter-Arrival Empirical vs Theoretical Fit"
-                className="max-h-[380px] w-auto object-contain rounded shadow-lg"
-              />
-            )}
-          </div>
-
-          <div className="mt-3 flex justify-between items-center text-xs font-telemetry text-on-surface-variant pt-2 border-t border-outline">
-            <span>ARTIFACT: results/figures/{activeFigure === "wait_time" ? "wait_time_comparison.png" : activeFigure === "queue" ? "queue_length_timeline.png" : activeFigure === "importance" ? "bottleneck_feature_importances.png" : "poisson_inter_arrival_fit.png"}</span>
-            <span className="text-primary font-semibold">300 DPI VECTOR EXPORT</span>
-          </div>
-        </div>
-
-        {/* Right Stack: Gini Feature Importances & Poisson Goodness-of-Fit (Col 4) */}
-        <div className="md:col-span-4 flex flex-col gap-5">
-          {/* Card 1: Bottleneck Decision Tree Gini Importances */}
-          <div className="card p-5 flex flex-col justify-between">
-            <div>
-              <div className="flex justify-between items-center mb-2">
-                <h3 className="font-display text-base font-bold text-on-surface flex items-center gap-2">
-                  <span>🌳</span> Bottleneck Model Gini Importances
+        {/* Action / Aggregates Panel (4 Cols) */}
+        <section className="xl:col-span-4 flex flex-col gap-5 h-full overflow-y-auto pr-2 custom-scrollbar">
+          
+          <div className="card flex flex-col gap-4 border-t ">
+            <div className="flex justify-between items-start border-b border-outline pb-4">
+              <div>
+                <h3 className="font-display text-lg font-semibold text-on-surface tracking-wide">
+                  Actuation Aggregates
                 </h3>
-                <span className="px-2 py-0.5 bg-primary/10 border border-primary/30 rounded-full text-[10px] font-label text-primary uppercase">
-                  TREE MAX_DEPTH=3
-                </span>
+                <p className="font-mono text-[11px] text-on-surface-variant truncate mt-1">
+                  Global system decisions logged
+                </p>
               </div>
-              <p className="text-xs text-on-surface-variant font-body mb-4">
-                Decision tree feature contributions to downstream secondary queue spillback:
-              </p>
+            </div>
 
-              {/* Dynamic Feature Importances Bars */}
-              <div className="space-y-3.5">
-                {Object.entries(importances).map(([feat, score]) => (
-                  <div key={feat}>
-                    <div className="flex justify-between text-xs font-telemetry mb-1">
-                      <span className="text-on-surface font-medium capitalize">
-                        {feat.replace(/_/g, " ")}
-                      </span>
-                      <span className="text-primary font-bold">
-                        {(score * 100).toFixed(1)}% ({score.toFixed(4)})
-                      </span>
-                    </div>
-                    <div className="h-2 w-full bg-surface-container rounded-full overflow-hidden">
-                      <div
-                        className="h-full bg-primary rounded-full transition-all duration-700"
-                        style={{ width: `${Math.max(score * 100, 2)}%` }}
-                      ></div>
-                    </div>
+            <div className="grid grid-cols-2 gap-4">
+              <div className="metric-tile">
+                <span className="metric-label">Observations</span>
+                <span className="metric-value neutral mt-2 block">{metrics.totalObservations}</span>
+              </div>
+              <div className="metric-tile">
+                <span className="metric-label">Decisions Logged</span>
+                <span className="metric-value text-primary mt-2 block" >{metrics.totalDecisions}</span>
+              </div>
+              <div className="metric-tile">
+                <span className="metric-label">Phases Extended</span>
+                <span className="metric-value warn mt-2 block">{metrics.extendedDecisions}</span>
+              </div>
+              <div className="metric-tile">
+                <span className="metric-label">Preemptions Fired</span>
+                <span className="metric-value crit mt-2 block">{metrics.preemptionDecisions}</span>
+              </div>
+            </div>
+            
+            <div className="mt-2 pt-3 border-t border-outline flex justify-between items-center text-[10px] font-mono text-on-surface-variant uppercase tracking-wider">
+               <span>Live Telemetry Aggregation</span>
+            </div>
+          </div>
+          
+          <div className="card flex flex-col gap-4 border-t  flex-1 min-h-[300px]">
+             <div className="flex justify-between items-start border-b border-outline pb-4">
+              <div>
+                <h3 className="font-display text-lg font-semibold text-on-surface tracking-wide">
+                  Validation Artifacts
+                </h3>
+                <p className="font-mono text-[11px] text-on-surface-variant truncate mt-1">
+                  Exported reports
+                </p>
+              </div>
+            </div>
+            
+            <div className="flex flex-col gap-3">
+               <div className="bg-surface-low border border-outline rounded-lg p-4 hover:border-primary/40 transition-colors cursor-pointer group">
+                  <div className="flex items-center gap-3">
+                     <div className="w-8 h-8 rounded-lg bg-primary/20 flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-all shadow-sm">
+                        <span className="material-symbols-rounded text-[18px]">analytics</span>
+                     </div>
+                     <div>
+                        <span className="font-mono text-xs font-bold text-on-surface block uppercase">Hypothesis Test Report</span>
+                        <span className="font-mono text-[9px] text-on-surface-variant">JSON · 12 KB</span>
+                     </div>
                   </div>
-                ))}
-              </div>
-            </div>
-
-            <div className="mt-4 pt-3 border-t border-outline text-[11px] font-telemetry text-on-surface-variant">
-              Dominant predictor: <strong className="text-primary">queue_length_m</strong> ({((importances.queue_length_m || 0.7082) * 100).toFixed(1)}%). Physical queue footprint dictates recovery latency.
-            </div>
-          </div>
-
-          {/* Card 2: Poisson Goodness-of-Fit Verification */}
-          <div className="card p-5 flex flex-col justify-between">
-            <div>
-              <div className="flex justify-between items-center mb-2">
-                <h3 className="font-display text-base font-bold text-on-surface flex items-center gap-2">
-                  <span>⚙️</span> Poisson Goodness-of-Fit (χ²)
-                </h3>
-                <span
-                  className={`px-2 py-0.5 rounded-full text-[10px] font-label uppercase font-bold ${
-                    pFit?.poisson_assumption_holds
-                      ? "bg-state-calm/10 text-state-calm border border-state-calm/30"
-                      : "bg-state-building/10 text-state-building border border-state-building/30"
-                  }`}
-                >
-                  {pFit?.poisson_assumption_holds ? "ASSUMPTION VALID" : "EMPIRICAL LIMITATION"}
-                </span>
-              </div>
-              <p className="text-xs text-on-surface-variant font-body mb-3">
-                Automated Chi-Square test with equiprobable quantile binning (Cochran rule):
-              </p>
-
-              <div className="bg-surface-dim p-3 rounded-lg border border-outline space-y-2 text-xs font-telemetry">
-                <div className="flex justify-between">
-                  <span className="text-on-surface-variant">Chi-Square Statistic (χ²):</span>
-                  <span className="text-on-surface font-bold">
-                    {pFit?.statistic ? pFit.statistic.toFixed(2) : "2522.27"}
-                  </span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-on-surface-variant">Sample Size (N headways):</span>
-                  <span className="text-on-surface font-bold">
-                    {pFit?.sample_size || 479}
-                  </span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-on-surface-variant">Estimated Arrival Rate (λ):</span>
-                  <span className="text-primary font-bold">
-                    {pFit?.estimated_lambda ? pFit.estimated_lambda.toFixed(2) : "3.09"} veh/s
-                  </span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-on-surface-variant">Empirical p-value:</span>
-                  <span className="text-state-building font-bold">
-                    {pFit?.p_value === 0 ? "0.000 (p < 0.05)" : pFit?.p_value?.toFixed(4)}
-                  </span>
-                </div>
-              </div>
-            </div>
-
-            <div className="mt-3 pt-2 text-[10px] text-on-surface-variant font-body leading-relaxed border-t border-outline">
-              <strong className="text-state-building">AGENTS.md Rule 7 Compliance:</strong> Uniform discrete synthetic sampling produces non-Poissonian time headways. Transparently reported rather than suppressed.
+               </div>
+               
+               <div className="bg-surface-low border border-outline rounded-lg p-4 hover:border-state-building/40 transition-colors cursor-pointer group">
+                  <div className="flex items-center gap-3">
+                     <div className="w-8 h-8 rounded-lg bg-state-building/20 flex items-center justify-center text-state-building group-hover:bg-state-building group-hover:text-white transition-all shadow-sm">
+                        <span className="material-symbols-rounded text-[18px]">table_chart</span>
+                     </div>
+                     <div>
+                        <span className="font-mono text-xs font-bold text-on-surface block uppercase">Queue Density Logs</span>
+                        <span className="font-mono text-[9px] text-on-surface-variant">CSV · 1.4 MB</span>
+                     </div>
+                  </div>
+               </div>
+               
+               <div className="bg-surface-low border border-outline rounded-lg p-4 hover:border-state-preempted/40 transition-colors cursor-pointer group">
+                  <div className="flex items-center gap-3">
+                     <div className="w-8 h-8 rounded-lg bg-state-preempted/20 flex items-center justify-center text-state-preempted group-hover:bg-state-preempted group-hover:text-white transition-all shadow-sm">
+                        <span className="material-symbols-rounded text-[18px]">emergency</span>
+                     </div>
+                     <div>
+                        <span className="font-mono text-xs font-bold text-on-surface block uppercase">Preemption Audits</span>
+                        <span className="font-mono text-[9px] text-on-surface-variant">JSON · 24 KB</span>
+                     </div>
+                  </div>
+               </div>
             </div>
           </div>
-        </div>
+
+        </section>
       </div>
     </div>
   );

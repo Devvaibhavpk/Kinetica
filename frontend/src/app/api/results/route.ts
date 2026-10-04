@@ -3,6 +3,32 @@ import fs from "fs";
 import path from "path";
 
 export async function GET() {
+  const backendUrl = process.env.KIN_BACKEND_URL || "http://127.0.0.1:8000";
+
+  // 1. First attempt: Query real-time FastAPI Backend
+  try {
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 1800);
+    const backendRes = await fetch(`${backendUrl}/api/results`, {
+      method: "GET",
+      headers: { "Accept": "application/json" },
+      signal: controller.signal,
+      cache: "no-store",
+    });
+    clearTimeout(timeoutId);
+
+    if (backendRes.ok) {
+      const data = await backendRes.json();
+      return NextResponse.json({
+        ...data,
+        _dataSource: "fastapi_live_gateway",
+      });
+    }
+  } catch {
+    // FastAPI gateway not running or timeout; fall through to filesystem fallback
+  }
+
+  // 2. Resilient Fallback: Read real simulation artifacts from local disk
   try {
     const rootDir = path.resolve(process.cwd(), "..");
     const resultsDir = path.join(rootDir, "results");
@@ -19,8 +45,8 @@ export async function GET() {
       }
     };
 
-    const decLogFull = readJson("dec_log.json");
-    const obsLogFull = readJson("obs_log.json");
+    const decLogFull = readJson("dec_log.json") || [];
+    const obsLogFull = readJson("obs_log.json") || [];
     const endToEndSummary = readJson("end_to_end_summary.json");
 
     const artifactsToCheck = [
@@ -77,7 +103,6 @@ export async function GET() {
       }
     }
 
-    // Sort into Max-Heap tree hierarchy
     const heapHierarchy = Object.values(defaultLanes).sort((a, b) => b.score - a.score);
 
     const data = {
@@ -105,6 +130,7 @@ export async function GET() {
           : 0,
       },
       recentDecisions: Array.isArray(decLogFull) ? decLogFull.slice(-15) : [],
+      _dataSource: "filesystem_fallback",
     };
 
     return NextResponse.json(data);
