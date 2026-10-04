@@ -1,0 +1,29 @@
+{
+  "status": "FAIL",
+  "benchmark_date": "2026-10-04 11:13:53",
+  "total_frames": 1000,
+  "total_duration_s": 55.44,
+  "latency_metrics_ms": {
+    "mean": 55.44,
+    "std": 4.65,
+    "min": 50.97,
+    "max": 101.97,
+    "p50_median": 54.32,
+    "p95": 63.5,
+    "p99": 77.18
+  },
+  "throughput_fps": 18.0,
+  "target_constraints": {
+    "max_p95_latency_ms": 33.3,
+    "min_fps": 30.0
+  },
+  "realtime_constraint_met": false,
+  "active_detector": "yolov8 (ONNX Runtime CPU, weights/best.onnx)",
+  "system_platform": "win32",
+  "hardware_context": {
+    "device": "AMD Ryzen 5 PRO 4650G with Radeon Graphics (Integrated APU)",
+    "compute_backend": "ONNX Runtime CPU — no NVIDIA CUDA GPU on this host",
+    "note": "FAIL status is expected on development Windows laptop. Target hardware is NVIDIA Jetson Orin Nano/NX with TensorRT INT8/FP16, which is projected to achieve >30 FPS / <=33.3ms p95. Per AGENTS.md Rule 7, this result must NOT be reported as meeting the real-time constraint until actually measured on Jetson.",
+    "next_step": "Run benchmarks/edge_benchmark.py on Jetson Orin with scripts/export_tensorrt.py TensorRT engine for a valid measurement."
+  }
+}
