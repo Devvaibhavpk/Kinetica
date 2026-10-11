@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useRef } from "react";
+import { updateVisionFeedState } from "../../lib/visionFeedStore";
 
 interface Detection {
   bbox: [number, number, number, number];
@@ -119,7 +120,43 @@ export default function VisionMonitorView() {
   const [streamDurationSec, setStreamDurationSec] = useState<number>(0);
 
   const videoRef = useRef<HTMLVideoElement | null>(null);
+  const fileUploadRef = useRef<HTMLInputElement | null>(null);
   const canvasCaptureRef = useRef<HTMLCanvasElement | null>(null);
+
+  const handleCctvVideoUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setStreamError(null);
+    const url = URL.createObjectURL(file);
+
+    if (videoRef.current) {
+      if (videoRef.current.srcObject) {
+        const stream = videoRef.current.srcObject as MediaStream;
+        stream.getTracks().forEach((track) => track.stop());
+        videoRef.current.srcObject = null;
+      }
+      videoRef.current.src = url;
+      videoRef.current.loop = true;
+      videoRef.current.play().catch((err) => {
+        console.warn("Video play error:", err);
+      });
+
+      setIsStreaming(true);
+      isStreamingRef.current = true;
+      setStreamSource("webcam");
+      updateVideoDisplaySize();
+
+      updateVisionFeedState({
+        videoUrl: url,
+        videoFileName: file.name,
+        streamSource: "upload",
+        isStreaming: true,
+      });
+
+      isProcessingFrameRef.current = false;
+      requestAnimationFrame(sendCurrentFrame);
+    }
+  };
   const wsRef = useRef<WebSocket | null>(null);
   const isProcessingFrameRef = useRef<boolean>(false);
   const isStreamingRef = useRef<boolean>(false);
@@ -523,6 +560,7 @@ export default function VisionMonitorView() {
     setTrackedVehicles([]);
     currentTracksRef.current = [];
     setFrameCount(0);
+    updateVisionFeedState({ isStreaming: false, streamSource: null });
   };
 
   return (
@@ -581,7 +619,7 @@ export default function VisionMonitorView() {
             }}
             className={`px-4 py-2 rounded-lg text-xs font-mono font-bold uppercase tracking-wider transition-all cursor-pointer flex items-center gap-2 ${
               activeTab === "array"
-                ? "bg-[#2c2f3a] text-on-surface border border-primary/30 shadow-sm"
+                ? "bg-surface-high text-on-surface border border-outline shadow-sm"
                 : "text-on-surface-variant hover:text-on-surface"
             }`}
           >
@@ -593,9 +631,9 @@ export default function VisionMonitorView() {
 
       {/* ── TAB 1: LIVE WEBCAM & YOUTUBE STREAMING (HERO) ───────────────────────────── */}
       {activeTab === "webcam" && (
-        <div className="grid grid-cols-1 xl:grid-cols-12 gap-4 flex-1 items-start">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 flex-1 items-start">
           {/* Live Video Viewport (8 Cols) */}
-          <div className="xl:col-span-8 card p-4 flex flex-col gap-3 shadow-xl">
+          <div className="lg:col-span-8 card p-4 flex flex-col gap-3 shadow-xl">
             {/* Viewport Header Bar */}
             <div className="flex justify-between items-center border-b border-outline pb-3 flex-wrap gap-2">
               <div className="flex items-center gap-3">
@@ -631,7 +669,7 @@ export default function VisionMonitorView() {
             </div>
 
             {/* Video Canvas Container with HUD Viewfinder */}
-            <div className="relative w-full h-[480px] bg-[var(--bg)] rounded-xl overflow-hidden border border-outline flex items-center justify-center">
+            <div className="relative w-full h-[480px] bg-surface-mid rounded-2xl overflow-hidden border border-outline flex items-center justify-center shadow-inner">
               {/* HUD Corner Viewfinder Reticles */}
               <div className="absolute top-3 left-3 w-4 h-4 border-l-2 border-t-2 border-[#00c97a]/60 pointer-events-none z-20"></div>
               <div className="absolute top-3 right-3 w-4 h-4 border-r-2 border-t-2 border-[#00c97a]/60 pointer-events-none z-20"></div>
@@ -699,74 +737,136 @@ export default function VisionMonitorView() {
 
               {/* High-Tech Full-Width Empty State Launch Cards */}
               {!isStreaming && (
-                <div className="flex flex-col justify-between items-center w-full h-full p-6 text-center z-10">
-                  <div className="flex flex-col items-center">
-                    <span className="font-mono text-[10px] bg-state-calm/15 text-state-calm px-3 py-1 rounded-full border border-state-calm-border font-bold uppercase tracking-widest inline-block mb-1.5">
+                <div className="flex flex-col justify-between items-center w-full h-full p-6 text-center z-10 relative">
+                  {/* Subtle Tech Radial Ambient Glow */}
+                  <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_40%,rgba(59,130,246,0.07),transparent_65%)] pointer-events-none" />
+
+                  <div className="flex flex-col items-center relative z-10">
+                    <span className="font-mono text-[10px] bg-primary/10 text-primary px-3 py-1 rounded-full border border-primary/25 font-bold uppercase tracking-widest inline-flex items-center gap-1.5 mb-2 shadow-sm">
+                      <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
                       Kinetica Computer Vision Subsystem
                     </span>
-                    <h3 className="text-xl font-bold text-on-surface tracking-tight">
+                    <h3 className="text-xl md:text-2xl font-bold text-on-surface tracking-tight">
                       Live Vehicle Inference & Priority Tracker
                     </h3>
                     <p className="font-mono text-xs text-on-surface-variant max-w-xl mx-auto mt-1 leading-relaxed">
-                      Stream high-definition traffic camera feeds or physical cameras into Python YOLOv8 in real-time.
+                      Select an input source below to stream traffic video into Python YOLOv8 in real-time.
                     </p>
                   </div>
 
-                  {/* Dual Launch Cards Filling Container */}
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 w-full max-w-2xl my-auto">
-                    {/* Card 1: YouTube Tab / Screen Share */}
+                  {/* Hidden CCTV File Input */}
+                  <input
+                    type="file"
+                    ref={fileUploadRef}
+                    onChange={handleCctvVideoUpload}
+                    accept="video/*"
+                    className="hidden"
+                  />
+
+                  {/* 3-Card Launch Grid Filling Container */}
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4 w-full max-w-4xl my-auto relative z-10">
+                    {/* Card 1: Upload CCTV Video File */}
                     <div
-                      onClick={startScreenShareStream}
-                      className="group bg-gradient-to-br from-[#ff4060]/10 via-[#161820] to-[#111318] hover:from-[#ff4060]/20 border border-state-crit-border hover:border-[#ff4060] p-5 rounded-2xl cursor-pointer transition-all duration-200 text-left flex flex-col justify-between shadow-xl hover:scale-[1.02]"
+                      onClick={() => fileUploadRef.current?.click()}
+                      className="group relative bg-surface hover:bg-surface-mid border-2 border-primary/30 hover:border-primary p-5 rounded-2xl cursor-pointer transition-all duration-200 text-left flex flex-col justify-between shadow-md hover:shadow-xl hover:-translate-y-1 overflow-hidden"
                     >
+                      <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-transparent to-transparent opacity-60 group-hover:opacity-100 transition-opacity pointer-events-none" />
                       <div>
                         <div className="flex justify-between items-start mb-3">
-                          <div className="w-11 h-11 rounded-xl bg-state-preempted/20 text-state-preempted flex items-center justify-center group-hover:scale-110 transition-transform shadow-inner">
-                            <span className="material-symbols-rounded text-2xl">screen_share</span>
+                          <div className="w-11 h-11 rounded-xl bg-primary/15 text-primary border border-primary/25 flex items-center justify-center group-hover:scale-110 group-hover:bg-primary group-hover:text-white transition-all shadow-sm">
+                            <span className="material-symbols-rounded text-2xl">upload_file</span>
                           </div>
-                          <span className="font-mono text-[9px] bg-state-preempted/20 text-state-preempted px-2.5 py-0.5 rounded-full font-bold uppercase tracking-wider">
-                            Recommended
+                          <span className="font-mono text-[9px] bg-primary/15 text-primary border border-primary/25 px-2 py-0.5 rounded-full font-bold uppercase tracking-wider">
+                            CCTV Upload
                           </span>
                         </div>
-                        <h4 className="text-base font-bold text-on-surface group-hover:text-state-preempted transition-colors">
+                        <h4 className="text-sm md:text-base font-bold text-on-surface group-hover:text-primary transition-colors">
+                          Upload CCTV Video
+                        </h4>
+                        <p className="text-xs text-on-surface-variant mt-1.5 leading-relaxed">
+                          Upload MP4/WebM traffic surveillance footage to stream into YOLO & feed Telemetry.
+                        </p>
+                        <div className="mt-3 flex items-center gap-1.5 text-[10px] font-mono text-on-surface-variant">
+                          <span className="w-1.5 h-1.5 rounded-full bg-primary" />
+                          <span>Local File • Instant Playback</span>
+                        </div>
+                      </div>
+
+                      <div className="mt-5 pt-3 border-t border-outline flex items-center justify-between text-xs font-mono font-bold text-primary">
+                        <span>Select Video File</span>
+                        <div className="w-6 h-6 rounded-lg bg-primary/10 border border-primary/20 flex items-center justify-center group-hover:bg-primary group-hover:text-white group-hover:translate-x-1 transition-all">
+                          <span className="material-symbols-rounded text-sm">arrow_forward</span>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Card 2: YouTube Tab / Screen Share */}
+                    <div
+                      onClick={startScreenShareStream}
+                      className="group relative bg-surface hover:bg-surface-mid border-2 border-state-preempted/30 hover:border-state-preempted p-5 rounded-2xl cursor-pointer transition-all duration-200 text-left flex flex-col justify-between shadow-md hover:shadow-xl hover:-translate-y-1 overflow-hidden"
+                    >
+                      <div className="absolute inset-0 bg-gradient-to-br from-state-preempted/10 via-transparent to-transparent opacity-60 group-hover:opacity-100 transition-opacity pointer-events-none" />
+                      <div>
+                        <div className="flex justify-between items-start mb-3">
+                          <div className="w-11 h-11 rounded-xl bg-state-preempted/15 text-state-preempted border border-state-preempted/25 flex items-center justify-center group-hover:scale-110 group-hover:bg-state-preempted group-hover:text-white transition-all shadow-sm">
+                            <span className="material-symbols-rounded text-2xl">screen_share</span>
+                          </div>
+                          <span className="font-mono text-[9px] bg-state-preempted/15 text-state-preempted border border-state-preempted/25 px-2 py-0.5 rounded-full font-bold uppercase tracking-wider">
+                            Tab Stream
+                          </span>
+                        </div>
+                        <h4 className="text-sm md:text-base font-bold text-on-surface group-hover:text-state-preempted transition-colors">
                           Share YouTube Tab
                         </h4>
-                        <p className="font-mono text-xs text-on-surface-variant mt-1.5 leading-relaxed">
-                          Stream 1080p/4K YouTube traffic footage, OMR CCTV, or drone videos directly into YOLO.
+                        <p className="text-xs text-on-surface-variant mt-1.5 leading-relaxed">
+                          Stream live 1080p YouTube traffic feeds or drone clips directly into YOLO.
                         </p>
+                        <div className="mt-3 flex items-center gap-1.5 text-[10px] font-mono text-on-surface-variant">
+                          <span className="w-1.5 h-1.5 rounded-full bg-state-preempted" />
+                          <span>Browser Tab • 60 FPS</span>
+                        </div>
                       </div>
 
                       <div className="mt-5 pt-3 border-t border-outline flex items-center justify-between text-xs font-mono font-bold text-state-preempted">
                         <span>Launch Tab Stream</span>
-                        <span className="material-symbols-rounded text-base group-hover:translate-x-1 transition-transform">arrow_forward</span>
+                        <div className="w-6 h-6 rounded-lg bg-state-preempted/10 border border-state-preempted/20 flex items-center justify-center group-hover:bg-state-preempted group-hover:text-white group-hover:translate-x-1 transition-all">
+                          <span className="material-symbols-rounded text-sm">arrow_forward</span>
+                        </div>
                       </div>
                     </div>
 
-                    {/* Card 2: Physical Webcam */}
+                    {/* Card 3: Physical Webcam */}
                     <div
                       onClick={startWebcamStream}
-                      className="group bg-gradient-to-br from-[#00c97a]/10 via-[#161820] to-[#111318] hover:from-[#00c97a]/20 border border-state-calm-border hover:border-[#00c97a] p-5 rounded-2xl cursor-pointer transition-all duration-200 text-left flex flex-col justify-between shadow-xl hover:scale-[1.02]"
+                      className="group relative bg-surface hover:bg-surface-mid border-2 border-state-calm/30 hover:border-state-calm p-5 rounded-2xl cursor-pointer transition-all duration-200 text-left flex flex-col justify-between shadow-md hover:shadow-xl hover:-translate-y-1 overflow-hidden"
                     >
+                      <div className="absolute inset-0 bg-gradient-to-br from-state-calm/10 via-transparent to-transparent opacity-60 group-hover:opacity-100 transition-opacity pointer-events-none" />
                       <div>
                         <div className="flex justify-between items-start mb-3">
-                          <div className="w-11 h-11 rounded-xl bg-state-calm/20 text-state-calm flex items-center justify-center group-hover:scale-110 transition-transform shadow-inner">
+                          <div className="w-11 h-11 rounded-xl bg-state-calm/15 text-state-calm border border-state-calm-border flex items-center justify-center group-hover:scale-110 group-hover:bg-state-calm group-hover:text-white transition-all shadow-sm">
                             <span className="material-symbols-rounded text-2xl">videocam</span>
                           </div>
-                          <span className="font-mono text-[9px] bg-state-calm/20 text-state-calm px-2.5 py-0.5 rounded-full font-bold uppercase tracking-wider">
+                          <span className="font-mono text-[9px] bg-state-calm/15 text-state-calm border border-state-calm-border px-2 py-0.5 rounded-full font-bold uppercase tracking-wider">
                             Hardware
                           </span>
                         </div>
-                        <h4 className="text-base font-bold text-on-surface group-hover:text-state-calm transition-colors">
-                          Start Physical Webcam
+                        <h4 className="text-sm md:text-base font-bold text-on-surface group-hover:text-state-calm transition-colors">
+                          Physical Webcam
                         </h4>
-                        <p className="font-mono text-xs text-on-surface-variant mt-1.5 leading-relaxed">
-                          Use your laptop camera or external USB camera feed for live edge vehicle recognition.
+                        <p className="text-xs text-on-surface-variant mt-1.5 leading-relaxed">
+                          Use physical USB camera or laptop web camera for live vehicle recognition.
                         </p>
+                        <div className="mt-3 flex items-center gap-1.5 text-[10px] font-mono text-on-surface-variant">
+                          <span className="w-1.5 h-1.5 rounded-full bg-state-calm" />
+                          <span>Direct Camera • USB / Built-in</span>
+                        </div>
                       </div>
 
                       <div className="mt-5 pt-3 border-t border-outline flex items-center justify-between text-xs font-mono font-bold text-state-calm">
                         <span>Start Camera Feed</span>
-                        <span className="material-symbols-rounded text-base group-hover:translate-x-1 transition-transform">arrow_forward</span>
+                        <div className="w-6 h-6 rounded-lg bg-state-calm/10 border border-state-calm-border flex items-center justify-center group-hover:bg-state-calm group-hover:text-white group-hover:translate-x-1 transition-all">
+                          <span className="material-symbols-rounded text-sm">arrow_forward</span>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -787,7 +887,7 @@ export default function VisionMonitorView() {
           </div>
 
           {/* Control & Stream Telemetry Panel (4 Cols) */}
-          <div className="xl:col-span-4 flex flex-col gap-4">
+          <div className="lg:col-span-4 flex flex-col gap-4">
             {/* Stream Action Controls Card */}
             <div className="card p-4 flex flex-col gap-3.5 shadow-sm">
               <span className="font-mono text-xs font-bold text-on-surface uppercase tracking-wider flex items-center gap-2">
@@ -806,6 +906,14 @@ export default function VisionMonitorView() {
               ) : (
                 <div className="space-y-2">
                   <button
+                    onClick={() => fileUploadRef.current?.click()}
+                    className="w-full py-2.5 bg-primary hover:bg-blue-600 text-white font-mono text-xs font-bold rounded-xl uppercase tracking-wider transition-all cursor-pointer flex items-center justify-center gap-2 shadow-md"
+                  >
+                    <span className="material-symbols-rounded text-sm">upload_file</span>
+                    <span>Upload CCTV Video</span>
+                  </button>
+
+                  <button
                     onClick={startScreenShareStream}
                     className="w-full py-2.5 bg-state-preempted hover:bg-[#e03554] text-white font-mono text-xs font-bold rounded-xl uppercase tracking-wider transition-all cursor-pointer flex items-center justify-center gap-2 shadow-md"
                   >
@@ -815,7 +923,7 @@ export default function VisionMonitorView() {
 
                   <button
                     onClick={startWebcamStream}
-                    className="w-full py-2.5 bg-state-calm hover:bg-[#00b06b] text-[#0a0c10] font-mono text-xs font-bold rounded-xl uppercase tracking-wider transition-all cursor-pointer flex items-center justify-center gap-2 shadow-md"
+                    className="w-full py-2.5 bg-state-calm hover:bg-[#00b06b] text-white font-mono text-xs font-bold rounded-xl uppercase tracking-wider transition-all cursor-pointer flex items-center justify-center gap-2 shadow-md"
                   >
                     <span className="material-symbols-rounded text-sm">videocam</span>
                     <span>Start Physical Webcam</span>
@@ -914,7 +1022,7 @@ export default function VisionMonitorView() {
                 <button
                   onClick={resetCumulativeStats}
                   title="Reset Session Inflow Counters"
-                  className="p-1.5 bg-surface-low hover:bg-[#2c2f3a] text-on-surface-variant hover:text-on-surface rounded-lg border border-outline transition-colors cursor-pointer flex items-center gap-1 text-[10px] font-mono"
+                  className="p-1.5 bg-surface-low hover:bg-surface-high text-on-surface-variant hover:text-on-surface rounded-lg border border-outline transition-colors cursor-pointer flex items-center gap-1 text-[10px] font-mono"
                 >
                   <span className="material-symbols-rounded text-xs">rotate_left</span>
                   <span>Reset</span>
@@ -925,7 +1033,7 @@ export default function VisionMonitorView() {
               {telemetryMode === "cumulative" && (
                 <div className="flex flex-col gap-3 flex-1">
                   {/* Big Hero Inflow Readout */}
-                  <div className="bg-gradient-to-br from-[#00c97a]/15 via-[#111318] to-[#161820] p-3.5 rounded-xl border border-state-calm-border flex items-center justify-between shadow-inner">
+                  <div className="bg-gradient-to-br from-emerald-500/10 via-surface-mid to-surface p-4 rounded-xl border border-state-calm-border flex items-center justify-between shadow-sm">
                     <div>
                       <span className="text-[10px] font-mono font-bold text-state-calm uppercase tracking-wider block">
                         Total Unique Inflow (Start → End)

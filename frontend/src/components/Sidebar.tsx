@@ -104,7 +104,7 @@ export default function Sidebar({
         {/* Toggle Expand/Collapse Button */}
         <button
           onClick={onToggleExpand}
-          className={`rounded-md flex items-center justify-center text-on-surface-variant hover:text-on-surface hover:bg-[#2c2f3a] transition-colors duration-150 cursor-pointer ${
+          className={`rounded-md flex items-center justify-center text-on-surface-variant hover:text-on-surface hover:bg-surface-high transition-colors duration-150 cursor-pointer ${
             isExpanded ? "w-8 h-8" : "w-10 h-6 mt-0.5 text-xs bg-surface-mid border border-outline"
           }`}
           title={isExpanded ? "Collapse sidebar" : "Expand for more details"}
@@ -116,7 +116,7 @@ export default function Sidebar({
         </button>
       </div>
 
-      <div className="w-full h-px bg-[#2e3140] my-1 shrink-0" />
+      <div className="w-full h-px bg-outline my-1 shrink-0" />
 
       {/* Main Nav Items List */}
       <div className="flex-1 overflow-y-auto overflow-x-hidden flex flex-col gap-1 py-1 custom-scrollbar">
@@ -140,7 +140,7 @@ export default function Sidebar({
               } ${
                 isActive
                   ? "bg-state-calm/15 text-state-calm border border-state-calm-border shadow-[0_0_12px_rgba(0,201,122,0.15)]"
-                  : "text-on-surface-variant hover:bg-surface-mid hover:text-on-surface border border-transparent"
+                  : "text-on-surface-variant hover:bg-surface-high hover:text-on-surface border border-transparent"
               }`}
               title={!isExpanded ? m.label : undefined}
             >
@@ -166,7 +166,7 @@ export default function Sidebar({
                       className={`font-mono text-[8px] px-1.5 py-0.2 rounded font-bold uppercase tracking-wider ${
                         isActive
                           ? "bg-state-calm/20 text-state-calm border border-state-calm-border"
-                          : "bg-[#2c2f3a] text-on-surface-variant"
+                          : "bg-surface-high text-on-surface-variant"
                       }`}
                     >
                       {m.tag}
