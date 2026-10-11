@@ -6,11 +6,7 @@ import Image from "next/image";
 export type ModuleKey =
   | "overview"
   | "intersection"
-  | "corridor"
   | "vision"
-  | "analytics"
-  | "health"
-  | "emergency"
   | "settings";
 
 interface SidebarProps {
@@ -59,38 +55,6 @@ export default function Sidebar({
       category: "operations",
       tag: "YOLOv8",
       description: "Camera perception & homography spatial mapping",
-    },
-    {
-      key: "corridor",
-      icon: "route",
-      label: "Green Wave Router",
-      category: "operations",
-      tag: "ROUTING",
-      description: "Directed-graph multi-node corridor preemption",
-    },
-    {
-      key: "emergency",
-      icon: "emergency",
-      label: "Emergency Override",
-      category: "operations",
-      tag: "OVERRIDE",
-      description: "Ambulance & high-priority corridor preemption",
-    },
-    {
-      key: "analytics",
-      icon: "query_stats",
-      label: "Predictive Analytics",
-      category: "system",
-      tag: "SC4",
-      description: "Bottleneck forecasting & hypothesis tests",
-    },
-    {
-      key: "health",
-      icon: "speed",
-      label: "System Health",
-      category: "system",
-      tag: "O(log N)",
-      description: "Max-Heap benchmark & hardware telemetry",
     },
     {
       key: "settings",
@@ -224,61 +188,7 @@ export default function Sidebar({
         })}
       </div>
 
-      <div className="w-full h-px bg-[#2e3140] my-1 shrink-0" />
 
-      {/* Emergency Preemption Button */}
-      <div className="shrink-0 my-1">
-        {isExpanded && (
-          <div className="px-2 pt-1 pb-1">
-            <span className="font-mono text-[9px] font-semibold tracking-widest text-state-preempted uppercase flex items-center gap-1.5">
-              <span className="w-1.5 h-1.5 rounded-full bg-state-preempted animate-pulse"></span>
-              Priority Override
-            </span>
-          </div>
-        )}
-
-        <button
-          onClick={() => onSelectModule("emergency")}
-          className={`rounded-lg flex items-center cursor-pointer transition-all duration-150 relative group ${
-            isExpanded ? "w-full px-2.5 py-2.5 text-left gap-3" : "w-11 h-11 justify-center my-1"
-          } ${
-            activeModule === "emergency"
-              ? "bg-state-preempted/20 text-state-preempted border border-[#ff4060]/60 shadow-[0_0_16px_rgba(255,64,96,0.25)]"
-              : "bg-state-preempted/10 text-state-preempted border border-state-crit-border hover:bg-state-preempted/20"
-          }`}
-          title={!isExpanded ? "Emergency Override Controller" : undefined}
-        >
-          <span
-            className="material-symbols-rounded text-[20px] shrink-0 text-state-preempted"
-            style={{ animation: "pulse-icon 1.8s ease infinite" }}
-          >
-            warning
-          </span>
-
-          {isExpanded ? (
-            <div className="flex-1 min-w-0">
-              <div className="flex items-center justify-between gap-1">
-                <span className="text-xs font-bold text-state-preempted truncate uppercase tracking-tight">
-                  Emergency Override
-                </span>
-                <span className="font-mono text-[8px] px-1 py-0.2 rounded bg-state-preempted/20 text-state-preempted font-bold border border-state-crit-border uppercase animate-pulse">
-                  MAX-HEAP
-                </span>
-              </div>
-              <p className="font-mono text-[10px] text-state-preempted/80 truncate mt-0.5">
-                Instant priority & green wave preemption
-              </p>
-            </div>
-          ) : (
-            <span className="nav-tooltip absolute left-[calc(100%+12px)] top-1/2 -translate-y-1/2 bg-surface-mid border border-[#ff4060]/50 rounded-md px-3 py-1.5 font-sans text-xs font-medium text-state-preempted whitespace-nowrap pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-150 z-[300] shadow-xl">
-              <div className="font-bold">Emergency Override</div>
-              <div className="font-mono text-[9px] text-on-surface/80 mt-0.5">
-                Max-Heap priority signal override
-              </div>
-            </span>
-          )}
-        </button>
-      </div>
 
       {/* Expanded Footer / Status Card */}
       {isExpanded && (

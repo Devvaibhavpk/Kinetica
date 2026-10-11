@@ -5,6 +5,8 @@
   
   **AI-Driven, Graph-Based Intelligent Traffic Preemption & Green-Wave Coordination**
 
+  **Project Owners:** Vaibhav (23BDS1148) and Mithil Girish (23BDS1168)
+
 </div>
 
 <br>

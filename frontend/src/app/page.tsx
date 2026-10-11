@@ -7,10 +7,6 @@ import Topbar from "../components/Topbar";
 import OverviewView from "../components/views/OverviewView";
 import IntersectionDetailView from "../components/views/IntersectionDetailView";
 import VisionMonitorView from "../components/views/VisionMonitorView";
-import CorridorView from "../components/views/CorridorView";
-import AnalyticsView from "../components/views/AnalyticsView";
-import SystemHealthView from "../components/views/SystemHealthView";
-import EmergencyOverrideView from "../components/views/EmergencyOverrideView";
 import SettingsView from "../components/views/SettingsView";
 
 export default function Home() {
@@ -27,16 +23,8 @@ export default function Home() {
         return "Network Overview";
       case "intersection":
         return "Intersection Telemetry & Queues";
-      case "corridor":
-        return "Green Wave Corridor Routing";
       case "vision":
         return "Vision Perception Feed";
-      case "analytics":
-        return "Predictive Analytics & Validation";
-      case "health":
-        return "System Health & SLA Telemetry";
-      case "emergency":
-        return "Emergency Priority Override";
       case "settings":
         return "Simulation Controls & Settings";
       default:
@@ -50,16 +38,8 @@ export default function Home() {
         return <OverviewView />;
       case "intersection":
         return <IntersectionDetailView />;
-      case "corridor":
-        return <CorridorView />;
       case "vision":
         return <VisionMonitorView />;
-      case "analytics":
-        return <AnalyticsView />;
-      case "health":
-        return <SystemHealthView />;
-      case "emergency":
-        return <EmergencyOverrideView />;
       case "settings":
         return <SettingsView />;
       default:
