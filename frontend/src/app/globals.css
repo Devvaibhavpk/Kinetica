@@ -1,5 +1,21 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *, .dark, .dark *));
+
+@theme {
+  --color-bg: var(--bg);
+  --color-bg-dim: var(--bg-dim);
+  --color-surface: var(--surface);
+  --color-surface-low: var(--surface-low);
+  --color-surface-mid: var(--surface-mid);
+  --color-surface-high: var(--surface-high);
+  --color-surface-highest: var(--surface-highest);
+  --color-on-surface: var(--text-primary);
+  --color-on-surface-variant: var(--text-secondary);
+  --color-outline: var(--border);
+  --color-outline-variant: var(--border-faint);
+}
+
 /*
  * theme.css — Kinetica Control Room
  * Single source of truth for all design tokens and utility classes.
@@ -7,28 +23,29 @@
  * of whether Tailwind's JIT resolves the custom names.
  */
 
-
 /* ══════════════════════════════════════════════
    1. DESIGN TOKENS  (CSS Custom Properties)
    ══════════════════════════════════════════════ */
-:root {
-  /* Base surfaces — deep logistic dark (blue-tinted) */
-  --bg:                    #090B10;
-  --bg-dim:                #050608;
-  --surface:               #12151E;
-  --surface-low:           #0D1016;
-  --surface-mid:           #171B26;
-  --surface-high:          #1D2230;
-  --surface-highest:       #262C3D;
+:root,
+:root[data-theme="dark"],
+.dark {
+  /* Base surfaces — Apple High-End Charcoal Grey & Jet Black */
+  --bg:                    #0A0A0C; /* Deep Charcoal Void Backdrop */
+  --bg-dim:                #050506; /* Pitch Black */
+  --surface:               #141417; /* Apple Dark Charcoal Graphite */
+  --surface-low:           #0E0E11; /* Recessed Charcoal Container */
+  --surface-mid:           #1A1A1E; /* Elevated Charcoal Card */
+  --surface-high:          #24242A; /* Interactive Chip / Stepper Surface */
+  --surface-highest:       #2E2E36; /* Popover / Highlight Surface */
 
-  /* Text */
-  --text-primary:          #F8FAFC;
-  --text-secondary:        #94A3B8;
-  --text-faint:            #475569;
+  /* Text — Neutral High-Contrast Silver & Crisp White */
+  --text-primary:          #F4F4F6; /* Crisp White */
+  --text-secondary:        #A1A1AA; /* Zinc-400 Neutral Silver */
+  --text-faint:            #71717A; /* Zinc-500 Muted Charcoal */
 
-  /* Borders */
-  --border:                #1E293B;
-  --border-faint:          #0F172A;
+  /* Borders — Neutral Subtle Charcoal */
+  --border:                #26262B; /* Zinc-800 Charcoal Edge */
+  --border-faint:          #19191D; /* Whisper Charcoal Divider */
 
   /* Brand */
   --primary:               #3B82F6; /* Vibrant Blue */
@@ -369,14 +386,40 @@ html, body {
 .text-primary                { color: var(--primary) !important; }
 
 :root[data-theme="light"] .card,
-:root[data-theme="light"] .bg-surface {
+:root[data-theme="light"] .bg-surface,
+:root[data-theme="light"] [class*="bg-surface/"] {
   box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.07), 0 1px 2px -1px rgba(0, 0, 0, 0.05);
+}
+
+:root:not([data-theme="light"]) .card,
+:root:not([data-theme="light"]) .bg-surface,
+:root:not([data-theme="light"]) [class*="bg-surface/"],
+:root[data-theme="dark"] .card,
+:root[data-theme="dark"] .bg-surface,
+:root[data-theme="dark"] [class*="bg-surface/"],
+.dark .card,
+.dark .bg-surface,
+.dark [class*="bg-surface/"] {
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.065),
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.09),
+    0 8px 26px -4px rgba(0, 0, 0, 0.65),
+    0 2px 6px -1px rgba(0, 0, 0, 0.45);
 }
 
 :root[data-theme="light"] .kinetica-sidebar {
   background: var(--surface) !important;
   border-right-color: var(--border) !important;
   box-shadow: 2px 0 16px rgba(0, 0, 0, 0.06) !important;
+}
+
+:root:not([data-theme="light"]) .kinetica-sidebar,
+:root[data-theme="dark"] .kinetica-sidebar,
+.dark .kinetica-sidebar {
+  background: var(--surface) !important;
+  box-shadow:
+    1px 0 0 0 rgba(255, 255, 255, 0.06),
+    4px 0 24px rgba(0, 0, 0, 0.5) !important;
 }
 
 /* ══════════════════════════════════════════════
@@ -588,32 +631,32 @@ button:active { transform: scale(0.97); }
    14. LEAFLET MAP CUSTOM DARK THEME
    ══════════════════════════════════════════════ */
 .leaflet-container {
-  background-color: #0c0e12 !important;
+  background-color: #0A0A0C !important;
   font-family: 'Inter', system-ui, sans-serif !important;
 }
 
 .leaflet-custom-tooltip {
-  background-color: #111318 !important;
-  border: 1px solid #2e3140 !important;
-  color: #e8eaf0 !important;
+  background-color: #141417 !important;
+  border: 1px solid #26262B !important;
+  color: #F4F4F6 !important;
   font-family: 'Inter', system-ui, sans-serif !important;
   font-size: 10px !important;
   padding: 4px 8px !important;
   border-radius: 6px !important;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.6) !important;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.7) !important;
 }
 
 .leaflet-custom-tooltip::before {
-  border-top-color: #2e3140 !important;
+  border-top-color: #26262B !important;
 }
 
 .leaflet-node-popup {
-  background-color: #111318 !important;
-  border: 1px solid #2e3140 !important;
-  color: #e8eaf0 !important;
+  background-color: #141417 !important;
+  border: 1px solid #26262B !important;
+  color: #F4F4F6 !important;
   border-radius: 8px !important;
   padding: 2px !important;
-  box-shadow: 0 4px 24px rgba(0,0,0,0.8) !important;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.85) !important;
 }
 
 .custom-leaflet-marker {

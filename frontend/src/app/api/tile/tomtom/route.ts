@@ -6,7 +6,14 @@ export async function GET(req: NextRequest) {
     const z = searchParams.get("z");
     const x = searchParams.get("x");
     const y = searchParams.get("y");
-    const type = searchParams.get("type") || "basic"; // "basic" or "flow"
+    const type = searchParams.get("type") || "basic"; // "basic" or "flow" or "status"
+
+    if (type === "status") {
+      return NextResponse.json({
+        configured: Boolean(process.env.TOMTOM_API_KEY),
+        status: process.env.TOMTOM_API_KEY ? "active" : "missing",
+      });
+    }
 
     if (!z || !x || !y) {
       return new NextResponse("Missing tile coordinates (z, x, y)", { status: 400 });
@@ -44,7 +51,8 @@ export async function GET(req: NextRequest) {
         "Cache-Control": type === "flow" ? "public, max-age=15" : "public, max-age=86400, immutable",
       },
     });
-  } catch (err: any) {
-    return new NextResponse(err.message || "Tile fetch failure", { status: 500 });
+  } catch (err: unknown) {
+    const message = err instanceof Error ? err.message : "Tile fetch failure";
+    return new NextResponse(message, { status: 500 });
   }
 }

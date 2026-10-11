@@ -75,8 +75,6 @@ export async function POST(req: NextRequest) {
       pythonBin = venvPythonWin;
     } else if (fs.existsSync(venvPythonPath)) {
       pythonBin = venvPythonPath;
-    } else if (fs.existsSync("C:\\Python312\\python.exe")) {
-      pythonBin = "C:\\Python312\\python.exe";
     }
 
     return new Promise<NextResponse>((resolve) => {
@@ -131,7 +129,8 @@ export async function POST(req: NextRequest) {
         }
       });
     });
-  } catch (error: any) {
-    return NextResponse.json({ error: error.message || "Internal server error" }, { status: 500 });
+  } catch (error: unknown) {
+    const message = error instanceof Error ? error.message : "Internal server error";
+    return NextResponse.json({ error: message }, { status: 500 });
   }
 }

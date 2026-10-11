@@ -12,19 +12,19 @@ export default function Topbar({
   isSidebarExpanded = false,
 }: TopbarProps) {
   const [time, setTime] = useState<string>("");
-  const [theme, setTheme] = useState<"dark" | "light">("dark");
-
-  // Initialize theme on mount
-  useEffect(() => {
-    const savedTheme = localStorage.getItem("theme") as "dark" | "light" | null;
-    if (savedTheme) {
-      setTheme(savedTheme);
-      document.documentElement.setAttribute("data-theme", savedTheme);
-    } else {
-      // Default to dark
-      document.documentElement.setAttribute("data-theme", "dark");
+  const [theme, setTheme] = useState<"dark" | "light">(() => {
+    if (typeof window !== "undefined") {
+      const saved = localStorage.getItem("theme") as "dark" | "light" | null;
+      if (saved) return saved;
     }
-  }, []);
+    return "dark";
+  });
+
+  // Sync theme with document element on mount and theme change
+  useEffect(() => {
+    document.documentElement.setAttribute("data-theme", theme);
+    document.documentElement.classList.toggle("dark", theme === "dark");
+  }, [theme]);
 
   // Clock
   useEffect(() => {
@@ -42,12 +42,17 @@ export default function Topbar({
 
   const toggleTheme = (e: React.MouseEvent) => {
     const newTheme = theme === "dark" ? "light" : "dark";
+    type DocumentWithViewTransition = Document & {
+      startViewTransition?: (updateCallback: () => void) => { ready: Promise<void> };
+    };
+    const docWithTransition = document as DocumentWithViewTransition;
 
     // View Transitions API (Supported in Chrome/Edge)
-    if (!(document as any).startViewTransition) {
+    if (!docWithTransition.startViewTransition) {
       // Fallback for Firefox/Safari if unsupported
       setTheme(newTheme);
       document.documentElement.setAttribute("data-theme", newTheme);
+      document.documentElement.classList.toggle("dark", newTheme === "dark");
       localStorage.setItem("theme", newTheme);
       return;
     }
@@ -61,9 +66,10 @@ export default function Topbar({
       Math.max(y, window.innerHeight - y)
     );
 
-    const transition = (document as any).startViewTransition(() => {
+    const transition = docWithTransition.startViewTransition(() => {
       setTheme(newTheme);
       document.documentElement.setAttribute("data-theme", newTheme);
+      document.documentElement.classList.toggle("dark", newTheme === "dark");
       localStorage.setItem("theme", newTheme);
     });
 

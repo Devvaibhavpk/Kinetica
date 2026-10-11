@@ -26,7 +26,7 @@ export default function Home() {
       case "vision":
         return "Vision Perception Feed";
       case "settings":
-        return "Simulation Controls & Settings";
+        return "System Settings & Calibration";
       default:
         return "Kinetica Control Room";
     }

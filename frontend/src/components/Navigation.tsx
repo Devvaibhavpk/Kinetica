@@ -24,7 +24,7 @@ export default function Navigation({ activeView, onSelectView }: NavigationProps
     { id: "corridor", label: "Green Wave Corridor" },
     { id: "analytics", label: "Analytics & Validation" },
     { id: "health", label: "System Health" },
-    { id: "settings", label: "Scenario Controls" },
+    { id: "settings", label: "System Settings" },
   ];
 
   return (

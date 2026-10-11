@@ -59,10 +59,10 @@ export default function Sidebar({
     {
       key: "settings",
       icon: "tune",
-      label: "Control & Scenarios",
+      label: "System Settings",
       category: "system",
-      tag: "CFG",
-      description: "Trigger synthetic runs & parameter config",
+      tag: "CONFIG",
+      description: "Signal timing, preemption & edge camera configuration",
     },
   ];
 

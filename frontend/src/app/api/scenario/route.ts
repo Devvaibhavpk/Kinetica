@@ -49,8 +49,6 @@ export async function POST(req: NextRequest) {
       pythonBin = venvPythonWin;
     } else if (fs.existsSync(venvPythonPath)) {
       pythonBin = venvPythonPath;
-    } else if (fs.existsSync("C:\\Python312\\python.exe")) {
-      pythonBin = "C:\\Python312\\python.exe";
     }
 
     return new Promise<NextResponse>((resolve) => {
@@ -109,9 +107,10 @@ export async function POST(req: NextRequest) {
         }
       });
     });
-  } catch (err: any) {
+  } catch (err: unknown) {
+    const details = err instanceof Error ? err.message : String(err);
     return NextResponse.json(
-      { error: "Internal server error triggering scenario", details: err.message },
+      { error: "Internal server error triggering scenario", details },
       { status: 500 }
     );
   }
