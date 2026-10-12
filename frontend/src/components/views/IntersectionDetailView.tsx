@@ -553,8 +553,6 @@ export default function IntersectionDetailView() {
   // Top-Down Canvas Ref
   const topdownCanvasRef = useRef<HTMLCanvasElement | null>(null);
 
-  // Cumulative delay saved telemetry (vehicle-seconds)
-  const [cumulativeDelaySaved, setCumulativeDelaySaved] = useState<number>(142.8);
 
   // 4 Directional Approaches
   const [approaches, setApproaches] = useState<Record<DirectionKey, ApproachData>>({
@@ -722,15 +720,33 @@ export default function IntersectionDetailView() {
     setPhaseSecondsLeft(24);
     setTotalAllocatedGreen(24);
     setIsPlaying(true);
-    setCumulativeDelaySaved(142.8);
     vehiclesRef.current = createInitialFleet(defaultApps);
   }, []);
 
-  // Subscribe to Vision Feed Store for Emergency Preemption Events
+  // Subscribe to Vision Feed Store for Emergency Preemption Events & Live Video Queue Sync
   useEffect(() => {
     const unsubscribe = subscribeVisionFeed((state) => {
       if (state.hasEmergency && state.emergencyDirection) {
         triggerEmergency(state.emergencyDirection);
+      }
+      if (
+        state.isStreaming &&
+        typeof state.liveDetectionsCount === "number" &&
+        state.liveDetectionsCount > 0
+      ) {
+        setApproaches((prev) => {
+          const targetDir: DirectionKey = state.emergencyDirection || "N";
+          const count = Math.min(22, Math.max(1, state.liveDetectionsCount!));
+          if (prev[targetDir].vehicles === count) return prev;
+          return {
+            ...prev,
+            [targetDir]: {
+              ...prev[targetDir],
+              vehicles: count,
+              queueMeters: count * 4.0,
+            },
+          };
+        });
       }
     });
     return unsubscribe;
@@ -822,10 +838,6 @@ export default function IntersectionDetailView() {
               }
               return appMap;
             });
-            // Increment cumulative delay saved in Kinetica mode
-            if (controllerMode === "kinetica") {
-              setCumulativeDelaySaved((s) => +(s + 0.9).toFixed(1));
-            }
           }
           return prev - 1;
         }
@@ -1787,105 +1799,11 @@ export default function IntersectionDetailView() {
         </div>
       </section>
 
-      {/* ── 3. MAIN SPLIT: ACTUATION ENGINE & TOP-DOWN SPATIAL SIMULATOR ────── */}
+      {/* ── 3. MAIN SPLIT: APPROACH QUEUE DEPTH & EXPANDED TOP-DOWN SPATIAL SIMULATOR ────── */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 items-stretch">
-        {/* ── LEFT: ACTUATION DECISION ENGINE & LIVE QUEUE DEPTH ANALYTICS (6 Cols) ── */}
-        <div className="lg:col-span-6 flex flex-col gap-5">
-          {/* Card 1: Actuation Decision Engine & Delay Savings */}
-          <section className="bg-surface/70 dark:bg-surface/80 backdrop-blur-3xl rounded-3xl p-5 shadow-sm dark:shadow-[0_0_0_1px_rgba(255,255,255,0.07),0_1px_0_0_rgba(255,255,255,0.10)_inset,0_10px_30px_-6px_rgba(0,0,0,0.65),0_2px_6px_-1px_rgba(0,0,0,0.45)] flex flex-col gap-4">
-            <div className="flex justify-between items-center pb-1">
-              <div className="flex items-center gap-2">
-                <span className="material-symbols-rounded text-primary text-base">psychology</span>
-                <span className="font-display text-xs font-semibold text-on-surface uppercase tracking-wider">
-                  Actuation Decision Engine
-                </span>
-              </div>
-              <span className="px-2.5 py-0.5 rounded-full text-[10px] font-medium bg-primary/10 text-primary dark:shadow-[0_0_0_1px_rgba(59,130,246,0.25),inset_0_1px_0_0_rgba(255,255,255,0.1)]">
-                Poisson Dynamic Model
-              </span>
-            </div>
-
-            {/* Hero Efficiency KPI Metrics Row */}
-            <div className="grid grid-cols-3 gap-3">
-              <div className="p-3.5 rounded-2xl bg-surface-mid/40 dark:bg-surface-mid/60 shadow-xs dark:shadow-[0_0_0_1px_rgba(255,255,255,0.05),0_1px_0_0_rgba(255,255,255,0.07)_inset,0_4px_14px_rgba(0,0,0,0.4)]">
-                <span className="text-[10px] text-on-surface-variant font-medium block">
-                  Delay Reduction
-                </span>
-                <span className="text-lg font-bold text-state-calm font-telemetry block mt-0.5">
-                  −38.4%
-                </span>
-                <span className="text-[9px] text-on-surface-variant font-body block mt-0.5">
-                  vs Fixed Baseline
-                </span>
-              </div>
-
-              <div className="p-3.5 rounded-2xl bg-surface-mid/40 dark:bg-surface-mid/60 shadow-xs dark:shadow-[0_0_0_1px_rgba(255,255,255,0.05),0_1px_0_0_rgba(255,255,255,0.07)_inset,0_4px_14px_rgba(0,0,0,0.4)]">
-                <span className="text-[10px] text-on-surface-variant font-medium block">
-                  Cumulative Delay Saved
-                </span>
-                <span className="text-lg font-bold text-on-surface font-telemetry block mt-0.5">
-                  {cumulativeDelaySaved}s
-                </span>
-                <span className="text-[9px] text-state-calm font-body block mt-0.5">
-                  Vehicle-Seconds
-                </span>
-              </div>
-
-              <div className="p-3.5 rounded-2xl bg-surface-mid/40 dark:bg-surface-mid/60 shadow-xs dark:shadow-[0_0_0_1px_rgba(255,255,255,0.05),0_1px_0_0_rgba(255,255,255,0.07)_inset,0_4px_14px_rgba(0,0,0,0.4)]">
-                <span className="text-[10px] text-on-surface-variant font-medium block">
-                  Saturation Capacity
-                </span>
-                <span className="text-lg font-bold text-on-surface font-telemetry block mt-0.5">
-                  1,900
-                </span>
-                <span className="text-[9px] text-on-surface-variant font-body block mt-0.5">
-                  veh/hr/lane
-                </span>
-              </div>
-            </div>
-
-            {/* Dynamic vs Fixed Timeline Comparison */}
-            <div className="p-4 rounded-2xl bg-surface-mid/30 dark:bg-surface-mid/50 shadow-xs dark:shadow-[0_0_0_1px_rgba(255,255,255,0.05),0_1px_0_0_rgba(255,255,255,0.06)_inset,0_4px_14px_rgba(0,0,0,0.35)] flex flex-col gap-2.5">
-              <div className="flex justify-between items-center text-xs">
-                <span className="font-medium text-on-surface">Kinetica Dynamic Green: {totalAllocatedGreen}s</span>
-                <span className="font-telemetry text-state-calm font-semibold">Demand-Responsive</span>
-              </div>
-              <div className="w-full h-2 bg-surface-high/50 rounded-full overflow-hidden">
-                <div
-                  className="h-full bg-state-calm rounded-full transition-all duration-500"
-                  style={{ width: `${Math.min(100, (totalAllocatedGreen / 32) * 100)}%` }}
-                />
-              </div>
-
-              <div className="flex justify-between items-center text-xs mt-1">
-                <span className="font-medium text-on-surface-variant">Fixed Baseline Window: 20s</span>
-                <span className="font-telemetry text-state-building font-semibold">Static Round-Robin</span>
-              </div>
-              <div className="w-full h-2 bg-surface-high/50 rounded-full overflow-hidden">
-                <div
-                  className="h-full bg-state-building/70 rounded-full transition-all duration-500"
-                  style={{ width: `${(20 / 32) * 100}%` }}
-                />
-              </div>
-            </div>
-
-            {/* Mathematical Actuation Decision Formula Callout */}
-            <div className="p-3.5 rounded-2xl bg-primary/8 dark:bg-primary/12 shadow-xs dark:shadow-[0_0_0_1px_rgba(59,130,246,0.22),0_1px_0_0_rgba(59,130,246,0.2)_inset,0_4px_14px_rgba(0,0,0,0.35)] text-xs font-mono text-on-surface-variant leading-relaxed">
-              <div className="text-[10px] font-bold text-primary uppercase tracking-wider mb-1 flex items-center gap-1.5">
-                <span className="material-symbols-rounded text-xs">functions</span>
-                <span>Active Decision Formula</span>
-              </div>
-              <div className="text-[11px] text-on-surface font-semibold">
-                G = max(G_min, min(G_max, 10 + ⌈q · 1.4⌉)) = {totalAllocatedGreen}s
-              </div>
-              <div className="text-[10px] text-on-surface-variant mt-0.5">
-                Target Approach: {activeApproach.name} ({activeApproach.vehicles} queued vehicles)
-              </div>
-            </div>
-          </section>
-
-          {/* Card 2: 4-Way Approach Queue Depth & Saturation Trajectory */}
-          <section className="bg-surface/70 dark:bg-surface/80 backdrop-blur-3xl rounded-3xl p-5 shadow-sm dark:shadow-[0_0_0_1px_rgba(255,255,255,0.07),0_1px_0_0_rgba(255,255,255,0.10)_inset,0_10px_30px_-6px_rgba(0,0,0,0.65),0_2px_6px_-1px_rgba(0,0,0,0.45)] flex flex-col gap-4 flex-1 justify-between">
+        {/* ── LEFT: 4-WAY APPROACH QUEUE DEPTH & SATURATION DOCK (5 Cols on lg, 4 Cols on xl) ── */}
+        <div className="lg:col-span-5 xl:col-span-4 flex flex-col">
+          <section className="bg-surface/70 dark:bg-surface/80 backdrop-blur-3xl rounded-3xl p-5 shadow-sm dark:shadow-[0_0_0_1px_rgba(255,255,255,0.07),0_1px_0_0_rgba(255,255,255,0.10)_inset,0_10px_30px_-6px_rgba(0,0,0,0.65),0_2px_6px_-1px_rgba(0,0,0,0.45)] flex flex-col gap-4 h-full justify-between">
             <div className="flex justify-between items-center pb-1">
               <div className="flex items-center gap-2">
                 <span className="material-symbols-rounded text-primary text-base">stacked_bar_chart</span>
@@ -1898,8 +1816,8 @@ export default function IntersectionDetailView() {
               </span>
             </div>
 
-            {/* 4 Approach Mini-Gauges */}
-            <div className="flex flex-col gap-2.5 flex-1 justify-between">
+            {/* 4 Approach Mini-Gauges filling height evenly */}
+            <div className="flex flex-col gap-3 flex-1 justify-between">
               {ORDERED_DIRECTIONS.map((dir) => {
                 const app = approaches[dir];
                 const satPct = Math.round((app.vehicles / app.maxCapacity) * 100);
@@ -1909,13 +1827,13 @@ export default function IntersectionDetailView() {
                 return (
                   <div
                     key={dir}
-                    className={`p-3 rounded-2xl transition-all flex items-center justify-between gap-3 shadow-xs ${
+                    className={`p-3.5 rounded-2xl transition-all flex items-center justify-between gap-3 shadow-xs ${
                       isGreen
                         ? "bg-state-calm/12 dark:bg-state-calm/15 dark:shadow-[0_0_0_1px_rgba(16,185,129,0.25),0_1px_0_0_rgba(16,185,129,0.2)_inset,0_4px_14px_rgba(0,0,0,0.35)]"
                         : "bg-surface-mid/40 dark:bg-surface-mid/60 dark:shadow-[0_0_0_1px_rgba(255,255,255,0.05),0_1px_0_0_rgba(255,255,255,0.06)_inset,0_4px_12px_rgba(0,0,0,0.3)]"
                     }`}
                   >
-                    <div className="min-w-[130px]">
+                    <div className="min-w-[105px] sm:min-w-[120px]">
                       <div className="flex items-center gap-1.5 font-display text-xs font-semibold text-on-surface">
                         <span className="w-2 h-2 rounded-full" style={{ backgroundColor: isGreen ? "#10B981" : "#EF4444" }} />
                         <span>{app.name}</span>
@@ -1964,9 +1882,9 @@ export default function IntersectionDetailView() {
           </section>
         </div>
 
-        {/* ── RIGHT: TOP-DOWN CAD BLUEPRINT SPATIAL SIMULATOR (6 Cols) ───────── */}
-        <div className="lg:col-span-6 flex flex-col">
-          <section className="bg-surface/70 dark:bg-surface/80 backdrop-blur-3xl rounded-3xl p-5 flex flex-col shadow-sm dark:shadow-[0_0_0_1px_rgba(255,255,255,0.07),0_1px_0_0_rgba(255,255,255,0.10)_inset,0_10px_30px_-6px_rgba(0,0,0,0.65),0_2px_6px_-1px_rgba(0,0,0,0.45)] h-full justify-between gap-4">
+        {/* ── RIGHT: ENLARGED TOP-DOWN CAD BLUEPRINT SPATIAL SIMULATOR (7 Cols on lg, 8 Cols on xl) ───────── */}
+        <div className="lg:col-span-7 xl:col-span-8 flex flex-col">
+          <section className="bg-surface/70 dark:bg-surface/80 backdrop-blur-3xl rounded-3xl p-5 sm:p-6 flex flex-col shadow-sm dark:shadow-[0_0_0_1px_rgba(255,255,255,0.07),0_1px_0_0_rgba(255,255,255,0.10)_inset,0_10px_30px_-6px_rgba(0,0,0,0.65),0_2px_6px_-1px_rgba(0,0,0,0.45)] h-full justify-between gap-4">
             <div className="flex justify-between items-center pb-1">
               <div className="flex items-center gap-2">
                 <span className="material-symbols-rounded text-primary text-base">hub</span>
@@ -1980,12 +1898,12 @@ export default function IntersectionDetailView() {
               </span>
             </div>
 
-            {/* Top-Down CAD Blueprint Viewport (Crisp 16:9 Canvas) */}
-            <div className="w-full aspect-[16/10] bg-surface-mid/50 dark:bg-black/95 rounded-2xl overflow-hidden shadow-inner dark:shadow-[0_0_0_1px_rgba(255,255,255,0.06),inset_0_2px_12px_rgba(0,0,0,0.85)] flex items-center justify-center relative">
+            {/* Top-Down CAD Blueprint Viewport (Expanded Crisp Canvas) */}
+            <div className="w-full aspect-[16/10] min-h-[460px] sm:min-h-[500px] lg:min-h-[520px] bg-surface-mid/50 dark:bg-black/95 rounded-2xl overflow-hidden shadow-inner dark:shadow-[0_0_0_1px_rgba(255,255,255,0.06),inset_0_2px_12px_rgba(0,0,0,0.85)] flex items-center justify-center relative">
               <canvas
                 ref={topdownCanvasRef}
-                width={760}
-                height={460}
+                width={880}
+                height={520}
                 className="w-full h-full object-contain pointer-events-none"
               />
             </div>

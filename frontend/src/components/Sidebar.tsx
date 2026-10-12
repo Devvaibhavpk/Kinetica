@@ -204,7 +204,7 @@ export default function Sidebar({
           </div>
           <div className="flex items-center justify-between font-mono text-[10px] text-on-surface">
             <span className="text-on-surface-variant">Actuation Mode</span>
-            <span className="text-primary">Poisson Dynamic</span>
+            <span className="text-primary">Kinetica Dynamic</span>
           </div>
           <div className="flex items-center justify-between font-mono text-[10px] text-on-surface mt-0.5">
             <span className="text-on-surface-variant">Controller Tick</span>

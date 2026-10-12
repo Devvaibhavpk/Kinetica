@@ -474,7 +474,7 @@ export default function OverviewView() {
               </div>
 
               <div className="metric-tile">
-                <span className="metric-label">Arrival Rate (λ)</span>
+                <span className="metric-label">Arrival Rate</span>
                 <div className="flex items-baseline justify-between mt-2">
                   <span
                     className={`metric-value ${
@@ -488,7 +488,7 @@ export default function OverviewView() {
                       isBackendOnline ? "text-state-calm" : "text-on-surface-variant"
                     }`}
                   >
-                    {isBackendOnline ? "Poisson Model" : "Offline"}
+                    {isBackendOnline ? "Dynamic Model" : "Offline"}
                   </span>
                 </div>
               </div>

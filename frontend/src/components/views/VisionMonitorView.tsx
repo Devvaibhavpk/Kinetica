@@ -441,6 +441,19 @@ export default function VisionMonitorView() {
 
               currentTracksRef.current = updatedTracks;
               setTrackedVehicles([...updatedTracks]);
+
+              // Dispatch real-time perception state to controller
+              const isEmerg = Boolean(
+                data.class_counts?.ambulance || data.class_counts?.police
+              );
+              updateVisionFeedState({
+                hasEmergency: isEmerg,
+                emergencyDirection: isEmerg ? "E" : null,
+                liveDetectionsCount: incoming.length,
+                fps: data.fps,
+                latency_ms: data.latency_ms,
+                isStreaming: true,
+              });
             }
           } catch (e) {
             console.error("Failed to parse WS response", e);
