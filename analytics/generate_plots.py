@@ -70,12 +70,14 @@ def plot_wait_time_comparison(
         eff_size = test_result.get("effect_size", 0.0)
         plt.suptitle(
             f"Kinetica Performance Validation — {stat_name}: p = {p_val:.4e} (H0 Rejected, Δ = -{eff_size}s)",
-            fontsize=13,
+            fontsize=12,
             fontweight="bold",
-            y=1.02,
+            y=0.98,
         )
+        plt.tight_layout(rect=[0, 0, 1, 0.94])
+    else:
+        plt.tight_layout()
 
-    plt.tight_layout()
     plt.savefig(dest, dpi=300, bbox_inches="tight")
     plt.close(fig)
 

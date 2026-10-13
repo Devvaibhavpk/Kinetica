@@ -95,3 +95,8 @@ coverage.xml
 *.py,cover
 .hypothesis/
 .pytest_cache/
+
+# Intermediate report build drafts
+report/perfect_draft.docx
+report/perfect_draft.pdf
+

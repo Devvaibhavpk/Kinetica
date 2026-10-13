@@ -398,7 +398,7 @@ In full accordance with Vellore Institute of Technology academic regulations for
 |                                   | Primary Ownership & Contributions | Primary Ownership & Contributions |
 +-----------------------------------+-----------------------------------+-----------------------------------+
 | **Module 1: Edge Vision Pipeline**| - Planar Homography Derivation    | - YOLOv8n ONNX Model Optimization |
-|                                   | - Inverse Perspective Mapping (IPM| - ROI Polygon Mask Management     |
+|                                   | - Inverse Perspective Mapping (IPM)| - ROI Polygon Mask Management     |
 |                                   | - Metric Queue Measurement (m)    | - Emergency Livery Classifier     |
 +-----------------------------------+-----------------------------------+-----------------------------------+
 | **Module 2: Actuation Engine**    | - Modified Webster Formula Math   | - EWMA Arrival Rate Tracking      |
