@@ -101,7 +101,6 @@ report/perfect_draft.docx
 report/perfect_draft.pdf
 
 # Video staging & raw video dumps
-kin video/
 data/videos/
 
 # Results temporary debug artifacts
