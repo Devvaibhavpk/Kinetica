@@ -1,702 +1,3362 @@
 [
   {
-    "intersection_id": "IX-104",
-    "active_lane_id": "Approach-N",
-    "phase_start": "2026-10-19T12:45:42.552979",
-    "phase_end": "2026-10-19T12:45:45.552979",
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_N",
+    "phase_start": "2026-10-19T13:13:43.170917",
+    "phase_end": "2026-10-19T13:13:53.170917",
+    "reason": "scheduled"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_S",
+    "phase_start": "2026-10-19T13:13:43.170917",
+    "phase_end": "2026-10-19T13:13:53.170917",
+    "reason": "scheduled"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_E",
+    "phase_start": "2026-10-19T13:13:43.170917",
+    "phase_end": "2026-10-19T13:13:53.170917",
+    "reason": "scheduled"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_W",
+    "phase_start": "2026-10-19T13:13:43.170917",
+    "phase_end": "2026-10-19T13:13:53.170917",
+    "reason": "scheduled"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_N",
+    "phase_start": "2026-10-19T13:13:44.170917",
+    "phase_end": "2026-10-19T13:13:54.170917",
+    "reason": "scheduled"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_S",
+    "phase_start": "2026-10-19T13:13:44.170917",
+    "phase_end": "2026-10-19T13:13:54.170917",
+    "reason": "scheduled"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_E",
+    "phase_start": "2026-10-19T13:13:44.170917",
+    "phase_end": "2026-10-19T13:13:54.170917",
+    "reason": "scheduled"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_W",
+    "phase_start": "2026-10-19T13:13:44.170917",
+    "phase_end": "2026-10-19T13:13:54.170917",
+    "reason": "scheduled"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_N",
+    "phase_start": "2026-10-19T13:13:45.170917",
+    "phase_end": "2026-10-19T13:13:55.170917",
+    "reason": "scheduled"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_S",
+    "phase_start": "2026-10-19T13:13:45.170917",
+    "phase_end": "2026-10-19T13:13:55.170917",
+    "reason": "scheduled"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_E",
+    "phase_start": "2026-10-19T13:13:45.170917",
+    "phase_end": "2026-10-19T13:13:55.170917",
+    "reason": "scheduled"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_W",
+    "phase_start": "2026-10-19T13:13:45.170917",
+    "phase_end": "2026-10-19T13:13:55.170917",
     "reason": "extended"
   },
   {
-    "intersection_id": "IX-104",
-    "active_lane_id": "Approach-N",
-    "phase_start": "2026-10-19T12:45:44.281289",
-    "phase_end": "2026-10-19T12:45:47.281289",
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_N",
+    "phase_start": "2026-10-19T13:13:46.170917",
+    "phase_end": "2026-10-19T13:13:56.170917",
     "reason": "extended"
   },
   {
-    "intersection_id": "IX-104",
-    "active_lane_id": "Approach-N",
-    "phase_start": "2026-10-19T12:45:45.909927",
-    "phase_end": "2026-10-19T12:45:48.909927",
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_S",
+    "phase_start": "2026-10-19T13:13:46.170917",
+    "phase_end": "2026-10-19T13:13:56.170917",
+    "reason": "scheduled"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_E",
+    "phase_start": "2026-10-19T13:13:46.170917",
+    "phase_end": "2026-10-19T13:13:56.170917",
+    "reason": "scheduled"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_W",
+    "phase_start": "2026-10-19T13:13:46.170917",
+    "phase_end": "2026-10-19T13:13:56.170917",
     "reason": "extended"
   },
   {
-    "intersection_id": "IX-104",
-    "active_lane_id": "Approach-N",
-    "phase_start": "2026-10-19T12:45:47.416153",
-    "phase_end": "2026-10-19T12:45:50.416153",
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_N",
+    "phase_start": "2026-10-19T13:13:47.170917",
+    "phase_end": "2026-10-19T13:13:57.170917",
     "reason": "extended"
   },
   {
-    "intersection_id": "IX-104",
-    "active_lane_id": "Approach-N",
-    "phase_start": "2026-10-19T12:45:48.797251",
-    "phase_end": "2026-10-19T12:45:51.533479",
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_S",
+    "phase_start": "2026-10-19T13:13:47.170917",
+    "phase_end": "2026-10-19T13:13:57.170917",
+    "reason": "scheduled"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_E",
+    "phase_start": "2026-10-19T13:13:47.170917",
+    "phase_end": "2026-10-19T13:13:57.170917",
     "reason": "extended"
   },
   {
-    "intersection_id": "IX-104",
-    "active_lane_id": "Approach-N",
-    "phase_start": "2026-10-19T12:45:50.610212",
-    "phase_end": "2026-10-19T12:45:53.610212",
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_W",
+    "phase_start": "2026-10-19T13:13:47.170917",
+    "phase_end": "2026-10-19T13:13:57.170917",
     "reason": "extended"
   },
   {
-    "intersection_id": "IX-104",
-    "active_lane_id": "Approach-N",
-    "phase_start": "2026-10-19T12:45:52.001381",
-    "phase_end": "2026-10-19T12:45:55.001381",
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_N",
+    "phase_start": "2026-10-19T13:13:48.170917",
+    "phase_end": "2026-10-19T13:13:58.170917",
     "reason": "extended"
   },
   {
-    "intersection_id": "IX-104",
-    "active_lane_id": "Approach-N",
-    "phase_start": "2026-10-19T12:45:53.447080",
-    "phase_end": "2026-10-19T12:45:56.447080",
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_S",
+    "phase_start": "2026-10-19T13:13:48.170917",
+    "phase_end": "2026-10-19T13:13:58.170917",
     "reason": "extended"
   },
   {
-    "intersection_id": "IX-104",
-    "active_lane_id": "Approach-N",
-    "phase_start": "2026-10-19T12:45:54.964017",
-    "phase_end": "2026-10-19T12:45:57.964017",
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_E",
+    "phase_start": "2026-10-19T13:13:48.170917",
+    "phase_end": "2026-10-19T13:13:58.170917",
+    "reason": "scheduled"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_W",
+    "phase_start": "2026-10-19T13:13:48.170917",
+    "phase_end": "2026-10-19T13:13:58.170917",
+    "reason": "scheduled"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_N",
+    "phase_start": "2026-10-19T13:13:49.170917",
+    "phase_end": "2026-10-19T13:13:59.170917",
     "reason": "extended"
   },
   {
-    "intersection_id": "IX-104",
-    "active_lane_id": "Approach-N",
-    "phase_start": "2026-10-19T12:45:56.236064",
-    "phase_end": "2026-10-19T12:45:59.236064",
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_S",
+    "phase_start": "2026-10-19T13:13:49.170917",
+    "phase_end": "2026-10-19T13:13:59.170917",
     "reason": "extended"
   },
   {
-    "intersection_id": "IX-104",
-    "active_lane_id": "Approach-N",
-    "phase_start": "2026-10-19T12:45:57.541998",
-    "phase_end": "2026-10-19T12:46:00.541998",
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_E",
+    "phase_start": "2026-10-19T13:13:49.170917",
+    "phase_end": "2026-10-19T13:13:59.170917",
+    "reason": "scheduled"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_W",
+    "phase_start": "2026-10-19T13:13:49.170917",
+    "phase_end": "2026-10-19T13:13:59.170917",
+    "reason": "scheduled"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_N",
+    "phase_start": "2026-10-19T13:13:50.170917",
+    "phase_end": "2026-10-19T13:14:00.170917",
     "reason": "extended"
   },
   {
-    "intersection_id": "IX-104",
-    "active_lane_id": "Approach-N",
-    "phase_start": "2026-10-19T12:45:58.882620",
-    "phase_end": "2026-10-19T12:46:01.882620",
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_S",
+    "phase_start": "2026-10-19T13:13:50.170917",
+    "phase_end": "2026-10-19T13:14:00.170917",
     "reason": "extended"
   },
   {
-    "intersection_id": "IX-104",
-    "active_lane_id": "Approach-N",
-    "phase_start": "2026-10-19T12:46:00.618135",
-    "phase_end": "2026-10-19T12:46:03.618135",
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_E",
+    "phase_start": "2026-10-19T13:13:50.170917",
+    "phase_end": "2026-10-19T13:14:00.170917",
+    "reason": "scheduled"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_W",
+    "phase_start": "2026-10-19T13:13:50.170917",
+    "phase_end": "2026-10-19T13:14:00.170917",
+    "reason": "scheduled"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_N",
+    "phase_start": "2026-10-19T13:13:51.170917",
+    "phase_end": "2026-10-19T13:14:01.170917",
     "reason": "extended"
   },
   {
-    "intersection_id": "IX-104",
-    "active_lane_id": "Approach-N",
-    "phase_start": "2026-10-19T12:46:02.026033",
-    "phase_end": "2026-10-19T12:46:05.026033",
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_S",
+    "phase_start": "2026-10-19T13:13:51.170917",
+    "phase_end": "2026-10-19T13:14:01.170917",
     "reason": "extended"
   },
   {
-    "intersection_id": "IX-104",
-    "active_lane_id": "Approach-N",
-    "phase_start": "2026-10-19T12:46:03.569975",
-    "phase_end": "2026-10-19T12:46:06.569975",
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_E",
+    "phase_start": "2026-10-19T13:13:51.170917",
+    "phase_end": "2026-10-19T13:14:01.170917",
+    "reason": "scheduled"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_W",
+    "phase_start": "2026-10-19T13:13:51.170917",
+    "phase_end": "2026-10-19T13:14:01.170917",
+    "reason": "scheduled"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_N",
+    "phase_start": "2026-10-19T13:13:52.170917",
+    "phase_end": "2026-10-19T13:14:02.170917",
     "reason": "extended"
   },
   {
-    "intersection_id": "IX-104",
-    "active_lane_id": "Approach-N",
-    "phase_start": "2026-10-19T12:46:05.526231",
-    "phase_end": "2026-10-19T12:46:08.526231",
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_S",
+    "phase_start": "2026-10-19T13:13:52.170917",
+    "phase_end": "2026-10-19T13:14:02.170917",
     "reason": "extended"
   },
   {
-    "intersection_id": "IX-104",
-    "active_lane_id": "Approach-N",
-    "phase_start": "2026-10-19T12:46:07.137891",
-    "phase_end": "2026-10-19T12:46:10.137891",
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_E",
+    "phase_start": "2026-10-19T13:13:52.170917",
+    "phase_end": "2026-10-19T13:14:02.170917",
+    "reason": "scheduled"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_W",
+    "phase_start": "2026-10-19T13:13:52.170917",
+    "phase_end": "2026-10-19T13:14:02.170917",
     "reason": "extended"
   },
   {
-    "intersection_id": "IX-104",
-    "active_lane_id": "Approach-N",
-    "phase_start": "2026-10-19T12:46:08.932532",
-    "phase_end": "2026-10-19T12:46:11.932532",
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_N",
+    "phase_start": "2026-10-19T13:13:53.170917",
+    "phase_end": "2026-10-19T13:14:03.170917",
     "reason": "extended"
   },
   {
-    "intersection_id": "IX-104",
-    "active_lane_id": "Approach-N",
-    "phase_start": "2026-10-19T12:46:10.384452",
-    "phase_end": "2026-10-19T12:46:13.384452",
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_S",
+    "phase_start": "2026-10-19T13:13:53.170917",
+    "phase_end": "2026-10-19T13:14:03.170917",
     "reason": "extended"
   },
   {
-    "intersection_id": "IX-104",
-    "active_lane_id": "Approach-N",
-    "phase_start": "2026-10-19T12:46:11.750753",
-    "phase_end": "2026-10-19T12:46:14.750753",
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_E",
+    "phase_start": "2026-10-19T13:13:53.170917",
+    "phase_end": "2026-10-19T13:14:03.170917",
+    "reason": "scheduled"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_W",
+    "phase_start": "2026-10-19T13:13:53.170917",
+    "phase_end": "2026-10-19T13:14:03.170917",
+    "reason": "scheduled"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_N",
+    "phase_start": "2026-10-19T13:13:54.170917",
+    "phase_end": "2026-10-19T13:14:04.170917",
     "reason": "extended"
   },
   {
-    "intersection_id": "IX-104",
-    "active_lane_id": "Approach-N",
-    "phase_start": "2026-10-19T12:46:13.279379",
-    "phase_end": "2026-10-19T12:46:16.279379",
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_S",
+    "phase_start": "2026-10-19T13:13:54.170917",
+    "phase_end": "2026-10-19T13:14:04.170917",
     "reason": "extended"
   },
   {
-    "intersection_id": "IX-104",
-    "active_lane_id": "Approach-N",
-    "phase_start": "2026-10-19T12:46:15.049478",
-    "phase_end": "2026-10-19T12:46:18.049478",
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_E",
+    "phase_start": "2026-10-19T13:13:54.170917",
+    "phase_end": "2026-10-19T13:14:04.170917",
     "reason": "extended"
   },
   {
-    "intersection_id": "IX-104",
-    "active_lane_id": "Approach-N",
-    "phase_start": "2026-10-19T12:46:17.330322",
-    "phase_end": "2026-10-19T12:46:20.330322",
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_W",
+    "phase_start": "2026-10-19T13:13:54.170917",
+    "phase_end": "2026-10-19T13:14:04.170917",
+    "reason": "scheduled"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_N",
+    "phase_start": "2026-10-19T13:13:55.170917",
+    "phase_end": "2026-10-19T13:14:05.170917",
     "reason": "extended"
   },
   {
-    "intersection_id": "IX-104",
-    "active_lane_id": "Approach-N",
-    "phase_start": "2026-10-19T12:46:19.999607",
-    "phase_end": "2026-10-19T12:46:22.999607",
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_S",
+    "phase_start": "2026-10-19T13:13:55.170917",
+    "phase_end": "2026-10-19T13:14:05.170917",
     "reason": "extended"
   },
   {
-    "intersection_id": "IX-104",
-    "active_lane_id": "Approach-N",
-    "phase_start": "2026-10-19T12:46:22.337404",
-    "phase_end": "2026-10-19T12:46:25.337404",
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_E",
+    "phase_start": "2026-10-19T13:13:55.170917",
+    "phase_end": "2026-10-19T13:14:05.170917",
     "reason": "extended"
   },
   {
-    "intersection_id": "IX-104",
-    "active_lane_id": "Approach-N",
-    "phase_start": "2026-10-19T12:46:24.339632",
-    "phase_end": "2026-10-19T12:46:26.588149",
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_W",
+    "phase_start": "2026-10-19T13:13:55.170917",
+    "phase_end": "2026-10-19T13:14:05.170917",
+    "reason": "scheduled"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_N",
+    "phase_start": "2026-10-19T13:13:56.170917",
+    "phase_end": "2026-10-19T13:14:06.170917",
     "reason": "extended"
   },
   {
-    "intersection_id": "IX-104",
-    "active_lane_id": "Approach-N",
-    "phase_start": "2026-10-19T12:46:26.482176",
-    "phase_end": "2026-10-19T12:46:26.588149",
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_S",
+    "phase_start": "2026-10-19T13:13:56.170917",
+    "phase_end": "2026-10-19T13:14:06.170917",
     "reason": "extended"
   },
   {
-    "intersection_id": "IX-104",
-    "active_lane_id": "Approach-W",
-    "phase_start": "2026-10-19T12:46:31.253799",
-    "phase_end": "2026-10-19T12:47:11.862200",
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_E",
+    "phase_start": "2026-10-19T13:13:56.170917",
+    "phase_end": "2026-10-19T13:14:06.170917",
     "reason": "extended"
   },
   {
-    "intersection_id": "IX-104",
-    "active_lane_id": "Approach-W",
-    "phase_start": "2026-10-19T12:46:32.771842",
-    "phase_end": "2026-10-19T12:47:00.771842",
-    "reason": "preempted"
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_W",
+    "phase_start": "2026-10-19T13:13:56.170917",
+    "phase_end": "2026-10-19T13:14:06.170917",
+    "reason": "scheduled"
   },
   {
-    "intersection_id": "IX-104",
-    "active_lane_id": "Approach-W",
-    "phase_start": "2026-10-19T12:46:34.173387",
-    "phase_end": "2026-10-19T12:47:02.173387",
-    "reason": "preempted"
-  },
-  {
-    "intersection_id": "IX-104",
-    "active_lane_id": "Approach-W",
-    "phase_start": "2026-10-19T12:46:35.639338",
-    "phase_end": "2026-10-19T12:47:03.639338",
-    "reason": "preempted"
-  },
-  {
-    "intersection_id": "IX-104",
-    "active_lane_id": "Approach-W",
-    "phase_start": "2026-10-19T12:46:37.130952",
-    "phase_end": "2026-10-19T12:47:05.130952",
-    "reason": "preempted"
-  },
-  {
-    "intersection_id": "IX-104",
-    "active_lane_id": "Approach-W",
-    "phase_start": "2026-10-19T12:46:38.517566",
-    "phase_end": "2026-10-19T12:47:06.517566",
-    "reason": "preempted"
-  },
-  {
-    "intersection_id": "IX-104",
-    "active_lane_id": "Approach-W",
-    "phase_start": "2026-10-19T12:46:40.036651",
-    "phase_end": "2026-10-19T12:47:08.036651",
-    "reason": "preempted"
-  },
-  {
-    "intersection_id": "IX-104",
-    "active_lane_id": "Approach-W",
-    "phase_start": "2026-10-19T12:46:41.461351",
-    "phase_end": "2026-10-19T12:47:09.461351",
-    "reason": "preempted"
-  },
-  {
-    "intersection_id": "IX-104",
-    "active_lane_id": "Approach-W",
-    "phase_start": "2026-10-19T12:46:42.946350",
-    "phase_end": "2026-10-19T12:47:10.946350",
-    "reason": "preempted"
-  },
-  {
-    "intersection_id": "IX-104",
-    "active_lane_id": "Approach-W",
-    "phase_start": "2026-10-19T12:46:44.719015",
-    "phase_end": "2026-10-19T12:46:58.656189",
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_N",
+    "phase_start": "2026-10-19T13:13:57.170917",
+    "phase_end": "2026-10-19T13:14:07.170917",
     "reason": "extended"
   },
   {
-    "intersection_id": "IX-104",
-    "active_lane_id": "Approach-W",
-    "phase_start": "2026-10-19T12:46:46.269008",
-    "phase_end": "2026-10-19T12:46:58.656188",
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_S",
+    "phase_start": "2026-10-19T13:13:57.170917",
+    "phase_end": "2026-10-19T13:14:07.170917",
     "reason": "extended"
   },
   {
-    "intersection_id": "IX-104",
-    "active_lane_id": "Approach-W",
-    "phase_start": "2026-10-19T12:46:47.681987",
-    "phase_end": "2026-10-19T12:46:58.656189",
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_E",
+    "phase_start": "2026-10-19T13:13:57.170917",
+    "phase_end": "2026-10-19T13:14:07.170917",
     "reason": "extended"
   },
   {
-    "intersection_id": "IX-104",
-    "active_lane_id": "Approach-W",
-    "phase_start": "2026-10-19T12:46:49.355241",
-    "phase_end": "2026-10-19T12:47:17.355241",
-    "reason": "preempted"
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_W",
+    "phase_start": "2026-10-19T13:13:57.170917",
+    "phase_end": "2026-10-19T13:14:07.170917",
+    "reason": "scheduled"
   },
   {
-    "intersection_id": "IX-104",
-    "active_lane_id": "Approach-W",
-    "phase_start": "2026-10-19T12:46:51.549022",
-    "phase_end": "2026-10-19T12:47:19.549022",
-    "reason": "preempted"
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_N",
+    "phase_start": "2026-10-19T13:13:58.170917",
+    "phase_end": "2026-10-19T13:14:08.170917",
+    "reason": "scheduled"
   },
   {
-    "intersection_id": "IX-104",
-    "active_lane_id": "Approach-W",
-    "phase_start": "2026-10-19T12:46:53.085226",
-    "phase_end": "2026-10-19T12:47:21.085226",
-    "reason": "preempted"
-  },
-  {
-    "intersection_id": "IX-104",
-    "active_lane_id": "Approach-W",
-    "phase_start": "2026-10-19T12:46:55.089675",
-    "phase_end": "2026-10-19T12:47:23.089675",
-    "reason": "preempted"
-  },
-  {
-    "intersection_id": "IX-104",
-    "active_lane_id": "Approach-W",
-    "phase_start": "2026-10-19T12:46:57.002567",
-    "phase_end": "2026-10-19T12:47:25.002567",
-    "reason": "preempted"
-  },
-  {
-    "intersection_id": "IX-104",
-    "active_lane_id": "Approach-W",
-    "phase_start": "2026-10-19T12:46:58.597619",
-    "phase_end": "2026-10-19T12:47:26.597619",
-    "reason": "preempted"
-  },
-  {
-    "intersection_id": "IX-104",
-    "active_lane_id": "Approach-W",
-    "phase_start": "2026-10-19T12:47:00.712417",
-    "phase_end": "2026-10-19T12:47:28.712417",
-    "reason": "preempted"
-  },
-  {
-    "intersection_id": "IX-104",
-    "active_lane_id": "Approach-W",
-    "phase_start": "2026-10-19T12:47:02.871622",
-    "phase_end": "2026-10-19T12:47:30.871622",
-    "reason": "preempted"
-  },
-  {
-    "intersection_id": "IX-104",
-    "active_lane_id": "Approach-W",
-    "phase_start": "2026-10-19T12:47:04.813244",
-    "phase_end": "2026-10-19T12:47:32.813244",
-    "reason": "preempted"
-  },
-  {
-    "intersection_id": "IX-104",
-    "active_lane_id": "Approach-W",
-    "phase_start": "2026-10-19T12:47:06.743752",
-    "phase_end": "2026-10-19T12:47:34.743752",
-    "reason": "preempted"
-  },
-  {
-    "intersection_id": "IX-104",
-    "active_lane_id": "Approach-W",
-    "phase_start": "2026-10-19T12:47:08.749048",
-    "phase_end": "2026-10-19T12:47:23.551916",
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_S",
+    "phase_start": "2026-10-19T13:13:58.170917",
+    "phase_end": "2026-10-19T13:14:08.170917",
     "reason": "extended"
   },
   {
-    "intersection_id": "IX-104",
-    "active_lane_id": "Approach-W",
-    "phase_start": "2026-10-19T12:47:10.622342",
-    "phase_end": "2026-10-19T12:47:38.622342",
-    "reason": "preempted"
-  },
-  {
-    "intersection_id": "IX-104",
-    "active_lane_id": "Approach-W",
-    "phase_start": "2026-10-19T12:47:12.450164",
-    "phase_end": "2026-10-19T12:47:40.450164",
-    "reason": "preempted"
-  },
-  {
-    "intersection_id": "IX-104",
-    "active_lane_id": "Approach-W",
-    "phase_start": "2026-10-19T12:47:14.284608",
-    "phase_end": "2026-10-19T12:47:42.284608",
-    "reason": "preempted"
-  },
-  {
-    "intersection_id": "IX-104",
-    "active_lane_id": "Approach-W",
-    "phase_start": "2026-10-19T12:47:16.078128",
-    "phase_end": "2026-10-19T12:47:44.078128",
-    "reason": "preempted"
-  },
-  {
-    "intersection_id": "IX-104",
-    "active_lane_id": "Approach-W",
-    "phase_start": "2026-10-19T12:47:17.730500",
-    "phase_end": "2026-10-19T12:47:45.730500",
-    "reason": "preempted"
-  },
-  {
-    "intersection_id": "IX-104",
-    "active_lane_id": "Approach-W",
-    "phase_start": "2026-10-19T12:47:19.625552",
-    "phase_end": "2026-10-19T12:47:47.625552",
-    "reason": "preempted"
-  },
-  {
-    "intersection_id": "IX-104",
-    "active_lane_id": "Approach-W",
-    "phase_start": "2026-10-19T12:47:21.433209",
-    "phase_end": "2026-10-19T12:47:49.433209",
-    "reason": "preempted"
-  },
-  {
-    "intersection_id": "IX-104",
-    "active_lane_id": "Approach-W",
-    "phase_start": "2026-10-19T12:47:23.056640",
-    "phase_end": "2026-10-19T12:47:51.056640",
-    "reason": "preempted"
-  },
-  {
-    "intersection_id": "IX-104",
-    "active_lane_id": "Approach-W",
-    "phase_start": "2026-10-19T12:47:24.919327",
-    "phase_end": "2026-10-19T12:47:38.869512",
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_E",
+    "phase_start": "2026-10-19T13:13:58.170917",
+    "phase_end": "2026-10-19T13:14:08.170917",
     "reason": "extended"
   },
   {
-    "intersection_id": "IX-104",
-    "active_lane_id": "Approach-W",
-    "phase_start": "2026-10-19T12:47:26.680465",
-    "phase_end": "2026-10-19T12:47:38.869512",
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_W",
+    "phase_start": "2026-10-19T13:13:58.170917",
+    "phase_end": "2026-10-19T13:14:08.170917",
+    "reason": "scheduled"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_N",
+    "phase_start": "2026-10-19T13:13:59.170917",
+    "phase_end": "2026-10-19T13:14:09.170917",
+    "reason": "scheduled"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_S",
+    "phase_start": "2026-10-19T13:13:59.170917",
+    "phase_end": "2026-10-19T13:14:09.170917",
     "reason": "extended"
   },
   {
-    "intersection_id": "IX-104",
-    "active_lane_id": "Approach-W",
-    "phase_start": "2026-10-19T12:47:28.413825",
-    "phase_end": "2026-10-19T12:47:38.869511",
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_E",
+    "phase_start": "2026-10-19T13:13:59.170917",
+    "phase_end": "2026-10-19T13:14:09.170917",
     "reason": "extended"
   },
   {
-    "intersection_id": "IX-104",
-    "active_lane_id": "Approach-W",
-    "phase_start": "2026-10-19T12:47:30.140108",
-    "phase_end": "2026-10-19T12:47:58.140108",
-    "reason": "preempted"
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_W",
+    "phase_start": "2026-10-19T13:13:59.170917",
+    "phase_end": "2026-10-19T13:14:09.170917",
+    "reason": "scheduled"
   },
   {
-    "intersection_id": "IX-104",
-    "active_lane_id": "Approach-W",
-    "phase_start": "2026-10-19T12:47:31.738706",
-    "phase_end": "2026-10-19T12:47:59.738706",
-    "reason": "preempted"
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_N",
+    "phase_start": "2026-10-19T13:14:00.170917",
+    "phase_end": "2026-10-19T13:14:10.170917",
+    "reason": "scheduled"
   },
   {
-    "intersection_id": "IX-104",
-    "active_lane_id": "Approach-W",
-    "phase_start": "2026-10-19T12:47:33.339577",
-    "phase_end": "2026-10-19T12:48:01.339577",
-    "reason": "preempted"
-  },
-  {
-    "intersection_id": "IX-104",
-    "active_lane_id": "Approach-W",
-    "phase_start": "2026-10-19T12:47:35.047830",
-    "phase_end": "2026-10-19T12:48:03.047830",
-    "reason": "preempted"
-  },
-  {
-    "intersection_id": "IX-104",
-    "active_lane_id": "Approach-W",
-    "phase_start": "2026-10-19T12:47:36.619444",
-    "phase_end": "2026-10-19T12:48:04.619444",
-    "reason": "preempted"
-  },
-  {
-    "intersection_id": "IX-104",
-    "active_lane_id": "Approach-W",
-    "phase_start": "2026-10-19T12:47:38.628002",
-    "phase_end": "2026-10-19T12:48:06.628002",
-    "reason": "preempted"
-  },
-  {
-    "intersection_id": "IX-104",
-    "active_lane_id": "Approach-W",
-    "phase_start": "2026-10-19T12:47:40.476798",
-    "phase_end": "2026-10-19T12:48:08.476798",
-    "reason": "preempted"
-  },
-  {
-    "intersection_id": "IX-104",
-    "active_lane_id": "Approach-W",
-    "phase_start": "2026-10-19T12:47:41.964026",
-    "phase_end": "2026-10-19T12:48:09.964026",
-    "reason": "preempted"
-  },
-  {
-    "intersection_id": "IX-104",
-    "active_lane_id": "Approach-W",
-    "phase_start": "2026-10-19T12:47:43.926264",
-    "phase_end": "2026-10-19T12:47:58.475937",
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_S",
+    "phase_start": "2026-10-19T13:14:00.170917",
+    "phase_end": "2026-10-19T13:14:10.170917",
     "reason": "extended"
   },
   {
-    "intersection_id": "IX-104",
-    "active_lane_id": "Approach-W",
-    "phase_start": "2026-10-19T12:47:46.127319",
-    "phase_end": "2026-10-19T12:47:58.475937",
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_E",
+    "phase_start": "2026-10-19T13:14:00.170917",
+    "phase_end": "2026-10-19T13:14:10.170917",
     "reason": "extended"
   },
   {
-    "intersection_id": "IX-104",
-    "active_lane_id": "Approach-W",
-    "phase_start": "2026-10-19T12:47:47.743645",
-    "phase_end": "2026-10-19T12:47:58.475937",
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_W",
+    "phase_start": "2026-10-19T13:14:00.170917",
+    "phase_end": "2026-10-19T13:14:10.170917",
+    "reason": "scheduled"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_N",
+    "phase_start": "2026-10-19T13:14:01.170917",
+    "phase_end": "2026-10-19T13:14:11.170917",
+    "reason": "scheduled"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_S",
+    "phase_start": "2026-10-19T13:14:01.170917",
+    "phase_end": "2026-10-19T13:14:11.170917",
     "reason": "extended"
   },
   {
-    "intersection_id": "IX-104",
-    "active_lane_id": "Approach-W",
-    "phase_start": "2026-10-19T12:47:49.783445",
-    "phase_end": "2026-10-19T12:48:17.783445",
-    "reason": "preempted"
-  },
-  {
-    "intersection_id": "IX-104",
-    "active_lane_id": "Approach-W",
-    "phase_start": "2026-10-19T12:47:51.737413",
-    "phase_end": "2026-10-19T12:48:19.737413",
-    "reason": "preempted"
-  },
-  {
-    "intersection_id": "IX-104",
-    "active_lane_id": "Approach-W",
-    "phase_start": "2026-10-19T12:47:53.265029",
-    "phase_end": "2026-10-19T12:48:21.265029",
-    "reason": "preempted"
-  },
-  {
-    "intersection_id": "IX-104",
-    "active_lane_id": "Approach-W",
-    "phase_start": "2026-10-19T12:47:55.166801",
-    "phase_end": "2026-10-19T12:48:23.166801",
-    "reason": "preempted"
-  },
-  {
-    "intersection_id": "IX-104",
-    "active_lane_id": "Approach-W",
-    "phase_start": "2026-10-19T12:47:56.625117",
-    "phase_end": "2026-10-19T12:48:24.625117",
-    "reason": "preempted"
-  },
-  {
-    "intersection_id": "IX-104",
-    "active_lane_id": "Approach-W",
-    "phase_start": "2026-10-19T12:47:58.136786",
-    "phase_end": "2026-10-19T12:48:26.136786",
-    "reason": "preempted"
-  },
-  {
-    "intersection_id": "IX-104",
-    "active_lane_id": "Approach-W",
-    "phase_start": "2026-10-19T12:48:00.225208",
-    "phase_end": "2026-10-19T12:48:28.225208",
-    "reason": "preempted"
-  },
-  {
-    "intersection_id": "IX-104",
-    "active_lane_id": "Approach-W",
-    "phase_start": "2026-10-19T12:48:02.096538",
-    "phase_end": "2026-10-19T12:48:30.096538",
-    "reason": "preempted"
-  },
-  {
-    "intersection_id": "IX-104",
-    "active_lane_id": "Approach-W",
-    "phase_start": "2026-10-19T12:48:03.782237",
-    "phase_end": "2026-10-19T12:48:18.553238",
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_E",
+    "phase_start": "2026-10-19T13:14:01.170917",
+    "phase_end": "2026-10-19T13:14:11.170917",
     "reason": "extended"
   },
   {
-    "intersection_id": "IX-104",
-    "active_lane_id": "Approach-W",
-    "phase_start": "2026-10-19T12:48:05.714727",
-    "phase_end": "2026-10-19T12:48:18.553699",
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_W",
+    "phase_start": "2026-10-19T13:14:01.170917",
+    "phase_end": "2026-10-19T13:14:11.170917",
+    "reason": "scheduled"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_N",
+    "phase_start": "2026-10-19T13:14:02.170917",
+    "phase_end": "2026-10-19T13:14:12.170917",
     "reason": "extended"
   },
   {
-    "intersection_id": "IX-104",
-    "active_lane_id": "Approach-W",
-    "phase_start": "2026-10-19T12:48:07.628633",
-    "phase_end": "2026-10-19T12:48:18.553238",
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_S",
+    "phase_start": "2026-10-19T13:14:02.170917",
+    "phase_end": "2026-10-19T13:14:12.170917",
     "reason": "extended"
   },
   {
-    "intersection_id": "IX-104",
-    "active_lane_id": "Approach-W",
-    "phase_start": "2026-10-19T12:48:09.598905",
-    "phase_end": "2026-10-19T12:48:37.598905",
-    "reason": "preempted"
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_E",
+    "phase_start": "2026-10-19T13:14:02.170917",
+    "phase_end": "2026-10-19T13:14:12.170917",
+    "reason": "extended"
   },
   {
-    "intersection_id": "IX-104",
-    "active_lane_id": "Approach-W",
-    "phase_start": "2026-10-19T12:48:11.592460",
-    "phase_end": "2026-10-19T12:48:39.592460",
-    "reason": "preempted"
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_W",
+    "phase_start": "2026-10-19T13:14:02.170917",
+    "phase_end": "2026-10-19T13:14:12.170917",
+    "reason": "scheduled"
   },
   {
-    "intersection_id": "IX-104",
-    "active_lane_id": "Approach-W",
-    "phase_start": "2026-10-19T12:48:13.271536",
-    "phase_end": "2026-10-19T12:48:41.271536",
-    "reason": "preempted"
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_N",
+    "phase_start": "2026-10-19T13:14:03.170917",
+    "phase_end": "2026-10-19T13:14:13.170917",
+    "reason": "extended"
   },
   {
-    "intersection_id": "IX-104",
-    "active_lane_id": "Approach-W",
-    "phase_start": "2026-10-19T12:48:25.939199",
-    "phase_end": "2026-10-19T12:48:53.939199",
-    "reason": "preempted"
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_S",
+    "phase_start": "2026-10-19T13:14:03.170917",
+    "phase_end": "2026-10-19T13:14:13.170917",
+    "reason": "extended"
   },
   {
-    "intersection_id": "IX-104",
-    "active_lane_id": "Approach-W",
-    "phase_start": "2026-10-19T12:48:26.957334",
-    "phase_end": "2026-10-19T12:48:54.957334",
-    "reason": "preempted"
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_E",
+    "phase_start": "2026-10-19T13:14:03.170917",
+    "phase_end": "2026-10-19T13:14:13.170917",
+    "reason": "extended"
   },
   {
-    "intersection_id": "IX-104",
-    "active_lane_id": "Approach-W",
-    "phase_start": "2026-10-19T12:48:27.994280",
-    "phase_end": "2026-10-19T12:48:55.994280",
-    "reason": "preempted"
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_W",
+    "phase_start": "2026-10-19T13:14:03.170917",
+    "phase_end": "2026-10-19T13:14:13.170917",
+    "reason": "scheduled"
   },
   {
-    "intersection_id": "IX-104",
-    "active_lane_id": "Approach-W",
-    "phase_start": "2026-10-19T12:48:28.905463",
-    "phase_end": "2026-10-19T12:48:56.905463",
-    "reason": "preempted"
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_N",
+    "phase_start": "2026-10-19T13:14:04.170917",
+    "phase_end": "2026-10-19T13:14:14.170917",
+    "reason": "extended"
   },
   {
-    "intersection_id": "IX-104",
-    "active_lane_id": "Approach-W",
-    "phase_start": "2026-10-19T12:48:30.065692",
-    "phase_end": "2026-10-19T12:48:58.065692",
-    "reason": "preempted"
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_S",
+    "phase_start": "2026-10-19T13:14:04.170917",
+    "phase_end": "2026-10-19T13:14:14.170917",
+    "reason": "extended"
   },
   {
-    "intersection_id": "IX-104",
-    "active_lane_id": "Approach-W",
-    "phase_start": "2026-10-19T12:48:31.120507",
-    "phase_end": "2026-10-19T12:48:59.120507",
-    "reason": "preempted"
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_E",
+    "phase_start": "2026-10-19T13:14:04.170917",
+    "phase_end": "2026-10-19T13:14:14.170917",
+    "reason": "extended"
   },
   {
-    "intersection_id": "IX-104",
-    "active_lane_id": "Approach-W",
-    "phase_start": "2026-10-19T12:48:32.426241",
-    "phase_end": "2026-10-19T12:49:00.426241",
-    "reason": "preempted"
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_W",
+    "phase_start": "2026-10-19T13:14:04.170917",
+    "phase_end": "2026-10-19T13:14:14.170917",
+    "reason": "scheduled"
   },
   {
-    "intersection_id": "IX-104",
-    "active_lane_id": "Approach-W",
-    "phase_start": "2026-10-19T12:48:33.506272",
-    "phase_end": "2026-10-19T12:49:01.506272",
-    "reason": "preempted"
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_N",
+    "phase_start": "2026-10-19T13:14:05.170917",
+    "phase_end": "2026-10-19T13:14:15.170917",
+    "reason": "extended"
   },
   {
-    "intersection_id": "IX-104",
-    "active_lane_id": "Approach-W",
-    "phase_start": "2026-10-19T12:48:34.527753",
-    "phase_end": "2026-10-19T12:49:02.527753",
-    "reason": "preempted"
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_S",
+    "phase_start": "2026-10-19T13:14:05.170917",
+    "phase_end": "2026-10-19T13:14:15.170917",
+    "reason": "extended"
   },
   {
-    "intersection_id": "IX-104",
-    "active_lane_id": "Approach-W",
-    "phase_start": "2026-10-19T12:48:35.537703",
-    "phase_end": "2026-10-19T12:49:03.537703",
-    "reason": "preempted"
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_E",
+    "phase_start": "2026-10-19T13:14:05.170917",
+    "phase_end": "2026-10-19T13:14:15.170917",
+    "reason": "extended"
   },
   {
-    "intersection_id": "IX-104",
-    "active_lane_id": "Approach-W",
-    "phase_start": "2026-10-19T12:48:36.484838",
-    "phase_end": "2026-10-19T12:49:04.484838",
-    "reason": "preempted"
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_W",
+    "phase_start": "2026-10-19T13:14:05.170917",
+    "phase_end": "2026-10-19T13:14:15.170917",
+    "reason": "scheduled"
   },
   {
-    "intersection_id": "IX-104",
-    "active_lane_id": "Approach-W",
-    "phase_start": "2026-10-19T12:48:37.796064",
-    "phase_end": "2026-10-19T12:49:05.796064",
-    "reason": "preempted"
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_N",
+    "phase_start": "2026-10-19T13:14:06.170917",
+    "phase_end": "2026-10-19T13:14:16.170917",
+    "reason": "extended"
   },
   {
-    "intersection_id": "IX-104",
-    "active_lane_id": "Approach-W",
-    "phase_start": "2026-10-19T12:48:38.805248",
-    "phase_end": "2026-10-19T12:49:06.805248",
-    "reason": "preempted"
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_S",
+    "phase_start": "2026-10-19T13:14:06.170917",
+    "phase_end": "2026-10-19T13:14:16.170917",
+    "reason": "extended"
   },
   {
-    "intersection_id": "IX-104",
-    "active_lane_id": "Approach-W",
-    "phase_start": "2026-10-19T12:48:40.138982",
-    "phase_end": "2026-10-19T12:49:08.138982",
-    "reason": "preempted"
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_E",
+    "phase_start": "2026-10-19T13:14:06.170917",
+    "phase_end": "2026-10-19T13:14:16.170917",
+    "reason": "extended"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_W",
+    "phase_start": "2026-10-19T13:14:06.170917",
+    "phase_end": "2026-10-19T13:14:16.170917",
+    "reason": "scheduled"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_N",
+    "phase_start": "2026-10-19T13:14:07.170917",
+    "phase_end": "2026-10-19T13:14:17.170917",
+    "reason": "extended"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_S",
+    "phase_start": "2026-10-19T13:14:07.170917",
+    "phase_end": "2026-10-19T13:14:17.170917",
+    "reason": "extended"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_E",
+    "phase_start": "2026-10-19T13:14:07.170917",
+    "phase_end": "2026-10-19T13:14:17.170917",
+    "reason": "extended"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_W",
+    "phase_start": "2026-10-19T13:14:07.170917",
+    "phase_end": "2026-10-19T13:14:17.170917",
+    "reason": "extended"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_N",
+    "phase_start": "2026-10-19T13:14:08.170917",
+    "phase_end": "2026-10-19T13:14:18.170917",
+    "reason": "scheduled"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_S",
+    "phase_start": "2026-10-19T13:14:08.170917",
+    "phase_end": "2026-10-19T13:14:18.170917",
+    "reason": "extended"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_E",
+    "phase_start": "2026-10-19T13:14:08.170917",
+    "phase_end": "2026-10-19T13:14:18.170917",
+    "reason": "scheduled"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_W",
+    "phase_start": "2026-10-19T13:14:08.170917",
+    "phase_end": "2026-10-19T13:14:18.170917",
+    "reason": "extended"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_N",
+    "phase_start": "2026-10-19T13:14:09.170917",
+    "phase_end": "2026-10-19T13:14:19.170917",
+    "reason": "scheduled"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_S",
+    "phase_start": "2026-10-19T13:14:09.170917",
+    "phase_end": "2026-10-19T13:14:19.170917",
+    "reason": "extended"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_E",
+    "phase_start": "2026-10-19T13:14:09.170917",
+    "phase_end": "2026-10-19T13:14:19.170917",
+    "reason": "scheduled"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_W",
+    "phase_start": "2026-10-19T13:14:09.170917",
+    "phase_end": "2026-10-19T13:14:19.170917",
+    "reason": "extended"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_N",
+    "phase_start": "2026-10-19T13:14:10.170917",
+    "phase_end": "2026-10-19T13:14:20.170917",
+    "reason": "scheduled"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_S",
+    "phase_start": "2026-10-19T13:14:10.170917",
+    "phase_end": "2026-10-19T13:14:20.170917",
+    "reason": "extended"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_E",
+    "phase_start": "2026-10-19T13:14:10.170917",
+    "phase_end": "2026-10-19T13:14:20.170917",
+    "reason": "scheduled"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_W",
+    "phase_start": "2026-10-19T13:14:10.170917",
+    "phase_end": "2026-10-19T13:14:20.170917",
+    "reason": "extended"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_N",
+    "phase_start": "2026-10-19T13:14:11.170917",
+    "phase_end": "2026-10-19T13:14:21.170917",
+    "reason": "scheduled"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_S",
+    "phase_start": "2026-10-19T13:14:11.170917",
+    "phase_end": "2026-10-19T13:14:21.170917",
+    "reason": "extended"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_E",
+    "phase_start": "2026-10-19T13:14:11.170917",
+    "phase_end": "2026-10-19T13:14:21.170917",
+    "reason": "scheduled"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_W",
+    "phase_start": "2026-10-19T13:14:11.170917",
+    "phase_end": "2026-10-19T13:14:21.170917",
+    "reason": "extended"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_N",
+    "phase_start": "2026-10-19T13:14:12.170917",
+    "phase_end": "2026-10-19T13:14:22.170917",
+    "reason": "scheduled"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_S",
+    "phase_start": "2026-10-19T13:14:12.170917",
+    "phase_end": "2026-10-19T13:14:22.170917",
+    "reason": "scheduled"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_E",
+    "phase_start": "2026-10-19T13:14:12.170917",
+    "phase_end": "2026-10-19T13:14:22.170917",
+    "reason": "extended"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_W",
+    "phase_start": "2026-10-19T13:14:12.170917",
+    "phase_end": "2026-10-19T13:14:22.170917",
+    "reason": "extended"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_N",
+    "phase_start": "2026-10-19T13:14:13.170917",
+    "phase_end": "2026-10-19T13:14:23.170917",
+    "reason": "scheduled"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_S",
+    "phase_start": "2026-10-19T13:14:13.170917",
+    "phase_end": "2026-10-19T13:14:23.170917",
+    "reason": "scheduled"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_E",
+    "phase_start": "2026-10-19T13:14:13.170917",
+    "phase_end": "2026-10-19T13:14:23.170917",
+    "reason": "scheduled"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_W",
+    "phase_start": "2026-10-19T13:14:13.170917",
+    "phase_end": "2026-10-19T13:14:23.170917",
+    "reason": "extended"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_N",
+    "phase_start": "2026-10-19T13:14:14.170917",
+    "phase_end": "2026-10-19T13:14:24.170917",
+    "reason": "extended"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_S",
+    "phase_start": "2026-10-19T13:14:14.170917",
+    "phase_end": "2026-10-19T13:14:24.170917",
+    "reason": "scheduled"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_E",
+    "phase_start": "2026-10-19T13:14:14.170917",
+    "phase_end": "2026-10-19T13:14:24.170917",
+    "reason": "scheduled"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_W",
+    "phase_start": "2026-10-19T13:14:14.170917",
+    "phase_end": "2026-10-19T13:14:24.170917",
+    "reason": "scheduled"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_N",
+    "phase_start": "2026-10-19T13:14:15.170917",
+    "phase_end": "2026-10-19T13:14:25.170917",
+    "reason": "extended"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_S",
+    "phase_start": "2026-10-19T13:14:15.170917",
+    "phase_end": "2026-10-19T13:14:25.170917",
+    "reason": "scheduled"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_E",
+    "phase_start": "2026-10-19T13:14:15.170917",
+    "phase_end": "2026-10-19T13:14:25.170917",
+    "reason": "scheduled"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_W",
+    "phase_start": "2026-10-19T13:14:15.170917",
+    "phase_end": "2026-10-19T13:14:25.170917",
+    "reason": "scheduled"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_N",
+    "phase_start": "2026-10-19T13:14:16.170917",
+    "phase_end": "2026-10-19T13:14:26.170917",
+    "reason": "extended"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_S",
+    "phase_start": "2026-10-19T13:14:16.170917",
+    "phase_end": "2026-10-19T13:14:26.170917",
+    "reason": "scheduled"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_E",
+    "phase_start": "2026-10-19T13:14:16.170917",
+    "phase_end": "2026-10-19T13:14:26.170917",
+    "reason": "scheduled"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_W",
+    "phase_start": "2026-10-19T13:14:16.170917",
+    "phase_end": "2026-10-19T13:14:26.170917",
+    "reason": "scheduled"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_N",
+    "phase_start": "2026-10-19T13:14:17.170917",
+    "phase_end": "2026-10-19T13:14:27.170917",
+    "reason": "extended"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_S",
+    "phase_start": "2026-10-19T13:14:17.170917",
+    "phase_end": "2026-10-19T13:14:27.170917",
+    "reason": "scheduled"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_E",
+    "phase_start": "2026-10-19T13:14:17.170917",
+    "phase_end": "2026-10-19T13:14:27.170917",
+    "reason": "scheduled"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_W",
+    "phase_start": "2026-10-19T13:14:17.170917",
+    "phase_end": "2026-10-19T13:14:27.170917",
+    "reason": "scheduled"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_N",
+    "phase_start": "2026-10-19T13:14:18.170917",
+    "phase_end": "2026-10-19T13:14:28.170917",
+    "reason": "extended"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_S",
+    "phase_start": "2026-10-19T13:14:18.170917",
+    "phase_end": "2026-10-19T13:14:28.170917",
+    "reason": "extended"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_E",
+    "phase_start": "2026-10-19T13:14:18.170917",
+    "phase_end": "2026-10-19T13:14:28.170917",
+    "reason": "scheduled"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_W",
+    "phase_start": "2026-10-19T13:14:18.170917",
+    "phase_end": "2026-10-19T13:14:28.170917",
+    "reason": "scheduled"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_N",
+    "phase_start": "2026-10-19T13:14:19.170917",
+    "phase_end": "2026-10-19T13:14:29.170917",
+    "reason": "extended"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_S",
+    "phase_start": "2026-10-19T13:14:19.170917",
+    "phase_end": "2026-10-19T13:14:29.170917",
+    "reason": "extended"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_E",
+    "phase_start": "2026-10-19T13:14:19.170917",
+    "phase_end": "2026-10-19T13:14:29.170917",
+    "reason": "scheduled"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_W",
+    "phase_start": "2026-10-19T13:14:19.170917",
+    "phase_end": "2026-10-19T13:14:29.170917",
+    "reason": "scheduled"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_N",
+    "phase_start": "2026-10-19T13:14:20.170917",
+    "phase_end": "2026-10-19T13:14:30.170917",
+    "reason": "extended"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_S",
+    "phase_start": "2026-10-19T13:14:20.170917",
+    "phase_end": "2026-10-19T13:14:30.170917",
+    "reason": "extended"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_E",
+    "phase_start": "2026-10-19T13:14:20.170917",
+    "phase_end": "2026-10-19T13:14:30.170917",
+    "reason": "scheduled"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_W",
+    "phase_start": "2026-10-19T13:14:20.170917",
+    "phase_end": "2026-10-19T13:14:30.170917",
+    "reason": "scheduled"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_N",
+    "phase_start": "2026-10-19T13:14:21.170917",
+    "phase_end": "2026-10-19T13:14:31.170917",
+    "reason": "scheduled"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_S",
+    "phase_start": "2026-10-19T13:14:21.170917",
+    "phase_end": "2026-10-19T13:14:31.170917",
+    "reason": "extended"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_E",
+    "phase_start": "2026-10-19T13:14:21.170917",
+    "phase_end": "2026-10-19T13:14:31.170917",
+    "reason": "scheduled"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_W",
+    "phase_start": "2026-10-19T13:14:21.170917",
+    "phase_end": "2026-10-19T13:14:31.170917",
+    "reason": "scheduled"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_N",
+    "phase_start": "2026-10-19T13:14:22.170917",
+    "phase_end": "2026-10-19T13:14:32.170917",
+    "reason": "extended"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_S",
+    "phase_start": "2026-10-19T13:14:22.170917",
+    "phase_end": "2026-10-19T13:14:32.170917",
+    "reason": "extended"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_E",
+    "phase_start": "2026-10-19T13:14:22.170917",
+    "phase_end": "2026-10-19T13:14:32.170917",
+    "reason": "scheduled"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_W",
+    "phase_start": "2026-10-19T13:14:22.170917",
+    "phase_end": "2026-10-19T13:14:32.170917",
+    "reason": "scheduled"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_N",
+    "phase_start": "2026-10-19T13:14:23.170917",
+    "phase_end": "2026-10-19T13:14:33.170917",
+    "reason": "scheduled"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_S",
+    "phase_start": "2026-10-19T13:14:23.170917",
+    "phase_end": "2026-10-19T13:14:33.170917",
+    "reason": "extended"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_E",
+    "phase_start": "2026-10-19T13:14:23.170917",
+    "phase_end": "2026-10-19T13:14:33.170917",
+    "reason": "scheduled"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_W",
+    "phase_start": "2026-10-19T13:14:23.170917",
+    "phase_end": "2026-10-19T13:14:33.170917",
+    "reason": "scheduled"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_N",
+    "phase_start": "2026-10-19T13:14:24.170917",
+    "phase_end": "2026-10-19T13:14:34.170917",
+    "reason": "scheduled"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_S",
+    "phase_start": "2026-10-19T13:14:24.170917",
+    "phase_end": "2026-10-19T13:14:34.170917",
+    "reason": "extended"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_E",
+    "phase_start": "2026-10-19T13:14:24.170917",
+    "phase_end": "2026-10-19T13:14:34.170917",
+    "reason": "extended"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_W",
+    "phase_start": "2026-10-19T13:14:24.170917",
+    "phase_end": "2026-10-19T13:14:34.170917",
+    "reason": "extended"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_N",
+    "phase_start": "2026-10-19T13:14:25.170917",
+    "phase_end": "2026-10-19T13:14:35.170917",
+    "reason": "extended"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_S",
+    "phase_start": "2026-10-19T13:14:25.170917",
+    "phase_end": "2026-10-19T13:14:35.170917",
+    "reason": "extended"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_E",
+    "phase_start": "2026-10-19T13:14:25.170917",
+    "phase_end": "2026-10-19T13:14:35.170917",
+    "reason": "extended"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_W",
+    "phase_start": "2026-10-19T13:14:25.170917",
+    "phase_end": "2026-10-19T13:14:35.170917",
+    "reason": "extended"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_N",
+    "phase_start": "2026-10-19T13:14:26.170917",
+    "phase_end": "2026-10-19T13:14:36.170917",
+    "reason": "scheduled"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_S",
+    "phase_start": "2026-10-19T13:14:26.170917",
+    "phase_end": "2026-10-19T13:14:36.170917",
+    "reason": "extended"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_E",
+    "phase_start": "2026-10-19T13:14:26.170917",
+    "phase_end": "2026-10-19T13:14:36.170917",
+    "reason": "scheduled"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_W",
+    "phase_start": "2026-10-19T13:14:26.170917",
+    "phase_end": "2026-10-19T13:14:36.170917",
+    "reason": "extended"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_N",
+    "phase_start": "2026-10-19T13:14:27.170917",
+    "phase_end": "2026-10-19T13:14:37.170917",
+    "reason": "scheduled"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_S",
+    "phase_start": "2026-10-19T13:14:27.170917",
+    "phase_end": "2026-10-19T13:14:37.170917",
+    "reason": "extended"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_E",
+    "phase_start": "2026-10-19T13:14:27.170917",
+    "phase_end": "2026-10-19T13:14:37.170917",
+    "reason": "scheduled"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_W",
+    "phase_start": "2026-10-19T13:14:27.170917",
+    "phase_end": "2026-10-19T13:14:37.170917",
+    "reason": "scheduled"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_N",
+    "phase_start": "2026-10-19T13:14:28.170917",
+    "phase_end": "2026-10-19T13:14:38.170917",
+    "reason": "scheduled"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_S",
+    "phase_start": "2026-10-19T13:14:28.170917",
+    "phase_end": "2026-10-19T13:14:38.170917",
+    "reason": "extended"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_E",
+    "phase_start": "2026-10-19T13:14:28.170917",
+    "phase_end": "2026-10-19T13:14:38.170917",
+    "reason": "scheduled"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_W",
+    "phase_start": "2026-10-19T13:14:28.170917",
+    "phase_end": "2026-10-19T13:14:38.170917",
+    "reason": "scheduled"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_N",
+    "phase_start": "2026-10-19T13:14:29.170917",
+    "phase_end": "2026-10-19T13:14:39.170917",
+    "reason": "scheduled"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_S",
+    "phase_start": "2026-10-19T13:14:29.170917",
+    "phase_end": "2026-10-19T13:14:39.170917",
+    "reason": "extended"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_E",
+    "phase_start": "2026-10-19T13:14:29.170917",
+    "phase_end": "2026-10-19T13:14:39.170917",
+    "reason": "scheduled"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_W",
+    "phase_start": "2026-10-19T13:14:29.170917",
+    "phase_end": "2026-10-19T13:14:39.170917",
+    "reason": "scheduled"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_N",
+    "phase_start": "2026-10-19T13:14:30.170917",
+    "phase_end": "2026-10-19T13:14:40.170917",
+    "reason": "scheduled"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_S",
+    "phase_start": "2026-10-19T13:14:30.170917",
+    "phase_end": "2026-10-19T13:14:40.170917",
+    "reason": "extended"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_E",
+    "phase_start": "2026-10-19T13:14:30.170917",
+    "phase_end": "2026-10-19T13:14:40.170917",
+    "reason": "scheduled"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_W",
+    "phase_start": "2026-10-19T13:14:30.170917",
+    "phase_end": "2026-10-19T13:14:40.170917",
+    "reason": "scheduled"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_N",
+    "phase_start": "2026-10-19T13:14:31.170917",
+    "phase_end": "2026-10-19T13:14:41.170917",
+    "reason": "scheduled"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_S",
+    "phase_start": "2026-10-19T13:14:31.170917",
+    "phase_end": "2026-10-19T13:14:41.170917",
+    "reason": "scheduled"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_E",
+    "phase_start": "2026-10-19T13:14:31.170917",
+    "phase_end": "2026-10-19T13:14:41.170917",
+    "reason": "scheduled"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_W",
+    "phase_start": "2026-10-19T13:14:31.170917",
+    "phase_end": "2026-10-19T13:14:41.170917",
+    "reason": "scheduled"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_N",
+    "phase_start": "2026-10-19T13:14:32.170917",
+    "phase_end": "2026-10-19T13:14:42.170917",
+    "reason": "scheduled"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_S",
+    "phase_start": "2026-10-19T13:14:32.170917",
+    "phase_end": "2026-10-19T13:14:42.170917",
+    "reason": "scheduled"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_E",
+    "phase_start": "2026-10-19T13:14:32.170917",
+    "phase_end": "2026-10-19T13:14:42.170917",
+    "reason": "scheduled"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_W",
+    "phase_start": "2026-10-19T13:14:32.170917",
+    "phase_end": "2026-10-19T13:14:42.170917",
+    "reason": "scheduled"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_N",
+    "phase_start": "2026-10-19T13:14:33.170917",
+    "phase_end": "2026-10-19T13:14:43.170917",
+    "reason": "extended"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_S",
+    "phase_start": "2026-10-19T13:14:33.170917",
+    "phase_end": "2026-10-19T13:14:43.170917",
+    "reason": "scheduled"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_E",
+    "phase_start": "2026-10-19T13:14:33.170917",
+    "phase_end": "2026-10-19T13:14:43.170917",
+    "reason": "scheduled"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_W",
+    "phase_start": "2026-10-19T13:14:33.170917",
+    "phase_end": "2026-10-19T13:14:43.170917",
+    "reason": "scheduled"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_N",
+    "phase_start": "2026-10-19T13:14:34.170917",
+    "phase_end": "2026-10-19T13:14:44.170917",
+    "reason": "extended"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_S",
+    "phase_start": "2026-10-19T13:14:34.170917",
+    "phase_end": "2026-10-19T13:14:44.170917",
+    "reason": "extended"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_E",
+    "phase_start": "2026-10-19T13:14:34.170917",
+    "phase_end": "2026-10-19T13:14:44.170917",
+    "reason": "scheduled"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_W",
+    "phase_start": "2026-10-19T13:14:34.170917",
+    "phase_end": "2026-10-19T13:14:44.170917",
+    "reason": "scheduled"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_N",
+    "phase_start": "2026-10-19T13:14:35.170917",
+    "phase_end": "2026-10-19T13:14:45.170917",
+    "reason": "scheduled"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_S",
+    "phase_start": "2026-10-19T13:14:35.170917",
+    "phase_end": "2026-10-19T13:14:45.170917",
+    "reason": "extended"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_E",
+    "phase_start": "2026-10-19T13:14:35.170917",
+    "phase_end": "2026-10-19T13:14:45.170917",
+    "reason": "scheduled"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_W",
+    "phase_start": "2026-10-19T13:14:35.170917",
+    "phase_end": "2026-10-19T13:14:45.170917",
+    "reason": "scheduled"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_N",
+    "phase_start": "2026-10-19T13:14:36.170917",
+    "phase_end": "2026-10-19T13:14:46.170917",
+    "reason": "scheduled"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_S",
+    "phase_start": "2026-10-19T13:14:36.170917",
+    "phase_end": "2026-10-19T13:14:46.170917",
+    "reason": "scheduled"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_E",
+    "phase_start": "2026-10-19T13:14:36.170917",
+    "phase_end": "2026-10-19T13:14:46.170917",
+    "reason": "extended"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_W",
+    "phase_start": "2026-10-19T13:14:36.170917",
+    "phase_end": "2026-10-19T13:14:46.170917",
+    "reason": "scheduled"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_N",
+    "phase_start": "2026-10-19T13:14:37.170917",
+    "phase_end": "2026-10-19T13:14:47.170917",
+    "reason": "scheduled"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_S",
+    "phase_start": "2026-10-19T13:14:37.170917",
+    "phase_end": "2026-10-19T13:14:47.170917",
+    "reason": "scheduled"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_E",
+    "phase_start": "2026-10-19T13:14:37.170917",
+    "phase_end": "2026-10-19T13:14:47.170917",
+    "reason": "extended"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_W",
+    "phase_start": "2026-10-19T13:14:37.170917",
+    "phase_end": "2026-10-19T13:14:47.170917",
+    "reason": "scheduled"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_N",
+    "phase_start": "2026-10-19T13:14:38.170917",
+    "phase_end": "2026-10-19T13:14:48.170917",
+    "reason": "extended"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_S",
+    "phase_start": "2026-10-19T13:14:38.170917",
+    "phase_end": "2026-10-19T13:14:48.170917",
+    "reason": "scheduled"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_E",
+    "phase_start": "2026-10-19T13:14:38.170917",
+    "phase_end": "2026-10-19T13:14:48.170917",
+    "reason": "extended"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_W",
+    "phase_start": "2026-10-19T13:14:38.170917",
+    "phase_end": "2026-10-19T13:14:48.170917",
+    "reason": "scheduled"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_N",
+    "phase_start": "2026-10-19T13:14:39.170917",
+    "phase_end": "2026-10-19T13:14:49.170917",
+    "reason": "scheduled"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_S",
+    "phase_start": "2026-10-19T13:14:39.170917",
+    "phase_end": "2026-10-19T13:14:49.170917",
+    "reason": "scheduled"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_E",
+    "phase_start": "2026-10-19T13:14:39.170917",
+    "phase_end": "2026-10-19T13:14:49.170917",
+    "reason": "extended"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_W",
+    "phase_start": "2026-10-19T13:14:39.170917",
+    "phase_end": "2026-10-19T13:14:49.170917",
+    "reason": "scheduled"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_N",
+    "phase_start": "2026-10-19T13:14:40.170917",
+    "phase_end": "2026-10-19T13:14:50.170917",
+    "reason": "scheduled"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_S",
+    "phase_start": "2026-10-19T13:14:40.170917",
+    "phase_end": "2026-10-19T13:14:50.170917",
+    "reason": "scheduled"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_E",
+    "phase_start": "2026-10-19T13:14:40.170917",
+    "phase_end": "2026-10-19T13:14:50.170917",
+    "reason": "extended"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_W",
+    "phase_start": "2026-10-19T13:14:40.170917",
+    "phase_end": "2026-10-19T13:14:50.170917",
+    "reason": "scheduled"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_N",
+    "phase_start": "2026-10-19T13:14:41.170917",
+    "phase_end": "2026-10-19T13:14:51.170917",
+    "reason": "scheduled"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_S",
+    "phase_start": "2026-10-19T13:14:41.170917",
+    "phase_end": "2026-10-19T13:14:51.170917",
+    "reason": "scheduled"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_E",
+    "phase_start": "2026-10-19T13:14:41.170917",
+    "phase_end": "2026-10-19T13:14:51.170917",
+    "reason": "extended"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_W",
+    "phase_start": "2026-10-19T13:14:41.170917",
+    "phase_end": "2026-10-19T13:14:51.170917",
+    "reason": "scheduled"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_N",
+    "phase_start": "2026-10-19T13:14:42.170917",
+    "phase_end": "2026-10-19T13:14:52.170917",
+    "reason": "scheduled"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_S",
+    "phase_start": "2026-10-19T13:14:42.170917",
+    "phase_end": "2026-10-19T13:14:52.170917",
+    "reason": "scheduled"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_E",
+    "phase_start": "2026-10-19T13:14:42.170917",
+    "phase_end": "2026-10-19T13:14:52.170917",
+    "reason": "scheduled"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_W",
+    "phase_start": "2026-10-19T13:14:42.170917",
+    "phase_end": "2026-10-19T13:14:52.170917",
+    "reason": "scheduled"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_N",
+    "phase_start": "2026-10-19T13:14:43.170917",
+    "phase_end": "2026-10-19T13:14:53.170917",
+    "reason": "scheduled"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_S",
+    "phase_start": "2026-10-19T13:14:43.170917",
+    "phase_end": "2026-10-19T13:14:53.170917",
+    "reason": "scheduled"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_E",
+    "phase_start": "2026-10-19T13:14:43.170917",
+    "phase_end": "2026-10-19T13:14:53.170917",
+    "reason": "scheduled"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_W",
+    "phase_start": "2026-10-19T13:14:43.170917",
+    "phase_end": "2026-10-19T13:14:53.170917",
+    "reason": "scheduled"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_N",
+    "phase_start": "2026-10-19T13:14:44.170917",
+    "phase_end": "2026-10-19T13:14:54.170917",
+    "reason": "scheduled"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_S",
+    "phase_start": "2026-10-19T13:14:44.170917",
+    "phase_end": "2026-10-19T13:14:54.170917",
+    "reason": "extended"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_E",
+    "phase_start": "2026-10-19T13:14:44.170917",
+    "phase_end": "2026-10-19T13:14:54.170917",
+    "reason": "scheduled"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_W",
+    "phase_start": "2026-10-19T13:14:44.170917",
+    "phase_end": "2026-10-19T13:14:54.170917",
+    "reason": "scheduled"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_N",
+    "phase_start": "2026-10-19T13:14:45.170917",
+    "phase_end": "2026-10-19T13:14:55.170917",
+    "reason": "scheduled"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_S",
+    "phase_start": "2026-10-19T13:14:45.170917",
+    "phase_end": "2026-10-19T13:14:55.170917",
+    "reason": "extended"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_E",
+    "phase_start": "2026-10-19T13:14:45.170917",
+    "phase_end": "2026-10-19T13:14:55.170917",
+    "reason": "scheduled"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_W",
+    "phase_start": "2026-10-19T13:14:45.170917",
+    "phase_end": "2026-10-19T13:14:55.170917",
+    "reason": "scheduled"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_N",
+    "phase_start": "2026-10-19T13:14:46.170917",
+    "phase_end": "2026-10-19T13:14:56.170917",
+    "reason": "scheduled"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_S",
+    "phase_start": "2026-10-19T13:14:46.170917",
+    "phase_end": "2026-10-19T13:14:56.170917",
+    "reason": "extended"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_E",
+    "phase_start": "2026-10-19T13:14:46.170917",
+    "phase_end": "2026-10-19T13:14:56.170917",
+    "reason": "scheduled"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_W",
+    "phase_start": "2026-10-19T13:14:46.170917",
+    "phase_end": "2026-10-19T13:14:56.170917",
+    "reason": "scheduled"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_N",
+    "phase_start": "2026-10-19T13:14:47.170917",
+    "phase_end": "2026-10-19T13:14:57.170917",
+    "reason": "scheduled"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_S",
+    "phase_start": "2026-10-19T13:14:47.170917",
+    "phase_end": "2026-10-19T13:14:57.170917",
+    "reason": "extended"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_E",
+    "phase_start": "2026-10-19T13:14:47.170917",
+    "phase_end": "2026-10-19T13:14:57.170917",
+    "reason": "scheduled"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_W",
+    "phase_start": "2026-10-19T13:14:47.170917",
+    "phase_end": "2026-10-19T13:14:57.170917",
+    "reason": "scheduled"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_N",
+    "phase_start": "2026-10-19T13:14:48.170917",
+    "phase_end": "2026-10-19T13:14:58.170917",
+    "reason": "scheduled"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_S",
+    "phase_start": "2026-10-19T13:14:48.170917",
+    "phase_end": "2026-10-19T13:14:58.170917",
+    "reason": "extended"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_E",
+    "phase_start": "2026-10-19T13:14:48.170917",
+    "phase_end": "2026-10-19T13:14:58.170917",
+    "reason": "scheduled"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_W",
+    "phase_start": "2026-10-19T13:14:48.170917",
+    "phase_end": "2026-10-19T13:14:58.170917",
+    "reason": "scheduled"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_N",
+    "phase_start": "2026-10-19T13:14:49.170917",
+    "phase_end": "2026-10-19T13:14:59.170917",
+    "reason": "scheduled"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_S",
+    "phase_start": "2026-10-19T13:14:49.170917",
+    "phase_end": "2026-10-19T13:14:59.170917",
+    "reason": "scheduled"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_E",
+    "phase_start": "2026-10-19T13:14:49.170917",
+    "phase_end": "2026-10-19T13:14:59.170917",
+    "reason": "scheduled"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_W",
+    "phase_start": "2026-10-19T13:14:49.170917",
+    "phase_end": "2026-10-19T13:14:59.170917",
+    "reason": "scheduled"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_N",
+    "phase_start": "2026-10-19T13:14:50.170917",
+    "phase_end": "2026-10-19T13:15:00.170917",
+    "reason": "extended"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_S",
+    "phase_start": "2026-10-19T13:14:50.170917",
+    "phase_end": "2026-10-19T13:15:00.170917",
+    "reason": "scheduled"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_E",
+    "phase_start": "2026-10-19T13:14:50.170917",
+    "phase_end": "2026-10-19T13:15:00.170917",
+    "reason": "scheduled"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_W",
+    "phase_start": "2026-10-19T13:14:50.170917",
+    "phase_end": "2026-10-19T13:15:00.170917",
+    "reason": "scheduled"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_N",
+    "phase_start": "2026-10-19T13:14:51.170917",
+    "phase_end": "2026-10-19T13:15:01.170917",
+    "reason": "extended"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_S",
+    "phase_start": "2026-10-19T13:14:51.170917",
+    "phase_end": "2026-10-19T13:15:01.170917",
+    "reason": "scheduled"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_E",
+    "phase_start": "2026-10-19T13:14:51.170917",
+    "phase_end": "2026-10-19T13:15:01.170917",
+    "reason": "scheduled"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_W",
+    "phase_start": "2026-10-19T13:14:51.170917",
+    "phase_end": "2026-10-19T13:15:01.170917",
+    "reason": "scheduled"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_N",
+    "phase_start": "2026-10-19T13:14:52.170917",
+    "phase_end": "2026-10-19T13:15:02.170917",
+    "reason": "extended"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_S",
+    "phase_start": "2026-10-19T13:14:52.170917",
+    "phase_end": "2026-10-19T13:15:02.170917",
+    "reason": "scheduled"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_E",
+    "phase_start": "2026-10-19T13:14:52.170917",
+    "phase_end": "2026-10-19T13:15:02.170917",
+    "reason": "scheduled"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_W",
+    "phase_start": "2026-10-19T13:14:52.170917",
+    "phase_end": "2026-10-19T13:15:02.170917",
+    "reason": "scheduled"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_N",
+    "phase_start": "2026-10-19T13:14:53.170917",
+    "phase_end": "2026-10-19T13:15:03.170917",
+    "reason": "extended"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_S",
+    "phase_start": "2026-10-19T13:14:53.170917",
+    "phase_end": "2026-10-19T13:15:03.170917",
+    "reason": "scheduled"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_E",
+    "phase_start": "2026-10-19T13:14:53.170917",
+    "phase_end": "2026-10-19T13:15:03.170917",
+    "reason": "scheduled"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_W",
+    "phase_start": "2026-10-19T13:14:53.170917",
+    "phase_end": "2026-10-19T13:15:03.170917",
+    "reason": "scheduled"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_N",
+    "phase_start": "2026-10-19T13:14:54.170917",
+    "phase_end": "2026-10-19T13:15:04.170917",
+    "reason": "extended"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_S",
+    "phase_start": "2026-10-19T13:14:54.170917",
+    "phase_end": "2026-10-19T13:15:04.170917",
+    "reason": "scheduled"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_E",
+    "phase_start": "2026-10-19T13:14:54.170917",
+    "phase_end": "2026-10-19T13:15:04.170917",
+    "reason": "scheduled"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_W",
+    "phase_start": "2026-10-19T13:14:54.170917",
+    "phase_end": "2026-10-19T13:15:04.170917",
+    "reason": "extended"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_N",
+    "phase_start": "2026-10-19T13:14:55.170917",
+    "phase_end": "2026-10-19T13:15:05.170917",
+    "reason": "extended"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_S",
+    "phase_start": "2026-10-19T13:14:55.170917",
+    "phase_end": "2026-10-19T13:15:05.170917",
+    "reason": "extended"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_E",
+    "phase_start": "2026-10-19T13:14:55.170917",
+    "phase_end": "2026-10-19T13:15:05.170917",
+    "reason": "scheduled"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_W",
+    "phase_start": "2026-10-19T13:14:55.170917",
+    "phase_end": "2026-10-19T13:15:05.170917",
+    "reason": "scheduled"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_N",
+    "phase_start": "2026-10-19T13:14:56.170917",
+    "phase_end": "2026-10-19T13:15:06.170917",
+    "reason": "extended"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_S",
+    "phase_start": "2026-10-19T13:14:56.170917",
+    "phase_end": "2026-10-19T13:15:06.170917",
+    "reason": "scheduled"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_E",
+    "phase_start": "2026-10-19T13:14:56.170917",
+    "phase_end": "2026-10-19T13:15:06.170917",
+    "reason": "scheduled"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_W",
+    "phase_start": "2026-10-19T13:14:56.170917",
+    "phase_end": "2026-10-19T13:15:06.170917",
+    "reason": "scheduled"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_N",
+    "phase_start": "2026-10-19T13:14:57.170917",
+    "phase_end": "2026-10-19T13:15:07.170917",
+    "reason": "extended"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_S",
+    "phase_start": "2026-10-19T13:14:57.170917",
+    "phase_end": "2026-10-19T13:15:07.170917",
+    "reason": "scheduled"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_E",
+    "phase_start": "2026-10-19T13:14:57.170917",
+    "phase_end": "2026-10-19T13:15:07.170917",
+    "reason": "extended"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_W",
+    "phase_start": "2026-10-19T13:14:57.170917",
+    "phase_end": "2026-10-19T13:15:07.170917",
+    "reason": "scheduled"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_N",
+    "phase_start": "2026-10-19T13:14:58.170917",
+    "phase_end": "2026-10-19T13:15:08.170917",
+    "reason": "extended"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_S",
+    "phase_start": "2026-10-19T13:14:58.170917",
+    "phase_end": "2026-10-19T13:15:08.170917",
+    "reason": "scheduled"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_E",
+    "phase_start": "2026-10-19T13:14:58.170917",
+    "phase_end": "2026-10-19T13:15:08.170917",
+    "reason": "scheduled"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_W",
+    "phase_start": "2026-10-19T13:14:58.170917",
+    "phase_end": "2026-10-19T13:15:08.170917",
+    "reason": "scheduled"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_N",
+    "phase_start": "2026-10-19T13:14:59.170917",
+    "phase_end": "2026-10-19T13:15:09.170917",
+    "reason": "extended"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_S",
+    "phase_start": "2026-10-19T13:14:59.170917",
+    "phase_end": "2026-10-19T13:15:09.170917",
+    "reason": "scheduled"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_E",
+    "phase_start": "2026-10-19T13:14:59.170917",
+    "phase_end": "2026-10-19T13:15:09.170917",
+    "reason": "scheduled"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_W",
+    "phase_start": "2026-10-19T13:14:59.170917",
+    "phase_end": "2026-10-19T13:15:09.170917",
+    "reason": "scheduled"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_N",
+    "phase_start": "2026-10-19T13:15:00.170917",
+    "phase_end": "2026-10-19T13:15:10.170917",
+    "reason": "scheduled"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_S",
+    "phase_start": "2026-10-19T13:15:00.170917",
+    "phase_end": "2026-10-19T13:15:10.170917",
+    "reason": "scheduled"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_E",
+    "phase_start": "2026-10-19T13:15:00.170917",
+    "phase_end": "2026-10-19T13:15:10.170917",
+    "reason": "scheduled"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_W",
+    "phase_start": "2026-10-19T13:15:00.170917",
+    "phase_end": "2026-10-19T13:15:10.170917",
+    "reason": "scheduled"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_N",
+    "phase_start": "2026-10-19T13:15:01.170917",
+    "phase_end": "2026-10-19T13:15:11.170917",
+    "reason": "scheduled"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_S",
+    "phase_start": "2026-10-19T13:15:01.170917",
+    "phase_end": "2026-10-19T13:15:11.170917",
+    "reason": "scheduled"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_E",
+    "phase_start": "2026-10-19T13:15:01.170917",
+    "phase_end": "2026-10-19T13:15:11.170917",
+    "reason": "scheduled"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_W",
+    "phase_start": "2026-10-19T13:15:01.170917",
+    "phase_end": "2026-10-19T13:15:11.170917",
+    "reason": "scheduled"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_N",
+    "phase_start": "2026-10-19T13:15:02.170917",
+    "phase_end": "2026-10-19T13:15:12.170917",
+    "reason": "scheduled"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_S",
+    "phase_start": "2026-10-19T13:15:02.170917",
+    "phase_end": "2026-10-19T13:15:12.170917",
+    "reason": "scheduled"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_E",
+    "phase_start": "2026-10-19T13:15:02.170917",
+    "phase_end": "2026-10-19T13:15:12.170917",
+    "reason": "scheduled"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_W",
+    "phase_start": "2026-10-19T13:15:02.170917",
+    "phase_end": "2026-10-19T13:15:12.170917",
+    "reason": "scheduled"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_N",
+    "phase_start": "2026-10-19T13:15:03.170917",
+    "phase_end": "2026-10-19T13:15:13.170917",
+    "reason": "scheduled"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_S",
+    "phase_start": "2026-10-19T13:15:03.170917",
+    "phase_end": "2026-10-19T13:15:13.170917",
+    "reason": "scheduled"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_E",
+    "phase_start": "2026-10-19T13:15:03.170917",
+    "phase_end": "2026-10-19T13:15:13.170917",
+    "reason": "scheduled"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_W",
+    "phase_start": "2026-10-19T13:15:03.170917",
+    "phase_end": "2026-10-19T13:15:13.170917",
+    "reason": "extended"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_N",
+    "phase_start": "2026-10-19T13:15:04.170917",
+    "phase_end": "2026-10-19T13:15:14.170917",
+    "reason": "scheduled"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_S",
+    "phase_start": "2026-10-19T13:15:04.170917",
+    "phase_end": "2026-10-19T13:15:14.170917",
+    "reason": "scheduled"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_E",
+    "phase_start": "2026-10-19T13:15:04.170917",
+    "phase_end": "2026-10-19T13:15:14.170917",
+    "reason": "scheduled"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_W",
+    "phase_start": "2026-10-19T13:15:04.170917",
+    "phase_end": "2026-10-19T13:15:14.170917",
+    "reason": "extended"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_N",
+    "phase_start": "2026-10-19T13:15:05.170917",
+    "phase_end": "2026-10-19T13:15:15.170917",
+    "reason": "scheduled"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_S",
+    "phase_start": "2026-10-19T13:15:05.170917",
+    "phase_end": "2026-10-19T13:15:15.170917",
+    "reason": "scheduled"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_E",
+    "phase_start": "2026-10-19T13:15:05.170917",
+    "phase_end": "2026-10-19T13:15:15.170917",
+    "reason": "scheduled"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_W",
+    "phase_start": "2026-10-19T13:15:05.170917",
+    "phase_end": "2026-10-19T13:15:15.170917",
+    "reason": "extended"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_N",
+    "phase_start": "2026-10-19T13:15:06.170917",
+    "phase_end": "2026-10-19T13:15:16.170917",
+    "reason": "scheduled"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_S",
+    "phase_start": "2026-10-19T13:15:06.170917",
+    "phase_end": "2026-10-19T13:15:16.170917",
+    "reason": "scheduled"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_E",
+    "phase_start": "2026-10-19T13:15:06.170917",
+    "phase_end": "2026-10-19T13:15:16.170917",
+    "reason": "scheduled"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_W",
+    "phase_start": "2026-10-19T13:15:06.170917",
+    "phase_end": "2026-10-19T13:15:16.170917",
+    "reason": "extended"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_N",
+    "phase_start": "2026-10-19T13:15:07.170917",
+    "phase_end": "2026-10-19T13:15:17.170917",
+    "reason": "scheduled"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_S",
+    "phase_start": "2026-10-19T13:15:07.170917",
+    "phase_end": "2026-10-19T13:15:17.170917",
+    "reason": "scheduled"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_E",
+    "phase_start": "2026-10-19T13:15:07.170917",
+    "phase_end": "2026-10-19T13:15:17.170917",
+    "reason": "scheduled"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_W",
+    "phase_start": "2026-10-19T13:15:07.170917",
+    "phase_end": "2026-10-19T13:15:17.170917",
+    "reason": "extended"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_N",
+    "phase_start": "2026-10-19T13:15:08.170917",
+    "phase_end": "2026-10-19T13:15:18.170917",
+    "reason": "scheduled"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_S",
+    "phase_start": "2026-10-19T13:15:08.170917",
+    "phase_end": "2026-10-19T13:15:18.170917",
+    "reason": "scheduled"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_E",
+    "phase_start": "2026-10-19T13:15:08.170917",
+    "phase_end": "2026-10-19T13:15:18.170917",
+    "reason": "scheduled"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_W",
+    "phase_start": "2026-10-19T13:15:08.170917",
+    "phase_end": "2026-10-19T13:15:18.170917",
+    "reason": "extended"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_N",
+    "phase_start": "2026-10-19T13:15:09.170917",
+    "phase_end": "2026-10-19T13:15:19.170917",
+    "reason": "extended"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_S",
+    "phase_start": "2026-10-19T13:15:09.170917",
+    "phase_end": "2026-10-19T13:15:19.170917",
+    "reason": "scheduled"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_E",
+    "phase_start": "2026-10-19T13:15:09.170917",
+    "phase_end": "2026-10-19T13:15:19.170917",
+    "reason": "extended"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_W",
+    "phase_start": "2026-10-19T13:15:09.170917",
+    "phase_end": "2026-10-19T13:15:19.170917",
+    "reason": "extended"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_N",
+    "phase_start": "2026-10-19T13:15:10.170917",
+    "phase_end": "2026-10-19T13:15:20.170917",
+    "reason": "extended"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_S",
+    "phase_start": "2026-10-19T13:15:10.170917",
+    "phase_end": "2026-10-19T13:15:20.170917",
+    "reason": "scheduled"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_E",
+    "phase_start": "2026-10-19T13:15:10.170917",
+    "phase_end": "2026-10-19T13:15:20.170917",
+    "reason": "scheduled"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_W",
+    "phase_start": "2026-10-19T13:15:10.170917",
+    "phase_end": "2026-10-19T13:15:20.170917",
+    "reason": "extended"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_N",
+    "phase_start": "2026-10-19T13:15:11.170917",
+    "phase_end": "2026-10-19T13:15:21.170917",
+    "reason": "extended"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_S",
+    "phase_start": "2026-10-19T13:15:11.170917",
+    "phase_end": "2026-10-19T13:15:21.170917",
+    "reason": "scheduled"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_E",
+    "phase_start": "2026-10-19T13:15:11.170917",
+    "phase_end": "2026-10-19T13:15:21.170917",
+    "reason": "scheduled"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_W",
+    "phase_start": "2026-10-19T13:15:11.170917",
+    "phase_end": "2026-10-19T13:15:21.170917",
+    "reason": "extended"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_N",
+    "phase_start": "2026-10-19T13:15:12.170917",
+    "phase_end": "2026-10-19T13:15:22.170917",
+    "reason": "extended"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_S",
+    "phase_start": "2026-10-19T13:15:12.170917",
+    "phase_end": "2026-10-19T13:15:22.170917",
+    "reason": "scheduled"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_E",
+    "phase_start": "2026-10-19T13:15:12.170917",
+    "phase_end": "2026-10-19T13:15:22.170917",
+    "reason": "scheduled"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_W",
+    "phase_start": "2026-10-19T13:15:12.170917",
+    "phase_end": "2026-10-19T13:15:22.170917",
+    "reason": "extended"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_N",
+    "phase_start": "2026-10-19T13:15:13.170917",
+    "phase_end": "2026-10-19T13:15:23.170917",
+    "reason": "extended"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_S",
+    "phase_start": "2026-10-19T13:15:13.170917",
+    "phase_end": "2026-10-19T13:15:23.170917",
+    "reason": "scheduled"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_E",
+    "phase_start": "2026-10-19T13:15:13.170917",
+    "phase_end": "2026-10-19T13:15:23.170917",
+    "reason": "scheduled"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_W",
+    "phase_start": "2026-10-19T13:15:13.170917",
+    "phase_end": "2026-10-19T13:15:23.170917",
+    "reason": "extended"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_N",
+    "phase_start": "2026-10-19T13:15:14.170917",
+    "phase_end": "2026-10-19T13:15:24.170917",
+    "reason": "extended"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_S",
+    "phase_start": "2026-10-19T13:15:14.170917",
+    "phase_end": "2026-10-19T13:15:24.170917",
+    "reason": "scheduled"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_E",
+    "phase_start": "2026-10-19T13:15:14.170917",
+    "phase_end": "2026-10-19T13:15:24.170917",
+    "reason": "scheduled"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_W",
+    "phase_start": "2026-10-19T13:15:14.170917",
+    "phase_end": "2026-10-19T13:15:24.170917",
+    "reason": "extended"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_N",
+    "phase_start": "2026-10-19T13:15:15.170917",
+    "phase_end": "2026-10-19T13:15:25.170917",
+    "reason": "extended"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_S",
+    "phase_start": "2026-10-19T13:15:15.170917",
+    "phase_end": "2026-10-19T13:15:25.170917",
+    "reason": "scheduled"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_E",
+    "phase_start": "2026-10-19T13:15:15.170917",
+    "phase_end": "2026-10-19T13:15:25.170917",
+    "reason": "extended"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_W",
+    "phase_start": "2026-10-19T13:15:15.170917",
+    "phase_end": "2026-10-19T13:15:25.170917",
+    "reason": "extended"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_N",
+    "phase_start": "2026-10-19T13:15:16.170917",
+    "phase_end": "2026-10-19T13:15:26.170917",
+    "reason": "extended"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_S",
+    "phase_start": "2026-10-19T13:15:16.170917",
+    "phase_end": "2026-10-19T13:15:26.170917",
+    "reason": "scheduled"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_E",
+    "phase_start": "2026-10-19T13:15:16.170917",
+    "phase_end": "2026-10-19T13:15:26.170917",
+    "reason": "extended"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_W",
+    "phase_start": "2026-10-19T13:15:16.170917",
+    "phase_end": "2026-10-19T13:15:26.170917",
+    "reason": "extended"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_N",
+    "phase_start": "2026-10-19T13:15:17.170917",
+    "phase_end": "2026-10-19T13:15:27.170917",
+    "reason": "extended"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_S",
+    "phase_start": "2026-10-19T13:15:17.170917",
+    "phase_end": "2026-10-19T13:15:27.170917",
+    "reason": "scheduled"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_E",
+    "phase_start": "2026-10-19T13:15:17.170917",
+    "phase_end": "2026-10-19T13:15:27.170917",
+    "reason": "extended"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_W",
+    "phase_start": "2026-10-19T13:15:17.170917",
+    "phase_end": "2026-10-19T13:15:27.170917",
+    "reason": "extended"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_N",
+    "phase_start": "2026-10-19T13:15:18.170917",
+    "phase_end": "2026-10-19T13:15:28.170917",
+    "reason": "extended"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_S",
+    "phase_start": "2026-10-19T13:15:18.170917",
+    "phase_end": "2026-10-19T13:15:28.170917",
+    "reason": "scheduled"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_E",
+    "phase_start": "2026-10-19T13:15:18.170917",
+    "phase_end": "2026-10-19T13:15:28.170917",
+    "reason": "extended"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_W",
+    "phase_start": "2026-10-19T13:15:18.170917",
+    "phase_end": "2026-10-19T13:15:28.170917",
+    "reason": "extended"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_N",
+    "phase_start": "2026-10-19T13:15:19.170917",
+    "phase_end": "2026-10-19T13:15:29.170917",
+    "reason": "extended"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_S",
+    "phase_start": "2026-10-19T13:15:19.170917",
+    "phase_end": "2026-10-19T13:15:29.170917",
+    "reason": "extended"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_E",
+    "phase_start": "2026-10-19T13:15:19.170917",
+    "phase_end": "2026-10-19T13:15:29.170917",
+    "reason": "extended"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_W",
+    "phase_start": "2026-10-19T13:15:19.170917",
+    "phase_end": "2026-10-19T13:15:29.170917",
+    "reason": "extended"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_N",
+    "phase_start": "2026-10-19T13:15:20.170917",
+    "phase_end": "2026-10-19T13:15:30.170917",
+    "reason": "extended"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_S",
+    "phase_start": "2026-10-19T13:15:20.170917",
+    "phase_end": "2026-10-19T13:15:30.170917",
+    "reason": "extended"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_E",
+    "phase_start": "2026-10-19T13:15:20.170917",
+    "phase_end": "2026-10-19T13:15:30.170917",
+    "reason": "extended"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_W",
+    "phase_start": "2026-10-19T13:15:20.170917",
+    "phase_end": "2026-10-19T13:15:30.170917",
+    "reason": "extended"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_N",
+    "phase_start": "2026-10-19T13:15:21.170917",
+    "phase_end": "2026-10-19T13:15:31.170917",
+    "reason": "extended"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_S",
+    "phase_start": "2026-10-19T13:15:21.170917",
+    "phase_end": "2026-10-19T13:15:31.170917",
+    "reason": "extended"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_E",
+    "phase_start": "2026-10-19T13:15:21.170917",
+    "phase_end": "2026-10-19T13:15:31.170917",
+    "reason": "scheduled"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_W",
+    "phase_start": "2026-10-19T13:15:21.170917",
+    "phase_end": "2026-10-19T13:15:31.170917",
+    "reason": "extended"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_N",
+    "phase_start": "2026-10-19T13:15:22.170917",
+    "phase_end": "2026-10-19T13:15:32.170917",
+    "reason": "extended"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_S",
+    "phase_start": "2026-10-19T13:15:22.170917",
+    "phase_end": "2026-10-19T13:15:32.170917",
+    "reason": "extended"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_E",
+    "phase_start": "2026-10-19T13:15:22.170917",
+    "phase_end": "2026-10-19T13:15:32.170917",
+    "reason": "scheduled"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_W",
+    "phase_start": "2026-10-19T13:15:22.170917",
+    "phase_end": "2026-10-19T13:15:32.170917",
+    "reason": "extended"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_N",
+    "phase_start": "2026-10-19T13:15:23.170917",
+    "phase_end": "2026-10-19T13:15:33.170917",
+    "reason": "extended"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_S",
+    "phase_start": "2026-10-19T13:15:23.170917",
+    "phase_end": "2026-10-19T13:15:33.170917",
+    "reason": "extended"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_E",
+    "phase_start": "2026-10-19T13:15:23.170917",
+    "phase_end": "2026-10-19T13:15:33.170917",
+    "reason": "scheduled"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_W",
+    "phase_start": "2026-10-19T13:15:23.170917",
+    "phase_end": "2026-10-19T13:15:33.170917",
+    "reason": "extended"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_N",
+    "phase_start": "2026-10-19T13:15:24.170917",
+    "phase_end": "2026-10-19T13:15:34.170917",
+    "reason": "extended"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_S",
+    "phase_start": "2026-10-19T13:15:24.170917",
+    "phase_end": "2026-10-19T13:15:34.170917",
+    "reason": "extended"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_E",
+    "phase_start": "2026-10-19T13:15:24.170917",
+    "phase_end": "2026-10-19T13:15:34.170917",
+    "reason": "scheduled"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_W",
+    "phase_start": "2026-10-19T13:15:24.170917",
+    "phase_end": "2026-10-19T13:15:34.170917",
+    "reason": "extended"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_N",
+    "phase_start": "2026-10-19T13:15:25.170917",
+    "phase_end": "2026-10-19T13:15:35.170917",
+    "reason": "extended"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_S",
+    "phase_start": "2026-10-19T13:15:25.170917",
+    "phase_end": "2026-10-19T13:15:35.170917",
+    "reason": "extended"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_E",
+    "phase_start": "2026-10-19T13:15:25.170917",
+    "phase_end": "2026-10-19T13:15:35.170917",
+    "reason": "scheduled"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_W",
+    "phase_start": "2026-10-19T13:15:25.170917",
+    "phase_end": "2026-10-19T13:15:35.170917",
+    "reason": "extended"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_N",
+    "phase_start": "2026-10-19T13:15:26.170917",
+    "phase_end": "2026-10-19T13:15:36.170917",
+    "reason": "extended"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_S",
+    "phase_start": "2026-10-19T13:15:26.170917",
+    "phase_end": "2026-10-19T13:15:36.170917",
+    "reason": "extended"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_E",
+    "phase_start": "2026-10-19T13:15:26.170917",
+    "phase_end": "2026-10-19T13:15:36.170917",
+    "reason": "extended"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_W",
+    "phase_start": "2026-10-19T13:15:26.170917",
+    "phase_end": "2026-10-19T13:15:36.170917",
+    "reason": "extended"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_N",
+    "phase_start": "2026-10-19T13:15:27.170917",
+    "phase_end": "2026-10-19T13:15:37.170917",
+    "reason": "scheduled"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_S",
+    "phase_start": "2026-10-19T13:15:27.170917",
+    "phase_end": "2026-10-19T13:15:37.170917",
+    "reason": "extended"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_E",
+    "phase_start": "2026-10-19T13:15:27.170917",
+    "phase_end": "2026-10-19T13:15:37.170917",
+    "reason": "extended"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_W",
+    "phase_start": "2026-10-19T13:15:27.170917",
+    "phase_end": "2026-10-19T13:15:37.170917",
+    "reason": "extended"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_N",
+    "phase_start": "2026-10-19T13:15:28.170917",
+    "phase_end": "2026-10-19T13:15:38.170917",
+    "reason": "scheduled"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_S",
+    "phase_start": "2026-10-19T13:15:28.170917",
+    "phase_end": "2026-10-19T13:15:38.170917",
+    "reason": "extended"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_E",
+    "phase_start": "2026-10-19T13:15:28.170917",
+    "phase_end": "2026-10-19T13:15:38.170917",
+    "reason": "extended"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_W",
+    "phase_start": "2026-10-19T13:15:28.170917",
+    "phase_end": "2026-10-19T13:15:38.170917",
+    "reason": "extended"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_N",
+    "phase_start": "2026-10-19T13:15:29.170917",
+    "phase_end": "2026-10-19T13:15:39.170917",
+    "reason": "scheduled"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_S",
+    "phase_start": "2026-10-19T13:15:29.170917",
+    "phase_end": "2026-10-19T13:15:39.170917",
+    "reason": "extended"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_E",
+    "phase_start": "2026-10-19T13:15:29.170917",
+    "phase_end": "2026-10-19T13:15:39.170917",
+    "reason": "extended"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_W",
+    "phase_start": "2026-10-19T13:15:29.170917",
+    "phase_end": "2026-10-19T13:15:39.170917",
+    "reason": "extended"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_N",
+    "phase_start": "2026-10-19T13:15:30.170917",
+    "phase_end": "2026-10-19T13:15:40.170917",
+    "reason": "scheduled"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_S",
+    "phase_start": "2026-10-19T13:15:30.170917",
+    "phase_end": "2026-10-19T13:15:40.170917",
+    "reason": "extended"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_E",
+    "phase_start": "2026-10-19T13:15:30.170917",
+    "phase_end": "2026-10-19T13:15:40.170917",
+    "reason": "extended"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_W",
+    "phase_start": "2026-10-19T13:15:30.170917",
+    "phase_end": "2026-10-19T13:15:40.170917",
+    "reason": "extended"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_N",
+    "phase_start": "2026-10-19T13:15:31.170917",
+    "phase_end": "2026-10-19T13:15:41.170917",
+    "reason": "scheduled"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_S",
+    "phase_start": "2026-10-19T13:15:31.170917",
+    "phase_end": "2026-10-19T13:15:41.170917",
+    "reason": "extended"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_E",
+    "phase_start": "2026-10-19T13:15:31.170917",
+    "phase_end": "2026-10-19T13:15:41.170917",
+    "reason": "extended"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_W",
+    "phase_start": "2026-10-19T13:15:31.170917",
+    "phase_end": "2026-10-19T13:15:41.170917",
+    "reason": "extended"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_N",
+    "phase_start": "2026-10-19T13:15:32.170917",
+    "phase_end": "2026-10-19T13:15:42.170917",
+    "reason": "scheduled"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_S",
+    "phase_start": "2026-10-19T13:15:32.170917",
+    "phase_end": "2026-10-19T13:15:42.170917",
+    "reason": "extended"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_E",
+    "phase_start": "2026-10-19T13:15:32.170917",
+    "phase_end": "2026-10-19T13:15:42.170917",
+    "reason": "extended"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_W",
+    "phase_start": "2026-10-19T13:15:32.170917",
+    "phase_end": "2026-10-19T13:15:42.170917",
+    "reason": "extended"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_N",
+    "phase_start": "2026-10-19T13:15:33.170917",
+    "phase_end": "2026-10-19T13:15:43.170917",
+    "reason": "scheduled"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_S",
+    "phase_start": "2026-10-19T13:15:33.170917",
+    "phase_end": "2026-10-19T13:15:43.170917",
+    "reason": "extended"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_E",
+    "phase_start": "2026-10-19T13:15:33.170917",
+    "phase_end": "2026-10-19T13:15:43.170917",
+    "reason": "extended"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_W",
+    "phase_start": "2026-10-19T13:15:33.170917",
+    "phase_end": "2026-10-19T13:15:43.170917",
+    "reason": "extended"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_N",
+    "phase_start": "2026-10-19T13:15:34.170917",
+    "phase_end": "2026-10-19T13:15:44.170917",
+    "reason": "extended"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_S",
+    "phase_start": "2026-10-19T13:15:34.170917",
+    "phase_end": "2026-10-19T13:15:44.170917",
+    "reason": "extended"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_E",
+    "phase_start": "2026-10-19T13:15:34.170917",
+    "phase_end": "2026-10-19T13:15:44.170917",
+    "reason": "extended"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_W",
+    "phase_start": "2026-10-19T13:15:34.170917",
+    "phase_end": "2026-10-19T13:15:44.170917",
+    "reason": "extended"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_N",
+    "phase_start": "2026-10-19T13:15:35.170917",
+    "phase_end": "2026-10-19T13:15:45.170917",
+    "reason": "extended"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_S",
+    "phase_start": "2026-10-19T13:15:35.170917",
+    "phase_end": "2026-10-19T13:15:45.170917",
+    "reason": "extended"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_E",
+    "phase_start": "2026-10-19T13:15:35.170917",
+    "phase_end": "2026-10-19T13:15:45.170917",
+    "reason": "scheduled"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_W",
+    "phase_start": "2026-10-19T13:15:35.170917",
+    "phase_end": "2026-10-19T13:15:45.170917",
+    "reason": "extended"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_N",
+    "phase_start": "2026-10-19T13:15:36.170917",
+    "phase_end": "2026-10-19T13:15:46.170917",
+    "reason": "extended"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_S",
+    "phase_start": "2026-10-19T13:15:36.170917",
+    "phase_end": "2026-10-19T13:15:46.170917",
+    "reason": "extended"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_E",
+    "phase_start": "2026-10-19T13:15:36.170917",
+    "phase_end": "2026-10-19T13:15:46.170917",
+    "reason": "scheduled"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_W",
+    "phase_start": "2026-10-19T13:15:36.170917",
+    "phase_end": "2026-10-19T13:15:46.170917",
+    "reason": "extended"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_N",
+    "phase_start": "2026-10-19T13:15:37.170917",
+    "phase_end": "2026-10-19T13:15:47.170917",
+    "reason": "extended"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_S",
+    "phase_start": "2026-10-19T13:15:37.170917",
+    "phase_end": "2026-10-19T13:15:47.170917",
+    "reason": "scheduled"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_E",
+    "phase_start": "2026-10-19T13:15:37.170917",
+    "phase_end": "2026-10-19T13:15:47.170917",
+    "reason": "scheduled"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_W",
+    "phase_start": "2026-10-19T13:15:37.170917",
+    "phase_end": "2026-10-19T13:15:47.170917",
+    "reason": "extended"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_N",
+    "phase_start": "2026-10-19T13:15:38.170917",
+    "phase_end": "2026-10-19T13:15:48.170917",
+    "reason": "extended"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_S",
+    "phase_start": "2026-10-19T13:15:38.170917",
+    "phase_end": "2026-10-19T13:15:48.170917",
+    "reason": "scheduled"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_E",
+    "phase_start": "2026-10-19T13:15:38.170917",
+    "phase_end": "2026-10-19T13:15:48.170917",
+    "reason": "scheduled"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_W",
+    "phase_start": "2026-10-19T13:15:38.170917",
+    "phase_end": "2026-10-19T13:15:48.170917",
+    "reason": "extended"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_N",
+    "phase_start": "2026-10-19T13:15:39.170917",
+    "phase_end": "2026-10-19T13:15:49.170917",
+    "reason": "scheduled"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_S",
+    "phase_start": "2026-10-19T13:15:39.170917",
+    "phase_end": "2026-10-19T13:15:49.170917",
+    "reason": "extended"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_E",
+    "phase_start": "2026-10-19T13:15:39.170917",
+    "phase_end": "2026-10-19T13:15:49.170917",
+    "reason": "scheduled"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_W",
+    "phase_start": "2026-10-19T13:15:39.170917",
+    "phase_end": "2026-10-19T13:15:49.170917",
+    "reason": "extended"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_N",
+    "phase_start": "2026-10-19T13:15:40.170917",
+    "phase_end": "2026-10-19T13:15:50.170917",
+    "reason": "extended"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_S",
+    "phase_start": "2026-10-19T13:15:40.170917",
+    "phase_end": "2026-10-19T13:15:50.170917",
+    "reason": "extended"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_E",
+    "phase_start": "2026-10-19T13:15:40.170917",
+    "phase_end": "2026-10-19T13:15:50.170917",
+    "reason": "scheduled"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_W",
+    "phase_start": "2026-10-19T13:15:40.170917",
+    "phase_end": "2026-10-19T13:15:50.170917",
+    "reason": "extended"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_N",
+    "phase_start": "2026-10-19T13:15:41.170917",
+    "phase_end": "2026-10-19T13:15:51.170917",
+    "reason": "extended"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_S",
+    "phase_start": "2026-10-19T13:15:41.170917",
+    "phase_end": "2026-10-19T13:15:51.170917",
+    "reason": "extended"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_E",
+    "phase_start": "2026-10-19T13:15:41.170917",
+    "phase_end": "2026-10-19T13:15:51.170917",
+    "reason": "scheduled"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_W",
+    "phase_start": "2026-10-19T13:15:41.170917",
+    "phase_end": "2026-10-19T13:15:51.170917",
+    "reason": "extended"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_N",
+    "phase_start": "2026-10-19T13:15:42.170917",
+    "phase_end": "2026-10-19T13:15:52.170917",
+    "reason": "extended"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_S",
+    "phase_start": "2026-10-19T13:15:42.170917",
+    "phase_end": "2026-10-19T13:15:52.170917",
+    "reason": "extended"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_E",
+    "phase_start": "2026-10-19T13:15:42.170917",
+    "phase_end": "2026-10-19T13:15:52.170917",
+    "reason": "scheduled"
+  },
+  {
+    "intersection_id": "INT-01",
+    "active_lane_id": "lane_W",
+    "phase_start": "2026-10-19T13:15:42.170917",
+    "phase_end": "2026-10-19T13:15:52.170917",
+    "reason": "extended"
   }
 ]

@@ -153,8 +153,12 @@ export async function POST(req: NextRequest) {
       }
     } catch {
       try {
-        const obsPath = path.resolve(process.cwd(), "..", "results", "obs_log.json");
-        if (fs.existsSync(obsPath)) {
+        const candidatePaths = [
+          path.resolve(process.cwd(), "..", "results", "obs_log.json"),
+          path.resolve(process.cwd(), "results", "obs_log.json"),
+        ];
+        const obsPath = candidatePaths.find((p) => fs.existsSync(p));
+        if (obsPath) {
           const obsData = JSON.parse(fs.readFileSync(obsPath, "utf-8"));
           if (Array.isArray(obsData) && obsData.length > 0) {
             liveLaneStates = {};

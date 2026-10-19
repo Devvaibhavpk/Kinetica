@@ -239,15 +239,17 @@ class OCSortTracker:
                 confidence=float(det.get("confidence", 1.0)),
             )
             # Update class if provided
-            if "class" in det:
-                self.trackers[t_idx].class_name = det["class"]
+            cls_name = det.get("class") or det.get("coco_class")
+            if cls_name:
+                self.trackers[t_idx].class_name = cls_name
 
         # 5. Create new tracks for unmatched detections
         for d_idx in unmatched_dets:
             det = detections[d_idx]
+            cls_name = det.get("class") or det.get("coco_class", "car")
             trk = KalmanBoxTracker(
                 bbox=det["bbox"],
-                class_name=det.get("class", "car"),
+                class_name=cls_name,
                 confidence=float(det.get("confidence", 1.0)),
             )
             self.trackers.append(trk)
