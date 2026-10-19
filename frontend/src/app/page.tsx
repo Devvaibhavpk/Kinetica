@@ -67,7 +67,18 @@ export default function Home() {
         />
 
         <div className="mt-14 p-6 overflow-y-auto flex-1 flex flex-col gap-6 pb-6">
-          {renderActiveView()}
+          <div className={activeModule === "overview" ? "flex flex-col gap-6" : "hidden"}>
+            <OverviewView />
+          </div>
+          <div className={activeModule === "intersection" ? "flex flex-col gap-6" : "hidden"}>
+            <IntersectionDetailView />
+          </div>
+          <div className={activeModule === "vision" ? "flex flex-col gap-6" : "hidden"}>
+            <VisionMonitorView />
+          </div>
+          <div className={activeModule === "settings" ? "flex flex-col gap-6" : "hidden"}>
+            <SettingsView />
+          </div>
         </div>
       </main>
     </>

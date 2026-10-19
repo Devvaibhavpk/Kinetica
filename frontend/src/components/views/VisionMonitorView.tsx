@@ -1,13 +1,21 @@
 "use client";
 
 import React, { useState, useEffect, useRef } from "react";
-import { updateVisionFeedState } from "../../lib/visionFeedStore";
+import {
+  updateVisionFeedState,
+  DirectionKey,
+  SignalColor,
+  ApproachFeedData,
+  CorridorRoutingState,
+} from "../../lib/visionFeedStore";
 
 interface Detection {
   bbox: [number, number, number, number];
   class: string;
   confidence: number;
   normalized_bbox: [number, number, number, number];
+  approach?: string;
+  assigned_lane?: string;
 }
 
 interface WsInferenceResponse {
@@ -18,6 +26,17 @@ interface WsInferenceResponse {
   class_counts: Record<string, number>;
   detections: Detection[];
   image_size?: [number, number];
+  intersection_id?: string;
+  active_phase?: string;
+  phase_state?: string;
+  phase_countdown_s?: number;
+  signal_colors?: Record<string, SignalColor>;
+  approaches?: Record<string, ApproachFeedData>;
+  corridor_routing?: CorridorRoutingState;
+  green_splits?: Record<string, number>;
+  active_camera_connections?: number;
+  connected_cameras?: Record<string, number>;
+  current_camera?: string;
 }
 
 interface TrackedVehicle {
@@ -26,51 +45,65 @@ interface TrackedVehicle {
   confidence: number;
   norm_bbox: [number, number, number, number];
   missedFrames: number;
+  ambulanceConfirmCount?: number;
+  standardConfirmCount?: number;
 }
 
-interface JunctionCamera {
-  id: string;
-  name: string;
-  road: string;
-  imageUrl: string;
-  defaultStatus: string;
-  homography: string;
+export interface ApproachSourceConfig {
+  key: DirectionKey;
+  id: string; // "Approach-N"
+  camNumber: number; // 1, 2, 3, 4
+  camTag: string; // "Cam 1", "Cam 2", "Cam 3", "Cam 4"
+  name: string; // "North (OMR In)"
+  subtitle: string; // "OMR Inbound Mainline"
+  road: string; // "Rajiv Gandhi Salai"
+  sampleVideo: string;
+  ambulanceVideo?: string;
 }
 
-const JUNCTION_CAMERAS: JunctionCamera[] = [
-  {
-    id: "CAM-01",
-    name: "CAM-01 · SHOLINGANALLUR",
-    road: "OMR NORTH CORRIDOR",
-    imageUrl: "https://lh3.googleusercontent.com/aida-public/AB6AXuBR4YaC1rwAdRVTfJJPDE6cuRTlSXj4e4MFrETbRpG0HXgYWXnOZ8SaIBYxEX_H0Lbq5K1WUVbds-Vf0ib-3LkDjZB-f5GRR2gEAgd5iBpD4gh1PY9-pleNwMsVb1nntDiOXGYd9u18ZjhACHJnIDMEIqX7o5M9sMbR4B5GkRkUV3QrA578Rvz-PmbR4c6Ntgs34WFrUu17h6vtZPbIbtfDWkeeH6qUqZRxj1wQCzXdIyMk6vG_4x_fDA",
-    defaultStatus: "108 EMS PREEMPTION ACTIVE",
-    homography: "20 px/m",
+export const APPROACH_SOURCES: Record<DirectionKey, ApproachSourceConfig> = {
+  N: {
+    key: "N",
+    id: "Approach-N",
+    camNumber: 1,
+    camTag: "Cam 1",
+    name: "North (OMR In)",
+    subtitle: "OMR Inbound Mainline (Top-Down CCTV)",
+    road: "Rajiv Gandhi Salai",
+    sampleVideo: "/sample_videos/cam1_north_omr_inbound.mp4",
   },
-  {
-    id: "CAM-02",
-    name: "CAM-02 · MADHYA KAILASH",
-    road: "SARDAR PATEL RD",
-    imageUrl: "https://lh3.googleusercontent.com/aida-public/AB6AXuBJDlS4PL07UxmZlrJd_2YgT0q6LsxE_GqjsNV6bhdDuIqaLTWavgJeJTJptUoBXfjU29Hs2MjfEs82TuMhGud7bahfffkGcnGRbOvtVBGsMQYcHQzlt_WVhFQzHsAvAyNowtxCbMVE6dtUJyvRdegMtBv_Y0du_mbiM_gGosywMbyhjWqPxCt_JTe3tSa9C56TvLmzhRUzBidf53DFD5G6nBHkmVSy7HSHkGCIvI9pak9J2Exn4CuHBA",
-    defaultStatus: "PATROL UNIT PASSING",
-    homography: "18 px/m",
+  S: {
+    key: "S",
+    id: "Approach-S",
+    camNumber: 2,
+    camTag: "Cam 2",
+    name: "South (OMR Out)",
+    subtitle: "OMR Outbound to Siruseri (Top-Down CCTV)",
+    road: "Siruseri IT Expressway",
+    sampleVideo: "/sample_videos/cam2_south_omr_outbound.mp4",
   },
-  {
-    id: "CAM-03",
-    name: "CAM-03 · TIDEL PARK",
-    road: "OMR FAST-LANE",
-    imageUrl: "https://lh3.googleusercontent.com/aida-public/AB6AXuAhVMYifTcU3r-GoZi5JSVwCqek0920Tmoqwj-8jJk1xurcD_GiiQHds0eK3Y9FZuXcvehhhdRR_3mMSXxBhq2PE1Tf6imhmgwPI3kYh0oWUOjGeI3vlbYNDXADSyitn_nY6AItTLIwL-qadOqYUYVryV13tosO_BeP0wd-LkF3saop1ccrnRwCID3MR0VcetqMUSwudJw2Aq9zpqTHGzf34v8wEK9-s91lbSKey7EY4a4LbUw4vww04g",
-    defaultStatus: "FAST-LANE CLEAR",
-    homography: "22 px/m",
+  E: {
+    key: "E",
+    id: "Approach-E",
+    camNumber: 3,
+    camTag: "Cam 3",
+    name: "East (ECR/EMS)",
+    subtitle: "ECR Link & Hospital Route (Top-Down CCTV)",
+    road: "ECR EMS Link Road (108 Priority)",
+    sampleVideo: "/sample_videos/cam3_east_ecr_normal.mp4",
+    ambulanceVideo: "/sample_videos/cam3_east_ecr_ambulance.mp4",
   },
-  {
-    id: "CAM-04",
-    name: "CAM-04 · KATHIPARA FLYOVER",
-    road: "GST HWY INTERCHANGE",
-    imageUrl: "https://lh3.googleusercontent.com/aida-public/AB6AXuCQhfLF-ooQ1z6ZhfZ1G20Eyxf6V-xiAaTJVSs4LHgPe_Cw88BIiYV-b11EGYoHjquxbhBRVxfql8dGMTYpWmVc9FkLb-rQpMSSWQQObvaYcQRd8XiRmvfeqQa50rmoeeldn5tz5GLEriq0g9mai2BBEg94EbOT6iyP7EjfC7fGChzWdNqzqT7MuI7Q1eCdBO7dMyR-OPvCc_Doal4lPR53TsTi6WQX4Kc_M1UCFFCuOQ1nZvYfVHcvfQ",
-    defaultStatus: "HIGHWAY MAINLINE FLOW",
-    homography: "15 px/m",
+  W: {
+    key: "W",
+    id: "Approach-W",
+    camNumber: 4,
+    camTag: "Cam 4",
+    name: "West (Medavakkam)",
+    subtitle: "Tambaram Arterial Link (Top-Down CCTV)",
+    road: "Medavakkam Main Rd",
+    sampleVideo: "/sample_videos/cam4_west_medavakkam.mp4",
   },
-];
+};
 
 function computeIoU(b1: [number, number, number, number], b2: [number, number, number, number]): number {
   const [x1, y1, w1, h1] = b1;
@@ -90,19 +123,63 @@ function computeIoU(b1: [number, number, number, number], b2: [number, number, n
 }
 
 export default function VisionMonitorView() {
-  const [activeTab, setActiveTab] = useState<"webcam" | "array">("webcam");
+  // ── 4-APPROACH SOURCE SELECTION & INDIVIDUAL VIDEO REFS ─────────────────────────────
+  const [selectedApproach, setSelectedApproach] = useState<DirectionKey>("N");
+  const selectedApproachRef = useRef<DirectionKey>("N");
+  const [eastAmbulanceMode, setEastAmbulanceMode] = useState<boolean>(false);
 
-  // ── 4-CAMERA ARRAY STATE ─────────────────────────────
-  const [arrayFilter, setArrayFilter] = useState<string>("all");
-  const [arrayDetections, setArrayDetections] = useState<Record<string, { detections: Detection[]; latency_ms: number; fps: number }>>({});
-  const [isArrayDetecting, setIsArrayDetecting] = useState<boolean>(false);
+  useEffect(() => {
+    selectedApproachRef.current = selectedApproach;
+  }, [selectedApproach]);
+
+  // Individual video uploads for each of the 4 approaches (all 4 approaches ready out-of-the-box with authentic Indian road videos)
+  const [approachVideos, setApproachVideos] = useState<Record<DirectionKey, {
+    url: string;
+    fileName: string;
+    file?: File;
+    isCustomUpload: boolean;
+  }>>({
+    N: { url: "/sample_videos/cam1_north_omr_inbound.mp4", fileName: "Cam 1 -  North (OMR Inbound - Rajiv Gandhi Salai).mp4", isCustomUpload: false },
+    S: { url: "/sample_videos/cam2_south_omr_outbound.mp4", fileName: "Cam 2 - South (OMR Outbound - Siruseri IT Expressway).mp4", isCustomUpload: false },
+    E: { url: "/sample_videos/cam3_east_ecr_normal.mp4", fileName: "Cam 3 (Normal) - East (ECR   EMS Link Road - No Ambulance).mp4", isCustomUpload: false },
+    W: { url: "/sample_videos/cam4_west_medavakkam.mp4", fileName: "Cam 4 - West (Medavakkam Main Rd).mp4", isCustomUpload: false },
+  });
+
+  // Individual camera streaming state (allows Cam 1, Cam 2, Cam 3, Cam 4 to run/terminate independently)
+  const [cameraStreaming, setCameraStreaming] = useState<Record<DirectionKey, boolean>>({
+    N: false,
+    S: false,
+    E: false,
+    W: false,
+  });
+  const cameraStreamingRef = useRef<Record<DirectionKey, boolean>>({
+    N: false,
+    S: false,
+    E: false,
+    W: false,
+  });
+
+  const viewportFrameRef = useRef<HTMLDivElement | null>(null);
+  const fileInputNRef = useRef<HTMLInputElement | null>(null);
+  const fileInputSRef = useRef<HTMLInputElement | null>(null);
+  const fileInputERef = useRef<HTMLInputElement | null>(null);
+  const fileInputWRef = useRef<HTMLInputElement | null>(null);
+
+  const getFileInputRef = (dir: DirectionKey) => {
+    switch (dir) {
+      case "N": return fileInputNRef;
+      case "S": return fileInputSRef;
+      case "E": return fileInputERef;
+      case "W": return fileInputWRef;
+    }
+  };
 
   // ── LIVE STREAMING & WEBSOCKET STATE ─────────────────────────────
-  const [streamSource, setStreamSource] = useState<"webcam" | "screenshare" | null>(null);
+  const [streamSource, setStreamSource] = useState<"webcam" | "screenshare" | "upload" | null>(null);
   const [isStreaming, setIsStreaming] = useState<boolean>(false);
   const [wsStatus, setWsStatus] = useState<"disconnected" | "connecting" | "connected">("disconnected");
   const [allowAllClasses, setAllowAllClasses] = useState<boolean>(false);
-  const [confThreshold, setConfThreshold] = useState<number>(0.32);
+  const [confThreshold, setConfThreshold] = useState<number>(0.20);
   const [liveDetections, setLiveDetections] = useState<Detection[]>([]);
   const [trackedVehicles, setTrackedVehicles] = useState<TrackedVehicle[]>([]);
   const [liveLatency, setLiveLatency] = useState<number>(0);
@@ -111,6 +188,16 @@ export default function VisionMonitorView() {
   const [streamError, setStreamError] = useState<string | null>(null);
   const [frameCount, setFrameCount] = useState<number>(0);
   const [videoDisplaySize, setVideoDisplaySize] = useState<{ w: number; h: number }>({ w: 640, h: 460 });
+  const [isVideoPaused, setIsVideoPaused] = useState<boolean>(false);
+  const [activeWsConnections, setActiveWsConnections] = useState<number>(1);
+  const [connectedCameras, setConnectedCameras] = useState<Record<string, number>>({});
+  const [availableWebcams, setAvailableWebcams] = useState<MediaDeviceInfo[]>([]);
+  const [selectedWebcamDevices, setSelectedWebcamDevices] = useState<Record<DirectionKey, string>>({
+    N: "",
+    S: "",
+    E: "",
+    W: "",
+  });
 
   // ── CUMULATIVE SESSION INFLOW STATE (START TO END) ─────────────────────────────
   const [telemetryMode, setTelemetryMode] = useState<"instant" | "cumulative">("cumulative");
@@ -119,44 +206,349 @@ export default function VisionMonitorView() {
   const [peakDensity, setPeakDensity] = useState<number>(0);
   const [streamDurationSec, setStreamDurationSec] = useState<number>(0);
 
+  // ── 4-PATH APPROACH SIGNAL & CORRIDOR ROUTING LINKED STATE ──
+  const [approachesData, setApproachesData] = useState<Record<string, ApproachFeedData>>({
+    N: { approach_id: "Approach-N", direction: "N", name: "North Approach (OMR Inbound)", vehicles: 0, queue_m: 0, density: 0, signal: "green", is_emergency: false },
+    S: { approach_id: "Approach-S", direction: "S", name: "South Approach (OMR Outbound)", vehicles: 0, queue_m: 0, density: 0, signal: "red", is_emergency: false },
+    E: { approach_id: "Approach-E", direction: "E", name: "East Approach (ECR / EMS Link)", vehicles: 0, queue_m: 0, density: 0, signal: "red", is_emergency: false },
+    W: { approach_id: "Approach-W", direction: "W", name: "West Approach (Medavakkam Rd)", vehicles: 0, queue_m: 0, density: 0, signal: "red", is_emergency: false },
+  });
+  const [activePhase, setActivePhase] = useState<string>("Approach-N");
+  const [phaseState, setPhaseState] = useState<string>("GREEN");
+  const [phaseCountdown, setPhaseCountdown] = useState<number>(24.0);
+  const [signalColors, setSignalColors] = useState<Record<string, SignalColor>>({
+    N: "green",
+    S: "red",
+    E: "red",
+    W: "red",
+  });
+  const [corridorRouting, setCorridorRouting] = useState<CorridorRoutingState | null>({
+    origin_intersection: "IX-104",
+    intersection_name: "Sholinganallur Junction",
+    active_approach: "Approach-N",
+    corridor_path: ["IX-104", "IX-103", "IX-102", "IX-101"],
+    is_preempted: false,
+    destination: "Gleneagles Global Health City",
+    status: "DYNAMIC_PROGRESSION",
+    time_saved_minutes: 2.1,
+    speed_boost_percent: 38.5,
+  });
+
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const fileUploadRef = useRef<HTMLInputElement | null>(null);
   const canvasCaptureRef = useRef<HTMLCanvasElement | null>(null);
+  const rafIdRef = useRef<number | null>(null);
+  const lastFrameSentTimeRef = useRef<number>(0);
+  const approachTimesRef = useRef<Record<DirectionKey, number>>({
+    N: 0,
+    S: 0,
+    E: 0,
+    W: 0,
+  });
 
-  const handleCctvVideoUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
+  const scheduleNextFrame = () => {
+    if (!isStreamingRef.current) return;
+    if (rafIdRef.current) {
+      cancelAnimationFrame(rafIdRef.current);
+      rafIdRef.current = null;
+    }
+    rafIdRef.current = requestAnimationFrame(sendCurrentFrame);
+  };
+
+  const playVideoSource = (url: string, fileName: string, targetTime?: number) => {
     setStreamError(null);
-    const url = URL.createObjectURL(file);
+    const video = videoRef.current;
+    if (!video) return;
 
-    if (videoRef.current) {
-      if (videoRef.current.srcObject) {
-        const stream = videoRef.current.srcObject as MediaStream;
-        stream.getTracks().forEach((track) => track.stop());
-        videoRef.current.srcObject = null;
+    const dir = selectedApproachRef.current;
+    setCameraStreaming((prev) => ({ ...prev, [dir]: true }));
+    cameraStreamingRef.current[dir] = true;
+
+    // Reset processing flag so streaming can flow
+    isProcessingFrameRef.current = false;
+
+    if (video.srcObject) {
+      const stream = video.srcObject as MediaStream;
+      stream.getTracks().forEach((track) => track.stop());
+      video.srcObject = null;
+    }
+
+    setIsStreaming(true);
+    isStreamingRef.current = true;
+    setStreamSource("upload");
+
+    updateVisionFeedState({
+      videoUrl: url,
+      videoFileName: fileName,
+      streamSource: "upload",
+      isStreaming: true,
+      activePhase: `Approach-${selectedApproachRef.current}`,
+    });
+
+    // Ensure audio policy does not block autoplay in any browser
+    video.muted = true;
+    video.defaultMuted = true;
+    video.playsInline = true;
+    video.loop = true;
+
+    const currentSrc = video.currentSrc || video.src || "";
+    const isSameSrc = (currentSrc.includes(url) || url.includes(currentSrc)) && url.length > 5;
+
+    const startPlayback = async () => {
+      try {
+        if (typeof targetTime === "number" && Number.isFinite(targetTime) && targetTime > 0) {
+          if (video.duration && targetTime < video.duration) {
+            video.currentTime = targetTime;
+          }
+        }
+        await video.play();
+        setIsVideoPaused(false);
+        updateVideoDisplaySize();
+      } catch (err) {
+        console.warn("Video play notice:", err);
+        setIsVideoPaused(true);
+      } finally {
+        isProcessingFrameRef.current = false;
+        scheduleNextFrame();
       }
-      videoRef.current.src = url;
-      videoRef.current.loop = true;
-      videoRef.current.play().catch((err) => {
-        console.warn("Video play error:", err);
-      });
+    };
 
-      setIsStreaming(true);
-      isStreamingRef.current = true;
-      setStreamSource("webcam");
-      updateVideoDisplaySize();
+    if (isSameSrc && video.readyState >= 2) {
+      startPlayback();
+      return;
+    }
 
-      updateVisionFeedState({
-        videoUrl: url,
-        videoFileName: file.name,
-        streamSource: "upload",
-        isStreaming: true,
-      });
+    // New source loading: assign and load
+    video.pause();
+    video.src = url;
 
-      isProcessingFrameRef.current = false;
-      requestAnimationFrame(sendCurrentFrame);
+    // Listen to multiple readiness events so it starts as soon as browser decodes
+    let started = false;
+    const triggerStart = () => {
+      if (started) return;
+      started = true;
+      video.removeEventListener("canplay", triggerStart);
+      video.removeEventListener("loadeddata", triggerStart);
+      video.removeEventListener("loadedmetadata", triggerStart);
+      startPlayback();
+    };
+
+    video.addEventListener("canplay", triggerStart, { once: true });
+    video.addEventListener("loadeddata", triggerStart, { once: true });
+    video.addEventListener("loadedmetadata", triggerStart, { once: true });
+
+    // Fallback trigger after 200ms in case events already passed or stalled
+    setTimeout(() => {
+      if (!started) {
+        triggerStart();
+      }
+    }, 200);
+
+    video.load();
+    if (video.readyState >= 2) {
+      triggerStart();
     }
   };
+
+  const switchEastVideoMode = (withAmbulance: boolean) => {
+    setEastAmbulanceMode(withAmbulance);
+    const url = withAmbulance
+      ? "/sample_videos/cam3_east_ecr_ambulance.mp4"
+      : "/sample_videos/cam3_east_ecr_normal.mp4";
+    const fileName = withAmbulance
+      ? "Cam 3 (Ambulance)- East (ECR  EMS Link Road - 108 Priority).mp4"
+      : "Cam 3 (Normal) - East (ECR   EMS Link Road - No Ambulance).mp4";
+
+    setApproachVideos((prev) => ({
+      ...prev,
+      E: { url, fileName, isCustomUpload: false },
+    }));
+
+    if (selectedApproachRef.current === "E") {
+      approachTimesRef.current.E = 0;
+      playVideoSource(url, fileName, 0);
+    }
+  };
+
+  const loadSampleForApproach = (dir: DirectionKey, forceAmbulance?: boolean) => {
+    const config = APPROACH_SOURCES[dir];
+    let url = config.sampleVideo;
+    let fileName = `${dir.toLowerCase()}_approach.mp4`;
+
+    if (dir === "E") {
+      const isAmb = forceAmbulance !== undefined ? forceAmbulance : eastAmbulanceMode;
+      url = isAmb
+        ? (config.ambulanceVideo || "/sample_videos/cam3_east_ecr_ambulance.mp4")
+        : (config.sampleVideo || "/sample_videos/cam3_east_ecr_normal.mp4");
+      fileName = isAmb
+        ? "Cam 3 (Ambulance)- East (ECR  EMS Link Road - 108 Priority).mp4"
+        : "Cam 3 (Normal) - East (ECR   EMS Link Road - No Ambulance).mp4";
+      if (forceAmbulance !== undefined) {
+        setEastAmbulanceMode(forceAmbulance);
+      }
+    } else if (dir === "N") {
+      url = "/sample_videos/cam1_north_omr_inbound.mp4";
+      fileName = "Cam 1 -  North (OMR Inbound - Rajiv Gandhi Salai).mp4";
+    } else if (dir === "S") {
+      url = "/sample_videos/cam2_south_omr_outbound.mp4";
+      fileName = "Cam 2 - South (OMR Outbound - Siruseri IT Expressway).mp4";
+    } else if (dir === "W") {
+      url = "/sample_videos/cam4_west_medavakkam.mp4";
+      fileName = "Cam 4 - West (Medavakkam Main Rd).mp4";
+    }
+
+    setApproachVideos((prev) => ({
+      ...prev,
+      [dir]: { url, fileName, isCustomUpload: false },
+    }));
+    setSelectedApproach(dir);
+    selectedApproachRef.current = dir;
+    approachTimesRef.current[dir] = 0;
+    playVideoSource(url, fileName, 0);
+  };
+
+  const loadSampleJunctionVideo = () => {
+    loadSampleForApproach(selectedApproachRef.current);
+  };
+
+  const handleApproachFileUpload = (dir: DirectionKey, e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    const url = URL.createObjectURL(file);
+    setApproachVideos((prev) => ({
+      ...prev,
+      [dir]: { url, fileName: file.name, file, isCustomUpload: true },
+    }));
+    setSelectedApproach(dir);
+    selectedApproachRef.current = dir;
+    approachTimesRef.current[dir] = 0;
+    playVideoSource(url, file.name, 0);
+    e.target.value = "";
+  };
+
+  const handleCctvVideoUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    handleApproachFileUpload(selectedApproachRef.current, e);
+  };
+
+  const switchApproach = (dir: DirectionKey, shouldPlay = true) => {
+    const prevDir = selectedApproachRef.current;
+
+    // Save current approach playback timestamp
+    if (videoRef.current && Number.isFinite(videoRef.current.currentTime)) {
+      approachTimesRef.current[prevDir] = videoRef.current.currentTime;
+    }
+
+    setSelectedApproach(dir);
+    selectedApproachRef.current = dir;
+
+    // Clear old detections immediately for clean visual cut
+    setLiveDetections([]);
+    setTrackedVehicles([]);
+    currentTracksRef.current = [];
+
+    const targetVideo = approachVideos[dir] || {
+      url: APPROACH_SOURCES[dir].sampleVideo,
+      fileName: `${dir.toLowerCase()}_approach.mp4`,
+      isCustomUpload: false,
+    };
+
+    const targetUrl = targetVideo.url || APPROACH_SOURCES[dir].sampleVideo;
+    const targetFileName = targetVideo.fileName || `${dir.toLowerCase()}_approach.mp4`;
+    const targetTime = approachTimesRef.current[dir] ?? 0;
+
+    // If shouldPlay is true: run this camera individually!
+    if (shouldPlay) {
+      setCameraStreaming((prev) => ({ ...prev, [dir]: true }));
+      cameraStreamingRef.current[dir] = true;
+      playVideoSource(targetUrl, targetFileName, targetTime);
+    } else {
+      setCameraStreaming((prev) => ({ ...prev, [dir]: false }));
+      cameraStreamingRef.current[dir] = false;
+      stopActiveCameraOnly();
+      updateVisionFeedState({
+        videoUrl: targetUrl,
+        videoFileName: targetFileName,
+        activePhase: `Approach-${dir}`,
+      });
+      updateVideoDisplaySize();
+    }
+  };
+
+  const startCamera = (dir: DirectionKey) => {
+    switchApproach(dir, true);
+  };
+
+  const terminateCamera = (dir: DirectionKey) => {
+    setCameraStreaming((prev) => ({ ...prev, [dir]: false }));
+    cameraStreamingRef.current[dir] = false;
+    if (selectedApproachRef.current === dir) {
+      stopActiveCameraOnly();
+    }
+  };
+
+  const terminateAllCameras = () => {
+    setCameraStreaming({ N: false, S: false, E: false, W: false });
+    cameraStreamingRef.current = { N: false, S: false, E: false, W: false };
+    stopActiveCameraOnly();
+  };
+
+  const startAllCameras = () => {
+    setCameraStreaming({ N: true, S: true, E: true, W: true });
+    cameraStreamingRef.current = { N: true, S: true, E: true, W: true };
+    startCamera(selectedApproachRef.current);
+  };
+
+  const stopActiveCameraOnly = () => {
+    const activeDir = selectedApproachRef.current;
+    setCameraStreaming((prev) => ({ ...prev, [activeDir]: false }));
+    cameraStreamingRef.current[activeDir] = false;
+
+    // 1. Instantly trip streaming and processing flags
+    isStreamingRef.current = false;
+    isProcessingFrameRef.current = false;
+
+    // 2. Cancel any pending animation frame immediately
+    if (rafIdRef.current) {
+      cancelAnimationFrame(rafIdRef.current);
+      rafIdRef.current = null;
+    }
+
+    // 3. Completely shut down and unload video element
+    if (videoRef.current) {
+      const vid = videoRef.current;
+      vid.pause();
+      vid.currentTime = 0;
+      if (vid.srcObject) {
+        const stream = vid.srcObject as MediaStream;
+        stream.getTracks().forEach((track) => track.stop());
+        vid.srcObject = null;
+      }
+      vid.removeAttribute("src");
+      vid.load(); // Forces HTML5 media engine to release video pipeline
+    }
+
+    // 4. Reset all live metrics and detections
+    setIsStreaming(false);
+    setStreamSource(null);
+    setLiveDetections([]);
+    setTrackedVehicles([]);
+    currentTracksRef.current = [];
+    setFrameCount(0);
+    setLiveFps(0);
+    setLiveLatency(0);
+    setLiveClassCounts({});
+
+    // 5. Explicitly notify store that stream is dead
+    updateVisionFeedState({
+      isStreaming: false,
+      streamSource: null,
+      liveDetectionsCount: 0,
+      fps: 0,
+      latency_ms: 0,
+    });
+  };
+
+  const stopStream = stopActiveCameraOnly;
   const wsRef = useRef<WebSocket | null>(null);
   const isProcessingFrameRef = useRef<boolean>(false);
   const isStreamingRef = useRef<boolean>(false);
@@ -175,6 +567,28 @@ export default function VisionMonitorView() {
       if (interval) clearInterval(interval);
     };
   }, [isStreaming]);
+
+  // Enumerate physical webcams connected to host machine
+  useEffect(() => {
+    const enumerateCameras = async () => {
+      try {
+        if (typeof navigator !== "undefined" && navigator.mediaDevices?.enumerateDevices) {
+          const devices = await navigator.mediaDevices.enumerateDevices();
+          const videoDevices = devices.filter((d) => d.kind === "videoinput");
+          setAvailableWebcams(videoDevices);
+        }
+      } catch (err) {
+        console.warn("Unable to enumerate media devices:", err);
+      }
+    };
+    enumerateCameras();
+    if (typeof navigator !== "undefined" && navigator.mediaDevices) {
+      navigator.mediaDevices.addEventListener?.("devicechange", enumerateCameras);
+      return () => {
+        navigator.mediaDevices.removeEventListener?.("devicechange", enumerateCameras);
+      };
+    }
+  }, []);
 
   const resetCumulativeStats = () => {
     setCumulativeVehicleCount(0);
@@ -197,12 +611,20 @@ export default function VisionMonitorView() {
       case "police":
         return "#ff4060"; // Emergency Red
       case "bus":
+        return "#ffab1a"; // Heavy Commercial Bus Orange
       case "truck":
-        return "#ffab1a"; // Heavy Commercial Orange
+        return "#f97316"; // Freight Truck Orange
+      case "auto_rickshaw":
+      case "auto":
+      case "rickshaw":
+        return "#f59e0b"; // Auto-Rickshaw Amber
       case "motorcycle":
+      case "motorbike":
+      case "bike":
       case "bicycle":
         return "#00c97a"; // Two-Wheeler Green
       case "car":
+      case "standard":
         return "#4d9fff"; // Passenger Blue
       case "person":
         return "#a855f7"; // Pedestrian Purple
@@ -215,78 +637,49 @@ export default function VisionMonitorView() {
     liveClassCounts.ambulance || liveClassCounts.police
   );
 
-  // Helper for 4-Camera Array Bounding Box Filtering
-  const getArrayDisplay = (boxClass: string) => {
-    if (arrayFilter === "all") return undefined;
-    return arrayFilter === boxClass ? undefined : "none";
-  };
 
-  // ── RUN BACKEND BATCH INFERENCE ON 4 CAMERAS ─────────────────────────────
-  const runArrayInference = async () => {
-    setIsArrayDetecting(true);
-    try {
-      const rawHost = typeof window !== "undefined" && window.location.hostname ? window.location.hostname : "127.0.0.1";
-      const apiHost = rawHost === "localhost" ? "127.0.0.1" : rawHost;
-      const res = await fetch(`http://${apiHost}:8000/api/detect_batch`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          cameras: JUNCTION_CAMERAS.map((cam) => ({
-            camera_id: cam.id,
-            image_url: cam.imageUrl,
-            conf_threshold: confThreshold,
-            allow_all: allowAllClasses,
-          })),
-        }),
-      });
-      const data = await res.json();
-      if (data.results && Array.isArray(data.results)) {
-        const mapped: Record<string, any> = {};
-        for (const item of data.results) {
-          mapped[item.camera_id] = item;
-        }
-        setArrayDetections(mapped);
-      }
-    } catch (err) {
-      console.warn("Backend batch inference fallback active:", err);
-    } finally {
-      setIsArrayDetecting(false);
-    }
-  };
-
-  useEffect(() => {
-    if (activeTab === "array") {
-      runArrayInference();
-    }
-  }, [activeTab, confThreshold, allowAllClasses]);
-
-  // ── UPDATE VIDEO DISPLAY RECT ─────────────────────────────
+  // ── UPDATE VIDEO DISPLAY RECT (PREVENTS FEED SHRINKING ON SWITCH) ───────────
   const updateVideoDisplaySize = () => {
-    if (!videoRef.current) return;
+    const frame = viewportFrameRef.current;
     const video = videoRef.current;
-    const container = video.parentElement;
-    if (!container) return;
+    if (!frame) return;
 
-    const containerW = container.clientWidth || 640;
-    const containerH = container.clientHeight || 460;
-    const vW = video.videoWidth || 640;
-    const vH = video.videoHeight || 480;
+    // Measure the outer fixed viewport frame enclosure, NEVER the inner resizable div
+    const rect = frame.getBoundingClientRect();
+    const frameW = Math.max(frame.clientWidth, rect.width, 640);
+    const frameH = Math.max(frame.clientHeight, rect.height, 480);
 
+    // Use video native aspect ratio, defaulting to standard 16:9 widescreen
+    const vW = (video && video.videoWidth > 0) ? video.videoWidth : 16;
+    const vH = (video && video.videoHeight > 0) ? video.videoHeight : 9;
     const aspect = vW / vH;
-    let w = containerW;
-    let h = containerW / aspect;
 
-    if (h > containerH) {
-      h = containerH;
-      w = containerH * aspect;
+    let w = frameW;
+    let h = frameW / aspect;
+
+    if (h > frameH) {
+      h = frameH;
+      w = frameH * aspect;
     }
 
-    setVideoDisplaySize({ w: Math.round(w), h: Math.round(h) });
+    setVideoDisplaySize({
+      w: Math.round(w),
+      h: Math.round(h),
+    });
   };
 
   useEffect(() => {
+    updateVideoDisplaySize();
+    if (!viewportFrameRef.current) return;
+    const ro = new ResizeObserver(() => {
+      updateVideoDisplaySize();
+    });
+    ro.observe(viewportFrameRef.current);
     window.addEventListener("resize", updateVideoDisplaySize);
-    return () => window.removeEventListener("resize", updateVideoDisplaySize);
+    return () => {
+      ro.disconnect();
+      window.removeEventListener("resize", updateVideoDisplaySize);
+    };
   }, []);
 
   const allowAllRef = useRef<boolean>(false);
@@ -303,32 +696,82 @@ export default function VisionMonitorView() {
   // ── CAPTURE & SEND FRAME (ZERO-QUEUE FAST PIPELINE) ─────────────────────────────
   const sendCurrentFrame = () => {
     if (!isStreamingRef.current) return;
-    if (isProcessingFrameRef.current) return;
-    if (!videoRef.current || !wsRef.current || wsRef.current.readyState !== WebSocket.OPEN) return;
-    const video = videoRef.current;
-    if (video.videoWidth === 0 || video.videoHeight === 0 || video.paused || video.ended) return;
+    if (!videoRef.current) return;
 
-    if (!canvasCaptureRef.current) {
-      canvasCaptureRef.current = document.createElement("canvas");
+    const video = videoRef.current;
+
+    // 1. If WebSocket is disconnected or connecting, keep loop waiting and retry gracefully
+    if (!wsRef.current || wsRef.current.readyState !== WebSocket.OPEN) {
+      if (rafIdRef.current) cancelAnimationFrame(rafIdRef.current);
+      rafIdRef.current = requestAnimationFrame(() => {
+        setTimeout(sendCurrentFrame, 200);
+      });
+      return;
     }
 
-    const canvas = canvasCaptureRef.current;
-    canvas.width = 480;
-    canvas.height = 270;
-    const ctx = canvas.getContext("2d");
-    if (!ctx) return;
+    // 2. Protect against stuck in-flight inference (> 1200ms lock reset)
+    if (isProcessingFrameRef.current) {
+      if (Date.now() - lastFrameSentTimeRef.current > 1200) {
+        isProcessingFrameRef.current = false;
+      } else {
+        if (rafIdRef.current) cancelAnimationFrame(rafIdRef.current);
+        rafIdRef.current = requestAnimationFrame(() => {
+          setTimeout(sendCurrentFrame, 40);
+        });
+        return;
+      }
+    }
 
-    ctx.drawImage(video, 0, 0, 480, 270);
-    const base64Data = canvas.toDataURL("image/jpeg", 0.45);
+    // 3. If video metadata is still loading, keep polling until frame 1 is ready
+    if (video.videoWidth === 0 || video.videoHeight === 0 || video.readyState < 2) {
+      if (rafIdRef.current) cancelAnimationFrame(rafIdRef.current);
+      rafIdRef.current = requestAnimationFrame(sendCurrentFrame);
+      return;
+    }
 
-    isProcessingFrameRef.current = true;
-    wsRef.current.send(
-      JSON.stringify({
-        image: base64Data,
-        allow_all: allowAllRef.current,
-        conf_threshold: confThresholdRef.current,
-      })
-    );
+    // 4. If video is paused by browser, kick it to play and keep polling
+    if (video.paused && !video.ended) {
+      video.play().catch(() => {});
+      if (rafIdRef.current) cancelAnimationFrame(rafIdRef.current);
+      rafIdRef.current = requestAnimationFrame(sendCurrentFrame);
+      return;
+    }
+
+    try {
+      if (!canvasCaptureRef.current) {
+        canvasCaptureRef.current = document.createElement("canvas");
+      }
+
+      const canvas = canvasCaptureRef.current;
+      canvas.width = 480;
+      canvas.height = 270;
+      const ctx = canvas.getContext("2d");
+      if (!ctx) {
+        scheduleNextFrame();
+        return;
+      }
+
+      ctx.drawImage(video, 0, 0, 480, 270);
+      const base64Data = canvas.toDataURL("image/jpeg", 0.45);
+
+      isProcessingFrameRef.current = true;
+      lastFrameSentTimeRef.current = Date.now();
+
+      wsRef.current.send(
+        JSON.stringify({
+          image: base64Data,
+          camera_id: "Approach-" + selectedApproachRef.current,
+          approach_id: "Approach-" + selectedApproachRef.current,
+          direction: selectedApproachRef.current,
+          allow_all: allowAllRef.current,
+          conf_threshold: confThresholdRef.current,
+        })
+      );
+    } catch (err) {
+      console.warn("Frame capture error:", err);
+      isProcessingFrameRef.current = false;
+      scheduleNextFrame();
+    }
   };
 
   // ── WEBSOCKET CONNECTION & LIFECYCLE ─────────────────────────────
@@ -351,6 +794,12 @@ export default function VisionMonitorView() {
         };
 
         ws.onmessage = (event) => {
+          // If stream was terminated while this inference packet was in-flight, discard immediately!
+          if (!isStreamingRef.current) {
+            isProcessingFrameRef.current = false;
+            return;
+          }
+
           try {
             const data: WsInferenceResponse = JSON.parse(event.data);
             if (data.success) {
@@ -384,9 +833,37 @@ export default function VisionMonitorView() {
                   const [nx, ny, nw, nh] = inc.normalized_bbox;
                   const alpha = 0.65; // Smoothing factor: 65% fresh detection, 35% momentum
 
+                  // Robust Multi-Frame Confirmation & Anti-Flapping Filter:
+                  // Prevents transient detector noise from misclassifying standard cars as ambulances,
+                  // while maintaining smooth tracking for genuine 108 emergency priority vehicles.
+                  let targetClass = inc.class;
+                  let ambCount = track.ambulanceConfirmCount ?? (track.class === "ambulance" ? 2 : 0);
+                  let stdCount = track.standardConfirmCount ?? 0;
+
+                  if (inc.class === "ambulance") {
+                    ambCount += 1;
+                    stdCount = 0;
+                    // Require at least 2 consecutive detections to promote/confirm emergency vehicle status
+                    if (ambCount >= 2 || track.class === "ambulance") {
+                      targetClass = "ambulance";
+                    } else {
+                      targetClass = "car";
+                    }
+                  } else {
+                    stdCount += 1;
+                    // If incoming detection is a standard roadway vehicle (car/bus/truck) for 2 or more frames, cleanly demote back to car!
+                    if (stdCount >= 2) {
+                      targetClass = inc.class;
+                      ambCount = 0;
+                    } else if (track.class === "ambulance") {
+                      // 1-frame grace period for genuine ambulances experiencing brief occlusions
+                      targetClass = "ambulance";
+                    }
+                  }
+
                   updatedTracks.push({
                     id: track.id,
-                    class: inc.class,
+                    class: targetClass,
                     confidence: Math.round((track.confidence * 0.3 + inc.confidence * 0.7) * 100) / 100,
                     norm_bbox: [
                       tx * (1 - alpha) + nx * alpha,
@@ -395,9 +872,11 @@ export default function VisionMonitorView() {
                       th * (1 - alpha) + nh * alpha,
                     ],
                     missedFrames: 0,
+                    ambulanceConfirmCount: ambCount,
+                    standardConfirmCount: stdCount,
                   });
-                } else if (track.missedFrames < 2) {
-                  // Coast object for up to 2 frames to prevent flash/flicker
+                } else if (track.missedFrames < 4) {
+                  // Coast object for up to 4 frames to prevent flash/flicker
                   updatedTracks.push({
                     ...track,
                     missedFrames: track.missedFrames + 1,
@@ -416,12 +895,16 @@ export default function VisionMonitorView() {
                   newVehiclesCount += 1;
                   newClasses[inc.class] = (newClasses[inc.class] || 0) + 1;
 
+                  const initialClass = inc.class === "ambulance" && inc.confidence < 0.50 ? "car" : inc.class;
+
                   updatedTracks.push({
                     id: trackIdCounterRef.current,
-                    class: inc.class,
+                    class: initialClass,
                     confidence: inc.confidence,
                     norm_bbox: inc.normalized_bbox,
                     missedFrames: 0,
+                    ambulanceConfirmCount: inc.class === "ambulance" && inc.confidence >= 0.50 ? 2 : 0,
+                    standardConfirmCount: inc.class === "ambulance" ? 0 : 1,
                   });
                 }
               }
@@ -442,17 +925,76 @@ export default function VisionMonitorView() {
               currentTracksRef.current = updatedTracks;
               setTrackedVehicles([...updatedTracks]);
 
-              // Dispatch real-time perception state to controller
+              // 4-path approach and signal states
+              if (data.approaches) {
+                setApproachesData(data.approaches);
+              }
+              if (data.active_phase) {
+                setActivePhase(data.active_phase);
+              }
+              if (data.phase_state) {
+                setPhaseState(data.phase_state);
+              }
+              if (data.phase_countdown_s !== undefined) {
+                setPhaseCountdown(data.phase_countdown_s);
+              }
+              if (data.signal_colors) {
+                setSignalColors(data.signal_colors);
+              }
+              if (data.corridor_routing) {
+                setCorridorRouting(data.corridor_routing);
+              }
+              if (data.active_camera_connections !== undefined) {
+                setActiveWsConnections(data.active_camera_connections);
+              }
+              if (data.connected_cameras) {
+                setConnectedCameras(data.connected_cameras);
+              }
+
+              // Dispatch real-time perception, actuation & preemption state to shared store
+              // Temporal stability gate: Emergency is only broadcast if verified by gateway debounce filter
               const isEmerg = Boolean(
-                data.class_counts?.ambulance || data.class_counts?.police
+                data.corridor_routing?.is_preempted ||
+                data.corridor_routing?.emergency_confirmed
               );
+              const emergDir = (data.corridor_routing?.emergency_direction as DirectionKey) || (isEmerg ? "E" : null);
+              const emergConfirmed = Boolean(data.corridor_routing?.emergency_confirmed || data.corridor_routing?.is_preempted);
+
+              const now = new Date();
+              const dateStr = now.toLocaleDateString("en-IN", {
+                day: "2-digit",
+                month: "short",
+                year: "numeric",
+              });
+              const timeStr = now.toLocaleTimeString("en-IN", {
+                hour12: false,
+                hour: "2-digit",
+                minute: "2-digit",
+                second: "2-digit",
+              });
+              const formattedDate = `${dateStr} · ${timeStr} IST`;
+              const sourceTag = `${APPROACH_SOURCES[selectedApproachRef.current || "N"].camTag} · ${APPROACH_SOURCES[selectedApproachRef.current || "N"].name}`;
+
               updateVisionFeedState({
                 hasEmergency: isEmerg,
-                emergencyDirection: isEmerg ? "E" : null,
+                emergencyDirection: emergDir,
+                emergencyConfirmed: emergConfirmed,
                 liveDetectionsCount: incoming.length,
                 fps: data.fps,
                 latency_ms: data.latency_ms,
                 isStreaming: true,
+                intersectionId: data.intersection_id || "IX-104",
+                activePhase: data.active_phase || activePhase,
+                phaseState: data.phase_state || phaseState,
+                phaseCountdown: data.phase_countdown_s ?? phaseCountdown,
+                signalColors: data.signal_colors || signalColors,
+                approaches: data.approaches || approachesData,
+                corridorRouting: data.corridor_routing || corridorRouting,
+                timestamp: now.toISOString(),
+                formattedDate,
+                feedSourceTag: sourceTag,
+                classCounts: data.class_counts || liveClassCounts,
+                cumulativeClassCounts,
               });
             }
           } catch (e) {
@@ -460,7 +1002,7 @@ export default function VisionMonitorView() {
           } finally {
             isProcessingFrameRef.current = false;
             if (isStreamingRef.current) {
-              requestAnimationFrame(sendCurrentFrame);
+              scheduleNextFrame();
             }
           }
         };
@@ -493,19 +1035,35 @@ export default function VisionMonitorView() {
   }, []);
 
   // ── START WEBCAM STREAM ─────────────────────────────
-  const startWebcamStream = async () => {
+  const startWebcamStream = async (targetDeviceId?: string) => {
     setStreamError(null);
     try {
-      const stream = await navigator.mediaDevices.getUserMedia({
-        video: {
-          width: { ideal: 640 },
-          height: { ideal: 480 },
-          facingMode: "user",
-        },
+      const dir = selectedApproachRef.current;
+      const deviceId = targetDeviceId || selectedWebcamDevices[dir] || undefined;
+      const constraints: MediaStreamConstraints = {
+        video: deviceId
+          ? { deviceId: { exact: deviceId }, width: { ideal: 640 }, height: { ideal: 480 } }
+          : { width: { ideal: 640 }, height: { ideal: 480 }, facingMode: "user" },
         audio: false,
-      });
+      };
+      const stream = await navigator.mediaDevices.getUserMedia(constraints);
+
+      // Refresh webcam list now that user granted permission
+      try {
+        if (navigator.mediaDevices?.enumerateDevices) {
+          const devices = await navigator.mediaDevices.enumerateDevices();
+          setAvailableWebcams(devices.filter((d) => d.kind === "videoinput"));
+        }
+      } catch {}
+
+      setCameraStreaming((prev) => ({ ...prev, [dir]: true }));
+      cameraStreamingRef.current[dir] = true;
 
       if (videoRef.current) {
+        if (videoRef.current.srcObject) {
+          const oldStream = videoRef.current.srcObject as MediaStream;
+          oldStream.getTracks().forEach((track) => track.stop());
+        }
         videoRef.current.srcObject = stream;
         await videoRef.current.play();
         setIsStreaming(true);
@@ -513,8 +1071,14 @@ export default function VisionMonitorView() {
         setStreamSource("webcam");
         updateVideoDisplaySize();
 
+        updateVisionFeedState({
+          streamSource: "webcam",
+          isStreaming: true,
+          activePhase: `Approach-${dir}`,
+        });
+
         isProcessingFrameRef.current = false;
-        requestAnimationFrame(sendCurrentFrame);
+        scheduleNextFrame();
       }
     } catch (err: any) {
       setStreamError(`Camera Error: ${err.message || "Permission Denied"}`);
@@ -545,7 +1109,7 @@ export default function VisionMonitorView() {
         };
 
         isProcessingFrameRef.current = false;
-        requestAnimationFrame(sendCurrentFrame);
+        scheduleNextFrame();
       }
     } catch (err: any) {
       setStreamError(`Screen Share Cancelled: ${err.message || "Not Selected"}`);
@@ -554,27 +1118,15 @@ export default function VisionMonitorView() {
     }
   };
 
-  const stopStream = () => {
-    isStreamingRef.current = false;
-    isProcessingFrameRef.current = false;
-
-    if (videoRef.current) {
-      if (videoRef.current.srcObject) {
-        const stream = videoRef.current.srcObject as MediaStream;
-        stream.getTracks().forEach((track) => track.stop());
-        videoRef.current.srcObject = null;
-      }
-      videoRef.current.pause();
-    }
-
-    setIsStreaming(false);
-    setStreamSource(null);
-    setLiveDetections([]);
-    setTrackedVehicles([]);
-    currentTracksRef.current = [];
-    setFrameCount(0);
-    updateVisionFeedState({ isStreaming: false, streamSource: null });
-  };
+  const boxesToRender = trackedVehicles.length > 0
+    ? trackedVehicles
+    : liveDetections.map((d, i) => ({
+        id: i + 1,
+        class: d.class || "vehicle",
+        confidence: d.confidence || 0.8,
+        norm_bbox: d.normalized_bbox || [0, 0, 0, 0],
+        missedFrames: 0,
+      }));
 
   return (
     <div className="flex-1 flex flex-col gap-6 w-full max-w-full pb-8">
@@ -605,46 +1157,278 @@ export default function VisionMonitorView() {
                 ></span>
                 WS {wsStatus.toUpperCase()} (PORT 8000)
               </span>
+              <span
+                className="font-mono text-[10px] px-2.5 py-0.5 rounded-full border font-bold uppercase tracking-wider flex items-center gap-1.5 bg-primary/15 text-primary border-primary/30"
+                title="Concurrent multi-channel WebSocket architecture supporting 4 simultaneous camera/webcam feeds"
+              >
+                <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse"></span>
+                4-CAM CONCURRENT WS · {activeWsConnections >= 4 ? "4/4 LIVE" : `${activeWsConnections} ACTIVE`}
+              </span>
             </div>
             <p className="font-mono text-xs text-on-surface-variant mt-0.5">
-              Chennai Metropolitan Area (CMA) Sector 4 · 4-Camera Multi-Lane Array & Live Stream
+              Chennai Metropolitan Area (CMA) Sector 4 · 4-Approach Multi-Source Perception Console
             </p>
           </div>
         </div>
 
-        {/* Mode Selector Tabs */}
-        <div className="flex items-center bg-surface-low border border-outline p-1 rounded-xl shadow-inner">
-          <button
-            onClick={() => setActiveTab("webcam")}
-            className={`px-4 py-2 rounded-lg text-xs font-mono font-bold uppercase tracking-wider transition-all cursor-pointer flex items-center gap-2 ${
-              activeTab === "webcam"
-                ? "bg-state-calm/20 text-state-calm border border-state-calm-border shadow-sm"
-                : "text-on-surface-variant hover:text-on-surface"
-            }`}
-          >
-            <span className="material-symbols-rounded text-[18px]">videocam</span>
-            <span>Live Video / YouTube YOLO</span>
-          </button>
-          <button
-            onClick={() => {
-              stopStream();
-              setActiveTab("array");
-            }}
-            className={`px-4 py-2 rounded-lg text-xs font-mono font-bold uppercase tracking-wider transition-all cursor-pointer flex items-center gap-2 ${
-              activeTab === "array"
-                ? "bg-surface-high text-on-surface border border-outline shadow-sm"
-                : "text-on-surface-variant hover:text-on-surface"
-            }`}
-          >
-            <span className="material-symbols-rounded text-[18px]">grid_view</span>
-            <span>4-Camera Array</span>
-          </button>
+        {/* Active Approach Indicator in Header */}
+        <div className="flex items-center gap-2.5 bg-surface-low border border-outline px-3.5 py-1.5 rounded-xl font-mono text-xs">
+          <span className="text-on-surface-variant">Active Source:</span>
+          <span className="font-bold text-primary flex items-center gap-1.5">
+            <span className="w-2 h-2 rounded-full bg-primary animate-pulse" />
+            {APPROACH_SOURCES[selectedApproach].name}
+          </span>
+          <span className={`px-2 py-0.5 rounded text-[10px] font-bold uppercase ${
+            signalColors[selectedApproach] === "green"
+              ? "bg-emerald-500/20 text-emerald-400"
+              : signalColors[selectedApproach] === "yellow"
+              ? "bg-amber-500/20 text-amber-400"
+              : "bg-red-500/20 text-red-400"
+          }`}>
+            {signalColors[selectedApproach].toUpperCase()}
+          </span>
         </div>
       </div>
 
-      {/* ── TAB 1: LIVE WEBCAM & YOUTUBE STREAMING (HERO) ───────────────────────────── */}
-      {activeTab === "webcam" && (
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 flex-1 items-start">
+      {/* Hidden Individual File Inputs for All 4 Approaches */}
+      <input
+        type="file"
+        ref={fileInputNRef}
+        onChange={(e) => handleApproachFileUpload("N", e)}
+        accept="video/*"
+        className="hidden"
+      />
+      <input
+        type="file"
+        ref={fileInputSRef}
+        onChange={(e) => handleApproachFileUpload("S", e)}
+        accept="video/*"
+        className="hidden"
+      />
+      <input
+        type="file"
+        ref={fileInputERef}
+        onChange={(e) => handleApproachFileUpload("E", e)}
+        accept="video/*"
+        className="hidden"
+      />
+      <input
+        type="file"
+        ref={fileInputWRef}
+        onChange={(e) => handleApproachFileUpload("W", e)}
+        accept="video/*"
+        className="hidden"
+      />
+
+      {/* ── 4-APPROACH MULTI-SOURCE SWITCHER DOCK ───────────────────────────── */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-3.5">
+        {(["N", "S", "E", "W"] as const).map((dir) => {
+          const cfg = APPROACH_SOURCES[dir];
+          const app = approachesData[dir] || {
+            name: cfg.name,
+            vehicles: 0,
+            queue_m: 0,
+            density: 0,
+            is_emergency: false,
+          };
+          const color = signalColors[dir] || "red";
+          const isSelected = selectedApproach === dir;
+          const videoData = approachVideos[dir];
+          const isEmergency = Boolean(app.is_emergency || (dir === "E" && hasEmergencyVehicle));
+
+          return (
+            <div
+              key={dir}
+              onClick={() => switchApproach(dir, true)}
+              className={`p-3.5 rounded-2xl border-2 transition-all cursor-pointer relative flex flex-col justify-between shadow-md hover:shadow-lg ${
+                isSelected
+                  ? "bg-surface-mid border-primary shadow-[0_0_18px_rgba(59,130,246,0.22)] ring-1 ring-primary/40"
+                  : "bg-surface hover:bg-surface-mid/80 border-outline hover:border-outline-variant"
+              }`}
+            >
+              {/* Top Row: Approach Name, ID & Active Badge */}
+              <div>
+                <div className="flex items-center justify-between mb-1.5">
+                  <div className="flex items-center gap-2">
+                    <span className={`w-2.5 h-2.5 rounded-full ${
+                      color === "green"
+                        ? "bg-state-calm shadow-[0_0_8px_#00c97a]"
+                        : color === "yellow"
+                        ? "bg-state-building shadow-[0_0_8px_#ffab1a]"
+                        : "bg-state-preempted shadow-[0_0_8px_#ff4060]"
+                    }`} />
+                    <span className="font-bold text-xs md:text-sm text-on-surface tracking-tight">
+                      {cfg.camTag} · {cfg.name}
+                    </span>
+                  </div>
+
+                  <div className="flex items-center gap-1.5">
+                    <span className={`font-mono text-[9px] px-2 py-0.5 rounded-full font-bold uppercase tracking-wider ${
+                      cameraStreaming[dir]
+                        ? "bg-emerald-500/20 text-emerald-400 border border-emerald-500/40"
+                        : "bg-surface-low text-on-surface-variant border border-outline"
+                    }`}>
+                      {cameraStreaming[dir] ? "● LIVE" : "○ IDLE"}
+                    </span>
+                    <span className={`font-mono text-[9px] px-2 py-0.5 rounded-full font-bold uppercase tracking-wider ${
+                      isSelected
+                        ? "bg-primary text-white shadow-sm"
+                        : "bg-surface-low text-on-surface-variant border border-outline"
+                    }`}>
+                      {isSelected ? "Active View" : cfg.id}
+                    </span>
+                  </div>
+                </div>
+
+                <div className="flex items-center justify-between font-mono text-[10px] text-on-surface-variant mb-2">
+                  <span>{cfg.subtitle}</span>
+                  <span className="text-[9px] opacity-75">{cfg.road}</span>
+                </div>
+
+                {/* Middle: Real-Time Queue & Signal Telemetry */}
+                <div className="bg-surface-low/90 p-2.5 rounded-xl border border-outline flex items-center justify-between my-2 font-mono">
+                  <div>
+                    <span className="text-[9px] text-on-surface-variant uppercase block">Queue:</span>
+                    <span className="text-sm font-bold text-on-surface">
+                      {app.vehicles} veh ({Math.round(app.queue_m || 0)}m)
+                    </span>
+                  </div>
+
+                  {/* Signal Status Pill */}
+                  <div className="flex items-center gap-1.5">
+                    <span className={`px-2.5 py-1 rounded-lg text-xs font-bold uppercase tracking-wider flex items-center gap-1.5 border shadow-sm ${
+                      color === "green"
+                        ? "bg-emerald-500/20 text-emerald-400 border-emerald-500/40"
+                        : color === "yellow"
+                        ? "bg-amber-500/20 text-amber-400 border-amber-500/40"
+                        : "bg-red-500/20 text-red-400 border-red-500/40"
+                    }`}>
+                      <span className={`w-1.5 h-1.5 rounded-full ${
+                        color === "green" ? "bg-emerald-400 animate-ping" : color === "yellow" ? "bg-amber-400" : "bg-red-400"
+                      }`} />
+                      {color.toUpperCase()}
+                    </span>
+                  </div>
+                </div>
+
+                {/* Emergency Tag if Preempted */}
+                {isEmergency && (
+                  <div className="mb-2 px-2 py-0.5 rounded bg-red-500/20 border border-red-500/40 text-red-400 text-[10px] font-mono font-bold flex items-center gap-1 animate-pulse">
+                    <span>🚨</span>
+                    <span>108 EMS / CORRIDOR PREEMPTION</span>
+                  </div>
+                )}
+
+                {/* For Cam 3 (East): Quick Scenario Selector */}
+                {dir === "E" && (
+                  <div className="mb-2 flex items-center gap-1 p-1 rounded-lg bg-surface-low/90 border border-outline">
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        switchEastVideoMode(false);
+                      }}
+                      className={`flex-1 py-1 px-1.5 rounded text-[10px] font-mono font-bold transition-all cursor-pointer flex items-center justify-center gap-1 ${
+                        !eastAmbulanceMode
+                          ? "bg-primary text-white shadow-sm"
+                          : "text-on-surface-variant hover:text-on-surface"
+                      }`}
+                      title="Load standard traffic without ambulance"
+                    >
+                      <span>🚗</span>
+                      <span>Normal</span>
+                    </button>
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        switchEastVideoMode(true);
+                      }}
+                      className={`flex-1 py-1 px-1.5 rounded text-[10px] font-mono font-bold transition-all cursor-pointer flex items-center justify-center gap-1 ${
+                        eastAmbulanceMode
+                          ? "bg-red-500 text-white shadow-sm animate-pulse"
+                          : "text-red-400 hover:bg-red-500/10"
+                      }`}
+                      title="Load 108 Emergency Ambulance Priority Preemption scenario"
+                    >
+                      <span>🚨</span>
+                      <span>108 Amb</span>
+                    </button>
+                  </div>
+                )}
+              </div>
+
+              {/* Bottom: Video Source Status & Individual Upload/Run/Stop Buttons */}
+              <div className="pt-2 border-t border-outline/70 mt-1 flex items-center justify-between gap-1.5 flex-wrap">
+                <div className="flex items-center gap-1 font-mono text-[10px] truncate max-w-[120px] text-on-surface-variant">
+                  {videoData ? (
+                    <>
+                      <span className="material-symbols-rounded text-xs text-state-calm">check_circle</span>
+                      <span className="truncate" title={videoData.fileName}>{videoData.fileName}</span>
+                    </>
+                  ) : (
+                    <>
+                      <span className="material-symbols-rounded text-xs opacity-60">video_library</span>
+                      <span>No Video</span>
+                    </>
+                  )}
+                </div>
+
+                <div className="flex items-center gap-1">
+                  {cameraStreaming[dir] ? (
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        terminateCamera(dir);
+                      }}
+                      className="px-2 py-1 rounded-lg bg-red-500/20 hover:bg-red-500/35 text-red-400 border border-red-500/40 text-[10px] font-mono font-bold flex items-center gap-1 transition-all cursor-pointer shadow-sm"
+                      title={`Terminate ${cfg.camTag} stream`}
+                    >
+                      <span className="material-symbols-rounded text-xs">stop_circle</span>
+                      <span>Stop</span>
+                    </button>
+                  ) : (
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        startCamera(dir);
+                      }}
+                      className="px-2 py-1 rounded-lg bg-emerald-500/20 hover:bg-emerald-500/35 text-emerald-400 border border-emerald-500/40 text-[10px] font-mono font-bold flex items-center gap-1 transition-all cursor-pointer shadow-sm"
+                      title={`Run ${cfg.camTag} stream`}
+                    >
+                      <span className="material-symbols-rounded text-xs">play_circle</span>
+                      <span>Run</span>
+                    </button>
+                  )}
+
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      getFileInputRef(dir).current?.click();
+                    }}
+                    className="px-2 py-1 rounded-lg bg-primary/15 hover:bg-primary/25 text-primary border border-primary/30 text-[10px] font-mono font-bold flex items-center gap-1 transition-all cursor-pointer"
+                    title={`Upload video file for ${cfg.name}`}
+                  >
+                    <span className="material-symbols-rounded text-xs">upload</span>
+                    <span>Upload</span>
+                  </button>
+
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      loadSampleForApproach(dir);
+                    }}
+                    className="px-2 py-1 rounded-lg bg-surface-low hover:bg-surface-high text-on-surface-variant hover:text-on-surface border border-outline text-[10px] font-mono transition-all cursor-pointer"
+                    title={`Load demo video for ${cfg.name}`}
+                  >
+                    Demo
+                  </button>
+                </div>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 flex-1 items-start">
           {/* Live Video Viewport (8 Cols) */}
           <div className="lg:col-span-8 card p-4 flex flex-col gap-3 shadow-xl">
             {/* Viewport Header Bar */}
@@ -655,11 +1439,19 @@ export default function VisionMonitorView() {
                     isStreaming ? "bg-state-calm animate-pulse" : "bg-[#9096a8]"
                   }`}
                 ></span>
-                <span className="font-mono text-xs font-bold text-on-surface uppercase tracking-wider">
-                  {isStreaming
-                    ? `LIVE ${streamSource?.toUpperCase()} STREAM -> PYTHON YOLOv8`
-                    : "INPUT FEED STANDBY"}
-                </span>
+                <div className="flex items-center gap-2 flex-wrap">
+                  <span className="px-2 py-0.5 rounded bg-primary/20 text-primary border border-primary/40 font-mono text-[10px] font-bold">
+                    {APPROACH_SOURCES[selectedApproach].camTag} · {APPROACH_SOURCES[selectedApproach].id}
+                  </span>
+                  <span className="font-mono text-xs font-bold text-on-surface uppercase tracking-wider">
+                    {APPROACH_SOURCES[selectedApproach].name}
+                  </span>
+                  <span className="font-mono text-[11px] text-on-surface-variant">
+                    {isStreaming
+                      ? `· LIVE ${streamSource?.toUpperCase()} FEED ➔ PYTHON YOLOv8`
+                      : "· STANDBY (NO ACTIVE STREAM)"}
+                  </span>
+                </div>
                 {isStreaming && (
                   <span className="font-mono text-[10px] bg-surface-low text-on-surface-variant px-2.5 py-0.5 rounded-full border border-outline">
                     Frame #{frameCount}
@@ -667,22 +1459,127 @@ export default function VisionMonitorView() {
                 )}
               </div>
 
-              {isStreaming && (
-                <div className="flex items-center gap-2">
-                  <div className="flex items-center gap-1.5 font-mono text-[11px] bg-state-calm/15 text-state-calm px-3 py-1 rounded-lg border border-state-calm-border font-bold">
-                    <span className="material-symbols-rounded text-sm">bolt</span>
-                    <span>{liveLatency} ms</span>
-                  </div>
-                  <div className="flex items-center gap-1.5 font-mono text-[11px] bg-primary/15 text-primary px-3 py-1 rounded-lg border border-primary/30 font-bold">
-                    <span className="material-symbols-rounded text-sm">speed</span>
-                    <span>{liveFps} FPS</span>
-                  </div>
-                </div>
-              )}
+              <div className="flex items-center gap-2 flex-wrap">
+                {isStreaming ? (
+                  <>
+                    <div className="flex items-center gap-1.5 font-mono text-[11px] bg-state-calm/15 text-state-calm px-3 py-1 rounded-lg border border-state-calm-border font-bold">
+                      <span className="material-symbols-rounded text-sm">bolt</span>
+                      <span>{liveLatency} ms</span>
+                    </div>
+                    <div className="flex items-center gap-1.5 font-mono text-[11px] bg-primary/15 text-primary px-3 py-1 rounded-lg border border-primary/30 font-bold">
+                      <span className="material-symbols-rounded text-sm">speed</span>
+                      <span>{liveFps} FPS</span>
+                    </div>
+                    <button
+                      onClick={() => terminateCamera(selectedApproach)}
+                      className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-state-preempted hover:bg-red-600 text-white font-mono text-[11px] font-bold uppercase tracking-wider shadow-md hover:shadow-red-500/30 transition-all cursor-pointer"
+                      title={`Terminate ${APPROACH_SOURCES[selectedApproach].camTag} stream only`}
+                    >
+                      <span className="material-symbols-rounded text-sm">stop_circle</span>
+                      <span>Terminate {APPROACH_SOURCES[selectedApproach].camTag}</span>
+                    </button>
+                  </>
+                ) : (
+                  <button
+                    onClick={() => startCamera(selectedApproach)}
+                    className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-emerald-500 hover:bg-emerald-600 text-white font-mono text-[11px] font-bold uppercase tracking-wider shadow-md hover:shadow-emerald-500/30 transition-all cursor-pointer"
+                    title={`Start ${APPROACH_SOURCES[selectedApproach].camTag} stream`}
+                  >
+                    <span className="material-symbols-rounded text-sm">play_circle</span>
+                    <span>Run {APPROACH_SOURCES[selectedApproach].camTag}</span>
+                  </button>
+                )}
+              </div>
             </div>
 
+            {/* Quick 4-Camera Approach Switcher Strip */}
+            <div className="flex items-center justify-between bg-surface-low/80 p-2 rounded-xl border border-outline/70 gap-2 flex-wrap">
+              <div className="flex items-center gap-1.5 font-mono text-[10px] text-on-surface-variant uppercase tracking-wider px-1">
+                <span className="material-symbols-rounded text-sm text-primary">cameraswitch</span>
+                <span>Switch Camera:</span>
+              </div>
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-1.5 flex-1 max-w-2xl">
+                {(["N", "S", "E", "W"] as const).map((dir) => {
+                  const cfg = APPROACH_SOURCES[dir];
+                  const isSelected = selectedApproach === dir;
+                  const isRunning = cameraStreaming[dir];
+                  const color = signalColors[dir] || "red";
+                  const vehCount = approachesData[dir]?.vehicles || 0;
+                  return (
+                    <button
+                      key={dir}
+                      onClick={() => switchApproach(dir, true)}
+                      className={`px-2.5 py-1.5 rounded-lg font-mono text-xs font-bold transition-all flex items-center justify-between gap-1.5 border cursor-pointer ${
+                        isSelected
+                          ? "bg-primary text-white border-primary shadow-md ring-1 ring-primary/50"
+                          : "bg-surface-mid hover:bg-surface-high text-on-surface border-outline hover:border-outline-variant"
+                      }`}
+                      title={`Switch and view ${cfg.camTag} (${cfg.name})`}
+                    >
+                      <div className="flex items-center gap-1.5 truncate">
+                        <span className={`w-2 h-2 rounded-full shrink-0 ${
+                          isRunning ? "bg-state-calm animate-ping" : "bg-on-surface-variant/40"
+                        }`} />
+                        <span className="truncate">{cfg.camTag}: {cfg.name}</span>
+                      </div>
+                      <div className="flex items-center gap-1 shrink-0">
+                        <span className={`text-[8px] px-1 py-0.2 rounded uppercase font-bold ${
+                          isRunning ? "bg-emerald-500/20 text-emerald-400" : "bg-surface-low text-on-surface-variant"
+                        }`}>
+                          {isRunning ? "LIVE" : "IDLE"}
+                        </span>
+                        <span className={`text-[9px] px-1 py-0.2 rounded font-normal ${
+                          isSelected ? "bg-white/20 text-white" : "bg-surface-low text-on-surface-variant"
+                        }`}>
+                          {vehCount}v
+                        </span>
+                      </div>
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+
+            {/* Cam 3 Specific: Scenario Selection Bar (Standard Traffic vs 108 Ambulance Priority) */}
+            {selectedApproach === "E" && (
+              <div className="flex items-center justify-between bg-surface-low/95 px-3 py-2 rounded-xl border border-primary/40 gap-2 flex-wrap shadow-sm">
+                <div className="flex items-center gap-2 font-mono text-xs">
+                  <span className="material-symbols-rounded text-sm text-amber-400">emergency</span>
+                  <span className="text-on-surface font-bold">Cam 3 (East ECR/EMS) Scenario:</span>
+                  <span className="text-on-surface-variant text-[10px] hidden sm:inline">(Top-down Indian road with left-hand traffic)</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <button
+                    onClick={() => switchEastVideoMode(false)}
+                    className={`px-3 py-1.5 rounded-lg text-xs font-mono font-bold transition-all cursor-pointer flex items-center gap-1.5 border ${
+                      !eastAmbulanceMode
+                        ? "bg-primary text-white border-primary shadow-sm ring-1 ring-primary/40"
+                        : "bg-surface-mid text-on-surface-variant border-outline hover:text-on-surface"
+                    }`}
+                  >
+                    <span>🚗</span>
+                    <span>Standard Traffic (No Ambulance)</span>
+                  </button>
+                  <button
+                    onClick={() => switchEastVideoMode(true)}
+                    className={`px-3 py-1.5 rounded-lg text-xs font-mono font-bold transition-all cursor-pointer flex items-center gap-1.5 border ${
+                      eastAmbulanceMode
+                        ? "bg-red-500 text-white border-red-400 shadow-md animate-pulse ring-2 ring-red-400/50"
+                        : "bg-red-500/15 text-red-400 border-red-500/30 hover:bg-red-500/25"
+                    }`}
+                  >
+                    <span>🚨</span>
+                    <span>108 Ambulance Priority (Overtakes Queue)</span>
+                  </button>
+                </div>
+              </div>
+            )}
+
             {/* Video Canvas Container with HUD Viewfinder */}
-            <div className="relative w-full h-[480px] bg-surface-mid rounded-2xl overflow-hidden border border-outline flex items-center justify-center shadow-inner">
+            <div
+              ref={viewportFrameRef}
+              className="relative w-full h-[480px] bg-surface-mid rounded-2xl overflow-hidden border border-outline flex items-center justify-center shadow-inner"
+            >
               {/* HUD Corner Viewfinder Reticles */}
               <div className="absolute top-3 left-3 w-4 h-4 border-l-2 border-t-2 border-[#00c97a]/60 pointer-events-none z-20"></div>
               <div className="absolute top-3 right-3 w-4 h-4 border-r-2 border-t-2 border-[#00c97a]/60 pointer-events-none z-20"></div>
@@ -694,7 +1591,12 @@ export default function VisionMonitorView() {
                 className={`relative flex items-center justify-center ${
                   !isStreaming ? "hidden" : "flex"
                 }`}
-                style={{ width: videoDisplaySize.w, height: videoDisplaySize.h }}
+                style={{
+                  width: `${videoDisplaySize.w}px`,
+                  height: `${videoDisplaySize.h}px`,
+                  maxWidth: "100%",
+                  maxHeight: "100%",
+                }}
               >
                 {/* HTML5 Video Element */}
                 <video
@@ -702,17 +1604,77 @@ export default function VisionMonitorView() {
                   playsInline
                   autoPlay
                   muted
-                  onLoadedMetadata={updateVideoDisplaySize}
-                  onPlay={updateVideoDisplaySize}
-                  className="w-full h-full object-contain"
+                  loop
+                  onLoadedMetadata={() => {
+                    updateVideoDisplaySize();
+                    scheduleNextFrame();
+                  }}
+                  onLoadedData={() => {
+                    updateVideoDisplaySize();
+                    scheduleNextFrame();
+                  }}
+                  onCanPlay={() => {
+                    setIsVideoPaused(false);
+                    updateVideoDisplaySize();
+                    scheduleNextFrame();
+                  }}
+                  onPlay={() => {
+                    setIsVideoPaused(false);
+                    updateVideoDisplaySize();
+                    scheduleNextFrame();
+                  }}
+                  onPlaying={() => {
+                    setIsVideoPaused(false);
+                    updateVideoDisplaySize();
+                    scheduleNextFrame();
+                  }}
+                  onPause={() => {
+                    setIsVideoPaused(true);
+                  }}
+                  onError={(e) => {
+                    console.error("Video element error:", e);
+                    setStreamError("Unable to decode video file. Please verify video format.");
+                  }}
+                  className="w-full h-full object-fill rounded-xl"
                 />
+
+                {/* Click to Play / Resume Overlay if video is paused by browser */}
+                {isStreaming && isVideoPaused && (
+                  <button
+                    onClick={() => {
+                      if (videoRef.current) {
+                        videoRef.current.play().then(() => {
+                          setIsVideoPaused(false);
+                          scheduleNextFrame();
+                        }).catch(console.warn);
+                      }
+                    }}
+                    className="absolute inset-0 bg-black/60 rounded-xl flex flex-col items-center justify-center gap-2.5 text-white z-40 cursor-pointer backdrop-blur-sm transition-all"
+                  >
+                    <span className="w-14 h-14 rounded-full bg-primary flex items-center justify-center text-2xl shadow-xl animate-pulse">
+                      ▶
+                    </span>
+                    <span className="font-mono text-xs font-bold tracking-wide">
+                      Click to Play Video & Start AI Inference
+                    </span>
+                  </button>
+                )}
 
                 {/* Smooth Multi-Object Tracked Bounding Box Overlay Cards */}
                 {isStreaming &&
-                  trackedVehicles.map((track) => {
+                  boxesToRender.map((track) => {
                     const [normX, normY, normW, normH] = track.norm_bbox;
                     const isPriority = track.class === "ambulance" || track.class === "police";
                     const color = getClassColor(track.class);
+                    const displayClass = (track.class === "standard" || !track.class)
+                      ? "CAR"
+                      : (track.class.toLowerCase() === "motorcycle" || track.class.toLowerCase() === "motorbike")
+                      ? "MOTORCYCLE"
+                      : (track.class.toLowerCase() === "auto_rickshaw" || track.class.toLowerCase() === "auto" || track.class.toLowerCase() === "rickshaw")
+                      ? "AUTO"
+                      : (track.class.toLowerCase() === "bus")
+                      ? "BUS"
+                      : track.class.toUpperCase();
 
                     return (
                       <div
@@ -741,11 +1703,89 @@ export default function VisionMonitorView() {
                           }}
                           className="absolute -top-5 left-0 px-1.5 py-0.5 rounded text-[9px] font-mono font-bold uppercase shadow-md whitespace-nowrap"
                         >
-                          {track.class} {(track.confidence * 100).toFixed(0)}%
+                          {displayClass} {(track.confidence * 100).toFixed(0)}%
                         </div>
                       </div>
                     );
                   })}
+
+                {/* 4-Way Approach HUD Directional Badges (North, South, East, West) */}
+                {isStreaming && (
+                  <>
+                    {/* North Approach HUD Badge (Top) */}
+                    <div className="absolute top-2.5 left-1/2 -translate-x-1/2 z-30 pointer-events-none">
+                      <div className="flex items-center gap-2 px-3 py-1 rounded-full bg-surface-low/95 backdrop-blur-md border border-outline shadow-xl text-[10px] font-mono">
+                        <span className={`w-2.5 h-2.5 rounded-full ${
+                          signalColors.N === "green" ? "bg-state-calm shadow-[0_0_8px_#00c97a]" :
+                          signalColors.N === "yellow" ? "bg-state-building shadow-[0_0_8px_#ffab1a]" : "bg-state-preempted shadow-[0_0_8px_#ff4060]"
+                        }`}></span>
+                        <span className="font-bold text-on-surface">NORTH (OMR INBOUND)</span>
+                        <span className="text-on-surface-variant font-bold">{approachesData.N?.vehicles || 0} veh</span>
+                        <span className="text-on-surface-variant">({approachesData.N?.queue_m || 0}m)</span>
+                        {activePhase === "Approach-N" && (
+                          <span className="px-1.5 py-0.5 bg-state-calm/20 text-state-calm rounded text-[9px] font-bold">
+                            {phaseState === "YELLOW" ? "YELLOW" : "GREEN"} {Math.round(phaseCountdown)}s
+                          </span>
+                        )}
+                      </div>
+                    </div>
+
+                    {/* South Approach HUD Badge (Bottom) */}
+                    <div className="absolute bottom-2.5 left-1/2 -translate-x-1/2 z-30 pointer-events-none">
+                      <div className="flex items-center gap-2 px-3 py-1 rounded-full bg-surface-low/95 backdrop-blur-md border border-outline shadow-xl text-[10px] font-mono">
+                        <span className={`w-2.5 h-2.5 rounded-full ${
+                          signalColors.S === "green" ? "bg-state-calm shadow-[0_0_8px_#00c97a]" :
+                          signalColors.S === "yellow" ? "bg-state-building shadow-[0_0_8px_#ffab1a]" : "bg-state-preempted shadow-[0_0_8px_#ff4060]"
+                        }`}></span>
+                        <span className="font-bold text-on-surface">SOUTH (OMR OUTBOUND)</span>
+                        <span className="text-on-surface-variant font-bold">{approachesData.S?.vehicles || 0} veh</span>
+                        <span className="text-on-surface-variant">({approachesData.S?.queue_m || 0}m)</span>
+                        {activePhase === "Approach-S" && (
+                          <span className="px-1.5 py-0.5 bg-state-calm/20 text-state-calm rounded text-[9px] font-bold">
+                            {phaseState === "YELLOW" ? "YELLOW" : "GREEN"} {Math.round(phaseCountdown)}s
+                          </span>
+                        )}
+                      </div>
+                    </div>
+
+                    {/* West Approach HUD Badge (Left) */}
+                    <div className="absolute left-2.5 top-1/2 -translate-y-1/2 z-30 pointer-events-none">
+                      <div className="flex flex-col items-center gap-1 px-2.5 py-2 rounded-xl bg-surface-low/95 backdrop-blur-md border border-outline shadow-xl text-[10px] font-mono">
+                        <span className={`w-2.5 h-2.5 rounded-full ${
+                          signalColors.W === "green" ? "bg-state-calm shadow-[0_0_8px_#00c97a]" :
+                          signalColors.W === "yellow" ? "bg-state-building shadow-[0_0_8px_#ffab1a]" : "bg-state-preempted shadow-[0_0_8px_#ff4060]"
+                        }`}></span>
+                        <span className="font-bold text-on-surface">WEST</span>
+                        <span className="text-[9px] text-on-surface-variant font-bold">{approachesData.W?.vehicles || 0} veh</span>
+                        {activePhase === "Approach-W" && (
+                          <span className="px-1.5 py-0.5 bg-state-calm/20 text-state-calm rounded text-[8px] font-bold">
+                            {Math.round(phaseCountdown)}s
+                          </span>
+                        )}
+                      </div>
+                    </div>
+
+                    {/* East Approach HUD Badge (Right) */}
+                    <div className="absolute right-2.5 top-1/2 -translate-y-1/2 z-30 pointer-events-none">
+                      <div className="flex flex-col items-center gap-1 px-2.5 py-2 rounded-xl bg-surface-low/95 backdrop-blur-md border border-outline shadow-xl text-[10px] font-mono">
+                        <span className={`w-2.5 h-2.5 rounded-full ${
+                          signalColors.E === "green" ? "bg-state-calm shadow-[0_0_8px_#00c97a]" :
+                          signalColors.E === "yellow" ? "bg-state-building shadow-[0_0_8px_#ffab1a]" : "bg-state-preempted shadow-[0_0_8px_#ff4060]"
+                        }`}></span>
+                        <span className="font-bold text-on-surface">EAST</span>
+                        <span className="text-[9px] text-on-surface-variant font-bold">{approachesData.E?.vehicles || 0} veh</span>
+                        {approachesData.E?.is_emergency && (
+                          <span className="px-1.5 py-0.5 bg-red-500/20 text-red-400 rounded text-[8px] font-bold animate-pulse">EMERGENCY</span>
+                        )}
+                        {activePhase === "Approach-E" && (
+                          <span className="px-1.5 py-0.5 bg-state-calm/20 text-state-calm rounded text-[8px] font-bold">
+                            {Math.round(phaseCountdown)}s
+                          </span>
+                        )}
+                      </div>
+                    </div>
+                  </>
+                )}
               </div>
 
               {/* High-Tech Full-Width Empty State Launch Cards */}
@@ -757,17 +1797,21 @@ export default function VisionMonitorView() {
                   <div className="flex flex-col items-center relative z-10">
                     <span className="font-mono text-[10px] bg-primary/10 text-primary px-3 py-1 rounded-full border border-primary/25 font-bold uppercase tracking-widest inline-flex items-center gap-1.5 mb-2 shadow-sm">
                       <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
-                      Kinetica Computer Vision Subsystem
+                      Active Camera: {APPROACH_SOURCES[selectedApproach].camTag} · {APPROACH_SOURCES[selectedApproach].name} ({APPROACH_SOURCES[selectedApproach].id})
                     </span>
                     <h3 className="text-xl md:text-2xl font-bold text-on-surface tracking-tight">
-                      Live Vehicle Inference & Priority Tracker
+                      {approachVideos[selectedApproach]
+                        ? `Video Ready for ${APPROACH_SOURCES[selectedApproach].camTag}: ${approachVideos[selectedApproach]?.fileName}`
+                        : `No Video Uploaded for ${APPROACH_SOURCES[selectedApproach].camTag}`}
                     </h3>
                     <p className="font-mono text-xs text-on-surface-variant max-w-xl mx-auto mt-1 leading-relaxed">
-                      Select an input source below to stream traffic video into Python YOLOv8 in real-time.
+                      {approachVideos[selectedApproach]
+                        ? `Click Run ${APPROACH_SOURCES[selectedApproach].camTag} Stream below to begin real-time YOLOv8 vehicle detection, queue accumulation, and signal priority.`
+                        : `Upload an individual video file for ${APPROACH_SOURCES[selectedApproach].name} or load the instant demo video to start live inference.`}
                     </p>
                   </div>
 
-                  {/* Hidden CCTV File Input */}
+                  {/* Hidden CCTV File Input (Fallback) */}
                   <input
                     type="file"
                     ref={fileUploadRef}
@@ -776,11 +1820,70 @@ export default function VisionMonitorView() {
                     className="hidden"
                   />
 
+                  {/* Instant Demo / Play Active Video Banner */}
+                  {approachVideos[selectedApproach] ? (
+                    <div
+                      onClick={() => startCamera(selectedApproach)}
+                      className="w-full max-w-4xl bg-gradient-to-r from-emerald-500/20 via-teal-500/15 to-emerald-500/10 hover:from-emerald-500/30 hover:to-teal-500/25 border-2 border-emerald-500/50 hover:border-emerald-500 p-4 rounded-2xl cursor-pointer transition-all duration-200 flex items-center justify-between shadow-lg my-2 text-left group"
+                    >
+                      <div className="flex items-center gap-3.5">
+                        <div className="w-12 h-12 rounded-xl bg-emerald-500 text-white flex items-center justify-center font-bold text-xl shadow-md group-hover:scale-110 transition-transform shrink-0">
+                          <span className="material-symbols-rounded text-2xl">play_circle</span>
+                        </div>
+                        <div>
+                          <div className="flex items-center gap-2">
+                            <span className="text-sm md:text-base font-bold text-on-surface">
+                              Play {APPROACH_SOURCES[selectedApproach].camTag} ({APPROACH_SOURCES[selectedApproach].id}) Stream: {approachVideos[selectedApproach]?.fileName}
+                            </span>
+                            <span className="px-2 py-0.5 rounded-full text-[9px] font-mono font-bold bg-emerald-500/20 text-emerald-400 border border-emerald-500/40">
+                              READY
+                            </span>
+                          </div>
+                          <p className="text-xs text-on-surface-variant font-mono mt-0.5">
+                            Streams {APPROACH_SOURCES[selectedApproach].name} into Python YOLOv8 & Webster signal allocation.
+                          </p>
+                        </div>
+                      </div>
+                      <div className="px-4 py-2 rounded-xl bg-emerald-500 text-white font-mono text-xs font-bold flex items-center gap-1.5 shadow-md shrink-0 group-hover:bg-emerald-400 transition-colors">
+                        <span>Run {APPROACH_SOURCES[selectedApproach].camTag} Stream</span>
+                        <span className="material-symbols-rounded text-sm">arrow_forward</span>
+                      </div>
+                    </div>
+                  ) : (
+                    <div
+                      onClick={() => loadSampleForApproach(selectedApproach)}
+                      className="w-full max-w-4xl bg-gradient-to-r from-emerald-500/20 via-teal-500/15 to-emerald-500/10 hover:from-emerald-500/30 hover:to-teal-500/25 border-2 border-emerald-500/50 hover:border-emerald-500 p-4 rounded-2xl cursor-pointer transition-all duration-200 flex items-center justify-between shadow-lg my-2 text-left group"
+                    >
+                      <div className="flex items-center gap-3.5">
+                        <div className="w-12 h-12 rounded-xl bg-emerald-500 text-white flex items-center justify-center font-bold text-xl shadow-md group-hover:scale-110 transition-transform shrink-0">
+                          <span className="material-symbols-rounded text-2xl">play_circle</span>
+                        </div>
+                        <div>
+                          <div className="flex items-center gap-2">
+                            <span className="text-sm md:text-base font-bold text-on-surface">
+                              Instant Demo: Load Sample Video for {APPROACH_SOURCES[selectedApproach].name}
+                            </span>
+                            <span className="px-2 py-0.5 rounded-full text-[9px] font-mono font-bold bg-emerald-500/20 text-emerald-400 border border-emerald-500/40">
+                              1-CLICK RUN
+                            </span>
+                          </div>
+                          <p className="text-xs text-on-surface-variant font-mono mt-0.5">
+                            Loads high-definition CCTV video for {APPROACH_SOURCES[selectedApproach].id}, actuates signal priority, and tracks queue density.
+                          </p>
+                        </div>
+                      </div>
+                      <div className="px-4 py-2 rounded-xl bg-emerald-500 text-white font-mono text-xs font-bold flex items-center gap-1.5 shadow-md shrink-0 group-hover:bg-emerald-400 transition-colors">
+                        <span>Run Pipeline</span>
+                        <span className="material-symbols-rounded text-sm">arrow_forward</span>
+                      </div>
+                    </div>
+                  )}
+
                   {/* 3-Card Launch Grid Filling Container */}
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-4 w-full max-w-4xl my-auto relative z-10">
-                    {/* Card 1: Upload CCTV Video File */}
+                    {/* Card 1: Upload CCTV Video File for Selected Approach */}
                     <div
-                      onClick={() => fileUploadRef.current?.click()}
+                      onClick={() => getFileInputRef(selectedApproach).current?.click()}
                       className="group relative bg-surface hover:bg-surface-mid border-2 border-primary/30 hover:border-primary p-5 rounded-2xl cursor-pointer transition-all duration-200 text-left flex flex-col justify-between shadow-md hover:shadow-xl hover:-translate-y-1 overflow-hidden"
                     >
                       <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-transparent to-transparent opacity-60 group-hover:opacity-100 transition-opacity pointer-events-none" />
@@ -790,18 +1893,18 @@ export default function VisionMonitorView() {
                             <span className="material-symbols-rounded text-2xl">upload_file</span>
                           </div>
                           <span className="font-mono text-[9px] bg-primary/15 text-primary border border-primary/25 px-2 py-0.5 rounded-full font-bold uppercase tracking-wider">
-                            CCTV Upload
+                            {APPROACH_SOURCES[selectedApproach].id} Upload
                           </span>
                         </div>
                         <h4 className="text-sm md:text-base font-bold text-on-surface group-hover:text-primary transition-colors">
-                          Upload CCTV Video
+                          Upload Video for {APPROACH_SOURCES[selectedApproach].id}
                         </h4>
                         <p className="text-xs text-on-surface-variant mt-1.5 leading-relaxed">
-                          Upload MP4/WebM traffic surveillance footage to stream into YOLO & feed Telemetry.
+                          Upload MP4/WebM footage specifically for {APPROACH_SOURCES[selectedApproach].name}.
                         </p>
                         <div className="mt-3 flex items-center gap-1.5 text-[10px] font-mono text-on-surface-variant">
                           <span className="w-1.5 h-1.5 rounded-full bg-primary" />
-                          <span>Local File • Instant Playback</span>
+                          <span>Individual File • Live Inference</span>
                         </div>
                       </div>
 
@@ -850,7 +1953,7 @@ export default function VisionMonitorView() {
 
                     {/* Card 3: Physical Webcam */}
                     <div
-                      onClick={startWebcamStream}
+                      onClick={() => startWebcamStream()}
                       className="group relative bg-surface hover:bg-surface-mid border-2 border-state-calm/30 hover:border-state-calm p-5 rounded-2xl cursor-pointer transition-all duration-200 text-left flex flex-col justify-between shadow-md hover:shadow-xl hover:-translate-y-1 overflow-hidden"
                     >
                       <div className="absolute inset-0 bg-gradient-to-br from-state-calm/10 via-transparent to-transparent opacity-60 group-hover:opacity-100 transition-opacity pointer-events-none" />
@@ -860,18 +1963,43 @@ export default function VisionMonitorView() {
                             <span className="material-symbols-rounded text-2xl">videocam</span>
                           </div>
                           <span className="font-mono text-[9px] bg-state-calm/15 text-state-calm border border-state-calm-border px-2 py-0.5 rounded-full font-bold uppercase tracking-wider">
-                            Hardware
+                            {availableWebcams.length > 1 ? `${availableWebcams.length} Webcams Detected` : "Hardware"}
                           </span>
                         </div>
                         <h4 className="text-sm md:text-base font-bold text-on-surface group-hover:text-state-calm transition-colors">
-                          Physical Webcam
+                          Physical Webcam ({APPROACH_SOURCES[selectedApproach].camTag})
                         </h4>
                         <p className="text-xs text-on-surface-variant mt-1.5 leading-relaxed">
-                          Use physical USB camera or laptop web camera for live vehicle recognition.
+                          Connect USB or built-in webcam directly to {APPROACH_SOURCES[selectedApproach].name}.
                         </p>
+
+                        {/* Webcam Device Selector if multiple webcams detected */}
+                        {availableWebcams.length > 0 && (
+                          <div className="mt-3" onClick={(e) => e.stopPropagation()}>
+                            <label className="text-[10px] font-mono text-on-surface-variant block mb-1">
+                              Select USB Camera:
+                            </label>
+                            <select
+                              value={selectedWebcamDevices[selectedApproach] || ""}
+                              onChange={(e) => {
+                                const devId = e.target.value;
+                                setSelectedWebcamDevices((prev) => ({ ...prev, [selectedApproach]: devId }));
+                              }}
+                              className="w-full bg-surface-low border border-outline rounded-lg px-2.5 py-1 text-[11px] font-mono text-on-surface focus:outline-none focus:border-state-calm"
+                            >
+                              <option value="">Default System Webcam</option>
+                              {availableWebcams.map((cam, idx) => (
+                                <option key={cam.deviceId || idx} value={cam.deviceId}>
+                                  {cam.label || `Camera ${idx + 1}`}
+                                </option>
+                              ))}
+                            </select>
+                          </div>
+                        )}
+
                         <div className="mt-3 flex items-center gap-1.5 text-[10px] font-mono text-on-surface-variant">
                           <span className="w-1.5 h-1.5 rounded-full bg-state-calm" />
-                          <span>Direct Camera • USB / Built-in</span>
+                          <span>Direct Camera • 4-Camera WS Port 8000</span>
                         </div>
                       </div>
 
@@ -885,6 +2013,198 @@ export default function VisionMonitorView() {
                   </div>
                 </div>
               )}
+            </div>
+
+            {/* ── MODULE 2: LIVE 4-PATH SIGNAL ACTUATOR (DRIVEN BY VIDEO) ── */}
+            <div className="card p-4 flex flex-col gap-3.5 bg-surface/90 border border-outline shadow-xl rounded-2xl">
+              <div className="flex justify-between items-center flex-wrap gap-2 border-b border-outline pb-3">
+                <div className="flex items-center gap-2.5">
+                  <span className="w-2.5 h-2.5 rounded-full bg-state-calm animate-pulse"></span>
+                  <div>
+                    <div className="flex items-center gap-2">
+                      <span className="font-mono text-xs font-bold text-on-surface uppercase tracking-wider">
+                        Signal Actuation Engine · IX-104 (4-Path Junction)
+                      </span>
+                      <span className={`px-2 py-0.5 rounded text-[9px] font-mono font-bold uppercase tracking-wider border ${
+                        phaseState === "PREEMPTED"
+                          ? "bg-red-500/20 text-red-400 border-red-500/40 animate-pulse"
+                          : phaseState === "YELLOW"
+                          ? "bg-yellow-500/20 text-yellow-400 border-yellow-500/40"
+                          : "bg-emerald-500/20 text-emerald-400 border-emerald-500/40"
+                      }`}>
+                        {phaseState === "PREEMPTED" ? "🚨 PREEMPTION HOLD" : phaseState === "YELLOW" ? "CLEARANCE" : "DEMAND GREEN"}
+                      </span>
+                    </div>
+                    <p className="font-mono text-[11px] text-on-surface-variant mt-0.5">
+                      Live Webster saturation flow kinematics dynamically allocating green splits based on 4-approach camera queues
+                    </p>
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-3">
+                  <div className="text-right font-mono">
+                    <span className="text-[9px] text-on-surface-variant uppercase block">Phase Timer</span>
+                    <span className="text-base font-bold text-primary">
+                      {Math.round(phaseCountdown)}s remaining
+                    </span>
+                  </div>
+                  <div className="w-10 h-10 rounded-xl bg-surface-high border border-outline flex items-center justify-center font-mono font-bold text-lg text-primary shadow-inner">
+                    {Math.round(phaseCountdown)}
+                  </div>
+                </div>
+              </div>
+
+              {/* 4 Approach Signal Heads Grid */}
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                {(["N", "S", "E", "W"] as const).map((dir) => {
+                  const app = approachesData[dir] || {
+                    name: `${dir} Approach`,
+                    vehicles: 0,
+                    queue_m: 0,
+                    density: 0,
+                    is_emergency: false,
+                  };
+                  const color = signalColors[dir] || "red";
+                  const isCurrentActive = activePhase === `Approach-${dir}`;
+
+                  return (
+                    <div
+                      key={dir}
+                      className={`p-3 rounded-xl border flex flex-col justify-between transition-all ${
+                        isCurrentActive
+                          ? color === "green"
+                            ? "bg-emerald-500/10 border-emerald-500/50 shadow-[0_0_12px_rgba(0,201,122,0.15)]"
+                            : "bg-amber-500/10 border-amber-500/50"
+                          : "bg-surface-mid/80 border-outline/70"
+                      }`}
+                    >
+                      {/* Top: Approach Name & Orientation */}
+                      <div className="flex items-center justify-between mb-2">
+                        <span className="font-mono text-[10px] font-bold text-on-surface uppercase">
+                          {dir === "N" ? "North (OMR In)" : dir === "S" ? "South (OMR Out)" : dir === "E" ? "East (ECR/EMS)" : "West (Medavakkam)"}
+                        </span>
+                        <span className="font-mono text-[9px] px-1.5 py-0.2 rounded bg-surface-low border border-outline text-on-surface-variant">
+                          Approach-{dir}
+                        </span>
+                      </div>
+
+                      {/* Middle: 3-Lamp Traffic Signal Head */}
+                      <div className="flex items-center justify-center gap-2 py-2 my-1 bg-surface-low/90 rounded-lg border border-outline/50 shadow-inner">
+                        {/* Red Lamp */}
+                        <div
+                          className={`w-4 h-4 rounded-full transition-all duration-300 ${
+                            color === "red"
+                              ? "bg-[#ff4060] shadow-[0_0_10px_#ff4060]"
+                              : "bg-[#3a1a22] opacity-40"
+                          }`}
+                        />
+                        {/* Yellow Lamp */}
+                        <div
+                          className={`w-4 h-4 rounded-full transition-all duration-300 ${
+                            color === "yellow"
+                              ? "bg-[#ffab1a] shadow-[0_0_10px_#ffab1a]"
+                              : "bg-[#3a2e15] opacity-40"
+                          }`}
+                        />
+                        {/* Green Lamp */}
+                        <div
+                          className={`w-4 h-4 rounded-full transition-all duration-300 ${
+                            color === "green"
+                              ? "bg-[#00c97a] shadow-[0_0_10px_#00c97a]"
+                              : "bg-[#0b2b1e] opacity-40"
+                          }`}
+                        />
+                      </div>
+
+                      {/* Bottom: Live Queue & Status */}
+                      <div className="mt-2 flex justify-between items-center text-[10px] font-mono">
+                        <div>
+                          <span className="text-on-surface-variant block">Queue:</span>
+                          <span className="font-bold text-on-surface">{app.vehicles} veh ({app.queue_m}m)</span>
+                        </div>
+                        <span className={`px-2 py-0.5 rounded text-[9px] font-bold uppercase ${
+                          color === "green"
+                            ? "bg-emerald-500/20 text-emerald-400"
+                            : color === "yellow"
+                            ? "bg-amber-500/20 text-amber-400"
+                            : "bg-surface-low text-on-surface-variant"
+                        }`}>
+                          {color.toUpperCase()}
+                        </span>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+
+            {/* ── MODULE 3: DIRECTED GRAPH CORRIDOR ROUTING & PATH MAPPING ── */}
+            <div className="card p-4 flex flex-col gap-3.5 bg-surface/90 border border-outline shadow-xl rounded-2xl">
+              <div className="flex justify-between items-center flex-wrap gap-2 border-b border-outline pb-3">
+                <div className="flex items-center gap-2.5">
+                  <div className="w-8 h-8 rounded-lg bg-primary/15 text-primary border border-primary/25 flex items-center justify-center font-bold">
+                    <span className="material-symbols-rounded text-lg">alt_route</span>
+                  </div>
+                  <div>
+                    <span className="font-mono text-xs font-bold text-on-surface uppercase tracking-wider block">
+                      Directed Graph Corridor Routing · Green Wave Wavefront
+                    </span>
+                    <span className="font-mono text-[11px] text-on-surface-variant">
+                      Origin: IX-104 Sholinganallur · Mapped Downstream on OMR Arterial Network
+                    </span>
+                  </div>
+                </div>
+
+                <span className={`px-2.5 py-1 rounded-full text-[10px] font-mono font-bold uppercase tracking-wider flex items-center gap-1.5 border ${
+                  corridorRouting?.is_preempted
+                    ? "bg-red-500/20 text-red-400 border-red-500/40 animate-pulse"
+                    : "bg-emerald-500/20 text-emerald-400 border-emerald-500/40"
+                }`}>
+                  <span className={`w-1.5 h-1.5 rounded-full ${corridorRouting?.is_preempted ? "bg-red-500" : "bg-emerald-500"}`} />
+                  {corridorRouting?.is_preempted ? "EMERGENCY GREEN WAVE ACTIVE" : "COORDINATED GREEN CORRIDOR"}
+                </span>
+              </div>
+
+              {/* Corridor Path Chain Visualizer */}
+              <div className="bg-surface-mid/80 p-3.5 rounded-xl border border-outline/70 flex flex-col sm:flex-row items-center justify-between gap-3 shadow-inner">
+                <div className="flex items-center gap-2 flex-wrap text-xs font-mono">
+                  {(corridorRouting?.corridor_path || ["IX-104", "IX-103", "IX-102", "IX-101"]).map((nodeId, idx, arr) => {
+                    const isOrigin = idx === 0;
+                    return (
+                      <React.Fragment key={nodeId}>
+                        <div className={`px-3 py-1.5 rounded-lg border font-bold flex items-center gap-1.5 ${
+                          isOrigin
+                            ? "bg-primary/20 text-primary border-primary/40 shadow-sm"
+                            : "bg-surface text-on-surface border-outline"
+                        }`}>
+                          <span className={`w-2 h-2 rounded-full ${
+                            isOrigin
+                              ? "bg-primary animate-ping"
+                              : corridorRouting?.is_preempted ? "bg-emerald-500" : "bg-primary/70"
+                          }`} />
+                          <span>{nodeId}</span>
+                          {isOrigin && <span className="text-[9px] text-primary/80 font-normal">(ACTIVE SIGNAL)</span>}
+                        </div>
+                        {idx < arr.length - 1 && (
+                          <span className="text-primary font-bold">➔</span>
+                        )}
+                      </React.Fragment>
+                    );
+                  })}
+                  <span className="text-on-surface-variant font-bold">➔</span>
+                  <div className="px-3 py-1.5 rounded-lg bg-red-500/15 border border-red-500/30 text-red-400 font-bold flex items-center gap-1.5">
+                    <span>🏥</span>
+                    <span>{corridorRouting?.destination || "Gleneagles Hospital"}</span>
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-4 text-xs font-mono shrink-0">
+                  <div className="text-right">
+                    <span className="text-[9px] text-on-surface-variant block uppercase">Time Saved</span>
+                    <span className="font-bold text-state-calm">-{corridorRouting?.time_saved_minutes || 4.8} min (38.5%)</span>
+                  </div>
+                </div>
+              </div>
             </div>
 
             {/* Error Message */}
@@ -909,21 +2229,57 @@ export default function VisionMonitorView() {
               </span>
 
               {isStreaming ? (
-                <button
-                  onClick={stopStream}
-                  className="w-full py-3 bg-state-preempted hover:bg-[#e03554] text-white font-mono text-xs font-bold rounded-xl uppercase tracking-wider transition-all cursor-pointer flex items-center justify-center gap-2 shadow-lg hover:shadow-[0_0_16px_rgba(255,64,96,0.4)]"
-                >
-                  <span className="material-symbols-rounded text-base">stop_circle</span>
-                  <span>Terminate Active Stream</span>
-                </button>
+                <div className="space-y-2">
+                  <button
+                    onClick={() => terminateCamera(selectedApproach)}
+                    className="w-full py-3 bg-state-preempted hover:bg-[#e03554] text-white font-mono text-xs font-bold rounded-xl uppercase tracking-wider transition-all cursor-pointer flex items-center justify-center gap-2 shadow-lg hover:shadow-[0_0_16px_rgba(255,64,96,0.4)]"
+                  >
+                    <span className="material-symbols-rounded text-base">stop_circle</span>
+                    <span>Terminate {APPROACH_SOURCES[selectedApproach].camTag} ({APPROACH_SOURCES[selectedApproach].id})</span>
+                  </button>
+
+                  <button
+                    onClick={terminateAllCameras}
+                    className="w-full py-2 bg-surface-low hover:bg-surface-high text-on-surface-variant hover:text-state-preempted border border-outline font-mono text-[11px] font-bold rounded-xl uppercase tracking-wider transition-all cursor-pointer flex items-center justify-center gap-1.5"
+                    title="Stop all 4 cameras and return to full standby"
+                  >
+                    <span className="material-symbols-rounded text-sm">power_settings_new</span>
+                    <span>Terminate All 4 Cameras</span>
+                  </button>
+                </div>
               ) : (
                 <div className="space-y-2">
                   <button
-                    onClick={() => fileUploadRef.current?.click()}
+                    onClick={() => startCamera(selectedApproach)}
+                    className="w-full py-3 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-mono text-xs font-bold rounded-xl uppercase tracking-wider transition-all cursor-pointer flex items-center justify-center gap-2 shadow-lg hover:shadow-emerald-500/25"
+                  >
+                    <span className="material-symbols-rounded text-base">play_circle</span>
+                    <span>Run {APPROACH_SOURCES[selectedApproach].camTag} Stream</span>
+                  </button>
+
+                  <button
+                    onClick={() => getFileInputRef(selectedApproach).current?.click()}
                     className="w-full py-2.5 bg-primary hover:bg-blue-600 text-white font-mono text-xs font-bold rounded-xl uppercase tracking-wider transition-all cursor-pointer flex items-center justify-center gap-2 shadow-md"
                   >
                     <span className="material-symbols-rounded text-sm">upload_file</span>
-                    <span>Upload CCTV Video</span>
+                    <span>Upload Video ({APPROACH_SOURCES[selectedApproach].camTag})</span>
+                  </button>
+
+                  <button
+                    onClick={() => loadSampleForApproach(selectedApproach)}
+                    className="w-full py-2.5 bg-surface-low hover:bg-surface-high text-on-surface border border-outline font-mono text-xs font-bold rounded-xl uppercase tracking-wider transition-all cursor-pointer flex items-center justify-center gap-2 shadow-sm"
+                  >
+                    <span className="material-symbols-rounded text-sm">play_circle</span>
+                    <span>Load Demo Video ({APPROACH_SOURCES[selectedApproach].camTag})</span>
+                  </button>
+
+                  <button
+                    onClick={startAllCameras}
+                    className="w-full py-2 bg-surface-low hover:bg-surface-high text-primary border border-outline font-mono text-[11px] font-bold rounded-xl uppercase tracking-wider transition-all cursor-pointer flex items-center justify-center gap-1.5"
+                    title="Start active camera stream and ready all approaches"
+                  >
+                    <span className="material-symbols-rounded text-sm">play_arrow</span>
+                    <span>Run All 4 Cameras</span>
                   </button>
 
                   <button
@@ -935,7 +2291,7 @@ export default function VisionMonitorView() {
                   </button>
 
                   <button
-                    onClick={startWebcamStream}
+                    onClick={() => startWebcamStream()}
                     className="w-full py-2.5 bg-state-calm hover:bg-[#00b06b] text-white font-mono text-xs font-bold rounded-xl uppercase tracking-wider transition-all cursor-pointer flex items-center justify-center gap-2 shadow-md"
                   >
                     <span className="material-symbols-rounded text-sm">videocam</span>
@@ -1112,7 +2468,7 @@ export default function VisionMonitorView() {
                                   className="w-2 h-2 rounded-full"
                                   style={{ backgroundColor: color }}
                                 ></span>
-                                <span className="text-on-surface uppercase truncate text-[11px]">{cls}</span>
+                                <span className="text-on-surface uppercase truncate text-[11px]">{cls.replace(/_/g, " ")}</span>
                               </div>
                               <span
                                 style={{ backgroundColor: `${color}20`, color: color }}
@@ -1173,7 +2529,7 @@ export default function VisionMonitorView() {
                                   className="w-2 h-2 rounded-full"
                                   style={{ backgroundColor: color }}
                                 ></span>
-                                <span className="text-on-surface uppercase truncate">{cls}</span>
+                                <span className="text-on-surface uppercase truncate">{cls.replace(/_/g, " ")}</span>
                               </div>
                               <span
                                 style={{ backgroundColor: `${color}20`, color: color }}
@@ -1192,309 +2548,6 @@ export default function VisionMonitorView() {
             </div>
           </div>
         </div>
-      )}
-
-      {/* ── TAB 2: DYNAMIC PYTHON BACKEND 4-CAMERA MONITORING ARRAY ───────────────────────────── */}
-      {activeTab === "array" && (
-        <div className="flex flex-col gap-4">
-          {/* FILTER & ROI OVERLAY BAR */}
-          <div className="card p-3 flex items-center justify-between gap-3 flex-wrap">
-            <div className="flex items-center gap-2 flex-wrap">
-              <span className="font-mono text-xs text-on-surface-variant uppercase">Class Filter:</span>
-              <div className="flex items-center gap-1.5 flex-wrap">
-                <button
-                  onClick={() => setArrayFilter("all")}
-                  className={`px-3 py-1 rounded-full font-mono text-xs transition-all cursor-pointer ${
-                    arrayFilter === "all"
-                      ? "bg-state-calm/20 text-state-calm border border-state-calm-border font-bold"
-                      : "bg-surface-low text-on-surface-variant hover:text-on-surface border border-outline"
-                  }`}
-                >
-                  All
-                </button>
-                <button
-                  onClick={() => setArrayFilter("ambulance")}
-                  className={`px-3 py-1 rounded-full font-mono text-xs transition-all cursor-pointer ${
-                    arrayFilter === "ambulance"
-                      ? "bg-state-preempted/20 text-state-preempted border border-state-crit-border font-bold"
-                      : "bg-surface-low text-on-surface-variant hover:text-on-surface border border-outline"
-                  }`}
-                >
-                  🚑 108 EMS
-                </button>
-                <button
-                  onClick={() => setArrayFilter("police")}
-                  className={`px-3 py-1 rounded-full font-mono text-xs transition-all cursor-pointer ${
-                    arrayFilter === "police"
-                      ? "bg-primary/20 text-primary border border-primary/40 font-bold"
-                      : "bg-surface-low text-on-surface-variant hover:text-on-surface border border-outline"
-                  }`}
-                >
-                  🚔 Police
-                </button>
-                <button
-                  onClick={() => setArrayFilter("school_van")}
-                  className={`px-3 py-1 rounded-full font-mono text-xs transition-all cursor-pointer ${
-                    arrayFilter === "school_van"
-                      ? "bg-state-building/20 text-state-building border border-state-warn-border font-bold"
-                      : "bg-surface-low text-on-surface-variant hover:text-on-surface border border-outline"
-                  }`}
-                >
-                  🚌 School Van
-                </button>
-                <button
-                  onClick={() => setArrayFilter("motorcycle")}
-                  className={`px-3 py-1 rounded-full font-mono text-xs transition-all cursor-pointer ${
-                    arrayFilter === "motorcycle" || arrayFilter === "two-wheeler"
-                      ? "bg-state-calm/20 text-state-calm border border-state-calm-border font-bold"
-                      : "bg-surface-low text-on-surface-variant hover:text-on-surface border border-outline"
-                  }`}
-                >
-                  🛵 2-Wheeler
-                </button>
-              </div>
-            </div>
-
-            {/* Actions */}
-            <div className="flex items-center gap-3">
-              <button
-                onClick={runArrayInference}
-                disabled={isArrayDetecting}
-                className="px-3 py-1 bg-state-calm/15 hover:bg-state-calm/25 text-state-calm border border-state-calm-border rounded-lg text-xs font-mono font-bold flex items-center gap-1.5 transition-all cursor-pointer disabled:opacity-50"
-              >
-                <span className={`material-symbols-rounded text-sm ${isArrayDetecting ? "animate-spin" : ""}`}>
-                  sync
-                </span>
-                <span>{isArrayDetecting ? "Running YOLO..." : "Re-Scan Array with Backend"}</span>
-              </button>
-            </div>
-          </div>
-
-          {/* MAIN 4-CAMERA GRID + RIGHT TELEMETRY COLUMN */}
-          <div className="grid grid-cols-1 xl:grid-cols-12 gap-5">
-            {/* 4 Camera Feeds (8 Cols) */}
-            <div className="xl:col-span-8 grid grid-cols-1 md:grid-cols-2 gap-4">
-              {JUNCTION_CAMERAS.map((cam) => {
-                const detResult = arrayDetections[cam.id];
-                const detections = detResult?.detections || [];
-                const latency = detResult?.latency_ms || 8.0;
-                const fps = detResult?.fps || 30.0;
-                const hasPreemption = detections.some((d) => d.class === "ambulance" || d.class === "police");
-
-                return (
-                  <div
-                    key={cam.id}
-                    className="bg-surface-mid border border-outline rounded-xl overflow-hidden relative h-[270px] shadow-md flex flex-col justify-between"
-                  >
-                    {/* Header */}
-                    <div className="bg-gradient-to-b from-[#0d0f13]/90 via-[#0d0f13]/50 to-transparent p-3 flex justify-between items-center z-10">
-                      <div className="flex items-center gap-2">
-                        <span
-                          className={`w-2 h-2 rounded-full ${
-                            hasPreemption ? "bg-state-preempted animate-pulse" : "bg-state-calm"
-                          }`}
-                        ></span>
-                        <span className="font-mono text-xs font-bold text-on-surface">
-                          {cam.name} ({cam.road})
-                        </span>
-                      </div>
-                      <span className="font-mono text-[9px] bg-state-calm/20 text-state-calm px-2 py-0.5 rounded border border-state-calm-border font-bold">
-                        {fps.toFixed(0)} FPS · {latency} MS
-                      </span>
-                    </div>
-
-                    {/* Camera Feed Background */}
-                    <div
-                      className="w-full h-full absolute inset-0 bg-cover bg-center"
-                      style={{ backgroundImage: `url('${cam.imageUrl}')` }}
-                    >
-                      {/* DYNAMIC PYTHON YOLOv8 BOUNDING BOXES */}
-                      {detections.length > 0 ? (
-                        detections.map((det, idx) => {
-                          const [normX, normY, normW, normH] = det.normalized_bbox;
-                          const isPriority = det.class === "ambulance" || det.class === "police";
-                          const color = getClassColor(det.class);
-
-                          if (arrayFilter !== "all" && arrayFilter !== det.class && !(arrayFilter === "motorcycle" && det.class === "two-wheeler")) {
-                            return null;
-                          }
-
-                          return (
-                            <div
-                              key={idx}
-                              style={{
-                                position: "absolute",
-                                left: `${normX * 100}%`,
-                                top: `${normY * 100}%`,
-                                width: `${normW * 100}%`,
-                                height: `${normH * 100}%`,
-                                borderColor: color,
-                                backgroundColor: `${color}20`,
-                                boxShadow: isPriority ? `0 0 16px ${color}` : `0 0 8px ${color}66`,
-                              }}
-                              className="border-2 rounded-md pointer-events-none transition-all duration-75"
-                            >
-                              <div
-                                style={{
-                                  backgroundColor: color,
-                                  color: color === "#ffab1a" ? "#000000" : "#ffffff",
-                                }}
-                                className="absolute -top-5 left-0 px-1.5 py-0.5 rounded text-[9px] font-mono font-bold uppercase shadow-md whitespace-nowrap"
-                              >
-                                {det.class} {(det.confidence * 100).toFixed(0)}%
-                              </div>
-                            </div>
-                          );
-                        })
-                      ) : (
-                        /* Fallback Mock Overlay if Network Loading */
-                        <div className="absolute inset-0 flex items-center justify-center">
-                          {isArrayDetecting && (
-                            <div className="bg-surface-low/80 backdrop-blur-sm px-3 py-1.5 rounded-lg border border-outline font-mono text-xs text-state-calm flex items-center gap-2">
-                              <span className="material-symbols-rounded text-sm animate-spin">sync</span>
-                              <span>Computing YOLOv8...</span>
-                            </div>
-                          )}
-                        </div>
-                      )}
-                    </div>
-
-                    {/* Bottom Status Banner */}
-                    <div className="p-2.5 z-10 flex gap-2">
-                      <span
-                        className={`font-mono text-[9px] px-2 py-0.5 rounded border font-bold uppercase ${
-                          hasPreemption
-                            ? "bg-state-preempted/20 text-state-preempted border-state-crit-border animate-pulse"
-                            : "bg-state-calm/20 text-state-calm border-state-calm-border"
-                        }`}
-                      >
-                        {hasPreemption ? "108 EMS PREEMPTION ACTIVE" : cam.defaultStatus}
-                      </span>
-                      <span className="font-mono text-[9px] bg-surface-low/90 text-on-surface-variant px-2 py-0.5 rounded border border-outline">
-                        HOMOGRAPHY: {cam.homography}
-                      </span>
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-
-            {/* Right Telemetry Column (4 Cols) */}
-            <div className="xl:col-span-4 flex flex-col gap-4">
-              {/* YOLOv8 Edge Model Health Card */}
-              <div className="card p-4 shadow-sm">
-                <div className="flex justify-between items-center mb-3">
-                  <span className="font-mono text-xs font-bold text-on-surface uppercase tracking-wider flex items-center gap-2">
-                    <span className="material-symbols-rounded text-sm text-state-calm">memory</span>
-                    <span>YOLOv8 Edge Engine Health</span>
-                  </span>
-                  <span className="font-mono text-[10px] bg-state-calm/20 text-state-calm px-2 py-0.5 rounded border border-state-calm-border font-bold">
-                    55 FPS ONNX
-                  </span>
-                </div>
-
-                <div className="grid grid-cols-3 gap-2 text-center font-mono mb-3">
-                  <div className="metric-tile">
-                    <span className="text-[9px] text-on-surface-variant block">mAP@50</span>
-                    <span className="text-base font-bold text-state-calm">0.924</span>
-                  </div>
-                  <div className="metric-tile">
-                    <span className="text-[9px] text-on-surface-variant block">Precision</span>
-                    <span className="text-base font-bold text-on-surface">0.891</span>
-                  </div>
-                  <div className="metric-tile">
-                    <span className="text-[9px] text-on-surface-variant block">Recall</span>
-                    <span className="text-base font-bold text-on-surface">0.905</span>
-                  </div>
-                </div>
-
-                <div className="text-[10px] font-mono text-on-surface-variant metric-tile flex items-center justify-between">
-                  <span>Model: YOLOv8n (ONNX Runtime)</span>
-                  <span>Params: 3.2M</span>
-                </div>
-              </div>
-
-              {/* Vehicle Class Confidence Distribution */}
-              <div className="card p-4 shadow-sm flex flex-col gap-3">
-                <span className="font-mono text-xs font-bold text-on-surface uppercase tracking-wider flex items-center gap-2">
-                  <span className="material-symbols-rounded text-sm text-primary">bar_chart</span>
-                  <span>Vehicle Class Confidence</span>
-                </span>
-
-                <div className="space-y-2.5 font-mono text-xs">
-                  <div>
-                    <div className="flex justify-between text-[11px] mb-1">
-                      <span className="text-state-preempted font-bold">🚑 108 Ambulance</span>
-                      <span className="text-state-preempted font-bold">0.98</span>
-                    </div>
-                    <div className="w-full h-1.5 bg-surface-low rounded-full overflow-hidden border border-outline">
-                      <div className="h-full bg-state-preempted" style={{ width: "98%" }}></div>
-                    </div>
-                  </div>
-
-                  <div>
-                    <div className="flex justify-between text-[11px] mb-1">
-                      <span className="text-primary font-bold">🚔 Police Unit</span>
-                      <span className="text-primary font-bold">0.96</span>
-                    </div>
-                    <div className="w-full h-1.5 bg-surface-low rounded-full overflow-hidden border border-outline">
-                      <div className="h-full bg-primary" style={{ width: "96%" }}></div>
-                    </div>
-                  </div>
-
-                  <div>
-                    <div className="flex justify-between text-[11px] mb-1">
-                      <span className="text-state-building font-bold">🚌 School Van / Bus</span>
-                      <span className="text-state-building font-bold">0.95</span>
-                    </div>
-                    <div className="w-full h-1.5 bg-surface-low rounded-full overflow-hidden border border-outline">
-                      <div className="h-full bg-state-building" style={{ width: "95%" }}></div>
-                    </div>
-                  </div>
-
-                  <div>
-                    <div className="flex justify-between text-[11px] mb-1">
-                      <span className="text-on-surface">🚗 Standard Car / Taxi</span>
-                      <span className="text-on-surface">0.91</span>
-                    </div>
-                    <div className="w-full h-1.5 bg-surface-low rounded-full overflow-hidden border border-outline">
-                      <div className="h-full bg-primary" style={{ width: "91%" }}></div>
-                    </div>
-                  </div>
-
-                  <div>
-                    <div className="flex justify-between text-[11px] mb-1">
-                      <span className="text-state-calm font-bold">🛵 Two-Wheeler</span>
-                      <span className="text-state-calm font-bold">0.89</span>
-                    </div>
-                    <div className="w-full h-1.5 bg-surface-low rounded-full overflow-hidden border border-outline">
-                      <div className="h-full bg-state-calm" style={{ width: "89%" }}></div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              {/* Spatial Homography & Queue Estimation */}
-              <div className="card p-4 shadow-sm font-mono text-xs flex flex-col gap-2">
-                <span className="font-bold text-on-surface uppercase tracking-wider flex items-center gap-2">
-                  <span className="material-symbols-rounded text-sm text-state-building">straighten</span>
-                  <span>Spatial Homography Extents</span>
-                </span>
-                <div className="grid grid-cols-2 gap-2 text-center mt-1">
-                  <div className="metric-tile">
-                    <span className="text-[9px] text-on-surface-variant uppercase block">Queue Dist</span>
-                    <span className="text-base font-bold text-state-building">48.2 m</span>
-                  </div>
-                  <div className="metric-tile">
-                    <span className="text-[9px] text-on-surface-variant uppercase block">Flow Rate</span>
-                    <span className="text-base font-bold text-state-calm">84 v/min</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   );
 }

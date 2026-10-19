@@ -121,6 +121,13 @@ class LanePriorityHeap:
             raise IndexError("peek_root called on empty LanePriorityHeap")
         return self._heap[0][2]
 
+    def peek(self) -> Optional[str]:
+        """Safely return top lane_id or None if empty."""
+        try:
+            return self.peek_root()
+        except IndexError:
+            return None
+
     def pop_root(self) -> Tuple[str, float]:
         """Remove and return the lane_id and score of the highest priority approach.
 

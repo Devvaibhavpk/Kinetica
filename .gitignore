@@ -100,3 +100,12 @@ coverage.xml
 report/perfect_draft.docx
 report/perfect_draft.pdf
 
+# Video staging & raw video dumps
+kin video/
+data/videos/
+
+# Results temporary debug artifacts
+results/crop_*.jpg
+results/debug_*.jpg
+results/sample_cam1_frame.jpg
+results/false_positive_proof.*

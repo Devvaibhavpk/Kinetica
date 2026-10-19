@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useRef, useCallback } from "react";
-import { subscribeVisionFeed } from "../../lib/visionFeedStore";
+import { subscribeVisionFeed, setGlobalTelemetryMode, updateSimulationTelemetry } from "../../lib/visionFeedStore";
 
 export type DirectionKey = "N" | "E" | "S" | "W";
 export type SignalColor = "red" | "yellow" | "green";
@@ -16,6 +16,7 @@ interface ApproachData {
   isEmergency: boolean;
   arrivalRate: number; // veh / min
   maxCapacity: number; // max queue slots
+  classes?: Record<string, number>;
 }
 
 interface SimVehicle {
@@ -25,7 +26,7 @@ interface SimVehicle {
   dist: number; // px from stop bar (dist < 0: queued/approaching, dist > 0: past stop bar)
   speed: number; // px/sec
   targetSpeed: number; // px/sec
-  type: "car" | "auto" | "bus" | "truck" | "ambulance";
+  type: "car" | "auto" | "bus" | "truck" | "ambulance" | "motorcycle";
   isEmergency: boolean;
   length: number; // px
   width: number; // px
@@ -79,7 +80,7 @@ function createSimVehicle(
   lane: number,
   dist: number,
   isGreen: boolean,
-  typeOverride?: "car" | "auto" | "bus" | "truck" | "ambulance",
+  typeOverride?: "car" | "auto" | "bus" | "truck" | "ambulance" | "motorcycle",
   isEmergency: boolean = false
 ): SimVehicle {
   const id = isEmergency ? 9999 : globalVehicleSeq++;
@@ -87,9 +88,11 @@ function createSimVehicle(
     typeOverride ||
     (isEmergency
       ? "ambulance"
-      : id % 4 === 1
+      : id % 5 === 1
       ? "auto"
-      : id % 6 === 3
+      : id % 5 === 2
+      ? "motorcycle"
+      : id % 7 === 3
       ? "bus"
       : id % 9 === 0
       ? "truck"
@@ -105,6 +108,11 @@ function createSimVehicle(
     width = 10;
     targetSpeed = 32;
     color = "#064E3B"; // Auto green body
+  } else if (type === "motorcycle") {
+    length = 16;
+    width = 6;
+    targetSpeed = 38;
+    color = "#00C97A"; // Two-Wheeler Green
   } else if (type === "bus") {
     length = 40;
     width = 13;
@@ -146,25 +154,49 @@ function createInitialFleet(approaches: Record<DirectionKey, ApproachData>): Sim
     const isGreen = app.signal === "green";
     const count = app.vehicles;
 
+    const detectedPool: ("car" | "auto" | "bus" | "truck" | "motorcycle")[] = [];
+    if (app.classes && Object.keys(app.classes).length > 0) {
+      Object.entries(app.classes).forEach(([clsName, cCount]) => {
+        const c = clsName.toLowerCase();
+        let mapped: "car" | "auto" | "bus" | "truck" | "motorcycle" = "car";
+        if (c.includes("auto") || c.includes("rickshaw")) mapped = "auto";
+        else if (c.includes("bus")) mapped = "bus";
+        else if (c.includes("motorcycle") || c.includes("bike") || c.includes("motorbike")) mapped = "motorcycle";
+        else if (c.includes("truck")) mapped = "truck";
+        else if (c.includes("car")) mapped = "car";
+        for (let k = 0; k < cCount; k++) {
+          detectedPool.push(mapped);
+        }
+      });
+    }
+
     const countL0 = Math.ceil(count / 2);
     const countL1 = Math.floor(count / 2);
 
+    let vehicleIndex = 0;
     [0, 1].forEach((lane) => {
       const laneCount = lane === 0 ? countL0 : countL1;
       let currDist = -16; // Lead car stops 16px behind stop bar
 
       for (let i = 0; i < laneCount; i++) {
         const isEmergency = app.isEmergency && lane === 0 && i === 0;
+        const assignedType = isEmergency
+          ? "ambulance"
+          : detectedPool.length > 0
+          ? detectedPool[vehicleIndex % detectedPool.length]
+          : undefined;
+
         const veh = createSimVehicle(
           dir,
           lane,
           currDist,
           isGreen,
-          isEmergency ? "ambulance" : undefined,
+          assignedType,
           isEmergency
         );
         list.push(veh);
         currDist -= (veh.length + QUEUE_GAP);
+        vehicleIndex++;
       }
     });
   });
@@ -273,7 +305,7 @@ function renderCADVehicle(
   theta: number,
   L: number,
   W: number,
-  type: "car" | "auto" | "bus" | "truck" | "ambulance",
+  type: "car" | "auto" | "bus" | "truck" | "ambulance" | "motorcycle",
   color: string,
   isEmergency: boolean,
   isBraking: boolean,
@@ -431,6 +463,34 @@ function renderCADVehicle(
     ctx.arc(L * 0.05, W / 3, 2.2, 0, Math.PI * 2);
     ctx.fill();
     ctx.shadowBlur = 0;
+  } else if (type === "motorcycle") {
+    // Indian Roadway Motorbike / Two-Wheeler
+    ctx.fillStyle = color || "#00C97A";
+    ctx.beginPath();
+    if (ctx.roundRect) {
+      ctx.roundRect(-L / 2, -W / 2 + 1, L, W - 2, 2);
+    } else {
+      ctx.rect(-L / 2, -W / 2 + 1, L, W - 2);
+    }
+    ctx.fill();
+
+    // Handlebars
+    ctx.strokeStyle = "rgba(255, 255, 255, 0.75)";
+    ctx.lineWidth = 1.2;
+    ctx.beginPath();
+    ctx.moveTo(L * 0.2, -W / 2);
+    ctx.lineTo(L * 0.2, W / 2);
+    ctx.stroke();
+
+    // Rider Helmet (Center)
+    ctx.fillStyle = "#E2E8F0";
+    ctx.beginPath();
+    ctx.arc(0, 0, 2.5, 0, Math.PI * 2);
+    ctx.fill();
+
+    // Single Center Headlight
+    ctx.fillStyle = "#FEF08A";
+    ctx.fillRect(L / 2 - 1, -1, 1.5, 2);
   } else {
     // Sedan / Coupe: Curved Front Windshield & Rear Window + Sunroof
     ctx.fillStyle = "rgba(15, 23, 42, 0.85)";
@@ -460,7 +520,7 @@ function renderCADVehicle(
   }
 
   // 5. LED Headlight Optics at Front Bumper
-  if (type !== "auto") {
+  if (type !== "auto" && type !== "motorcycle") {
     ctx.fillStyle = "#FEF08A";
     ctx.fillRect(L / 2 - 0.8, -W / 2 + 1.5, 1.2, 2.2);
     ctx.fillRect(L / 2 - 0.8, W / 2 - 3.7, 1.2, 2.2);
@@ -606,9 +666,79 @@ export default function IntersectionDetailView() {
   const [currentPhaseState, setCurrentPhaseState] = useState<"green" | "yellow">("green");
   const [phaseSecondsLeft, setPhaseSecondsLeft] = useState<number>(24);
   const [totalAllocatedGreen, setTotalAllocatedGreen] = useState<number>(24);
+  const [isLiveVideoActive, setIsLiveVideoActive] = useState<boolean>(false);
+  const [telemetryMode, setTelemetryMode] = useState<"cctv" | "simulate">("simulate");
+  const telemetryModeRef = useRef<"cctv" | "simulate">("simulate");
+  telemetryModeRef.current = telemetryMode;
+
+  const effectiveIsLiveCctv = isLiveVideoActive && telemetryMode === "cctv";
+
+  const [liveFps, setLiveFps] = useState<number>(0);
+  const [feedDate, setFeedDate] = useState<string>("");
+  const [feedSourceTag, setFeedSourceTag] = useState<string>("");
+  const [feedLatency, setFeedLatency] = useState<number>(0);
+  const [liveClasses, setLiveClasses] = useState<Record<string, number>>({});
 
   // Master Physical Vehicle List for CAD Simulation (Initialized cleanly)
   const vehiclesRef = useRef<SimVehicle[]>(createInitialFleet(approaches));
+
+  // Load clean synthetic benchmark scenarios (CCTV noise and confusion bypassed)
+  const loadScenario = useCallback((type: "balanced" | "morning_peak" | "ambulance_east" | "cleared") => {
+    setTelemetryMode("simulate");
+    if (type === "balanced") {
+      const balancedApps: Record<DirectionKey, ApproachData> = {
+        N: { key: "N", name: "North Approach", roadName: "OMR Inbound Mainline", signal: "green", vehicles: 5, queueMeters: 20.0, isEmergency: false, arrivalRate: 18.5, maxCapacity: 24 },
+        S: { key: "S", name: "South Approach", roadName: "OMR Outbound to Siruseri", signal: "red", vehicles: 4, queueMeters: 16.0, isEmergency: false, arrivalRate: 14.0, maxCapacity: 24 },
+        E: { key: "E", name: "East Approach", roadName: "Kallukuttai / ECR Link Rd", signal: "red", vehicles: 3, queueMeters: 12.0, isEmergency: false, arrivalRate: 6.2, maxCapacity: 16 },
+        W: { key: "W", name: "West Approach", roadName: "Medavakkam Main Rd", signal: "red", vehicles: 4, queueMeters: 16.0, isEmergency: false, arrivalRate: 11.8, maxCapacity: 18 },
+      };
+      setApproaches(balancedApps);
+      setActiveGreenLane("N");
+      setCurrentPhaseState("green");
+      setPhaseSecondsLeft(22);
+      setTotalAllocatedGreen(22);
+      vehiclesRef.current = createInitialFleet(balancedApps);
+    } else if (type === "morning_peak") {
+      const peakApps: Record<DirectionKey, ApproachData> = {
+        N: { key: "N", name: "North Approach", roadName: "OMR Inbound Mainline", signal: "green", vehicles: 18, queueMeters: 72.0, isEmergency: false, arrivalRate: 32.0, maxCapacity: 24 },
+        S: { key: "S", name: "South Approach", roadName: "OMR Outbound to Siruseri", signal: "red", vehicles: 6, queueMeters: 24.0, isEmergency: false, arrivalRate: 12.0, maxCapacity: 24 },
+        E: { key: "E", name: "East Approach", roadName: "Kallukuttai / ECR Link Rd", signal: "red", vehicles: 4, queueMeters: 16.0, isEmergency: false, arrivalRate: 8.0, maxCapacity: 16 },
+        W: { key: "W", name: "West Approach", roadName: "Medavakkam Main Rd", signal: "red", vehicles: 7, queueMeters: 28.0, isEmergency: false, arrivalRate: 14.0, maxCapacity: 18 },
+      };
+      setApproaches(peakApps);
+      setActiveGreenLane("N");
+      setCurrentPhaseState("green");
+      setPhaseSecondsLeft(36);
+      setTotalAllocatedGreen(36);
+      vehiclesRef.current = createInitialFleet(peakApps);
+    } else if (type === "ambulance_east") {
+      setApproaches((prev) => ({
+        ...prev,
+        E: { ...prev.E, isEmergency: true, signal: "green" },
+        N: { ...prev.N, isEmergency: false, signal: "red" },
+        S: { ...prev.S, isEmergency: false, signal: "red" },
+        W: { ...prev.W, isEmergency: false, signal: "red" },
+      }));
+      setActiveGreenLane("E");
+      setCurrentPhaseState("green");
+      setPhaseSecondsLeft(26);
+      setTotalAllocatedGreen(26);
+      const list = vehiclesRef.current.filter((v) => !v.isEmergency);
+      const amb = createSimVehicle("E", 0, -28, true, "ambulance", true);
+      amb.speed = 52;
+      list.unshift(amb);
+      vehiclesRef.current = list;
+    } else if (type === "cleared") {
+      setApproaches((prev) => {
+        const next = { ...prev };
+        ORDERED_DIRECTIONS.forEach((dir) => {
+          next[dir] = { ...next[dir], vehicles: 0, queueMeters: 0, isEmergency: false };
+        });
+        return next;
+      });
+      vehiclesRef.current = [];
+    }
+  }, []);
 
   // Trigger Emergency Ambulance with priority preemption
   const triggerEmergency = useCallback((dir: DirectionKey) => {
@@ -627,18 +757,18 @@ export default function IntersectionDetailView() {
 
     setActiveGreenLane(dir);
     setCurrentPhaseState("green");
-    setPhaseSecondsLeft(24);
-    setTotalAllocatedGreen(24);
+    setPhaseSecondsLeft(26);
+    setTotalAllocatedGreen(26);
 
-    // Inject emergency ambulance vehicle entity directly into that lane
+    // Inject emergency ambulance vehicle entity directly at front of lane 0
     const list = vehiclesRef.current.filter((v) => !v.isEmergency);
     const amb = createSimVehicle(dir, 0, -28, true, "ambulance", true);
-    amb.speed = 50;
+    amb.speed = 52;
     list.unshift(amb);
     vehiclesRef.current = list;
   }, []);
 
-  // Clear Emergency override
+  // Clear Emergency override and restore dynamic cycle
   const clearEmergency = useCallback(() => {
     setApproaches((prev) => {
       const next = { ...prev };
@@ -648,9 +778,24 @@ export default function IntersectionDetailView() {
       return next;
     });
     vehiclesRef.current = vehiclesRef.current.filter((v) => !v.isEmergency);
+    // Smooth transition: wind down remaining green to 4s so current flow clears, then dynamically serves waiting queues
+    setPhaseSecondsLeft((prev) => Math.min(prev, 4));
   }, []);
 
-  // Adjust Vehicles manually for judge interaction
+  // Interactive Ambulance Toggle (ON / OFF)
+  const toggleEmergency = useCallback(
+    (dir: DirectionKey = "E") => {
+      const isAnyEmergencyActive = ORDERED_DIRECTIONS.some((k) => approaches[k].isEmergency);
+      if (isAnyEmergencyActive) {
+        clearEmergency();
+      } else {
+        triggerEmergency(dir);
+      }
+    },
+    [approaches, clearEmergency, triggerEmergency]
+  );
+
+  // Adjust Vehicles manually for judge interaction with live physical vehicle spawning/removal
   const adjustVehicles = useCallback((dir: DirectionKey, delta: number) => {
     setApproaches((prev) => {
       const cur = prev[dir];
@@ -664,7 +809,28 @@ export default function IntersectionDetailView() {
         },
       };
     });
-  }, []);
+
+    if (delta > 0) {
+      for (let i = 0; i < delta; i++) {
+        const inDir = vehiclesRef.current.filter((v) => v.approach === dir);
+        const l0Count = inDir.filter((v) => v.lane === 0).length;
+        const l1Count = inDir.filter((v) => v.lane === 1).length;
+        const lane = l0Count <= l1Count ? 0 : 1;
+        const laneVehs = inDir.filter((v) => v.lane === lane);
+        const rearDist = laneVehs.reduce((min, v) => Math.min(min, v.dist), -20);
+        const spawnDist = Math.min(-180, rearDist - (24 + QUEUE_GAP));
+        const newVeh = createSimVehicle(dir, lane, spawnDist, approaches[dir].signal === "green");
+        vehiclesRef.current.push(newVeh);
+      }
+    } else if (delta < 0) {
+      const toRemove = Math.abs(delta);
+      const inDir = vehiclesRef.current
+        .filter((v) => v.approach === dir && !v.isEmergency && v.dist <= 0)
+        .sort((a, b) => a.dist - b.dist); // rearmost (lowest dist) first
+      const removeIds = new Set(inDir.slice(0, toRemove).map((v) => v.id));
+      vehiclesRef.current = vehiclesRef.current.filter((v) => !removeIds.has(v.id));
+    }
+  }, [approaches]);
 
   // Reset to default scenario values
   const resetSimulation = useCallback(() => {
@@ -726,34 +892,148 @@ export default function IntersectionDetailView() {
   // Subscribe to Vision Feed Store for Emergency Preemption Events & Live Video Queue Sync
   useEffect(() => {
     const unsubscribe = subscribeVisionFeed((state) => {
-      if (state.hasEmergency && state.emergencyDirection) {
-        triggerEmergency(state.emergencyDirection);
+      setIsLiveVideoActive(Boolean(state.isStreaming));
+      if (typeof state.fps === "number") setLiveFps(state.fps);
+      if (state.formattedDate) setFeedDate(state.formattedDate);
+      if (state.feedSourceTag) setFeedSourceTag(state.feedSourceTag);
+      if (typeof state.latency_ms === "number") setFeedLatency(state.latency_ms);
+      if (state.classCounts) setLiveClasses(state.classCounts);
+
+      if (telemetryModeRef.current === "cctv") {
+        const isConfirmedEmergency = Boolean(
+          state.hasEmergency &&
+          (state.emergencyConfirmed || state.corridorRouting?.is_preempted) &&
+          state.emergencyDirection
+        );
+
+        if (isConfirmedEmergency && state.emergencyDirection) {
+          if (!approaches[state.emergencyDirection]?.isEmergency) {
+            triggerEmergency(state.emergencyDirection);
+          }
+        } else if (!state.hasEmergency && !state.corridorRouting?.is_preempted) {
+          const isAnyEmActive = ORDERED_DIRECTIONS.some((k) => approaches[k].isEmergency);
+          if (isAnyEmActive) {
+            clearEmergency();
+          }
+        }
       }
-      if (
-        state.isStreaming &&
-        typeof state.liveDetectionsCount === "number" &&
-        state.liveDetectionsCount > 0
-      ) {
-        setApproaches((prev) => {
-          const targetDir: DirectionKey = state.emergencyDirection || "N";
-          const count = Math.min(22, Math.max(1, state.liveDetectionsCount!));
-          if (prev[targetDir].vehicles === count) return prev;
-          return {
-            ...prev,
-            [targetDir]: {
-              ...prev[targetDir],
-              vehicles: count,
-              queueMeters: count * 4.0,
-            },
-          };
-        });
+
+      if (state.isStreaming && telemetryModeRef.current === "cctv") {
+        // 1. Sync 4-approach telemetry from real vision detection & queue accumulation
+        if (state.approaches) {
+          setApproaches((prev) => {
+            const next = { ...prev };
+            ORDERED_DIRECTIONS.forEach((dir) => {
+              const feed = state.approaches?.[dir];
+              if (feed) {
+                const sigColor: SignalColor = state.signalColors
+                  ? state.signalColors[dir]
+                  : (feed.signal as SignalColor) || next[dir].signal;
+                next[dir] = {
+                  ...next[dir],
+                  vehicles: feed.vehicles,
+                  queueMeters: feed.queue_m ?? feed.queueMeters ?? next[dir].queueMeters,
+                  isEmergency: feed.is_emergency ?? feed.isEmergency ?? next[dir].isEmergency,
+                  signal: sigColor,
+                  arrivalRate: feed.density ? Number((feed.density * 60).toFixed(1)) : next[dir].arrivalRate,
+                  classes: feed.classes || next[dir].classes,
+                };
+              }
+            });
+            return next;
+          });
+        } else if (
+          typeof state.liveDetectionsCount === "number" &&
+          state.liveDetectionsCount > 0
+        ) {
+          setApproaches((prev) => {
+            const targetDir: DirectionKey = state.emergencyDirection || "N";
+            const count = Math.min(22, Math.max(1, state.liveDetectionsCount!));
+            if (prev[targetDir].vehicles === count) return prev;
+            return {
+              ...prev,
+              [targetDir]: {
+                ...prev[targetDir],
+                vehicles: count,
+                queueMeters: count * 4.0,
+                classes: state.classCounts || prev[targetDir].classes,
+              },
+            };
+          });
+        }
+
+        // 2. Sync dynamic actuation signal phase and countdown from gateway
+        if (state.activePhase) {
+          const stripped = state.activePhase.replace("Approach-", "") as DirectionKey;
+          if (ORDERED_DIRECTIONS.includes(stripped)) {
+            setActiveGreenLane(stripped);
+          }
+        }
+        const pState = state.phaseState?.toLowerCase();
+        if (pState === "green" || pState === "yellow") {
+          setCurrentPhaseState(pState as "green" | "yellow");
+        }
+        if (typeof state.phaseCountdown === "number") {
+          setPhaseSecondsLeft(Math.max(1, Math.round(state.phaseCountdown)));
+        }
+      }
+
+      if (state.telemetryMode && state.telemetryMode !== telemetryModeRef.current) {
+        setTelemetryMode(state.telemetryMode);
       }
     });
     return unsubscribe;
   }, [triggerEmergency]);
 
-  // Synchronize Vehicle Entities smoothly based on Approach Vehicle Counts
+  // Broadcast simulation state to global store so Network Overview map matches simulation mode
+  useEffect(() => {
+    if (telemetryMode === "simulate") {
+      const queueCounts: Record<DirectionKey, number> = {
+        N: approaches.N.vehicles,
+        S: approaches.S.vehicles,
+        E: approaches.E.vehicles,
+        W: approaches.W.vehicles,
+      };
+      const queueMeters: Record<DirectionKey, number> = {
+        N: approaches.N.queueMeters,
+        S: approaches.S.queueMeters,
+        E: approaches.E.queueMeters,
+        W: approaches.W.queueMeters,
+      };
+      const densities: Record<DirectionKey, number> = {
+        N: Number((approaches.N.queueMeters / 80.0).toFixed(4)),
+        S: Number((approaches.S.queueMeters / 80.0).toFixed(4)),
+        E: Number((approaches.E.queueMeters / 80.0).toFixed(4)),
+        W: Number((approaches.W.queueMeters / 80.0).toFixed(4)),
+      };
+      const signalColors: Record<DirectionKey, SignalColor> = {
+        N: approaches.N.signal,
+        S: approaches.S.signal,
+        E: approaches.E.signal,
+        W: approaches.W.signal,
+      };
+      const hasEmergency = ORDERED_DIRECTIONS.some((k) => approaches[k].isEmergency);
+      const emDir = ORDERED_DIRECTIONS.find((k) => approaches[k].isEmergency) || null;
+      const totalVehicles = Object.values(queueCounts).reduce((a, b) => a + b, 0);
+
+      updateSimulationTelemetry({
+        queueCounts,
+        queueMeters,
+        densities,
+        signalColors,
+        activePhase: `Approach-${activeGreenLane}`,
+        phaseState: currentPhaseState.toUpperCase(),
+        phaseCountdown: phaseSecondsLeft,
+        hasEmergency,
+        emergencyDirection: emDir,
+        totalVehicles,
+      });
+    }
+  }, [approaches, activeGreenLane, currentPhaseState, phaseSecondsLeft, telemetryMode]);
+
+  // Synchronize Vehicle Entities smoothly based on Approach Vehicle Counts (Active ONLY in CCTV streaming mode)
   const syncVehiclesWithCounts = useCallback(() => {
+    if (telemetryModeRef.current !== "cctv") return;
     const current = vehiclesRef.current;
     const nextVehicles: SimVehicle[] = [];
 
@@ -773,6 +1053,22 @@ export default function IntersectionDetailView() {
         nextVehicles.push(amb);
       }
 
+      const detectedPool: ("car" | "auto" | "bus" | "truck" | "motorcycle")[] = [];
+      if (app.classes && Object.keys(app.classes).length > 0) {
+        Object.entries(app.classes).forEach(([clsName, cCount]) => {
+          const c = clsName.toLowerCase();
+          let mapped: "car" | "auto" | "bus" | "truck" | "motorcycle" = "car";
+          if (c.includes("auto") || c.includes("rickshaw")) mapped = "auto";
+          else if (c.includes("bus")) mapped = "bus";
+          else if (c.includes("motorcycle") || c.includes("bike") || c.includes("motorbike")) mapped = "motorcycle";
+          else if (c.includes("truck")) mapped = "truck";
+          else if (c.includes("car")) mapped = "car";
+          for (let k = 0; k < cCount; k++) {
+            detectedPool.push(mapped);
+          }
+        });
+      }
+
       if (inDir.length < targetCount) {
         // Need to add vehicles: spawn smoothly upstream
         const toAdd = targetCount - inDir.length;
@@ -785,7 +1081,13 @@ export default function IntersectionDetailView() {
           const rearDist = laneVehs.reduce((min, v) => Math.min(min, v.dist), -16);
           const spawnDist = Math.min(-200, rearDist - (24 + QUEUE_GAP));
 
-          const newVeh = createSimVehicle(dir, lane, spawnDist, isGreen);
+          const vehicleIndex = inDir.length;
+          const assignedType =
+            detectedPool.length > 0
+              ? detectedPool[vehicleIndex % detectedPool.length]
+              : undefined;
+
+          const newVeh = createSimVehicle(dir, lane, spawnDist, isGreen, assignedType);
           inDir.push(newVeh);
         }
       } else if (inDir.length > targetCount + 2) {
@@ -811,38 +1113,95 @@ export default function IntersectionDetailView() {
     approaches.E.isEmergency,
     approaches.S.isEmergency,
     approaches.W.isEmergency,
+    approaches.N.classes,
+    approaches.E.classes,
+    approaches.S.classes,
+    approaches.W.classes,
     syncVehiclesWithCounts,
   ]);
 
-  // Closed-loop 1-Second Signal Controller Ticker
+  // Closed-loop 1-Second Signal Controller Ticker (Active only in manual/synthetic mode; bypassed during live CCTV streaming)
   useEffect(() => {
     if (!isPlaying) return;
+    if (effectiveIsLiveCctv) {
+      // In live video mode, the backend edge_gateway actuation engine drives phase decisions, countdowns, and vehicle queues!
+      return;
+    }
 
     const interval = setInterval(() => {
+      // 1. Upstream Stochastic Inflow Generation per approach based on arrivalRate (veh / min)
+      ORDERED_DIRECTIONS.forEach((dir) => {
+        const app = approaches[dir];
+        const rate = app.arrivalRate || 14;
+        // Probability of an arrival in 1s scaled by simSpeed
+        if (Math.random() < (rate / 60)) {
+          const inDir = vehiclesRef.current.filter((v) => v.approach === dir && v.dist <= 0);
+          if (inDir.length < app.maxCapacity) {
+            const l0Count = inDir.filter((v) => v.lane === 0).length;
+            const l1Count = inDir.filter((v) => v.lane === 1).length;
+            const lane = l0Count <= l1Count ? 0 : 1;
+            const laneVehs = inDir.filter((v) => v.lane === lane);
+            const rearDist = laneVehs.reduce((min, v) => Math.min(min, v.dist), -20);
+            if (rearDist > -240) {
+              const spawnDist = Math.min(-200, rearDist - (24 + QUEUE_GAP));
+              const newVeh = createSimVehicle(dir, lane, spawnDist, app.signal === "green");
+              vehiclesRef.current.push(newVeh);
+            }
+          }
+        }
+      });
+
+      // 2. Count real waiting queue (dist <= 0) per approach and sync approaches state
+      const realQueues: Record<DirectionKey, number> = { N: 0, E: 0, S: 0, W: 0 };
+      vehiclesRef.current.forEach((v) => {
+        if (v.dist <= 0) {
+          realQueues[v.approach]++;
+        }
+      });
+
+      setApproaches((prev) => {
+        let changed = false;
+        const next = { ...prev };
+        ORDERED_DIRECTIONS.forEach((dir) => {
+          const q = realQueues[dir];
+          if (next[dir].vehicles !== q) {
+            next[dir] = {
+              ...next[dir],
+              vehicles: q,
+              queueMeters: q * 4.0,
+            };
+            changed = true;
+          }
+        });
+        return changed ? next : prev;
+      });
+
+      // 3. Actuation Countdown & Cycle Logic
       setPhaseSecondsLeft((prev) => {
         if (prev > 1) {
-          // Clear 1 vehicle every 3 seconds while green
-          if (prev % 3 === 0) {
-            setApproaches((appMap) => {
-              const cur = appMap[activeGreenLane];
-              if (cur && cur.vehicles > 0) {
-                const count = Math.max(0, cur.vehicles - 1);
-                return {
-                  ...appMap,
-                  [activeGreenLane]: {
-                    ...cur,
-                    vehicles: count,
-                    queueMeters: count * 4.0,
-                  },
-                };
-              }
-              return appMap;
-            });
+          // Dynamic Gap-Out Check:
+          // If queue on active green lane is completely drained (0 waiting cars) and minimum 8s green served,
+          // trigger early yellow transition so green is not wasted on empty tarmac!
+          if (
+            controllerMode === "kinetica" &&
+            !approaches[activeGreenLane]?.isEmergency &&
+            realQueues[activeGreenLane] === 0 &&
+            (totalAllocatedGreen - prev) >= 8
+          ) {
+            setCurrentPhaseState("yellow");
+            setApproaches((appMap) => ({
+              ...appMap,
+              [activeGreenLane]: {
+                ...appMap[activeGreenLane],
+                signal: "yellow",
+              },
+            }));
+            return 3;
           }
           return prev - 1;
         }
 
-        // Green expired -> Transition to 3s Yellow
+        // Green phase expired -> 3s Yellow Clearance Phase
         if (currentPhaseState === "green") {
           setCurrentPhaseState("yellow");
           setApproaches((appMap) => ({
@@ -855,12 +1214,12 @@ export default function IntersectionDetailView() {
           return 3;
         }
 
-        // Yellow expired -> Evaluate next lane according to accumulation
+        // Yellow phase expired -> Allocate Green to Next Direction
         setCurrentPhaseState("green");
         let nextLane: DirectionKey = "N";
 
         if (controllerMode === "fixed") {
-          // Fixed round-robin (20s each)
+          // Fixed round-robin (20s strictly)
           const order: DirectionKey[] = ["N", "E", "S", "W"];
           const nextIdx = (order.indexOf(activeGreenLane) + 1) % 4;
           nextLane = order[nextIdx];
@@ -878,45 +1237,37 @@ export default function IntersectionDetailView() {
           setTotalAllocatedGreen(fixedDuration);
           return fixedDuration;
         } else {
-          // Kinetica Dynamic Actuation: Pick direction with highest accumulation
-          setApproaches((appMap) => {
-            const keys: DirectionKey[] = ["N", "E", "S", "W"];
-
-            // Inflow generation for waiting lanes
-            keys.forEach((k) => {
-              if (k !== activeGreenLane && Math.random() > 0.42) {
-                const count = Math.min(appMap[k].maxCapacity, appMap[k].vehicles + 1);
-                appMap[k].vehicles = count;
-                appMap[k].queueMeters = count * 4.0;
+          // Kinetica Dynamic Actuation:
+          // Priority check for emergency preemption
+          const emDir = ORDERED_DIRECTIONS.find((k) => approaches[k].isEmergency);
+          if (emDir) {
+            nextLane = emDir;
+          } else {
+            // Allocate to waiting lane with highest accumulation
+            let maxWeight = -1;
+            ORDERED_DIRECTIONS.forEach((k) => {
+              // De-prioritize active lane so rotation distributes fairly
+              const weight = k === activeGreenLane ? realQueues[k] * 0.25 : realQueues[k];
+              if (weight > maxWeight) {
+                maxWeight = weight;
+                nextLane = k;
               }
             });
+          }
 
-            // Priority override check
-            const em = keys.find((k) => appMap[k].isEmergency);
-            if (em) {
-              nextLane = em;
-            } else {
-              let maxWeight = -1;
-              keys.forEach((k) => {
-                const weight = k === activeGreenLane ? appMap[k].vehicles * 0.35 : appMap[k].vehicles;
-                if (weight > maxWeight) {
-                  maxWeight = weight;
-                  nextLane = k;
-                }
-              });
-            }
-
+          setApproaches((appMap) => {
             const next = { ...appMap };
-            keys.forEach((k) => {
+            ORDERED_DIRECTIONS.forEach((k) => {
               next[k] = { ...next[k], signal: k === nextLane ? "green" : "red" };
             });
             return next;
           });
 
           setActiveGreenLane(nextLane);
+          // Allocate dynamic green duration proportional to queue length (12s to 36s)
           const dynamicTime = Math.min(
-            32,
-            Math.max(14, Math.round(10 + (approaches[nextLane]?.vehicles || 6) * 1.4))
+            36,
+            Math.max(12, Math.round(10 + (realQueues[nextLane] || 4) * 1.5))
           );
           setTotalAllocatedGreen(dynamicTime);
           return dynamicTime;
@@ -925,7 +1276,7 @@ export default function IntersectionDetailView() {
     }, 1000 / simSpeed);
 
     return () => clearInterval(interval);
-  }, [isPlaying, simSpeed, activeGreenLane, currentPhaseState, controllerMode, approaches]);
+  }, [isPlaying, simSpeed, activeGreenLane, currentPhaseState, controllerMode, approaches, totalAllocatedGreen, effectiveIsLiveCctv]);
 
   // ── UNIFIED PHYSICAL SIMULATION & CAD BLUEPRINT CANVAS LOOP ────────────────
   useEffect(() => {
@@ -939,9 +1290,11 @@ export default function IntersectionDetailView() {
       // Update Vehicle Physics (Intelligent Driver Model & Safe Queues)
       if (isPlaying) {
         const vehicles = vehiclesRef.current;
+        const exitingVehicleIds = new Set<number>();
 
         ORDERED_DIRECTIONS.forEach((dir) => {
           const isGreen = approaches[dir].signal === "green";
+          const isYellow = approaches[dir].signal === "yellow";
 
           [0, 1].forEach((laneIndex) => {
             const laneVehicles = vehicles
@@ -952,99 +1305,111 @@ export default function IntersectionDetailView() {
               const v = laneVehicles[i];
               const lead = i > 0 ? laneVehicles[i - 1] : null;
 
-              if (isGreen) {
-                // Signal is Green: proceed through junction with natural human acceleration
-                if (lead) {
+              if (v.dist > 0) {
+                // Vehicle has entered / crossed the junction: CLEAR INTERSECTION!
+                if (lead && lead.dist > v.dist) {
                   const gap = lead.dist - v.dist;
-                  const minGap = lead.length / 2 + v.length / 2 + QUEUE_GAP;
-                  const desiredGap = minGap + v.speed * 0.45;
-
-                  if (lead.speed === 0 && lead.dist <= 0) {
-                    // Lead vehicle hasn't started rolling yet: STAY COMPLETELY STOPPED
-                    v.speed = 0;
+                  const safeGap = lead.length / 2 + v.length / 2 + 12;
+                  if (gap < safeGap) {
                     v.isBraking = true;
-                  } else if (gap < minGap) {
-                    // Too close to lead: brake to maintain safe distance
-                    v.isBraking = true;
-                    v.speed = Math.max(0, v.speed - dt * 25);
-                  } else if (gap < desiredGap) {
-                    // Following lead vehicle speed smoothly
-                    v.isBraking = v.speed > lead.speed;
-                    v.speed += (lead.speed - v.speed) * Math.min(1, dt * 3);
+                    v.speed = Math.max(0, Math.min(v.speed, lead.speed));
                   } else {
-                    // Open road ahead: smooth progressive acceleration
                     v.isBraking = false;
-                    const accel = 15 * (1 - Math.pow(v.speed / v.targetSpeed, 2));
-                    v.speed = Math.min(v.targetSpeed, v.speed + dt * Math.max(3, accel));
+                    v.speed = Math.min(v.targetSpeed, v.speed + dt * 20);
                   }
                 } else {
-                  // Lead vehicle: smooth progressive acceleration
                   v.isBraking = false;
-                  const accel = 16 * (1 - Math.pow(v.speed / v.targetSpeed, 2));
-                  v.speed = Math.min(v.targetSpeed, v.speed + dt * Math.max(3, accel));
+                  v.speed = Math.min(v.targetSpeed, v.speed + dt * 20);
                 }
 
                 v.dist += v.speed * dt;
 
-                // Recycle vehicle when fully past junction exit (+280px)
-                if (v.dist > 280) {
-                  const rearDist = laneVehicles.reduce((min, u) => Math.min(min, u.dist), 0);
-                  v.dist = Math.min(-240, rearDist - (v.length + QUEUE_GAP + 15));
-                  v.speed = 0;
-                  v.isBraking = true;
+                // Vehicle has cleared junction exit (+260px): clean departure
+                if (v.dist > 260) {
+                  exitingVehicleIds.add(v.id);
                 }
               } else {
-                // Signal is Red or Yellow
-                if (v.dist > 0) {
-                  // Already cleared stop bar into the junction: MUST CLEAR!
+                // Vehicle is approaching or waiting at the stop line (dist <= 0)
+                if (isGreen) {
+                  // Signal is Green: proceed through junction with natural human acceleration
                   if (lead) {
                     const gap = lead.dist - v.dist;
-                    const safeDist = lead.length / 2 + v.length / 2 + QUEUE_GAP;
-                    if (gap < safeDist) {
+                    const minGap = lead.length / 2 + v.length / 2 + QUEUE_GAP;
+                    const desiredGap = minGap + v.speed * 0.5;
+
+                    if (lead.speed < 1.0 && lead.dist <= 0) {
+                      // Lead vehicle hasn't started rolling yet: STAY COMPLETELY STOPPED
+                      v.speed = 0;
                       v.isBraking = true;
-                      v.speed = Math.max(0, Math.min(v.speed, lead.speed - 6));
+                    } else if (gap < minGap) {
+                      // Too close to lead: brake to maintain safe distance
+                      v.isBraking = true;
+                      v.speed = Math.max(0, v.speed - dt * 25);
+                    } else if (gap < desiredGap) {
+                      // Following lead vehicle speed smoothly
+                      v.isBraking = v.speed > lead.speed;
+                      v.speed += (lead.speed - v.speed) * Math.min(1, dt * 3.5);
                     } else {
+                      // Open road ahead: smooth progressive acceleration
                       v.isBraking = false;
-                      v.speed = Math.min(v.targetSpeed, v.speed + dt * 12);
+                      const accel = v.type === "bus" ? 14 : v.type === "motorcycle" ? 26 : 20;
+                      v.speed = Math.min(v.targetSpeed, v.speed + dt * accel);
                     }
                   } else {
+                    // Lead vehicle: smooth progressive acceleration
                     v.isBraking = false;
-                    v.speed = Math.min(v.targetSpeed, v.speed + dt * 12);
+                    const accel = v.type === "bus" ? 15 : v.type === "motorcycle" ? 28 : 22;
+                    v.speed = Math.min(v.targetSpeed, v.speed + dt * accel);
                   }
+
                   v.dist += v.speed * dt;
-                  if (v.dist > 280) {
-                    const rearDist = laneVehicles.reduce((min, u) => Math.min(min, u.dist), 0);
-                    v.dist = Math.min(-240, rearDist - (v.length + QUEUE_GAP + 15));
-                    v.speed = 0;
-                    v.isBraking = true;
+                } else if (isYellow) {
+                  // Signal is Yellow: dilemma zone check
+                  if (v.dist > -28 && v.speed > 16) {
+                    // Dilemma zone: too close to stop safely, proceed to clear junction
+                    v.isBraking = false;
+                    v.speed = Math.min(v.targetSpeed, v.speed + dt * 14);
+                    v.dist += v.speed * dt;
+                  } else {
+                    // Brake to stop at stop bar
+                    const maxAllowedDist = -(v.length / 2 + 4);
+                    const targetDist = lead && lead.dist <= 0
+                      ? Math.min(maxAllowedDist, lead.dist - (lead.length / 2 + v.length / 2 + QUEUE_GAP))
+                      : maxAllowedDist;
+                    const gapToTarget = targetDist - v.dist;
+
+                    if (gapToTarget > 1.2) {
+                      const desiredSpeed = Math.min(v.targetSpeed, Math.sqrt(2 * 18 * gapToTarget));
+                      v.isBraking = true;
+                      v.speed += (desiredSpeed - v.speed) * Math.min(1, dt * 4.5);
+                      v.dist += v.speed * dt;
+                      if (v.dist >= targetDist) {
+                        v.dist = targetDist;
+                        v.speed = 0;
+                      }
+                    } else {
+                      v.dist = targetDist;
+                      v.speed = 0;
+                      v.isBraking = true;
+                    }
                   }
                 } else {
-                  // Approaching or in queue behind stop line: MUST STOP ON RED!
+                  // Signal is Red: must stop behind stop line or lead vehicle!
                   const maxAllowedDist = -(v.length / 2 + 4);
-                  let targetDist = maxAllowedDist;
-
-                  // Never follow a lead vehicle past the stop line on red!
-                  if (lead && lead.dist <= 0) {
-                    targetDist = Math.min(
-                      maxAllowedDist,
-                      lead.dist - (lead.length / 2 + v.length / 2 + QUEUE_GAP)
-                    );
-                  }
-
+                  const targetDist = lead && lead.dist <= 0
+                    ? Math.min(maxAllowedDist, lead.dist - (lead.length / 2 + v.length / 2 + QUEUE_GAP))
+                    : maxAllowedDist;
                   const gapToTarget = targetDist - v.dist;
-                  if (gapToTarget > 1.0) {
+
+                  if (gapToTarget > 1.2) {
                     // Smooth physical kinematic braking: v = sqrt(2 * a * d)
-                    const desiredSpeed = Math.min(
-                      v.targetSpeed,
-                      Math.sqrt(2 * 16 * gapToTarget)
-                    );
+                    const desiredSpeed = Math.min(v.targetSpeed, Math.sqrt(2 * 18 * gapToTarget));
                     v.isBraking = true;
-                    v.speed += (desiredSpeed - v.speed) * Math.min(1, dt * 4);
+                    v.speed += (desiredSpeed - v.speed) * Math.min(1, dt * 4.5);
                     v.dist += v.speed * dt;
                     if (v.dist >= targetDist) {
                       v.dist = targetDist;
                       v.speed = 0;
-                      v.isBraking = true;
                     }
                   } else {
                     // At target slot: ABSOLUTELY AND COMPLETELY STATIONARY!
@@ -1057,6 +1422,11 @@ export default function IntersectionDetailView() {
             }
           });
         });
+
+        // Prune vehicles that finished exiting the intersection
+        if (exitingVehicleIds.size > 0) {
+          vehiclesRef.current = vehicles.filter((v) => !exitingVehicleIds.has(v.id));
+        }
       }
 
       // Render Top-Down CAD Blueprint
@@ -1531,14 +1901,17 @@ export default function IntersectionDetailView() {
 
           // 12. Corner Telemetry HUD Badges
           // Top-Left: Node IX-104 Telemetry
+          const isSim = telemetryMode === "simulate";
+          const hudHeight = (effectiveIsLiveCctv && feedSourceTag) || isSim ? 50 : 34;
+          const hudWidth = (effectiveIsLiveCctv && feedDate) ? 276 : isSim ? 275 : 230;
           ctx.fillStyle = isLight ? "rgba(255, 255, 255, 0.85)" : "rgba(18, 18, 20, 0.88)";
           ctx.strokeStyle = isLight ? "rgba(203, 213, 225, 0.6)" : "rgba(255, 255, 255, 0.08)";
           ctx.lineWidth = 1;
           ctx.beginPath();
           if (ctx.roundRect) {
-            ctx.roundRect(12, 12, 230, 34, 8);
+            ctx.roundRect(12, 12, hudWidth, hudHeight, 8);
           } else {
-            ctx.rect(12, 12, 230, 34);
+            ctx.rect(12, 12, hudWidth, hudHeight);
           }
           ctx.fill();
           ctx.stroke();
@@ -1546,9 +1919,26 @@ export default function IntersectionDetailView() {
           ctx.fillStyle = isLight ? "#0F172A" : "#F4F4F6";
           ctx.font = "bold 10px -apple-system, BlinkMacSystemFont, sans-serif";
           ctx.fillText("NODE IX-104 · SHOLINGANALLUR", 20, 26);
-          ctx.fillStyle = "#10B981";
+          ctx.fillStyle = isSim ? "#38BDF8" : "#10B981";
           ctx.font = "9px -apple-system, BlinkMacSystemFont, monospace";
-          ctx.fillText("● CLOSED-LOOP · LHT FREE-LEFT BYPASS", 20, 39);
+          ctx.fillText(
+            effectiveIsLiveCctv && feedDate
+              ? `● CCTV SYNC: ${feedDate}`
+              : isSim
+              ? "● SIMULATION BENCHMARK · CLOSED-LOOP"
+              : "● CLOSED-LOOP · LHT FREE-LEFT BYPASS",
+            20,
+            39
+          );
+          if (effectiveIsLiveCctv && feedSourceTag) {
+            ctx.fillStyle = isLight ? "#475569" : "#94A3B8";
+            ctx.font = "8.5px -apple-system, BlinkMacSystemFont, monospace";
+            ctx.fillText(`CAM FEED: ${feedSourceTag.toUpperCase()}`, 20, 51);
+          } else if (isSim) {
+            ctx.fillStyle = isLight ? "#475569" : "#94A3B8";
+            ctx.font = "8.5px -apple-system, BlinkMacSystemFont, monospace";
+            ctx.fillText("BENCHMARK SCENARIO (CCTV NOISE BYPASSED)", 20, 51);
+          }
 
           // Top-Right: Phase State Pill
           ctx.fillStyle = isLight ? "rgba(255, 255, 255, 0.85)" : "rgba(18, 18, 20, 0.88)";
@@ -1575,7 +1965,18 @@ export default function IntersectionDetailView() {
 
     animId = requestAnimationFrame(blueprintLoop);
     return () => cancelAnimationFrame(animId);
-  }, [approaches, isPlaying, simSpeed, activeGreenLane, currentPhaseState, phaseSecondsLeft]);
+  }, [
+    approaches,
+    isPlaying,
+    simSpeed,
+    activeGreenLane,
+    currentPhaseState,
+    phaseSecondsLeft,
+    effectiveIsLiveCctv,
+    feedDate,
+    feedSourceTag,
+    telemetryMode,
+  ]);
 
   const activeApproach = approaches[activeGreenLane];
   const progressPercent = Math.max(5, (phaseSecondsLeft / Math.max(1, totalAllocatedGreen)) * 100);
@@ -1589,14 +1990,35 @@ export default function IntersectionDetailView() {
             <span className="material-symbols-rounded text-2xl">traffic</span>
           </div>
           <div>
-            <div className="flex items-center gap-2.5">
+            <div className="flex items-center gap-2.5 flex-wrap">
               <h1 className="font-display text-base font-semibold text-on-surface tracking-tight">
                 Intersection IX-104 Telemetry & Queues
               </h1>
-              <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-medium bg-state-calm/10 text-state-calm dark:shadow-[0_0_0_1px_rgba(16,185,129,0.25),inset_0_1px_0_0_rgba(16,185,129,0.2)]">
-                <span className="w-1.5 h-1.5 rounded-full bg-state-calm animate-pulse" />
-                Live Node IX-104
-              </span>
+              {effectiveIsLiveCctv ? (
+                <>
+                  <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-emerald-500/15 text-emerald-400 border border-emerald-500/30">
+                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping" />
+                    CCTV Live Synced ({liveFps} FPS)
+                  </span>
+                  {feedDate && (
+                    <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-mono font-medium bg-primary/10 text-primary border border-primary/20">
+                      <span className="material-symbols-rounded text-[13px]">calendar_today</span>
+                      <span>{feedDate}</span>
+                    </span>
+                  )}
+                  {feedSourceTag && (
+                    <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-mono font-medium bg-surface-high/70 text-on-surface-variant border border-white/10">
+                      <span className="material-symbols-rounded text-[13px]">videocam</span>
+                      <span>{feedSourceTag}</span>
+                    </span>
+                  )}
+                </>
+              ) : (
+                <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-medium bg-sky-500/15 text-sky-400 border border-sky-500/30">
+                  <span className="material-symbols-rounded text-[13px]">science</span>
+                  <span>Simulate Benchmark Mode (Clean Closed-Loop)</span>
+                </span>
+              )}
             </div>
             <p className="text-xs text-on-surface-variant font-body mt-0.5">
               Sholinganallur Junction Arterial Gateway · OMR Corridor & Medavakkam-ECR Link
@@ -1605,6 +2027,40 @@ export default function IntersectionDetailView() {
         </div>
 
         <div className="flex flex-wrap items-center gap-3 w-full md:w-auto justify-end">
+          {/* Data Source Switcher: Live CCTV Stream vs Interactive Simulator */}
+          <div className="bg-surface-mid/60 dark:bg-surface-low/80 p-1 rounded-2xl flex items-center shadow-inner dark:shadow-[0_0_0_1px_rgba(255,255,255,0.05),inset_0_1px_3px_rgba(0,0,0,0.5)]">
+            <button
+              onClick={() => {
+                setTelemetryMode("cctv");
+                setGlobalTelemetryMode("cctv");
+              }}
+              className={`px-3 py-1.5 rounded-xl text-xs font-medium transition-all flex items-center gap-1.5 cursor-pointer ${
+                telemetryMode === "cctv"
+                  ? "bg-emerald-500/20 text-emerald-400 font-bold border border-emerald-500/30 shadow-xs"
+                  : "text-on-surface-variant hover:text-on-surface"
+              }`}
+              title="Track live CCTV camera video inference and edge gateway detections"
+            >
+              <span className="material-symbols-rounded text-sm">videocam</span>
+              <span>Live CCTV {isLiveVideoActive ? "●" : ""}</span>
+            </button>
+            <button
+              onClick={() => {
+                setTelemetryMode("simulate");
+                setGlobalTelemetryMode("simulate");
+              }}
+              className={`px-3 py-1.5 rounded-xl text-xs font-medium transition-all flex items-center gap-1.5 cursor-pointer ${
+                telemetryMode === "simulate"
+                  ? "bg-sky-500/20 text-sky-400 font-bold border border-sky-500/30 shadow-xs"
+                  : "text-on-surface-variant hover:text-on-surface"
+              }`}
+              title="Decouple from confusing camera footage and run clean, deterministic closed-loop simulation"
+            >
+              <span className="material-symbols-rounded text-sm">science</span>
+              <span>Simulate Mode</span>
+            </button>
+          </div>
+
           {/* Mode Switcher: Kinetica Dynamic vs Fixed Baseline */}
           <div className="bg-surface-mid/60 dark:bg-surface-low/80 p-1 rounded-2xl flex items-center shadow-inner dark:shadow-[0_0_0_1px_rgba(255,255,255,0.05),inset_0_1px_3px_rgba(0,0,0,0.5)]">
             <button
@@ -1629,16 +2085,32 @@ export default function IntersectionDetailView() {
             </button>
           </div>
 
-          {/* Action Controls */}
+          {/* Action Controls: 108 Ambulance ON / OFF Toggle */}
           <div className="flex items-center gap-2">
-            <button
-              onClick={() => triggerEmergency("E")}
-              className="px-3.5 py-1.5 bg-state-preempted/10 hover:bg-state-preempted/20 text-state-preempted rounded-2xl text-xs font-semibold flex items-center gap-1.5 transition-all cursor-pointer active:scale-95 shadow-xs dark:shadow-[0_0_0_1px_rgba(239,68,68,0.35),0_1px_0_0_rgba(239,68,68,0.25)_inset,0_2px_8px_rgba(0,0,0,0.45)]"
-              title="Trigger 108 Emergency ambulance preemption on East Lane"
-            >
-              <span className="material-symbols-rounded text-base">emergency</span>
-              <span>108 Ambulance</span>
-            </button>
+            {(() => {
+              const isAnyEmergencyActive = ORDERED_DIRECTIONS.some((k) => approaches[k].isEmergency);
+              const activeEmDir = ORDERED_DIRECTIONS.find((k) => approaches[k].isEmergency);
+              return (
+                <button
+                  onClick={() => toggleEmergency("E")}
+                  className={`px-3.5 py-1.5 rounded-2xl text-xs font-semibold flex items-center gap-1.5 transition-all cursor-pointer active:scale-95 shadow-xs ${
+                    isAnyEmergencyActive
+                      ? "bg-rose-600 hover:bg-rose-700 text-white animate-pulse ring-2 ring-rose-400 shadow-[0_0_16px_rgba(239,68,68,0.5)]"
+                      : "bg-state-preempted/10 hover:bg-state-preempted/20 text-state-preempted dark:shadow-[0_0_0_1px_rgba(239,68,68,0.35),0_1px_0_0_rgba(239,68,68,0.25)_inset,0_2px_8px_rgba(0,0,0,0.45)]"
+                  }`}
+                  title={
+                    isAnyEmergencyActive
+                      ? `Ambulance Priority Active on ${approaches[activeEmDir || "E"]?.name}. Click to Turn OFF.`
+                      : "Trigger 108 Emergency ambulance preemption on East Lane (Click to Turn ON)"
+                  }
+                >
+                  <span className="material-symbols-rounded text-base">emergency</span>
+                  <span>
+                    {isAnyEmergencyActive ? "🚨 108 Ambulance: ON (Turn OFF)" : "🚨 108 Ambulance: OFF (Turn ON)"}
+                  </span>
+                </button>
+              );
+            })()}
 
             <button
               onClick={() => setIsPlaying(!isPlaying)}
@@ -1668,6 +2140,60 @@ export default function IntersectionDetailView() {
           </div>
         </div>
       </section>
+
+      {/* ── 1B. INTERACTIVE SIMULATION PRESETS DOCK (Shown when Simulate Mode is Active) ── */}
+      {telemetryMode === "simulate" && (
+        <section className="bg-sky-500/10 border border-sky-500/25 rounded-2xl px-4.5 py-3 flex flex-wrap items-center justify-between gap-3 shadow-sm backdrop-blur-md">
+          <div className="flex items-center gap-2.5 text-xs">
+            <span className="material-symbols-rounded text-sky-400 text-lg">science</span>
+            <div>
+              <span className="font-bold text-sky-300 font-display">SIMULATE MODE ACTIVE</span>
+              <span className="text-on-surface-variant ml-2 text-[11px] hidden sm:inline">
+                CCTV video noise and queue confusion decoupled. Test clean closed-loop actuation, smooth vehicle discharge, and queue steppers.
+              </span>
+            </div>
+          </div>
+          <div className="flex items-center gap-2 flex-wrap">
+            <span className="text-[10px] uppercase font-mono text-on-surface-variant">Presets:</span>
+            <button
+              onClick={() => loadScenario("balanced")}
+              className="px-2.5 py-1 rounded-xl bg-surface-high/70 hover:bg-surface-high text-on-surface text-[11px] font-medium border border-white/10 transition-all cursor-pointer"
+            >
+              Balanced Flow
+            </button>
+            <button
+              onClick={() => loadScenario("morning_peak")}
+              className="px-2.5 py-1 rounded-xl bg-amber-500/15 hover:bg-amber-500/25 text-amber-300 text-[11px] font-medium border border-amber-500/30 transition-all cursor-pointer"
+            >
+              Morning Peak (North Heavy)
+            </button>
+            <button
+              onClick={() => {
+                if (approaches.E.isEmergency) {
+                  clearEmergency();
+                } else {
+                  loadScenario("ambulance_east");
+                }
+              }}
+              className={`px-2.5 py-1 rounded-xl text-[11px] font-medium border transition-all cursor-pointer ${
+                approaches.E.isEmergency
+                  ? "bg-rose-600 text-white border-rose-400 animate-pulse font-bold shadow-xs"
+                  : "bg-rose-500/15 hover:bg-rose-500/25 text-rose-300 border-rose-500/30"
+              }`}
+              title="Toggle 108 Emergency Ambulance Preemption"
+            >
+              {approaches.E.isEmergency ? "🚨 108 EMS: ACTIVE (Click to OFF)" : "108 EMS Preempt"}
+            </button>
+            <button
+              onClick={() => loadScenario("cleared")}
+              className="px-2 py-1 rounded-xl bg-surface-high/50 hover:bg-surface-high text-on-surface-variant text-[11px] border border-white/5 transition-all cursor-pointer"
+              title="Clear all queues"
+            >
+              Clear Queues
+            </button>
+          </div>
+        </section>
+      )}
 
       {/* ── 2. DYNAMIC ISLAND HERO PHASE STATUS HUD ────────────────────────── */}
       <section
@@ -1893,9 +2419,17 @@ export default function IntersectionDetailView() {
                 </span>
               </div>
 
-              <span className="px-2.5 py-0.5 rounded-full text-[10px] font-medium bg-primary/10 text-primary dark:shadow-[0_0_0_1px_rgba(59,130,246,0.25),inset_0_1px_0_0_rgba(255,255,255,0.1)]">
-                Node IX-104 Blueprint
-              </span>
+              <div className="flex items-center gap-2">
+                {isLiveVideoActive && feedDate && (
+                  <span className="hidden sm:inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-mono font-medium bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                    <span>{feedDate}</span>
+                  </span>
+                )}
+                <span className="px-2.5 py-0.5 rounded-full text-[10px] font-medium bg-primary/10 text-primary dark:shadow-[0_0_0_1px_rgba(59,130,246,0.25),inset_0_1px_0_0_rgba(255,255,255,0.1)]">
+                  Node IX-104 Blueprint
+                </span>
+              </div>
             </div>
 
             {/* Top-Down CAD Blueprint Viewport (Expanded Crisp Canvas) */}
@@ -2019,6 +2553,18 @@ export default function IntersectionDetailView() {
                         Free Left Slip: Continuous Flow
                       </span>
                     </div>
+                    {app.classes && Object.keys(app.classes).length > 0 && (
+                      <div className="flex flex-wrap gap-1 mt-1.5 font-telemetry text-[9px]">
+                        {Object.entries(app.classes).map(([cls, cnt]) => (
+                          <span
+                            key={cls}
+                            className="px-1.5 py-0.5 rounded bg-surface-high/60 text-on-surface-variant border border-white/5"
+                          >
+                            {cls}: {cnt}
+                          </span>
+                        ))}
+                      </div>
+                    )}
                   </div>
                 </div>
 
@@ -2097,15 +2643,25 @@ export default function IntersectionDetailView() {
                       </button>
                     </div>
 
-                    {/* Quick EMS Button */}
+                    {/* Quick EMS Button: Toggle ON / OFF */}
                     <button
-                      onClick={() => triggerEmergency(dir)}
+                      onClick={() => {
+                        if (app.isEmergency) {
+                          clearEmergency();
+                        } else {
+                          triggerEmergency(dir);
+                        }
+                      }}
                       className={`p-2 rounded-xl transition-all cursor-pointer active:scale-90 shadow-xs ${
                         app.isEmergency
-                          ? "bg-state-preempted text-white dark:shadow-[0_0_0_1px_rgba(239,68,68,0.35),0_2px_10px_rgba(239,68,68,0.4)]"
+                          ? "bg-rose-600 text-white animate-pulse ring-2 ring-rose-400 shadow-md dark:shadow-[0_0_0_1px_rgba(239,68,68,0.35),0_2px_10px_rgba(239,68,68,0.4)]"
                           : "bg-surface dark:bg-surface-high/80 hover:bg-state-preempted/10 text-on-surface-variant hover:text-state-preempted dark:shadow-[0_0_0_1px_rgba(255,255,255,0.07),0_1px_0_0_rgba(255,255,255,0.09)_inset,0_2px_8px_rgba(0,0,0,0.35)]"
                       }`}
-                      title={`Simulate 108 Emergency priority on ${app.name}`}
+                      title={
+                        app.isEmergency
+                          ? `Turn OFF 108 Emergency priority on ${app.name}`
+                          : `Simulate 108 Emergency priority on ${app.name}`
+                      }
                     >
                       <span className="material-symbols-rounded text-sm block">emergency</span>
                     </button>

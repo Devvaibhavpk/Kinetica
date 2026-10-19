@@ -157,3 +157,7 @@ class EmergencyHoldController:
         self.conflicting_lane = None
         self.emergency_track_id = None
         self.hold_active = False
+
+    def clear_preemption(self) -> None:
+        """Alias for reset() to safely clear active preemption."""
+        self.reset()

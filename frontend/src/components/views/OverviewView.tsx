@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from "react";
 import dynamic from "next/dynamic";
 import type { ChennaiNode } from "../ChennaiRealMap";
+import { subscribeVisionFeed, setGlobalTelemetryMode, type TelemetryMode } from "../../lib/visionFeedStore";
 
 export interface SignalIntersection {
   id: string;
@@ -198,6 +199,8 @@ const ChennaiRealMap = dynamic(() => import("../ChennaiRealMap"), {
 export default function OverviewView() {
   const [backendData, setBackendData] = useState<BackendResults | null>(null);
   const [loadingBackend, setLoadingBackend] = useState<boolean>(true);
+  const [isLiveStreaming, setIsLiveStreaming] = useState<boolean>(false);
+  const [currentMode, setCurrentMode] = useState<TelemetryMode>("simulate");
 
   useEffect(() => {
     async function loadResults() {
@@ -341,6 +344,92 @@ export default function OverviewView() {
     }
   }, [backendData, selectedNode.id]);
 
+  // Subscribe to live video vision feed store for real-time video detection and corridor preemption updates
+  useEffect(() => {
+    const unsubscribe = subscribeVisionFeed((vState) => {
+      setIsLiveStreaming(Boolean(vState.isStreaming));
+      const mode = vState.telemetryMode || "simulate";
+      setCurrentMode(mode);
+
+      if (selectedNode.id === "IX-104") {
+        if (mode === "simulate" && vState.simulationState) {
+          const sim = vState.simulationState;
+          const maxQ = Math.max(
+            sim.queueMeters?.N || 0,
+            sim.queueMeters?.S || 0,
+            sim.queueMeters?.E || 0,
+            sim.queueMeters?.W || 0
+          );
+          const maxDensity = Math.max(
+            sim.densities?.N || 0,
+            sim.densities?.S || 0,
+            sim.densities?.E || 0,
+            sim.densities?.W || 0
+          );
+          setSelectedNode((prev) => ({
+            ...prev,
+            queueLengthM: Number(maxQ.toFixed(1)),
+            density: Number(maxDensity.toFixed(3)),
+            arrivalRate: ((sim.totalVehicles || 0) / 4).toFixed(1) + " V/M",
+            status: sim.hasEmergency ? "preempted" : "nominal",
+            policy: sim.hasEmergency ? "MAX-PREEMPT" : "ADAPTIVE",
+            activePhase: `Sim Approach-${sim.activePhase} (${sim.phaseState})`,
+            nemaSplit: `${sim.phaseState}: ${sim.phaseCountdown}s`,
+            speedKmH: Math.max(0, Math.round(55 * (1 - maxDensity))),
+            classCounts: {
+              cars: Math.round(sim.totalVehicles * 0.45),
+              twoWheelers: Math.round(sim.totalVehicles * 0.35),
+              autos: Math.round(sim.totalVehicles * 0.15),
+              buses: Math.round(sim.totalVehicles * 0.05),
+              ambulances: sim.hasEmergency ? 1 : 0,
+            },
+          }));
+        } else if (vState.approaches) {
+          const appN = vState.approaches?.N;
+          const appS = vState.approaches?.S;
+          const appE = vState.approaches?.E;
+          const appW = vState.approaches?.W;
+
+          const totalVeh = (appN?.vehicles || 0) + (appS?.vehicles || 0) + (appE?.vehicles || 0) + (appW?.vehicles || 0);
+          const maxQ = Math.max(
+            appN?.queue_m ?? appN?.queueMeters ?? 0,
+            appS?.queue_m ?? appS?.queueMeters ?? 0,
+            appE?.queue_m ?? appE?.queueMeters ?? 0,
+            appW?.queue_m ?? appW?.queueMeters ?? 0
+          );
+
+          setSelectedNode((prev) => ({
+            ...prev,
+            queueLengthM: Number(maxQ.toFixed(1)),
+            density: Number((totalVeh / 80).toFixed(3)),
+            arrivalRate: (totalVeh / 4).toFixed(1) + " V/M",
+            status: vState.hasEmergency ? "preempted" : "nominal",
+            policy: vState.hasEmergency ? "MAX-PREEMPT" : "ADAPTIVE",
+            activePhase: `CCTV Approach-${vState.activePhase || "N"} (${vState.phaseState?.toUpperCase() || "GREEN"})`,
+            nemaSplit: `${vState.phaseState?.toUpperCase() || "GREEN"}: ${vState.phaseCountdown || 20}s`,
+            speedKmH: Math.max(0, Math.round(55 * (1 - (totalVeh / 80)))),
+            classCounts: (vState.classCounts && Object.keys(vState.classCounts).length > 0)
+              ? {
+                  cars: vState.classCounts["car"] || Math.round(totalVeh * 0.45),
+                  twoWheelers: (vState.classCounts["motorcycle"] || 0) + (vState.classCounts["two_wheeler"] || 0) || Math.round(totalVeh * 0.35),
+                  autos: (vState.classCounts["autorickshaw"] || 0) + (vState.classCounts["auto"] || 0) || Math.round(totalVeh * 0.15),
+                  buses: (vState.classCounts["bus"] || 0) + (vState.classCounts["truck"] || 0) || Math.round(totalVeh * 0.05),
+                  ambulances: vState.hasEmergency ? 1 : 0,
+                }
+              : {
+                  cars: Math.round(totalVeh * 0.45),
+                  twoWheelers: Math.round(totalVeh * 0.35),
+                  autos: Math.round(totalVeh * 0.15),
+                  buses: Math.round(totalVeh * 0.05),
+                  ambulances: vState.hasEmergency ? 1 : 0,
+                },
+          }));
+        }
+      }
+    });
+    return unsubscribe;
+  }, [selectedNode.id]);
+
   return (
     <div className="flex-1 flex flex-col gap-5 w-full max-w-full pb-8">
       {/* ── BACKEND OFFLINE STATUS BANNER (Zero Dummy Data Rule) ── */}
@@ -395,9 +484,23 @@ export default function OverviewView() {
                   <span className="font-mono text-xs font-bold text-primary bg-surface-high px-2.5 py-1 rounded-md border border-outline">
                     {selectedNode.id}
                   </span>
-                  <span className="badge badge-neutral text-[9px] px-2 py-0.5 uppercase tracking-wider font-semibold">
-                    SIGNAL CAMERA
-                  </span>
+                  {selectedNode.id === "IX-104" ? (
+                    currentMode === "cctv" ? (
+                      <span className="badge bg-blue-500/20 text-blue-400 border border-blue-500/40 text-[9px] px-2 py-0.5 uppercase tracking-wider font-bold animate-pulse flex items-center gap-1">
+                        <span className="w-1.5 h-1.5 rounded-full bg-blue-400"></span>
+                        CCTV LIVE SYNCED
+                      </span>
+                    ) : (
+                      <span className="badge bg-purple-500/20 text-purple-400 border border-purple-500/40 text-[9px] px-2 py-0.5 uppercase tracking-wider font-bold animate-pulse flex items-center gap-1">
+                        <span className="w-1.5 h-1.5 rounded-full bg-purple-400"></span>
+                        SIMULATION CAD SYNCED
+                      </span>
+                    )
+                  ) : (
+                    <span className="badge badge-neutral text-[9px] px-2 py-0.5 uppercase tracking-wider font-semibold">
+                      SIGNAL CAMERA
+                    </span>
+                  )}
                 </div>
 
                 {/* Dropdown to switch between signals */}
@@ -419,6 +522,50 @@ export default function OverviewView() {
                   </select>
                 </div>
               </div>
+
+              {/* Row 1.5: Node IX-104 Telemetry Source Mode Switcher */}
+              {selectedNode.id === "IX-104" && (
+                <div className="flex items-center justify-between bg-surface-high/60 p-2 rounded-xl border border-outline">
+                  <div className="flex items-center gap-1.5">
+                    <span className="text-[10px] font-mono text-on-surface-variant uppercase tracking-wider">
+                      IX-104 Source:
+                    </span>
+                    <span className={`text-[10px] font-bold font-mono px-1.5 py-0.5 rounded border ${
+                      currentMode === "cctv"
+                        ? "text-blue-400 bg-blue-500/10 border-blue-500/30"
+                        : "text-purple-400 bg-purple-500/10 border-purple-500/30"
+                    }`}>
+                      {currentMode === "cctv" ? "LIVE ONNX CCTV" : "INTERACTIVE CAD SIM"}
+                    </span>
+                  </div>
+                  <div className="flex items-center gap-1">
+                    <button
+                      onClick={() => setGlobalTelemetryMode("cctv")}
+                      className={`px-2 py-1 rounded-md text-[10px] font-bold font-mono transition-all flex items-center gap-1 cursor-pointer ${
+                        currentMode === "cctv"
+                          ? "bg-blue-500 text-white shadow-sm"
+                          : "text-on-surface-variant hover:text-on-surface bg-surface border border-outline"
+                      }`}
+                      title="Switch Node IX-104 to Live CCTV Camera Feeds across all pages"
+                    >
+                      <span className={`w-1.5 h-1.5 rounded-full ${currentMode === "cctv" ? "bg-white animate-pulse" : "bg-blue-400"}`} />
+                      <span>📹 CCTV</span>
+                    </button>
+                    <button
+                      onClick={() => setGlobalTelemetryMode("simulate")}
+                      className={`px-2 py-1 rounded-md text-[10px] font-bold font-mono transition-all flex items-center gap-1 cursor-pointer ${
+                        currentMode === "simulate"
+                          ? "bg-purple-600 text-white shadow-sm"
+                          : "text-on-surface-variant hover:text-on-surface bg-surface border border-outline"
+                      }`}
+                      title="Switch Node IX-104 to Interactive Simulation across all pages"
+                    >
+                      <span className={`w-1.5 h-1.5 rounded-full ${currentMode === "simulate" ? "bg-white animate-pulse" : "bg-purple-400"}`} />
+                      <span>🎮 Simulate</span>
+                    </button>
+                  </div>
+                </div>
+              )}
 
               {/* Row 2: Junction Name & Policy Badge */}
               <div className="flex justify-between items-start gap-2 pt-0.5">
