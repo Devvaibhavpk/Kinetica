@@ -1,1402 +1,3362 @@
 [
   {
     "lane_id": "lane_N",
-    "timestamp": "2026-10-19T12:47:17.730500",
-    "vehicle_count": 26,
-    "queue_length_m": 135.2,
-    "density_veh_per_m": 1.0
+    "timestamp": "2026-10-24T20:23:59.301950",
+    "vehicle_count": 0,
+    "queue_length_m": 0.0,
+    "density_veh_per_m": 0.0
   },
   {
     "lane_id": "lane_S",
-    "timestamp": "2026-10-19T12:47:17.730500",
-    "vehicle_count": 27,
-    "queue_length_m": 140.4,
-    "density_veh_per_m": 1.0
+    "timestamp": "2026-10-24T20:23:59.301950",
+    "vehicle_count": 0,
+    "queue_length_m": 0.0,
+    "density_veh_per_m": 0.0
   },
   {
     "lane_id": "lane_E",
-    "timestamp": "2026-10-19T12:47:17.730500",
+    "timestamp": "2026-10-24T20:23:59.301950",
     "vehicle_count": 0,
     "queue_length_m": 0.0,
     "density_veh_per_m": 0.0
   },
   {
     "lane_id": "lane_W",
-    "timestamp": "2026-10-19T12:47:17.730500",
-    "vehicle_count": 19,
-    "queue_length_m": 98.8,
-    "density_veh_per_m": 1.0
+    "timestamp": "2026-10-24T20:23:59.301950",
+    "vehicle_count": 0,
+    "queue_length_m": 0.0,
+    "density_veh_per_m": 0.0
   },
   {
     "lane_id": "lane_N",
-    "timestamp": "2026-10-19T12:47:19.625552",
-    "vehicle_count": 26,
-    "queue_length_m": 135.2,
-    "density_veh_per_m": 1.0
+    "timestamp": "2026-10-24T20:24:00.301950",
+    "vehicle_count": 1,
+    "queue_length_m": 5.0,
+    "density_veh_per_m": 0.2
   },
   {
     "lane_id": "lane_S",
-    "timestamp": "2026-10-19T12:47:19.625552",
-    "vehicle_count": 27,
-    "queue_length_m": 140.4,
-    "density_veh_per_m": 1.0
+    "timestamp": "2026-10-24T20:24:00.301950",
+    "vehicle_count": 0,
+    "queue_length_m": 0.0,
+    "density_veh_per_m": 0.0
   },
   {
     "lane_id": "lane_E",
-    "timestamp": "2026-10-19T12:47:19.625552",
+    "timestamp": "2026-10-24T20:24:00.301950",
     "vehicle_count": 0,
     "queue_length_m": 0.0,
     "density_veh_per_m": 0.0
   },
   {
     "lane_id": "lane_W",
-    "timestamp": "2026-10-19T12:47:19.625552",
-    "vehicle_count": 25,
-    "queue_length_m": 130.0,
-    "density_veh_per_m": 1.0
+    "timestamp": "2026-10-24T20:24:00.301950",
+    "vehicle_count": 0,
+    "queue_length_m": 0.0,
+    "density_veh_per_m": 0.0
   },
   {
     "lane_id": "lane_N",
-    "timestamp": "2026-10-19T12:47:21.433209",
-    "vehicle_count": 26,
-    "queue_length_m": 135.2,
-    "density_veh_per_m": 1.0
+    "timestamp": "2026-10-24T20:24:01.301950",
+    "vehicle_count": 2,
+    "queue_length_m": 10.0,
+    "density_veh_per_m": 0.2
   },
   {
     "lane_id": "lane_S",
-    "timestamp": "2026-10-19T12:47:21.433209",
-    "vehicle_count": 27,
-    "queue_length_m": 140.4,
-    "density_veh_per_m": 1.0
+    "timestamp": "2026-10-24T20:24:01.301950",
+    "vehicle_count": 0,
+    "queue_length_m": 0.0,
+    "density_veh_per_m": 0.0
   },
   {
     "lane_id": "lane_E",
-    "timestamp": "2026-10-19T12:47:21.433209",
+    "timestamp": "2026-10-24T20:24:01.301950",
     "vehicle_count": 0,
     "queue_length_m": 0.0,
     "density_veh_per_m": 0.0
   },
   {
     "lane_id": "lane_W",
-    "timestamp": "2026-10-19T12:47:21.433209",
-    "vehicle_count": 30,
-    "queue_length_m": 156.0,
-    "density_veh_per_m": 1.0
+    "timestamp": "2026-10-24T20:24:01.301950",
+    "vehicle_count": 0,
+    "queue_length_m": 0.0,
+    "density_veh_per_m": 0.0
   },
   {
     "lane_id": "lane_N",
-    "timestamp": "2026-10-19T12:47:23.056640",
-    "vehicle_count": 26,
-    "queue_length_m": 135.2,
-    "density_veh_per_m": 1.0
+    "timestamp": "2026-10-24T20:24:02.301950",
+    "vehicle_count": 2,
+    "queue_length_m": 10.0,
+    "density_veh_per_m": 0.2
   },
   {
     "lane_id": "lane_S",
-    "timestamp": "2026-10-19T12:47:23.056640",
-    "vehicle_count": 27,
-    "queue_length_m": 140.4,
-    "density_veh_per_m": 1.0
+    "timestamp": "2026-10-24T20:24:02.301950",
+    "vehicle_count": 0,
+    "queue_length_m": 0.0,
+    "density_veh_per_m": 0.0
   },
   {
     "lane_id": "lane_E",
-    "timestamp": "2026-10-19T12:47:23.056640",
+    "timestamp": "2026-10-24T20:24:02.301950",
     "vehicle_count": 0,
     "queue_length_m": 0.0,
     "density_veh_per_m": 0.0
   },
   {
     "lane_id": "lane_W",
-    "timestamp": "2026-10-19T12:47:23.056640",
-    "vehicle_count": 32,
-    "queue_length_m": 166.4,
-    "density_veh_per_m": 1.0
+    "timestamp": "2026-10-24T20:24:02.301950",
+    "vehicle_count": 0,
+    "queue_length_m": 0.0,
+    "density_veh_per_m": 0.0
   },
   {
     "lane_id": "lane_N",
-    "timestamp": "2026-10-19T12:47:24.919327",
-    "vehicle_count": 26,
-    "queue_length_m": 135.2,
-    "density_veh_per_m": 1.0
+    "timestamp": "2026-10-24T20:24:03.301950",
+    "vehicle_count": 2,
+    "queue_length_m": 10.0,
+    "density_veh_per_m": 0.2
   },
   {
     "lane_id": "lane_S",
-    "timestamp": "2026-10-19T12:47:24.919327",
-    "vehicle_count": 27,
-    "queue_length_m": 140.4,
-    "density_veh_per_m": 1.0
+    "timestamp": "2026-10-24T20:24:03.301950",
+    "vehicle_count": 0,
+    "queue_length_m": 0.0,
+    "density_veh_per_m": 0.0
   },
   {
     "lane_id": "lane_E",
-    "timestamp": "2026-10-19T12:47:24.919327",
+    "timestamp": "2026-10-24T20:24:03.301950",
     "vehicle_count": 0,
     "queue_length_m": 0.0,
     "density_veh_per_m": 0.0
   },
   {
     "lane_id": "lane_W",
-    "timestamp": "2026-10-19T12:47:24.919327",
-    "vehicle_count": 26,
-    "queue_length_m": 135.2,
-    "density_veh_per_m": 1.0
+    "timestamp": "2026-10-24T20:24:03.301950",
+    "vehicle_count": 0,
+    "queue_length_m": 0.0,
+    "density_veh_per_m": 0.0
   },
   {
     "lane_id": "lane_N",
-    "timestamp": "2026-10-19T12:47:26.680465",
-    "vehicle_count": 26,
-    "queue_length_m": 135.2,
-    "density_veh_per_m": 1.0
+    "timestamp": "2026-10-24T20:24:04.301950",
+    "vehicle_count": 2,
+    "queue_length_m": 10.0,
+    "density_veh_per_m": 0.2
   },
   {
     "lane_id": "lane_S",
-    "timestamp": "2026-10-19T12:47:26.680465",
-    "vehicle_count": 27,
-    "queue_length_m": 140.4,
-    "density_veh_per_m": 1.0
+    "timestamp": "2026-10-24T20:24:04.301950",
+    "vehicle_count": 0,
+    "queue_length_m": 0.0,
+    "density_veh_per_m": 0.0
   },
   {
     "lane_id": "lane_E",
-    "timestamp": "2026-10-19T12:47:26.680465",
+    "timestamp": "2026-10-24T20:24:04.301950",
     "vehicle_count": 0,
     "queue_length_m": 0.0,
     "density_veh_per_m": 0.0
   },
   {
     "lane_id": "lane_W",
-    "timestamp": "2026-10-19T12:47:26.680465",
-    "vehicle_count": 26,
-    "queue_length_m": 135.2,
-    "density_veh_per_m": 1.0
+    "timestamp": "2026-10-24T20:24:04.301950",
+    "vehicle_count": 0,
+    "queue_length_m": 0.0,
+    "density_veh_per_m": 0.0
   },
   {
     "lane_id": "lane_N",
-    "timestamp": "2026-10-19T12:47:28.413825",
-    "vehicle_count": 26,
-    "queue_length_m": 135.2,
-    "density_veh_per_m": 1.0
+    "timestamp": "2026-10-24T20:24:05.301950",
+    "vehicle_count": 2,
+    "queue_length_m": 10.0,
+    "density_veh_per_m": 0.2
   },
   {
     "lane_id": "lane_S",
-    "timestamp": "2026-10-19T12:47:28.413825",
-    "vehicle_count": 27,
-    "queue_length_m": 140.4,
-    "density_veh_per_m": 1.0
+    "timestamp": "2026-10-24T20:24:05.301950",
+    "vehicle_count": 0,
+    "queue_length_m": 0.0,
+    "density_veh_per_m": 0.0
   },
   {
     "lane_id": "lane_E",
-    "timestamp": "2026-10-19T12:47:28.413825",
+    "timestamp": "2026-10-24T20:24:05.301950",
+    "vehicle_count": 1,
+    "queue_length_m": 5.0,
+    "density_veh_per_m": 0.2
+  },
+  {
+    "lane_id": "lane_W",
+    "timestamp": "2026-10-24T20:24:05.301950",
+    "vehicle_count": 0,
+    "queue_length_m": 0.0,
+    "density_veh_per_m": 0.0
+  },
+  {
+    "lane_id": "lane_N",
+    "timestamp": "2026-10-24T20:24:06.301950",
+    "vehicle_count": 2,
+    "queue_length_m": 10.0,
+    "density_veh_per_m": 0.2
+  },
+  {
+    "lane_id": "lane_S",
+    "timestamp": "2026-10-24T20:24:06.301950",
+    "vehicle_count": 0,
+    "queue_length_m": 0.0,
+    "density_veh_per_m": 0.0
+  },
+  {
+    "lane_id": "lane_E",
+    "timestamp": "2026-10-24T20:24:06.301950",
     "vehicle_count": 0,
     "queue_length_m": 0.0,
     "density_veh_per_m": 0.0
   },
   {
     "lane_id": "lane_W",
-    "timestamp": "2026-10-19T12:47:28.413825",
-    "vehicle_count": 23,
-    "queue_length_m": 119.6,
-    "density_veh_per_m": 1.0
+    "timestamp": "2026-10-24T20:24:06.301950",
+    "vehicle_count": 0,
+    "queue_length_m": 0.0,
+    "density_veh_per_m": 0.0
   },
   {
     "lane_id": "lane_N",
-    "timestamp": "2026-10-19T12:47:30.140108",
-    "vehicle_count": 26,
-    "queue_length_m": 135.2,
-    "density_veh_per_m": 1.0
+    "timestamp": "2026-10-24T20:24:07.301950",
+    "vehicle_count": 3,
+    "queue_length_m": 15.0,
+    "density_veh_per_m": 0.2
   },
   {
     "lane_id": "lane_S",
-    "timestamp": "2026-10-19T12:47:30.140108",
-    "vehicle_count": 27,
-    "queue_length_m": 140.4,
-    "density_veh_per_m": 1.0
+    "timestamp": "2026-10-24T20:24:07.301950",
+    "vehicle_count": 0,
+    "queue_length_m": 0.0,
+    "density_veh_per_m": 0.0
   },
   {
     "lane_id": "lane_E",
-    "timestamp": "2026-10-19T12:47:30.140108",
+    "timestamp": "2026-10-24T20:24:07.301950",
     "vehicle_count": 0,
     "queue_length_m": 0.0,
     "density_veh_per_m": 0.0
   },
   {
     "lane_id": "lane_W",
-    "timestamp": "2026-10-19T12:47:30.140108",
-    "vehicle_count": 19,
-    "queue_length_m": 98.8,
-    "density_veh_per_m": 1.0
+    "timestamp": "2026-10-24T20:24:07.301950",
+    "vehicle_count": 1,
+    "queue_length_m": 5.0,
+    "density_veh_per_m": 0.2
   },
   {
     "lane_id": "lane_N",
-    "timestamp": "2026-10-19T12:47:31.738706",
-    "vehicle_count": 26,
-    "queue_length_m": 135.2,
-    "density_veh_per_m": 1.0
+    "timestamp": "2026-10-24T20:24:08.301950",
+    "vehicle_count": 3,
+    "queue_length_m": 15.0,
+    "density_veh_per_m": 0.2
   },
   {
     "lane_id": "lane_S",
-    "timestamp": "2026-10-19T12:47:31.738706",
-    "vehicle_count": 27,
-    "queue_length_m": 140.4,
-    "density_veh_per_m": 1.0
+    "timestamp": "2026-10-24T20:24:08.301950",
+    "vehicle_count": 0,
+    "queue_length_m": 0.0,
+    "density_veh_per_m": 0.0
   },
   {
     "lane_id": "lane_E",
-    "timestamp": "2026-10-19T12:47:31.738706",
+    "timestamp": "2026-10-24T20:24:08.301950",
     "vehicle_count": 0,
     "queue_length_m": 0.0,
     "density_veh_per_m": 0.0
   },
   {
     "lane_id": "lane_W",
-    "timestamp": "2026-10-19T12:47:31.738706",
-    "vehicle_count": 14,
-    "queue_length_m": 72.8,
-    "density_veh_per_m": 0.91
+    "timestamp": "2026-10-24T20:24:08.301950",
+    "vehicle_count": 0,
+    "queue_length_m": 0.0,
+    "density_veh_per_m": 0.0
   },
   {
     "lane_id": "lane_N",
-    "timestamp": "2026-10-19T12:47:33.339577",
-    "vehicle_count": 26,
-    "queue_length_m": 135.2,
-    "density_veh_per_m": 1.0
+    "timestamp": "2026-10-24T20:24:09.301950",
+    "vehicle_count": 3,
+    "queue_length_m": 15.0,
+    "density_veh_per_m": 0.2
   },
   {
     "lane_id": "lane_S",
-    "timestamp": "2026-10-19T12:47:33.339577",
-    "vehicle_count": 27,
-    "queue_length_m": 140.4,
-    "density_veh_per_m": 1.0
+    "timestamp": "2026-10-24T20:24:09.301950",
+    "vehicle_count": 0,
+    "queue_length_m": 0.0,
+    "density_veh_per_m": 0.0
   },
   {
     "lane_id": "lane_E",
-    "timestamp": "2026-10-19T12:47:33.339577",
+    "timestamp": "2026-10-24T20:24:09.301950",
     "vehicle_count": 0,
     "queue_length_m": 0.0,
     "density_veh_per_m": 0.0
   },
   {
     "lane_id": "lane_W",
-    "timestamp": "2026-10-19T12:47:33.339577",
-    "vehicle_count": 22,
-    "queue_length_m": 114.4,
-    "density_veh_per_m": 1.0
+    "timestamp": "2026-10-24T20:24:09.301950",
+    "vehicle_count": 0,
+    "queue_length_m": 0.0,
+    "density_veh_per_m": 0.0
   },
   {
     "lane_id": "lane_N",
-    "timestamp": "2026-10-19T12:47:35.047830",
-    "vehicle_count": 26,
-    "queue_length_m": 135.2,
-    "density_veh_per_m": 1.0
+    "timestamp": "2026-10-24T20:24:10.301950",
+    "vehicle_count": 4,
+    "queue_length_m": 20.0,
+    "density_veh_per_m": 0.2
   },
   {
     "lane_id": "lane_S",
-    "timestamp": "2026-10-19T12:47:35.047830",
-    "vehicle_count": 27,
-    "queue_length_m": 140.4,
-    "density_veh_per_m": 1.0
+    "timestamp": "2026-10-24T20:24:10.301950",
+    "vehicle_count": 0,
+    "queue_length_m": 0.0,
+    "density_veh_per_m": 0.0
   },
   {
     "lane_id": "lane_E",
-    "timestamp": "2026-10-19T12:47:35.047830",
+    "timestamp": "2026-10-24T20:24:10.301950",
+    "vehicle_count": 1,
+    "queue_length_m": 5.0,
+    "density_veh_per_m": 0.2
+  },
+  {
+    "lane_id": "lane_W",
+    "timestamp": "2026-10-24T20:24:10.301950",
+    "vehicle_count": 0,
+    "queue_length_m": 0.0,
+    "density_veh_per_m": 0.0
+  },
+  {
+    "lane_id": "lane_N",
+    "timestamp": "2026-10-24T20:24:11.301950",
+    "vehicle_count": 4,
+    "queue_length_m": 20.0,
+    "density_veh_per_m": 0.2
+  },
+  {
+    "lane_id": "lane_S",
+    "timestamp": "2026-10-24T20:24:11.301950",
+    "vehicle_count": 0,
+    "queue_length_m": 0.0,
+    "density_veh_per_m": 0.0
+  },
+  {
+    "lane_id": "lane_E",
+    "timestamp": "2026-10-24T20:24:11.301950",
+    "vehicle_count": 1,
+    "queue_length_m": 5.0,
+    "density_veh_per_m": 0.2
+  },
+  {
+    "lane_id": "lane_W",
+    "timestamp": "2026-10-24T20:24:11.301950",
+    "vehicle_count": 0,
+    "queue_length_m": 0.0,
+    "density_veh_per_m": 0.0
+  },
+  {
+    "lane_id": "lane_N",
+    "timestamp": "2026-10-24T20:24:12.301950",
+    "vehicle_count": 4,
+    "queue_length_m": 20.0,
+    "density_veh_per_m": 0.2
+  },
+  {
+    "lane_id": "lane_S",
+    "timestamp": "2026-10-24T20:24:12.301950",
+    "vehicle_count": 0,
+    "queue_length_m": 0.0,
+    "density_veh_per_m": 0.0
+  },
+  {
+    "lane_id": "lane_E",
+    "timestamp": "2026-10-24T20:24:12.301950",
+    "vehicle_count": 1,
+    "queue_length_m": 5.0,
+    "density_veh_per_m": 0.2
+  },
+  {
+    "lane_id": "lane_W",
+    "timestamp": "2026-10-24T20:24:12.301950",
+    "vehicle_count": 0,
+    "queue_length_m": 0.0,
+    "density_veh_per_m": 0.0
+  },
+  {
+    "lane_id": "lane_N",
+    "timestamp": "2026-10-24T20:24:13.301950",
+    "vehicle_count": 3,
+    "queue_length_m": 15.0,
+    "density_veh_per_m": 0.2
+  },
+  {
+    "lane_id": "lane_S",
+    "timestamp": "2026-10-24T20:24:13.301950",
+    "vehicle_count": 0,
+    "queue_length_m": 0.0,
+    "density_veh_per_m": 0.0
+  },
+  {
+    "lane_id": "lane_E",
+    "timestamp": "2026-10-24T20:24:13.301950",
     "vehicle_count": 0,
     "queue_length_m": 0.0,
     "density_veh_per_m": 0.0
   },
   {
     "lane_id": "lane_W",
-    "timestamp": "2026-10-19T12:47:35.047830",
-    "vehicle_count": 22,
-    "queue_length_m": 114.4,
-    "density_veh_per_m": 1.0
+    "timestamp": "2026-10-24T20:24:13.301950",
+    "vehicle_count": 1,
+    "queue_length_m": 5.0,
+    "density_veh_per_m": 0.2
   },
   {
     "lane_id": "lane_N",
-    "timestamp": "2026-10-19T12:47:36.619444",
-    "vehicle_count": 26,
-    "queue_length_m": 135.2,
-    "density_veh_per_m": 1.0
+    "timestamp": "2026-10-24T20:24:14.301950",
+    "vehicle_count": 3,
+    "queue_length_m": 15.0,
+    "density_veh_per_m": 0.2
   },
   {
     "lane_id": "lane_S",
-    "timestamp": "2026-10-19T12:47:36.619444",
-    "vehicle_count": 27,
-    "queue_length_m": 140.4,
-    "density_veh_per_m": 1.0
+    "timestamp": "2026-10-24T20:24:14.301950",
+    "vehicle_count": 0,
+    "queue_length_m": 0.0,
+    "density_veh_per_m": 0.0
   },
   {
     "lane_id": "lane_E",
-    "timestamp": "2026-10-19T12:47:36.619444",
+    "timestamp": "2026-10-24T20:24:14.301950",
     "vehicle_count": 0,
     "queue_length_m": 0.0,
     "density_veh_per_m": 0.0
   },
   {
     "lane_id": "lane_W",
-    "timestamp": "2026-10-19T12:47:36.619444",
-    "vehicle_count": 23,
-    "queue_length_m": 119.6,
-    "density_veh_per_m": 1.0
+    "timestamp": "2026-10-24T20:24:14.301950",
+    "vehicle_count": 2,
+    "queue_length_m": 10.0,
+    "density_veh_per_m": 0.2
   },
   {
     "lane_id": "lane_N",
-    "timestamp": "2026-10-19T12:47:38.628002",
-    "vehicle_count": 26,
-    "queue_length_m": 135.2,
-    "density_veh_per_m": 1.0
+    "timestamp": "2026-10-24T20:24:15.301950",
+    "vehicle_count": 3,
+    "queue_length_m": 15.0,
+    "density_veh_per_m": 0.2
   },
   {
     "lane_id": "lane_S",
-    "timestamp": "2026-10-19T12:47:38.628002",
-    "vehicle_count": 27,
-    "queue_length_m": 140.4,
-    "density_veh_per_m": 1.0
+    "timestamp": "2026-10-24T20:24:15.301950",
+    "vehicle_count": 1,
+    "queue_length_m": 5.0,
+    "density_veh_per_m": 0.2
   },
   {
     "lane_id": "lane_E",
-    "timestamp": "2026-10-19T12:47:38.628002",
+    "timestamp": "2026-10-24T20:24:15.301950",
     "vehicle_count": 0,
     "queue_length_m": 0.0,
     "density_veh_per_m": 0.0
   },
   {
     "lane_id": "lane_W",
-    "timestamp": "2026-10-19T12:47:38.628002",
-    "vehicle_count": 25,
-    "queue_length_m": 130.0,
-    "density_veh_per_m": 1.0
+    "timestamp": "2026-10-24T20:24:15.301950",
+    "vehicle_count": 2,
+    "queue_length_m": 10.0,
+    "density_veh_per_m": 0.2
   },
   {
     "lane_id": "lane_N",
-    "timestamp": "2026-10-19T12:47:40.476798",
-    "vehicle_count": 26,
-    "queue_length_m": 135.2,
-    "density_veh_per_m": 1.0
+    "timestamp": "2026-10-24T20:24:16.301950",
+    "vehicle_count": 3,
+    "queue_length_m": 15.0,
+    "density_veh_per_m": 0.2
   },
   {
     "lane_id": "lane_S",
-    "timestamp": "2026-10-19T12:47:40.476798",
-    "vehicle_count": 27,
-    "queue_length_m": 140.4,
-    "density_veh_per_m": 1.0
+    "timestamp": "2026-10-24T20:24:16.301950",
+    "vehicle_count": 1,
+    "queue_length_m": 5.0,
+    "density_veh_per_m": 0.2
   },
   {
     "lane_id": "lane_E",
-    "timestamp": "2026-10-19T12:47:40.476798",
+    "timestamp": "2026-10-24T20:24:16.301950",
+    "vehicle_count": 1,
+    "queue_length_m": 5.0,
+    "density_veh_per_m": 0.2
+  },
+  {
+    "lane_id": "lane_W",
+    "timestamp": "2026-10-24T20:24:16.301950",
+    "vehicle_count": 2,
+    "queue_length_m": 10.0,
+    "density_veh_per_m": 0.2
+  },
+  {
+    "lane_id": "lane_N",
+    "timestamp": "2026-10-24T20:24:17.301950",
+    "vehicle_count": 3,
+    "queue_length_m": 15.0,
+    "density_veh_per_m": 0.2
+  },
+  {
+    "lane_id": "lane_S",
+    "timestamp": "2026-10-24T20:24:17.301950",
+    "vehicle_count": 2,
+    "queue_length_m": 10.0,
+    "density_veh_per_m": 0.2
+  },
+  {
+    "lane_id": "lane_E",
+    "timestamp": "2026-10-24T20:24:17.301950",
+    "vehicle_count": 1,
+    "queue_length_m": 5.0,
+    "density_veh_per_m": 0.2
+  },
+  {
+    "lane_id": "lane_W",
+    "timestamp": "2026-10-24T20:24:17.301950",
+    "vehicle_count": 1,
+    "queue_length_m": 5.0,
+    "density_veh_per_m": 0.2
+  },
+  {
+    "lane_id": "lane_N",
+    "timestamp": "2026-10-24T20:24:18.301950",
+    "vehicle_count": 3,
+    "queue_length_m": 15.0,
+    "density_veh_per_m": 0.2
+  },
+  {
+    "lane_id": "lane_S",
+    "timestamp": "2026-10-24T20:24:18.301950",
+    "vehicle_count": 2,
+    "queue_length_m": 10.0,
+    "density_veh_per_m": 0.2
+  },
+  {
+    "lane_id": "lane_E",
+    "timestamp": "2026-10-24T20:24:18.301950",
     "vehicle_count": 0,
     "queue_length_m": 0.0,
     "density_veh_per_m": 0.0
   },
   {
     "lane_id": "lane_W",
-    "timestamp": "2026-10-19T12:47:40.476798",
-    "vehicle_count": 26,
-    "queue_length_m": 135.2,
-    "density_veh_per_m": 1.0
+    "timestamp": "2026-10-24T20:24:18.301950",
+    "vehicle_count": 1,
+    "queue_length_m": 5.0,
+    "density_veh_per_m": 0.2
   },
   {
     "lane_id": "lane_N",
-    "timestamp": "2026-10-19T12:47:41.963003",
-    "vehicle_count": 26,
-    "queue_length_m": 135.2,
-    "density_veh_per_m": 1.0
+    "timestamp": "2026-10-24T20:24:19.301950",
+    "vehicle_count": 2,
+    "queue_length_m": 10.0,
+    "density_veh_per_m": 0.2
   },
   {
     "lane_id": "lane_S",
-    "timestamp": "2026-10-19T12:47:41.963003",
-    "vehicle_count": 27,
-    "queue_length_m": 140.4,
-    "density_veh_per_m": 1.0
+    "timestamp": "2026-10-24T20:24:19.301950",
+    "vehicle_count": 2,
+    "queue_length_m": 10.0,
+    "density_veh_per_m": 0.2
   },
   {
     "lane_id": "lane_E",
-    "timestamp": "2026-10-19T12:47:41.963003",
+    "timestamp": "2026-10-24T20:24:19.301950",
     "vehicle_count": 0,
     "queue_length_m": 0.0,
     "density_veh_per_m": 0.0
   },
   {
     "lane_id": "lane_W",
-    "timestamp": "2026-10-19T12:47:41.964026",
-    "vehicle_count": 28,
-    "queue_length_m": 145.6,
-    "density_veh_per_m": 1.0
+    "timestamp": "2026-10-24T20:24:19.301950",
+    "vehicle_count": 1,
+    "queue_length_m": 5.0,
+    "density_veh_per_m": 0.2
   },
   {
     "lane_id": "lane_N",
-    "timestamp": "2026-10-19T12:47:43.926264",
-    "vehicle_count": 26,
-    "queue_length_m": 135.2,
-    "density_veh_per_m": 1.0
+    "timestamp": "2026-10-24T20:24:20.301950",
+    "vehicle_count": 1,
+    "queue_length_m": 5.0,
+    "density_veh_per_m": 0.2
   },
   {
     "lane_id": "lane_S",
-    "timestamp": "2026-10-19T12:47:43.926264",
-    "vehicle_count": 27,
-    "queue_length_m": 140.4,
-    "density_veh_per_m": 1.0
+    "timestamp": "2026-10-24T20:24:20.301950",
+    "vehicle_count": 2,
+    "queue_length_m": 10.0,
+    "density_veh_per_m": 0.2
   },
   {
     "lane_id": "lane_E",
-    "timestamp": "2026-10-19T12:47:43.926264",
+    "timestamp": "2026-10-24T20:24:20.301950",
+    "vehicle_count": 1,
+    "queue_length_m": 5.0,
+    "density_veh_per_m": 0.2
+  },
+  {
+    "lane_id": "lane_W",
+    "timestamp": "2026-10-24T20:24:20.301950",
+    "vehicle_count": 0,
+    "queue_length_m": 0.0,
+    "density_veh_per_m": 0.0
+  },
+  {
+    "lane_id": "lane_N",
+    "timestamp": "2026-10-24T20:24:21.301950",
+    "vehicle_count": 2,
+    "queue_length_m": 10.0,
+    "density_veh_per_m": 0.2
+  },
+  {
+    "lane_id": "lane_S",
+    "timestamp": "2026-10-24T20:24:21.301950",
+    "vehicle_count": 2,
+    "queue_length_m": 10.0,
+    "density_veh_per_m": 0.2
+  },
+  {
+    "lane_id": "lane_E",
+    "timestamp": "2026-10-24T20:24:21.301950",
     "vehicle_count": 0,
     "queue_length_m": 0.0,
     "density_veh_per_m": 0.0
   },
   {
     "lane_id": "lane_W",
-    "timestamp": "2026-10-19T12:47:43.926264",
-    "vehicle_count": 26,
-    "queue_length_m": 135.2,
-    "density_veh_per_m": 1.0
+    "timestamp": "2026-10-24T20:24:21.301950",
+    "vehicle_count": 0,
+    "queue_length_m": 0.0,
+    "density_veh_per_m": 0.0
   },
   {
     "lane_id": "lane_N",
-    "timestamp": "2026-10-19T12:47:46.127319",
-    "vehicle_count": 26,
-    "queue_length_m": 135.2,
-    "density_veh_per_m": 1.0
+    "timestamp": "2026-10-24T20:24:22.301950",
+    "vehicle_count": 2,
+    "queue_length_m": 10.0,
+    "density_veh_per_m": 0.2
   },
   {
     "lane_id": "lane_S",
-    "timestamp": "2026-10-19T12:47:46.127319",
-    "vehicle_count": 27,
-    "queue_length_m": 140.4,
-    "density_veh_per_m": 1.0
+    "timestamp": "2026-10-24T20:24:22.301950",
+    "vehicle_count": 1,
+    "queue_length_m": 5.0,
+    "density_veh_per_m": 0.2
   },
   {
     "lane_id": "lane_E",
-    "timestamp": "2026-10-19T12:47:46.127319",
+    "timestamp": "2026-10-24T20:24:22.301950",
     "vehicle_count": 0,
     "queue_length_m": 0.0,
     "density_veh_per_m": 0.0
   },
   {
     "lane_id": "lane_W",
-    "timestamp": "2026-10-19T12:47:46.127319",
-    "vehicle_count": 26,
-    "queue_length_m": 135.2,
-    "density_veh_per_m": 1.0
+    "timestamp": "2026-10-24T20:24:22.301950",
+    "vehicle_count": 0,
+    "queue_length_m": 0.0,
+    "density_veh_per_m": 0.0
   },
   {
     "lane_id": "lane_N",
-    "timestamp": "2026-10-19T12:47:47.743645",
-    "vehicle_count": 26,
-    "queue_length_m": 135.2,
-    "density_veh_per_m": 1.0
+    "timestamp": "2026-10-24T20:24:23.301950",
+    "vehicle_count": 1,
+    "queue_length_m": 5.0,
+    "density_veh_per_m": 0.2
   },
   {
     "lane_id": "lane_S",
-    "timestamp": "2026-10-19T12:47:47.743645",
-    "vehicle_count": 27,
-    "queue_length_m": 140.4,
-    "density_veh_per_m": 1.0
+    "timestamp": "2026-10-24T20:24:23.301950",
+    "vehicle_count": 1,
+    "queue_length_m": 5.0,
+    "density_veh_per_m": 0.2
   },
   {
     "lane_id": "lane_E",
-    "timestamp": "2026-10-19T12:47:47.743645",
+    "timestamp": "2026-10-24T20:24:23.301950",
     "vehicle_count": 0,
     "queue_length_m": 0.0,
     "density_veh_per_m": 0.0
   },
   {
     "lane_id": "lane_W",
-    "timestamp": "2026-10-19T12:47:47.743645",
-    "vehicle_count": 20,
-    "queue_length_m": 104.0,
-    "density_veh_per_m": 1.0
+    "timestamp": "2026-10-24T20:24:23.301950",
+    "vehicle_count": 0,
+    "queue_length_m": 0.0,
+    "density_veh_per_m": 0.0
   },
   {
     "lane_id": "lane_N",
-    "timestamp": "2026-10-19T12:47:49.783445",
-    "vehicle_count": 26,
-    "queue_length_m": 135.2,
-    "density_veh_per_m": 1.0
+    "timestamp": "2026-10-24T20:24:24.301950",
+    "vehicle_count": 1,
+    "queue_length_m": 5.0,
+    "density_veh_per_m": 0.2
   },
   {
     "lane_id": "lane_S",
-    "timestamp": "2026-10-19T12:47:49.783445",
-    "vehicle_count": 27,
-    "queue_length_m": 140.4,
-    "density_veh_per_m": 1.0
+    "timestamp": "2026-10-24T20:24:24.301950",
+    "vehicle_count": 1,
+    "queue_length_m": 5.0,
+    "density_veh_per_m": 0.2
   },
   {
     "lane_id": "lane_E",
-    "timestamp": "2026-10-19T12:47:49.783445",
+    "timestamp": "2026-10-24T20:24:24.301950",
     "vehicle_count": 0,
     "queue_length_m": 0.0,
     "density_veh_per_m": 0.0
   },
   {
     "lane_id": "lane_W",
-    "timestamp": "2026-10-19T12:47:49.783445",
-    "vehicle_count": 18,
-    "queue_length_m": 93.6,
-    "density_veh_per_m": 1.0
+    "timestamp": "2026-10-24T20:24:24.301950",
+    "vehicle_count": 0,
+    "queue_length_m": 0.0,
+    "density_veh_per_m": 0.0
   },
   {
     "lane_id": "lane_N",
-    "timestamp": "2026-10-19T12:47:51.737413",
-    "vehicle_count": 26,
-    "queue_length_m": 135.2,
-    "density_veh_per_m": 1.0
+    "timestamp": "2026-10-24T20:24:25.301950",
+    "vehicle_count": 1,
+    "queue_length_m": 5.0,
+    "density_veh_per_m": 0.2
   },
   {
     "lane_id": "lane_S",
-    "timestamp": "2026-10-19T12:47:51.737413",
-    "vehicle_count": 27,
-    "queue_length_m": 140.4,
-    "density_veh_per_m": 1.0
+    "timestamp": "2026-10-24T20:24:25.301950",
+    "vehicle_count": 1,
+    "queue_length_m": 5.0,
+    "density_veh_per_m": 0.2
   },
   {
     "lane_id": "lane_E",
-    "timestamp": "2026-10-19T12:47:51.737413",
+    "timestamp": "2026-10-24T20:24:25.301950",
     "vehicle_count": 0,
     "queue_length_m": 0.0,
     "density_veh_per_m": 0.0
   },
   {
     "lane_id": "lane_W",
-    "timestamp": "2026-10-19T12:47:51.737413",
-    "vehicle_count": 14,
-    "queue_length_m": 72.8,
-    "density_veh_per_m": 0.91
+    "timestamp": "2026-10-24T20:24:25.301950",
+    "vehicle_count": 0,
+    "queue_length_m": 0.0,
+    "density_veh_per_m": 0.0
   },
   {
     "lane_id": "lane_N",
-    "timestamp": "2026-10-19T12:47:53.265029",
-    "vehicle_count": 26,
-    "queue_length_m": 135.2,
-    "density_veh_per_m": 1.0
+    "timestamp": "2026-10-24T20:24:26.301950",
+    "vehicle_count": 1,
+    "queue_length_m": 5.0,
+    "density_veh_per_m": 0.2
   },
   {
     "lane_id": "lane_S",
-    "timestamp": "2026-10-19T12:47:53.265029",
-    "vehicle_count": 27,
-    "queue_length_m": 140.4,
-    "density_veh_per_m": 1.0
+    "timestamp": "2026-10-24T20:24:26.301950",
+    "vehicle_count": 1,
+    "queue_length_m": 5.0,
+    "density_veh_per_m": 0.2
   },
   {
     "lane_id": "lane_E",
-    "timestamp": "2026-10-19T12:47:53.265029",
+    "timestamp": "2026-10-24T20:24:26.301950",
     "vehicle_count": 0,
     "queue_length_m": 0.0,
     "density_veh_per_m": 0.0
   },
   {
     "lane_id": "lane_W",
-    "timestamp": "2026-10-19T12:47:53.265029",
-    "vehicle_count": 22,
-    "queue_length_m": 114.4,
-    "density_veh_per_m": 1.0
+    "timestamp": "2026-10-24T20:24:26.301950",
+    "vehicle_count": 1,
+    "queue_length_m": 5.0,
+    "density_veh_per_m": 0.2
   },
   {
     "lane_id": "lane_N",
-    "timestamp": "2026-10-19T12:47:55.166801",
-    "vehicle_count": 26,
-    "queue_length_m": 135.2,
-    "density_veh_per_m": 1.0
+    "timestamp": "2026-10-24T20:24:27.301950",
+    "vehicle_count": 2,
+    "queue_length_m": 10.0,
+    "density_veh_per_m": 0.2
   },
   {
     "lane_id": "lane_S",
-    "timestamp": "2026-10-19T12:47:55.166801",
-    "vehicle_count": 27,
-    "queue_length_m": 140.4,
-    "density_veh_per_m": 1.0
+    "timestamp": "2026-10-24T20:24:27.301950",
+    "vehicle_count": 1,
+    "queue_length_m": 5.0,
+    "density_veh_per_m": 0.2
   },
   {
     "lane_id": "lane_E",
-    "timestamp": "2026-10-19T12:47:55.166801",
+    "timestamp": "2026-10-24T20:24:27.301950",
     "vehicle_count": 0,
     "queue_length_m": 0.0,
     "density_veh_per_m": 0.0
   },
   {
     "lane_id": "lane_W",
-    "timestamp": "2026-10-19T12:47:55.166801",
-    "vehicle_count": 19,
-    "queue_length_m": 98.8,
-    "density_veh_per_m": 1.0
+    "timestamp": "2026-10-24T20:24:27.301950",
+    "vehicle_count": 1,
+    "queue_length_m": 5.0,
+    "density_veh_per_m": 0.2
   },
   {
     "lane_id": "lane_N",
-    "timestamp": "2026-10-19T12:47:56.625117",
-    "vehicle_count": 26,
-    "queue_length_m": 135.2,
-    "density_veh_per_m": 1.0
+    "timestamp": "2026-10-24T20:24:28.301950",
+    "vehicle_count": 2,
+    "queue_length_m": 10.0,
+    "density_veh_per_m": 0.2
   },
   {
     "lane_id": "lane_S",
-    "timestamp": "2026-10-19T12:47:56.625117",
-    "vehicle_count": 27,
-    "queue_length_m": 140.4,
-    "density_veh_per_m": 1.0
+    "timestamp": "2026-10-24T20:24:28.301950",
+    "vehicle_count": 2,
+    "queue_length_m": 10.0,
+    "density_veh_per_m": 0.2
   },
   {
     "lane_id": "lane_E",
-    "timestamp": "2026-10-19T12:47:56.625117",
+    "timestamp": "2026-10-24T20:24:28.301950",
     "vehicle_count": 0,
     "queue_length_m": 0.0,
     "density_veh_per_m": 0.0
   },
   {
     "lane_id": "lane_W",
-    "timestamp": "2026-10-19T12:47:56.625117",
-    "vehicle_count": 23,
-    "queue_length_m": 119.6,
-    "density_veh_per_m": 1.0
+    "timestamp": "2026-10-24T20:24:28.301950",
+    "vehicle_count": 0,
+    "queue_length_m": 0.0,
+    "density_veh_per_m": 0.0
   },
   {
     "lane_id": "lane_N",
-    "timestamp": "2026-10-19T12:47:58.136786",
-    "vehicle_count": 26,
-    "queue_length_m": 135.2,
-    "density_veh_per_m": 1.0
+    "timestamp": "2026-10-24T20:24:29.301950",
+    "vehicle_count": 3,
+    "queue_length_m": 15.0,
+    "density_veh_per_m": 0.2
   },
   {
     "lane_id": "lane_S",
-    "timestamp": "2026-10-19T12:47:58.136786",
-    "vehicle_count": 27,
-    "queue_length_m": 140.4,
-    "density_veh_per_m": 1.0
+    "timestamp": "2026-10-24T20:24:29.301950",
+    "vehicle_count": 1,
+    "queue_length_m": 5.0,
+    "density_veh_per_m": 0.2
   },
   {
     "lane_id": "lane_E",
-    "timestamp": "2026-10-19T12:47:58.136786",
+    "timestamp": "2026-10-24T20:24:29.301950",
     "vehicle_count": 0,
     "queue_length_m": 0.0,
     "density_veh_per_m": 0.0
   },
   {
     "lane_id": "lane_W",
-    "timestamp": "2026-10-19T12:47:58.136786",
-    "vehicle_count": 25,
-    "queue_length_m": 130.0,
-    "density_veh_per_m": 1.0
+    "timestamp": "2026-10-24T20:24:29.301950",
+    "vehicle_count": 0,
+    "queue_length_m": 0.0,
+    "density_veh_per_m": 0.0
   },
   {
     "lane_id": "lane_N",
-    "timestamp": "2026-10-19T12:48:00.225208",
-    "vehicle_count": 26,
-    "queue_length_m": 135.2,
-    "density_veh_per_m": 1.0
+    "timestamp": "2026-10-24T20:24:30.301950",
+    "vehicle_count": 3,
+    "queue_length_m": 15.0,
+    "density_veh_per_m": 0.2
   },
   {
     "lane_id": "lane_S",
-    "timestamp": "2026-10-19T12:48:00.225208",
-    "vehicle_count": 27,
-    "queue_length_m": 140.4,
-    "density_veh_per_m": 1.0
+    "timestamp": "2026-10-24T20:24:30.301950",
+    "vehicle_count": 1,
+    "queue_length_m": 5.0,
+    "density_veh_per_m": 0.2
   },
   {
     "lane_id": "lane_E",
-    "timestamp": "2026-10-19T12:48:00.225208",
+    "timestamp": "2026-10-24T20:24:30.301950",
     "vehicle_count": 0,
     "queue_length_m": 0.0,
     "density_veh_per_m": 0.0
   },
   {
     "lane_id": "lane_W",
-    "timestamp": "2026-10-19T12:48:00.225208",
-    "vehicle_count": 30,
-    "queue_length_m": 156.0,
-    "density_veh_per_m": 1.0
+    "timestamp": "2026-10-24T20:24:30.301950",
+    "vehicle_count": 0,
+    "queue_length_m": 0.0,
+    "density_veh_per_m": 0.0
   },
   {
     "lane_id": "lane_N",
-    "timestamp": "2026-10-19T12:48:02.096538",
-    "vehicle_count": 26,
-    "queue_length_m": 135.2,
-    "density_veh_per_m": 1.0
+    "timestamp": "2026-10-24T20:24:31.301950",
+    "vehicle_count": 2,
+    "queue_length_m": 10.0,
+    "density_veh_per_m": 0.2
   },
   {
     "lane_id": "lane_S",
-    "timestamp": "2026-10-19T12:48:02.096538",
-    "vehicle_count": 27,
-    "queue_length_m": 140.4,
-    "density_veh_per_m": 1.0
+    "timestamp": "2026-10-24T20:24:31.301950",
+    "vehicle_count": 1,
+    "queue_length_m": 5.0,
+    "density_veh_per_m": 0.2
   },
   {
     "lane_id": "lane_E",
-    "timestamp": "2026-10-19T12:48:02.096538",
+    "timestamp": "2026-10-24T20:24:31.301950",
     "vehicle_count": 0,
     "queue_length_m": 0.0,
     "density_veh_per_m": 0.0
   },
   {
     "lane_id": "lane_W",
-    "timestamp": "2026-10-19T12:48:02.096538",
-    "vehicle_count": 27,
-    "queue_length_m": 140.4,
-    "density_veh_per_m": 1.0
+    "timestamp": "2026-10-24T20:24:31.301950",
+    "vehicle_count": 0,
+    "queue_length_m": 0.0,
+    "density_veh_per_m": 0.0
   },
   {
     "lane_id": "lane_N",
-    "timestamp": "2026-10-19T12:48:03.782237",
-    "vehicle_count": 26,
-    "queue_length_m": 135.2,
-    "density_veh_per_m": 1.0
+    "timestamp": "2026-10-24T20:24:32.301950",
+    "vehicle_count": 1,
+    "queue_length_m": 5.0,
+    "density_veh_per_m": 0.2
   },
   {
     "lane_id": "lane_S",
-    "timestamp": "2026-10-19T12:48:03.782237",
-    "vehicle_count": 27,
-    "queue_length_m": 140.4,
-    "density_veh_per_m": 1.0
+    "timestamp": "2026-10-24T20:24:32.301950",
+    "vehicle_count": 1,
+    "queue_length_m": 5.0,
+    "density_veh_per_m": 0.2
   },
   {
     "lane_id": "lane_E",
-    "timestamp": "2026-10-19T12:48:03.782237",
+    "timestamp": "2026-10-24T20:24:32.301950",
+    "vehicle_count": 1,
+    "queue_length_m": 5.0,
+    "density_veh_per_m": 0.2
+  },
+  {
+    "lane_id": "lane_W",
+    "timestamp": "2026-10-24T20:24:32.301950",
+    "vehicle_count": 0,
+    "queue_length_m": 0.0,
+    "density_veh_per_m": 0.0
+  },
+  {
+    "lane_id": "lane_N",
+    "timestamp": "2026-10-24T20:24:33.301950",
+    "vehicle_count": 1,
+    "queue_length_m": 5.0,
+    "density_veh_per_m": 0.2
+  },
+  {
+    "lane_id": "lane_S",
+    "timestamp": "2026-10-24T20:24:33.301950",
+    "vehicle_count": 1,
+    "queue_length_m": 5.0,
+    "density_veh_per_m": 0.2
+  },
+  {
+    "lane_id": "lane_E",
+    "timestamp": "2026-10-24T20:24:33.301950",
+    "vehicle_count": 1,
+    "queue_length_m": 5.0,
+    "density_veh_per_m": 0.2
+  },
+  {
+    "lane_id": "lane_W",
+    "timestamp": "2026-10-24T20:24:33.301950",
+    "vehicle_count": 0,
+    "queue_length_m": 0.0,
+    "density_veh_per_m": 0.0
+  },
+  {
+    "lane_id": "lane_N",
+    "timestamp": "2026-10-24T20:24:34.301950",
+    "vehicle_count": 0,
+    "queue_length_m": 0.0,
+    "density_veh_per_m": 0.0
+  },
+  {
+    "lane_id": "lane_S",
+    "timestamp": "2026-10-24T20:24:34.301950",
+    "vehicle_count": 1,
+    "queue_length_m": 5.0,
+    "density_veh_per_m": 0.2
+  },
+  {
+    "lane_id": "lane_E",
+    "timestamp": "2026-10-24T20:24:34.301950",
     "vehicle_count": 0,
     "queue_length_m": 0.0,
     "density_veh_per_m": 0.0
   },
   {
     "lane_id": "lane_W",
-    "timestamp": "2026-10-19T12:48:03.782237",
-    "vehicle_count": 29,
-    "queue_length_m": 150.8,
-    "density_veh_per_m": 1.0
+    "timestamp": "2026-10-24T20:24:34.301950",
+    "vehicle_count": 0,
+    "queue_length_m": 0.0,
+    "density_veh_per_m": 0.0
   },
   {
     "lane_id": "lane_N",
-    "timestamp": "2026-10-19T12:48:05.714727",
-    "vehicle_count": 26,
-    "queue_length_m": 135.2,
-    "density_veh_per_m": 1.0
+    "timestamp": "2026-10-24T20:24:35.301950",
+    "vehicle_count": 0,
+    "queue_length_m": 0.0,
+    "density_veh_per_m": 0.0
   },
   {
     "lane_id": "lane_S",
-    "timestamp": "2026-10-19T12:48:05.714727",
-    "vehicle_count": 27,
-    "queue_length_m": 140.4,
-    "density_veh_per_m": 1.0
+    "timestamp": "2026-10-24T20:24:35.301950",
+    "vehicle_count": 2,
+    "queue_length_m": 10.0,
+    "density_veh_per_m": 0.2
   },
   {
     "lane_id": "lane_E",
-    "timestamp": "2026-10-19T12:48:05.714727",
+    "timestamp": "2026-10-24T20:24:35.301950",
     "vehicle_count": 0,
     "queue_length_m": 0.0,
     "density_veh_per_m": 0.0
   },
   {
     "lane_id": "lane_W",
-    "timestamp": "2026-10-19T12:48:05.714727",
-    "vehicle_count": 27,
-    "queue_length_m": 140.4,
-    "density_veh_per_m": 1.0
+    "timestamp": "2026-10-24T20:24:35.301950",
+    "vehicle_count": 0,
+    "queue_length_m": 0.0,
+    "density_veh_per_m": 0.0
   },
   {
     "lane_id": "lane_N",
-    "timestamp": "2026-10-19T12:48:07.628633",
-    "vehicle_count": 26,
-    "queue_length_m": 135.2,
-    "density_veh_per_m": 1.0
+    "timestamp": "2026-10-24T20:24:36.301950",
+    "vehicle_count": 0,
+    "queue_length_m": 0.0,
+    "density_veh_per_m": 0.0
   },
   {
     "lane_id": "lane_S",
-    "timestamp": "2026-10-19T12:48:07.628633",
-    "vehicle_count": 27,
-    "queue_length_m": 140.4,
-    "density_veh_per_m": 1.0
+    "timestamp": "2026-10-24T20:24:36.301950",
+    "vehicle_count": 2,
+    "queue_length_m": 10.0,
+    "density_veh_per_m": 0.2
   },
   {
     "lane_id": "lane_E",
-    "timestamp": "2026-10-19T12:48:07.628633",
+    "timestamp": "2026-10-24T20:24:36.301950",
+    "vehicle_count": 1,
+    "queue_length_m": 5.0,
+    "density_veh_per_m": 0.2
+  },
+  {
+    "lane_id": "lane_W",
+    "timestamp": "2026-10-24T20:24:36.301950",
+    "vehicle_count": 0,
+    "queue_length_m": 0.0,
+    "density_veh_per_m": 0.0
+  },
+  {
+    "lane_id": "lane_N",
+    "timestamp": "2026-10-24T20:24:37.301950",
+    "vehicle_count": 0,
+    "queue_length_m": 0.0,
+    "density_veh_per_m": 0.0
+  },
+  {
+    "lane_id": "lane_S",
+    "timestamp": "2026-10-24T20:24:37.301950",
+    "vehicle_count": 2,
+    "queue_length_m": 10.0,
+    "density_veh_per_m": 0.2
+  },
+  {
+    "lane_id": "lane_E",
+    "timestamp": "2026-10-24T20:24:37.301950",
+    "vehicle_count": 1,
+    "queue_length_m": 5.0,
+    "density_veh_per_m": 0.2
+  },
+  {
+    "lane_id": "lane_W",
+    "timestamp": "2026-10-24T20:24:37.301950",
+    "vehicle_count": 0,
+    "queue_length_m": 0.0,
+    "density_veh_per_m": 0.0
+  },
+  {
+    "lane_id": "lane_N",
+    "timestamp": "2026-10-24T20:24:38.301950",
+    "vehicle_count": 0,
+    "queue_length_m": 0.0,
+    "density_veh_per_m": 0.0
+  },
+  {
+    "lane_id": "lane_S",
+    "timestamp": "2026-10-24T20:24:38.301950",
+    "vehicle_count": 1,
+    "queue_length_m": 5.0,
+    "density_veh_per_m": 0.2
+  },
+  {
+    "lane_id": "lane_E",
+    "timestamp": "2026-10-24T20:24:38.301950",
+    "vehicle_count": 1,
+    "queue_length_m": 5.0,
+    "density_veh_per_m": 0.2
+  },
+  {
+    "lane_id": "lane_W",
+    "timestamp": "2026-10-24T20:24:38.301950",
+    "vehicle_count": 0,
+    "queue_length_m": 0.0,
+    "density_veh_per_m": 0.0
+  },
+  {
+    "lane_id": "lane_N",
+    "timestamp": "2026-10-24T20:24:39.301950",
+    "vehicle_count": 1,
+    "queue_length_m": 5.0,
+    "density_veh_per_m": 0.2
+  },
+  {
+    "lane_id": "lane_S",
+    "timestamp": "2026-10-24T20:24:39.301950",
+    "vehicle_count": 1,
+    "queue_length_m": 5.0,
+    "density_veh_per_m": 0.2
+  },
+  {
+    "lane_id": "lane_E",
+    "timestamp": "2026-10-24T20:24:39.301950",
     "vehicle_count": 0,
     "queue_length_m": 0.0,
     "density_veh_per_m": 0.0
   },
   {
     "lane_id": "lane_W",
-    "timestamp": "2026-10-19T12:48:07.628633",
-    "vehicle_count": 21,
-    "queue_length_m": 109.2,
-    "density_veh_per_m": 1.0
+    "timestamp": "2026-10-24T20:24:39.301950",
+    "vehicle_count": 1,
+    "queue_length_m": 5.0,
+    "density_veh_per_m": 0.2
   },
   {
     "lane_id": "lane_N",
-    "timestamp": "2026-10-19T12:48:09.598905",
-    "vehicle_count": 26,
-    "queue_length_m": 135.2,
-    "density_veh_per_m": 1.0
+    "timestamp": "2026-10-24T20:24:40.301950",
+    "vehicle_count": 2,
+    "queue_length_m": 10.0,
+    "density_veh_per_m": 0.2
   },
   {
     "lane_id": "lane_S",
-    "timestamp": "2026-10-19T12:48:09.598905",
-    "vehicle_count": 27,
-    "queue_length_m": 140.4,
-    "density_veh_per_m": 1.0
+    "timestamp": "2026-10-24T20:24:40.301950",
+    "vehicle_count": 1,
+    "queue_length_m": 5.0,
+    "density_veh_per_m": 0.2
   },
   {
     "lane_id": "lane_E",
-    "timestamp": "2026-10-19T12:48:09.598905",
+    "timestamp": "2026-10-24T20:24:40.301950",
     "vehicle_count": 0,
     "queue_length_m": 0.0,
     "density_veh_per_m": 0.0
   },
   {
     "lane_id": "lane_W",
-    "timestamp": "2026-10-19T12:48:09.598905",
-    "vehicle_count": 18,
-    "queue_length_m": 93.6,
-    "density_veh_per_m": 1.0
+    "timestamp": "2026-10-24T20:24:40.301950",
+    "vehicle_count": 1,
+    "queue_length_m": 5.0,
+    "density_veh_per_m": 0.2
   },
   {
     "lane_id": "lane_N",
-    "timestamp": "2026-10-19T12:48:11.592460",
-    "vehicle_count": 26,
-    "queue_length_m": 135.2,
-    "density_veh_per_m": 1.0
+    "timestamp": "2026-10-24T20:24:41.301950",
+    "vehicle_count": 1,
+    "queue_length_m": 5.0,
+    "density_veh_per_m": 0.2
   },
   {
     "lane_id": "lane_S",
-    "timestamp": "2026-10-19T12:48:11.592460",
-    "vehicle_count": 27,
-    "queue_length_m": 140.4,
-    "density_veh_per_m": 1.0
+    "timestamp": "2026-10-24T20:24:41.301950",
+    "vehicle_count": 2,
+    "queue_length_m": 10.0,
+    "density_veh_per_m": 0.2
   },
   {
     "lane_id": "lane_E",
-    "timestamp": "2026-10-19T12:48:11.592460",
+    "timestamp": "2026-10-24T20:24:41.301950",
     "vehicle_count": 0,
     "queue_length_m": 0.0,
     "density_veh_per_m": 0.0
   },
   {
     "lane_id": "lane_W",
-    "timestamp": "2026-10-19T12:48:11.592460",
-    "vehicle_count": 14,
-    "queue_length_m": 72.8,
-    "density_veh_per_m": 0.91
+    "timestamp": "2026-10-24T20:24:41.301950",
+    "vehicle_count": 1,
+    "queue_length_m": 5.0,
+    "density_veh_per_m": 0.2
   },
   {
     "lane_id": "lane_N",
-    "timestamp": "2026-10-19T12:48:13.271536",
-    "vehicle_count": 26,
-    "queue_length_m": 135.2,
-    "density_veh_per_m": 1.0
+    "timestamp": "2026-10-24T20:24:42.301950",
+    "vehicle_count": 1,
+    "queue_length_m": 5.0,
+    "density_veh_per_m": 0.2
   },
   {
     "lane_id": "lane_S",
-    "timestamp": "2026-10-19T12:48:13.271536",
-    "vehicle_count": 27,
-    "queue_length_m": 140.4,
-    "density_veh_per_m": 1.0
+    "timestamp": "2026-10-24T20:24:42.301950",
+    "vehicle_count": 2,
+    "queue_length_m": 10.0,
+    "density_veh_per_m": 0.2
   },
   {
     "lane_id": "lane_E",
-    "timestamp": "2026-10-19T12:48:13.271536",
+    "timestamp": "2026-10-24T20:24:42.301950",
+    "vehicle_count": 1,
+    "queue_length_m": 5.0,
+    "density_veh_per_m": 0.2
+  },
+  {
+    "lane_id": "lane_W",
+    "timestamp": "2026-10-24T20:24:42.301950",
+    "vehicle_count": 1,
+    "queue_length_m": 5.0,
+    "density_veh_per_m": 0.2
+  },
+  {
+    "lane_id": "lane_N",
+    "timestamp": "2026-10-24T20:24:43.301950",
+    "vehicle_count": 2,
+    "queue_length_m": 10.0,
+    "density_veh_per_m": 0.2
+  },
+  {
+    "lane_id": "lane_S",
+    "timestamp": "2026-10-24T20:24:43.301950",
+    "vehicle_count": 2,
+    "queue_length_m": 10.0,
+    "density_veh_per_m": 0.2
+  },
+  {
+    "lane_id": "lane_E",
+    "timestamp": "2026-10-24T20:24:43.301950",
+    "vehicle_count": 1,
+    "queue_length_m": 5.0,
+    "density_veh_per_m": 0.2
+  },
+  {
+    "lane_id": "lane_W",
+    "timestamp": "2026-10-24T20:24:43.301950",
+    "vehicle_count": 2,
+    "queue_length_m": 10.0,
+    "density_veh_per_m": 0.2
+  },
+  {
+    "lane_id": "lane_N",
+    "timestamp": "2026-10-24T20:24:44.301950",
+    "vehicle_count": 2,
+    "queue_length_m": 10.0,
+    "density_veh_per_m": 0.2
+  },
+  {
+    "lane_id": "lane_S",
+    "timestamp": "2026-10-24T20:24:44.301950",
+    "vehicle_count": 2,
+    "queue_length_m": 10.0,
+    "density_veh_per_m": 0.2
+  },
+  {
+    "lane_id": "lane_E",
+    "timestamp": "2026-10-24T20:24:44.301950",
+    "vehicle_count": 2,
+    "queue_length_m": 10.0,
+    "density_veh_per_m": 0.2
+  },
+  {
+    "lane_id": "lane_W",
+    "timestamp": "2026-10-24T20:24:44.301950",
+    "vehicle_count": 2,
+    "queue_length_m": 10.0,
+    "density_veh_per_m": 0.2
+  },
+  {
+    "lane_id": "lane_N",
+    "timestamp": "2026-10-24T20:24:45.301950",
+    "vehicle_count": 2,
+    "queue_length_m": 10.0,
+    "density_veh_per_m": 0.2
+  },
+  {
+    "lane_id": "lane_S",
+    "timestamp": "2026-10-24T20:24:45.301950",
+    "vehicle_count": 1,
+    "queue_length_m": 5.0,
+    "density_veh_per_m": 0.2
+  },
+  {
+    "lane_id": "lane_E",
+    "timestamp": "2026-10-24T20:24:45.301950",
+    "vehicle_count": 2,
+    "queue_length_m": 10.0,
+    "density_veh_per_m": 0.2
+  },
+  {
+    "lane_id": "lane_W",
+    "timestamp": "2026-10-24T20:24:45.301950",
+    "vehicle_count": 2,
+    "queue_length_m": 10.0,
+    "density_veh_per_m": 0.2
+  },
+  {
+    "lane_id": "lane_N",
+    "timestamp": "2026-10-24T20:24:46.301950",
+    "vehicle_count": 2,
+    "queue_length_m": 10.0,
+    "density_veh_per_m": 0.2
+  },
+  {
+    "lane_id": "lane_S",
+    "timestamp": "2026-10-24T20:24:46.301950",
+    "vehicle_count": 1,
+    "queue_length_m": 5.0,
+    "density_veh_per_m": 0.2
+  },
+  {
+    "lane_id": "lane_E",
+    "timestamp": "2026-10-24T20:24:46.301950",
+    "vehicle_count": 3,
+    "queue_length_m": 15.0,
+    "density_veh_per_m": 0.2
+  },
+  {
+    "lane_id": "lane_W",
+    "timestamp": "2026-10-24T20:24:46.301950",
+    "vehicle_count": 1,
+    "queue_length_m": 5.0,
+    "density_veh_per_m": 0.2
+  },
+  {
+    "lane_id": "lane_N",
+    "timestamp": "2026-10-24T20:24:47.301950",
+    "vehicle_count": 2,
+    "queue_length_m": 10.0,
+    "density_veh_per_m": 0.2
+  },
+  {
+    "lane_id": "lane_S",
+    "timestamp": "2026-10-24T20:24:47.301950",
+    "vehicle_count": 1,
+    "queue_length_m": 5.0,
+    "density_veh_per_m": 0.2
+  },
+  {
+    "lane_id": "lane_E",
+    "timestamp": "2026-10-24T20:24:47.301950",
+    "vehicle_count": 3,
+    "queue_length_m": 15.0,
+    "density_veh_per_m": 0.2
+  },
+  {
+    "lane_id": "lane_W",
+    "timestamp": "2026-10-24T20:24:47.301950",
+    "vehicle_count": 1,
+    "queue_length_m": 5.0,
+    "density_veh_per_m": 0.2
+  },
+  {
+    "lane_id": "lane_N",
+    "timestamp": "2026-10-24T20:24:48.301950",
+    "vehicle_count": 2,
+    "queue_length_m": 10.0,
+    "density_veh_per_m": 0.2
+  },
+  {
+    "lane_id": "lane_S",
+    "timestamp": "2026-10-24T20:24:48.301950",
+    "vehicle_count": 1,
+    "queue_length_m": 5.0,
+    "density_veh_per_m": 0.2
+  },
+  {
+    "lane_id": "lane_E",
+    "timestamp": "2026-10-24T20:24:48.301950",
+    "vehicle_count": 3,
+    "queue_length_m": 15.0,
+    "density_veh_per_m": 0.2
+  },
+  {
+    "lane_id": "lane_W",
+    "timestamp": "2026-10-24T20:24:48.301950",
+    "vehicle_count": 1,
+    "queue_length_m": 5.0,
+    "density_veh_per_m": 0.2
+  },
+  {
+    "lane_id": "lane_N",
+    "timestamp": "2026-10-24T20:24:49.301950",
+    "vehicle_count": 3,
+    "queue_length_m": 15.0,
+    "density_veh_per_m": 0.2
+  },
+  {
+    "lane_id": "lane_S",
+    "timestamp": "2026-10-24T20:24:49.301950",
+    "vehicle_count": 0,
+    "queue_length_m": 0.0,
+    "density_veh_per_m": 0.0
+  },
+  {
+    "lane_id": "lane_E",
+    "timestamp": "2026-10-24T20:24:49.301950",
+    "vehicle_count": 3,
+    "queue_length_m": 15.0,
+    "density_veh_per_m": 0.2
+  },
+  {
+    "lane_id": "lane_W",
+    "timestamp": "2026-10-24T20:24:49.301950",
+    "vehicle_count": 1,
+    "queue_length_m": 5.0,
+    "density_veh_per_m": 0.2
+  },
+  {
+    "lane_id": "lane_N",
+    "timestamp": "2026-10-24T20:24:50.301950",
+    "vehicle_count": 2,
+    "queue_length_m": 10.0,
+    "density_veh_per_m": 0.2
+  },
+  {
+    "lane_id": "lane_S",
+    "timestamp": "2026-10-24T20:24:50.301950",
+    "vehicle_count": 0,
+    "queue_length_m": 0.0,
+    "density_veh_per_m": 0.0
+  },
+  {
+    "lane_id": "lane_E",
+    "timestamp": "2026-10-24T20:24:50.301950",
+    "vehicle_count": 3,
+    "queue_length_m": 15.0,
+    "density_veh_per_m": 0.2
+  },
+  {
+    "lane_id": "lane_W",
+    "timestamp": "2026-10-24T20:24:50.301950",
+    "vehicle_count": 1,
+    "queue_length_m": 5.0,
+    "density_veh_per_m": 0.2
+  },
+  {
+    "lane_id": "lane_N",
+    "timestamp": "2026-10-24T20:24:51.301950",
+    "vehicle_count": 1,
+    "queue_length_m": 5.0,
+    "density_veh_per_m": 0.2
+  },
+  {
+    "lane_id": "lane_S",
+    "timestamp": "2026-10-24T20:24:51.301950",
+    "vehicle_count": 0,
+    "queue_length_m": 0.0,
+    "density_veh_per_m": 0.0
+  },
+  {
+    "lane_id": "lane_E",
+    "timestamp": "2026-10-24T20:24:51.301950",
+    "vehicle_count": 3,
+    "queue_length_m": 15.0,
+    "density_veh_per_m": 0.2
+  },
+  {
+    "lane_id": "lane_W",
+    "timestamp": "2026-10-24T20:24:51.301950",
+    "vehicle_count": 1,
+    "queue_length_m": 5.0,
+    "density_veh_per_m": 0.2
+  },
+  {
+    "lane_id": "lane_N",
+    "timestamp": "2026-10-24T20:24:52.301950",
+    "vehicle_count": 0,
+    "queue_length_m": 0.0,
+    "density_veh_per_m": 0.0
+  },
+  {
+    "lane_id": "lane_S",
+    "timestamp": "2026-10-24T20:24:52.301950",
+    "vehicle_count": 0,
+    "queue_length_m": 0.0,
+    "density_veh_per_m": 0.0
+  },
+  {
+    "lane_id": "lane_E",
+    "timestamp": "2026-10-24T20:24:52.301950",
+    "vehicle_count": 3,
+    "queue_length_m": 15.0,
+    "density_veh_per_m": 0.2
+  },
+  {
+    "lane_id": "lane_W",
+    "timestamp": "2026-10-24T20:24:52.301950",
+    "vehicle_count": 1,
+    "queue_length_m": 5.0,
+    "density_veh_per_m": 0.2
+  },
+  {
+    "lane_id": "lane_N",
+    "timestamp": "2026-10-24T20:24:53.301950",
+    "vehicle_count": 0,
+    "queue_length_m": 0.0,
+    "density_veh_per_m": 0.0
+  },
+  {
+    "lane_id": "lane_S",
+    "timestamp": "2026-10-24T20:24:53.301950",
+    "vehicle_count": 0,
+    "queue_length_m": 0.0,
+    "density_veh_per_m": 0.0
+  },
+  {
+    "lane_id": "lane_E",
+    "timestamp": "2026-10-24T20:24:53.301950",
+    "vehicle_count": 3,
+    "queue_length_m": 15.0,
+    "density_veh_per_m": 0.2
+  },
+  {
+    "lane_id": "lane_W",
+    "timestamp": "2026-10-24T20:24:53.301950",
+    "vehicle_count": 0,
+    "queue_length_m": 0.0,
+    "density_veh_per_m": 0.0
+  },
+  {
+    "lane_id": "lane_N",
+    "timestamp": "2026-10-24T20:24:54.301950",
+    "vehicle_count": 0,
+    "queue_length_m": 0.0,
+    "density_veh_per_m": 0.0
+  },
+  {
+    "lane_id": "lane_S",
+    "timestamp": "2026-10-24T20:24:54.301950",
+    "vehicle_count": 0,
+    "queue_length_m": 0.0,
+    "density_veh_per_m": 0.0
+  },
+  {
+    "lane_id": "lane_E",
+    "timestamp": "2026-10-24T20:24:54.301950",
+    "vehicle_count": 2,
+    "queue_length_m": 10.0,
+    "density_veh_per_m": 0.2
+  },
+  {
+    "lane_id": "lane_W",
+    "timestamp": "2026-10-24T20:24:54.301950",
+    "vehicle_count": 0,
+    "queue_length_m": 0.0,
+    "density_veh_per_m": 0.0
+  },
+  {
+    "lane_id": "lane_N",
+    "timestamp": "2026-10-24T20:24:55.301950",
+    "vehicle_count": 0,
+    "queue_length_m": 0.0,
+    "density_veh_per_m": 0.0
+  },
+  {
+    "lane_id": "lane_S",
+    "timestamp": "2026-10-24T20:24:55.301950",
+    "vehicle_count": 1,
+    "queue_length_m": 5.0,
+    "density_veh_per_m": 0.2
+  },
+  {
+    "lane_id": "lane_E",
+    "timestamp": "2026-10-24T20:24:55.301950",
+    "vehicle_count": 2,
+    "queue_length_m": 10.0,
+    "density_veh_per_m": 0.2
+  },
+  {
+    "lane_id": "lane_W",
+    "timestamp": "2026-10-24T20:24:55.301950",
+    "vehicle_count": 0,
+    "queue_length_m": 0.0,
+    "density_veh_per_m": 0.0
+  },
+  {
+    "lane_id": "lane_N",
+    "timestamp": "2026-10-24T20:24:56.301950",
+    "vehicle_count": 0,
+    "queue_length_m": 0.0,
+    "density_veh_per_m": 0.0
+  },
+  {
+    "lane_id": "lane_S",
+    "timestamp": "2026-10-24T20:24:56.301950",
+    "vehicle_count": 2,
+    "queue_length_m": 10.0,
+    "density_veh_per_m": 0.2
+  },
+  {
+    "lane_id": "lane_E",
+    "timestamp": "2026-10-24T20:24:56.301950",
+    "vehicle_count": 3,
+    "queue_length_m": 15.0,
+    "density_veh_per_m": 0.2
+  },
+  {
+    "lane_id": "lane_W",
+    "timestamp": "2026-10-24T20:24:56.301950",
+    "vehicle_count": 0,
+    "queue_length_m": 0.0,
+    "density_veh_per_m": 0.0
+  },
+  {
+    "lane_id": "lane_N",
+    "timestamp": "2026-10-24T20:24:57.301950",
+    "vehicle_count": 0,
+    "queue_length_m": 0.0,
+    "density_veh_per_m": 0.0
+  },
+  {
+    "lane_id": "lane_S",
+    "timestamp": "2026-10-24T20:24:57.301950",
+    "vehicle_count": 2,
+    "queue_length_m": 10.0,
+    "density_veh_per_m": 0.2
+  },
+  {
+    "lane_id": "lane_E",
+    "timestamp": "2026-10-24T20:24:57.301950",
+    "vehicle_count": 2,
+    "queue_length_m": 10.0,
+    "density_veh_per_m": 0.2
+  },
+  {
+    "lane_id": "lane_W",
+    "timestamp": "2026-10-24T20:24:57.301950",
+    "vehicle_count": 0,
+    "queue_length_m": 0.0,
+    "density_veh_per_m": 0.0
+  },
+  {
+    "lane_id": "lane_N",
+    "timestamp": "2026-10-24T20:24:58.301950",
+    "vehicle_count": 0,
+    "queue_length_m": 0.0,
+    "density_veh_per_m": 0.0
+  },
+  {
+    "lane_id": "lane_S",
+    "timestamp": "2026-10-24T20:24:58.301950",
+    "vehicle_count": 2,
+    "queue_length_m": 10.0,
+    "density_veh_per_m": 0.2
+  },
+  {
+    "lane_id": "lane_E",
+    "timestamp": "2026-10-24T20:24:58.301950",
+    "vehicle_count": 2,
+    "queue_length_m": 10.0,
+    "density_veh_per_m": 0.2
+  },
+  {
+    "lane_id": "lane_W",
+    "timestamp": "2026-10-24T20:24:58.301950",
+    "vehicle_count": 0,
+    "queue_length_m": 0.0,
+    "density_veh_per_m": 0.0
+  },
+  {
+    "lane_id": "lane_N",
+    "timestamp": "2026-10-24T20:24:59.301950",
+    "vehicle_count": 0,
+    "queue_length_m": 0.0,
+    "density_veh_per_m": 0.0
+  },
+  {
+    "lane_id": "lane_S",
+    "timestamp": "2026-10-24T20:24:59.301950",
+    "vehicle_count": 2,
+    "queue_length_m": 10.0,
+    "density_veh_per_m": 0.2
+  },
+  {
+    "lane_id": "lane_E",
+    "timestamp": "2026-10-24T20:24:59.301950",
+    "vehicle_count": 2,
+    "queue_length_m": 10.0,
+    "density_veh_per_m": 0.2
+  },
+  {
+    "lane_id": "lane_W",
+    "timestamp": "2026-10-24T20:24:59.301950",
+    "vehicle_count": 0,
+    "queue_length_m": 0.0,
+    "density_veh_per_m": 0.0
+  },
+  {
+    "lane_id": "lane_N",
+    "timestamp": "2026-10-24T20:25:00.301950",
+    "vehicle_count": 0,
+    "queue_length_m": 0.0,
+    "density_veh_per_m": 0.0
+  },
+  {
+    "lane_id": "lane_S",
+    "timestamp": "2026-10-24T20:25:00.301950",
+    "vehicle_count": 1,
+    "queue_length_m": 5.0,
+    "density_veh_per_m": 0.2
+  },
+  {
+    "lane_id": "lane_E",
+    "timestamp": "2026-10-24T20:25:00.301950",
+    "vehicle_count": 1,
+    "queue_length_m": 5.0,
+    "density_veh_per_m": 0.2
+  },
+  {
+    "lane_id": "lane_W",
+    "timestamp": "2026-10-24T20:25:00.301950",
+    "vehicle_count": 0,
+    "queue_length_m": 0.0,
+    "density_veh_per_m": 0.0
+  },
+  {
+    "lane_id": "lane_N",
+    "timestamp": "2026-10-24T20:25:01.301950",
+    "vehicle_count": 0,
+    "queue_length_m": 0.0,
+    "density_veh_per_m": 0.0
+  },
+  {
+    "lane_id": "lane_S",
+    "timestamp": "2026-10-24T20:25:01.301950",
+    "vehicle_count": 1,
+    "queue_length_m": 5.0,
+    "density_veh_per_m": 0.2
+  },
+  {
+    "lane_id": "lane_E",
+    "timestamp": "2026-10-24T20:25:01.301950",
+    "vehicle_count": 1,
+    "queue_length_m": 5.0,
+    "density_veh_per_m": 0.2
+  },
+  {
+    "lane_id": "lane_W",
+    "timestamp": "2026-10-24T20:25:01.301950",
+    "vehicle_count": 0,
+    "queue_length_m": 0.0,
+    "density_veh_per_m": 0.0
+  },
+  {
+    "lane_id": "lane_N",
+    "timestamp": "2026-10-24T20:25:02.301950",
+    "vehicle_count": 0,
+    "queue_length_m": 0.0,
+    "density_veh_per_m": 0.0
+  },
+  {
+    "lane_id": "lane_S",
+    "timestamp": "2026-10-24T20:25:02.301950",
+    "vehicle_count": 0,
+    "queue_length_m": 0.0,
+    "density_veh_per_m": 0.0
+  },
+  {
+    "lane_id": "lane_E",
+    "timestamp": "2026-10-24T20:25:02.301950",
     "vehicle_count": 0,
     "queue_length_m": 0.0,
     "density_veh_per_m": 0.0
   },
   {
     "lane_id": "lane_W",
-    "timestamp": "2026-10-19T12:48:13.271536",
-    "vehicle_count": 21,
-    "queue_length_m": 109.2,
-    "density_veh_per_m": 1.0
+    "timestamp": "2026-10-24T20:25:02.301950",
+    "vehicle_count": 0,
+    "queue_length_m": 0.0,
+    "density_veh_per_m": 0.0
   },
   {
     "lane_id": "lane_N",
-    "timestamp": "2026-10-19T12:48:25.939199",
-    "vehicle_count": 26,
-    "queue_length_m": 135.2,
-    "density_veh_per_m": 1.0
+    "timestamp": "2026-10-24T20:25:03.301950",
+    "vehicle_count": 1,
+    "queue_length_m": 5.0,
+    "density_veh_per_m": 0.2
   },
   {
     "lane_id": "lane_S",
-    "timestamp": "2026-10-19T12:48:25.939199",
-    "vehicle_count": 27,
-    "queue_length_m": 140.4,
-    "density_veh_per_m": 1.0
+    "timestamp": "2026-10-24T20:25:03.301950",
+    "vehicle_count": 0,
+    "queue_length_m": 0.0,
+    "density_veh_per_m": 0.0
   },
   {
     "lane_id": "lane_E",
-    "timestamp": "2026-10-19T12:48:25.939199",
+    "timestamp": "2026-10-24T20:25:03.301950",
     "vehicle_count": 0,
     "queue_length_m": 0.0,
     "density_veh_per_m": 0.0
   },
   {
     "lane_id": "lane_W",
-    "timestamp": "2026-10-19T12:48:25.939199",
-    "vehicle_count": 16,
-    "queue_length_m": 83.2,
-    "density_veh_per_m": 1.0
+    "timestamp": "2026-10-24T20:25:03.301950",
+    "vehicle_count": 0,
+    "queue_length_m": 0.0,
+    "density_veh_per_m": 0.0
   },
   {
     "lane_id": "lane_N",
-    "timestamp": "2026-10-19T12:48:26.957334",
-    "vehicle_count": 26,
-    "queue_length_m": 135.2,
-    "density_veh_per_m": 1.0
+    "timestamp": "2026-10-24T20:25:04.301950",
+    "vehicle_count": 0,
+    "queue_length_m": 0.0,
+    "density_veh_per_m": 0.0
   },
   {
     "lane_id": "lane_S",
-    "timestamp": "2026-10-19T12:48:26.957334",
-    "vehicle_count": 27,
-    "queue_length_m": 140.4,
-    "density_veh_per_m": 1.0
+    "timestamp": "2026-10-24T20:25:04.301950",
+    "vehicle_count": 0,
+    "queue_length_m": 0.0,
+    "density_veh_per_m": 0.0
   },
   {
     "lane_id": "lane_E",
-    "timestamp": "2026-10-19T12:48:26.957334",
+    "timestamp": "2026-10-24T20:25:04.301950",
     "vehicle_count": 0,
     "queue_length_m": 0.0,
     "density_veh_per_m": 0.0
   },
   {
     "lane_id": "lane_W",
-    "timestamp": "2026-10-19T12:48:26.957334",
-    "vehicle_count": 19,
-    "queue_length_m": 98.8,
-    "density_veh_per_m": 1.0
+    "timestamp": "2026-10-24T20:25:04.301950",
+    "vehicle_count": 1,
+    "queue_length_m": 5.0,
+    "density_veh_per_m": 0.2
   },
   {
     "lane_id": "lane_N",
-    "timestamp": "2026-10-19T12:48:27.994280",
-    "vehicle_count": 26,
-    "queue_length_m": 135.2,
-    "density_veh_per_m": 1.0
+    "timestamp": "2026-10-24T20:25:05.301950",
+    "vehicle_count": 0,
+    "queue_length_m": 0.0,
+    "density_veh_per_m": 0.0
   },
   {
     "lane_id": "lane_S",
-    "timestamp": "2026-10-19T12:48:27.994280",
-    "vehicle_count": 27,
-    "queue_length_m": 140.4,
-    "density_veh_per_m": 1.0
+    "timestamp": "2026-10-24T20:25:05.301950",
+    "vehicle_count": 0,
+    "queue_length_m": 0.0,
+    "density_veh_per_m": 0.0
   },
   {
     "lane_id": "lane_E",
-    "timestamp": "2026-10-19T12:48:27.994280",
+    "timestamp": "2026-10-24T20:25:05.301950",
     "vehicle_count": 0,
     "queue_length_m": 0.0,
     "density_veh_per_m": 0.0
   },
   {
     "lane_id": "lane_W",
-    "timestamp": "2026-10-19T12:48:27.994280",
-    "vehicle_count": 20,
-    "queue_length_m": 104.0,
-    "density_veh_per_m": 1.0
+    "timestamp": "2026-10-24T20:25:05.301950",
+    "vehicle_count": 1,
+    "queue_length_m": 5.0,
+    "density_veh_per_m": 0.2
   },
   {
     "lane_id": "lane_N",
-    "timestamp": "2026-10-19T12:48:28.905463",
-    "vehicle_count": 26,
-    "queue_length_m": 135.2,
-    "density_veh_per_m": 1.0
+    "timestamp": "2026-10-24T20:25:06.301950",
+    "vehicle_count": 0,
+    "queue_length_m": 0.0,
+    "density_veh_per_m": 0.0
   },
   {
     "lane_id": "lane_S",
-    "timestamp": "2026-10-19T12:48:28.905463",
-    "vehicle_count": 27,
-    "queue_length_m": 140.4,
-    "density_veh_per_m": 1.0
+    "timestamp": "2026-10-24T20:25:06.301950",
+    "vehicle_count": 0,
+    "queue_length_m": 0.0,
+    "density_veh_per_m": 0.0
   },
   {
     "lane_id": "lane_E",
-    "timestamp": "2026-10-19T12:48:28.905463",
+    "timestamp": "2026-10-24T20:25:06.301950",
     "vehicle_count": 0,
     "queue_length_m": 0.0,
     "density_veh_per_m": 0.0
   },
   {
     "lane_id": "lane_W",
-    "timestamp": "2026-10-19T12:48:28.905463",
-    "vehicle_count": 25,
-    "queue_length_m": 130.0,
-    "density_veh_per_m": 1.0
+    "timestamp": "2026-10-24T20:25:06.301950",
+    "vehicle_count": 0,
+    "queue_length_m": 0.0,
+    "density_veh_per_m": 0.0
   },
   {
     "lane_id": "lane_N",
-    "timestamp": "2026-10-19T12:48:30.065692",
-    "vehicle_count": 26,
-    "queue_length_m": 135.2,
-    "density_veh_per_m": 1.0
+    "timestamp": "2026-10-24T20:25:07.301950",
+    "vehicle_count": 0,
+    "queue_length_m": 0.0,
+    "density_veh_per_m": 0.0
   },
   {
     "lane_id": "lane_S",
-    "timestamp": "2026-10-19T12:48:30.065692",
-    "vehicle_count": 27,
-    "queue_length_m": 140.4,
-    "density_veh_per_m": 1.0
+    "timestamp": "2026-10-24T20:25:07.301950",
+    "vehicle_count": 0,
+    "queue_length_m": 0.0,
+    "density_veh_per_m": 0.0
   },
   {
     "lane_id": "lane_E",
-    "timestamp": "2026-10-19T12:48:30.065692",
+    "timestamp": "2026-10-24T20:25:07.301950",
     "vehicle_count": 0,
     "queue_length_m": 0.0,
     "density_veh_per_m": 0.0
   },
   {
     "lane_id": "lane_W",
-    "timestamp": "2026-10-19T12:48:30.065692",
-    "vehicle_count": 20,
-    "queue_length_m": 104.0,
-    "density_veh_per_m": 1.0
+    "timestamp": "2026-10-24T20:25:07.301950",
+    "vehicle_count": 0,
+    "queue_length_m": 0.0,
+    "density_veh_per_m": 0.0
   },
   {
     "lane_id": "lane_N",
-    "timestamp": "2026-10-19T12:48:31.120507",
-    "vehicle_count": 26,
-    "queue_length_m": 135.2,
-    "density_veh_per_m": 1.0
+    "timestamp": "2026-10-24T20:25:08.301950",
+    "vehicle_count": 0,
+    "queue_length_m": 0.0,
+    "density_veh_per_m": 0.0
   },
   {
     "lane_id": "lane_S",
-    "timestamp": "2026-10-19T12:48:31.120507",
-    "vehicle_count": 27,
-    "queue_length_m": 140.4,
-    "density_veh_per_m": 1.0
+    "timestamp": "2026-10-24T20:25:08.301950",
+    "vehicle_count": 0,
+    "queue_length_m": 0.0,
+    "density_veh_per_m": 0.0
   },
   {
     "lane_id": "lane_E",
-    "timestamp": "2026-10-19T12:48:31.120507",
+    "timestamp": "2026-10-24T20:25:08.301950",
     "vehicle_count": 0,
     "queue_length_m": 0.0,
     "density_veh_per_m": 0.0
   },
   {
     "lane_id": "lane_W",
-    "timestamp": "2026-10-19T12:48:31.120507",
-    "vehicle_count": 21,
-    "queue_length_m": 109.2,
-    "density_veh_per_m": 1.0
+    "timestamp": "2026-10-24T20:25:08.301950",
+    "vehicle_count": 1,
+    "queue_length_m": 5.0,
+    "density_veh_per_m": 0.2
   },
   {
     "lane_id": "lane_N",
-    "timestamp": "2026-10-19T12:48:32.426241",
-    "vehicle_count": 26,
-    "queue_length_m": 135.2,
-    "density_veh_per_m": 1.0
+    "timestamp": "2026-10-24T20:25:09.301950",
+    "vehicle_count": 0,
+    "queue_length_m": 0.0,
+    "density_veh_per_m": 0.0
   },
   {
     "lane_id": "lane_S",
-    "timestamp": "2026-10-19T12:48:32.426241",
-    "vehicle_count": 27,
-    "queue_length_m": 140.4,
-    "density_veh_per_m": 1.0
+    "timestamp": "2026-10-24T20:25:09.301950",
+    "vehicle_count": 1,
+    "queue_length_m": 5.0,
+    "density_veh_per_m": 0.2
   },
   {
     "lane_id": "lane_E",
-    "timestamp": "2026-10-19T12:48:32.426241",
+    "timestamp": "2026-10-24T20:25:09.301950",
     "vehicle_count": 0,
     "queue_length_m": 0.0,
     "density_veh_per_m": 0.0
   },
   {
     "lane_id": "lane_W",
-    "timestamp": "2026-10-19T12:48:32.426241",
-    "vehicle_count": 23,
-    "queue_length_m": 119.6,
-    "density_veh_per_m": 1.0
+    "timestamp": "2026-10-24T20:25:09.301950",
+    "vehicle_count": 1,
+    "queue_length_m": 5.0,
+    "density_veh_per_m": 0.2
   },
   {
     "lane_id": "lane_N",
-    "timestamp": "2026-10-19T12:48:33.506272",
-    "vehicle_count": 26,
-    "queue_length_m": 135.2,
-    "density_veh_per_m": 1.0
+    "timestamp": "2026-10-24T20:25:10.301950",
+    "vehicle_count": 0,
+    "queue_length_m": 0.0,
+    "density_veh_per_m": 0.0
   },
   {
     "lane_id": "lane_S",
-    "timestamp": "2026-10-19T12:48:33.506272",
-    "vehicle_count": 27,
-    "queue_length_m": 140.4,
-    "density_veh_per_m": 1.0
+    "timestamp": "2026-10-24T20:25:10.301950",
+    "vehicle_count": 1,
+    "queue_length_m": 5.0,
+    "density_veh_per_m": 0.2
   },
   {
     "lane_id": "lane_E",
-    "timestamp": "2026-10-19T12:48:33.506272",
+    "timestamp": "2026-10-24T20:25:10.301950",
     "vehicle_count": 0,
     "queue_length_m": 0.0,
     "density_veh_per_m": 0.0
   },
   {
     "lane_id": "lane_W",
-    "timestamp": "2026-10-19T12:48:33.506272",
-    "vehicle_count": 24,
-    "queue_length_m": 124.8,
-    "density_veh_per_m": 1.0
+    "timestamp": "2026-10-24T20:25:10.301950",
+    "vehicle_count": 2,
+    "queue_length_m": 10.0,
+    "density_veh_per_m": 0.2
   },
   {
     "lane_id": "lane_N",
-    "timestamp": "2026-10-19T12:48:34.527753",
-    "vehicle_count": 26,
-    "queue_length_m": 135.2,
-    "density_veh_per_m": 1.0
+    "timestamp": "2026-10-24T20:25:11.301950",
+    "vehicle_count": 1,
+    "queue_length_m": 5.0,
+    "density_veh_per_m": 0.2
   },
   {
     "lane_id": "lane_S",
-    "timestamp": "2026-10-19T12:48:34.527753",
-    "vehicle_count": 27,
-    "queue_length_m": 140.4,
-    "density_veh_per_m": 1.0
+    "timestamp": "2026-10-24T20:25:11.301950",
+    "vehicle_count": 1,
+    "queue_length_m": 5.0,
+    "density_veh_per_m": 0.2
   },
   {
     "lane_id": "lane_E",
-    "timestamp": "2026-10-19T12:48:34.527753",
+    "timestamp": "2026-10-24T20:25:11.301950",
     "vehicle_count": 0,
     "queue_length_m": 0.0,
     "density_veh_per_m": 0.0
   },
   {
     "lane_id": "lane_W",
-    "timestamp": "2026-10-19T12:48:34.527753",
-    "vehicle_count": 27,
-    "queue_length_m": 140.4,
-    "density_veh_per_m": 1.0
+    "timestamp": "2026-10-24T20:25:11.301950",
+    "vehicle_count": 2,
+    "queue_length_m": 10.0,
+    "density_veh_per_m": 0.2
   },
   {
     "lane_id": "lane_N",
-    "timestamp": "2026-10-19T12:48:35.537703",
-    "vehicle_count": 26,
-    "queue_length_m": 135.2,
-    "density_veh_per_m": 1.0
+    "timestamp": "2026-10-24T20:25:12.301950",
+    "vehicle_count": 1,
+    "queue_length_m": 5.0,
+    "density_veh_per_m": 0.2
   },
   {
     "lane_id": "lane_S",
-    "timestamp": "2026-10-19T12:48:35.537703",
-    "vehicle_count": 27,
-    "queue_length_m": 140.4,
-    "density_veh_per_m": 1.0
+    "timestamp": "2026-10-24T20:25:12.301950",
+    "vehicle_count": 2,
+    "queue_length_m": 10.0,
+    "density_veh_per_m": 0.2
   },
   {
     "lane_id": "lane_E",
-    "timestamp": "2026-10-19T12:48:35.537703",
+    "timestamp": "2026-10-24T20:25:12.301950",
     "vehicle_count": 0,
     "queue_length_m": 0.0,
     "density_veh_per_m": 0.0
   },
   {
     "lane_id": "lane_W",
-    "timestamp": "2026-10-19T12:48:35.537703",
-    "vehicle_count": 24,
-    "queue_length_m": 124.8,
-    "density_veh_per_m": 1.0
+    "timestamp": "2026-10-24T20:25:12.301950",
+    "vehicle_count": 2,
+    "queue_length_m": 10.0,
+    "density_veh_per_m": 0.2
   },
   {
     "lane_id": "lane_N",
-    "timestamp": "2026-10-19T12:48:36.484838",
-    "vehicle_count": 26,
-    "queue_length_m": 135.2,
-    "density_veh_per_m": 1.0
+    "timestamp": "2026-10-24T20:25:13.301950",
+    "vehicle_count": 1,
+    "queue_length_m": 5.0,
+    "density_veh_per_m": 0.2
   },
   {
     "lane_id": "lane_S",
-    "timestamp": "2026-10-19T12:48:36.484838",
-    "vehicle_count": 27,
-    "queue_length_m": 140.4,
-    "density_veh_per_m": 1.0
+    "timestamp": "2026-10-24T20:25:13.301950",
+    "vehicle_count": 2,
+    "queue_length_m": 10.0,
+    "density_veh_per_m": 0.2
   },
   {
     "lane_id": "lane_E",
-    "timestamp": "2026-10-19T12:48:36.484838",
+    "timestamp": "2026-10-24T20:25:13.301950",
+    "vehicle_count": 1,
+    "queue_length_m": 5.0,
+    "density_veh_per_m": 0.2
+  },
+  {
+    "lane_id": "lane_W",
+    "timestamp": "2026-10-24T20:25:13.301950",
+    "vehicle_count": 2,
+    "queue_length_m": 10.0,
+    "density_veh_per_m": 0.2
+  },
+  {
+    "lane_id": "lane_N",
+    "timestamp": "2026-10-24T20:25:14.301950",
+    "vehicle_count": 0,
+    "queue_length_m": 0.0,
+    "density_veh_per_m": 0.0
+  },
+  {
+    "lane_id": "lane_S",
+    "timestamp": "2026-10-24T20:25:14.301950",
+    "vehicle_count": 2,
+    "queue_length_m": 10.0,
+    "density_veh_per_m": 0.2
+  },
+  {
+    "lane_id": "lane_E",
+    "timestamp": "2026-10-24T20:25:14.301950",
     "vehicle_count": 0,
     "queue_length_m": 0.0,
     "density_veh_per_m": 0.0
   },
   {
     "lane_id": "lane_W",
-    "timestamp": "2026-10-19T12:48:36.484838",
-    "vehicle_count": 21,
-    "queue_length_m": 109.2,
-    "density_veh_per_m": 1.0
+    "timestamp": "2026-10-24T20:25:14.301950",
+    "vehicle_count": 2,
+    "queue_length_m": 10.0,
+    "density_veh_per_m": 0.2
   },
   {
     "lane_id": "lane_N",
-    "timestamp": "2026-10-19T12:48:37.796064",
-    "vehicle_count": 26,
-    "queue_length_m": 135.2,
-    "density_veh_per_m": 1.0
+    "timestamp": "2026-10-24T20:25:15.301950",
+    "vehicle_count": 1,
+    "queue_length_m": 5.0,
+    "density_veh_per_m": 0.2
   },
   {
     "lane_id": "lane_S",
-    "timestamp": "2026-10-19T12:48:37.796064",
-    "vehicle_count": 27,
-    "queue_length_m": 140.4,
-    "density_veh_per_m": 1.0
+    "timestamp": "2026-10-24T20:25:15.301950",
+    "vehicle_count": 2,
+    "queue_length_m": 10.0,
+    "density_veh_per_m": 0.2
   },
   {
     "lane_id": "lane_E",
-    "timestamp": "2026-10-19T12:48:37.796064",
+    "timestamp": "2026-10-24T20:25:15.301950",
     "vehicle_count": 0,
     "queue_length_m": 0.0,
     "density_veh_per_m": 0.0
   },
   {
     "lane_id": "lane_W",
-    "timestamp": "2026-10-19T12:48:37.796064",
-    "vehicle_count": 28,
-    "queue_length_m": 145.6,
-    "density_veh_per_m": 1.0
+    "timestamp": "2026-10-24T20:25:15.301950",
+    "vehicle_count": 1,
+    "queue_length_m": 5.0,
+    "density_veh_per_m": 0.2
   },
   {
     "lane_id": "lane_N",
-    "timestamp": "2026-10-19T12:48:38.805248",
-    "vehicle_count": 26,
-    "queue_length_m": 135.2,
-    "density_veh_per_m": 1.0
+    "timestamp": "2026-10-24T20:25:16.301950",
+    "vehicle_count": 1,
+    "queue_length_m": 5.0,
+    "density_veh_per_m": 0.2
   },
   {
     "lane_id": "lane_S",
-    "timestamp": "2026-10-19T12:48:38.805248",
-    "vehicle_count": 27,
-    "queue_length_m": 140.4,
-    "density_veh_per_m": 1.0
+    "timestamp": "2026-10-24T20:25:16.301950",
+    "vehicle_count": 2,
+    "queue_length_m": 10.0,
+    "density_veh_per_m": 0.2
   },
   {
     "lane_id": "lane_E",
-    "timestamp": "2026-10-19T12:48:38.805248",
+    "timestamp": "2026-10-24T20:25:16.301950",
     "vehicle_count": 0,
     "queue_length_m": 0.0,
     "density_veh_per_m": 0.0
   },
   {
     "lane_id": "lane_W",
-    "timestamp": "2026-10-19T12:48:38.805248",
-    "vehicle_count": 32,
-    "queue_length_m": 166.4,
-    "density_veh_per_m": 1.0
+    "timestamp": "2026-10-24T20:25:16.301950",
+    "vehicle_count": 2,
+    "queue_length_m": 10.0,
+    "density_veh_per_m": 0.2
   },
   {
     "lane_id": "lane_N",
-    "timestamp": "2026-10-19T12:48:40.138982",
-    "vehicle_count": 26,
-    "queue_length_m": 135.2,
-    "density_veh_per_m": 1.0
+    "timestamp": "2026-10-24T20:25:17.301950",
+    "vehicle_count": 1,
+    "queue_length_m": 5.0,
+    "density_veh_per_m": 0.2
   },
   {
     "lane_id": "lane_S",
-    "timestamp": "2026-10-19T12:48:40.138982",
-    "vehicle_count": 27,
-    "queue_length_m": 140.4,
-    "density_veh_per_m": 1.0
+    "timestamp": "2026-10-24T20:25:17.301950",
+    "vehicle_count": 2,
+    "queue_length_m": 10.0,
+    "density_veh_per_m": 0.2
   },
   {
     "lane_id": "lane_E",
-    "timestamp": "2026-10-19T12:48:40.138982",
+    "timestamp": "2026-10-24T20:25:17.301950",
     "vehicle_count": 0,
     "queue_length_m": 0.0,
     "density_veh_per_m": 0.0
   },
   {
     "lane_id": "lane_W",
-    "timestamp": "2026-10-19T12:48:40.138982",
-    "vehicle_count": 27,
-    "queue_length_m": 140.4,
-    "density_veh_per_m": 1.0
+    "timestamp": "2026-10-24T20:25:17.301950",
+    "vehicle_count": 2,
+    "queue_length_m": 10.0,
+    "density_veh_per_m": 0.2
   },
   {
     "lane_id": "lane_N",
-    "timestamp": "2026-10-19T13:20:07.505617",
-    "vehicle_count": 26,
-    "queue_length_m": 135.2,
-    "density_veh_per_m": 1.0
+    "timestamp": "2026-10-24T20:25:18.301950",
+    "vehicle_count": 1,
+    "queue_length_m": 5.0,
+    "density_veh_per_m": 0.2
   },
   {
     "lane_id": "lane_S",
-    "timestamp": "2026-10-19T13:20:07.505617",
-    "vehicle_count": 27,
-    "queue_length_m": 140.4,
-    "density_veh_per_m": 1.0
+    "timestamp": "2026-10-24T20:25:18.301950",
+    "vehicle_count": 1,
+    "queue_length_m": 5.0,
+    "density_veh_per_m": 0.2
   },
   {
     "lane_id": "lane_E",
-    "timestamp": "2026-10-19T13:20:07.505617",
+    "timestamp": "2026-10-24T20:25:18.301950",
     "vehicle_count": 0,
     "queue_length_m": 0.0,
     "density_veh_per_m": 0.0
   },
   {
     "lane_id": "lane_W",
-    "timestamp": "2026-10-19T13:20:07.505617",
-    "vehicle_count": 14,
-    "queue_length_m": 72.8,
-    "density_veh_per_m": 0.91
+    "timestamp": "2026-10-24T20:25:18.301950",
+    "vehicle_count": 2,
+    "queue_length_m": 10.0,
+    "density_veh_per_m": 0.2
   },
   {
     "lane_id": "lane_N",
-    "timestamp": "2026-10-19T13:20:09.565708",
-    "vehicle_count": 26,
-    "queue_length_m": 135.2,
-    "density_veh_per_m": 1.0
+    "timestamp": "2026-10-24T20:25:19.301950",
+    "vehicle_count": 2,
+    "queue_length_m": 10.0,
+    "density_veh_per_m": 0.2
   },
   {
     "lane_id": "lane_S",
-    "timestamp": "2026-10-19T13:20:09.565708",
-    "vehicle_count": 27,
-    "queue_length_m": 140.4,
-    "density_veh_per_m": 1.0
+    "timestamp": "2026-10-24T20:25:19.301950",
+    "vehicle_count": 1,
+    "queue_length_m": 5.0,
+    "density_veh_per_m": 0.2
   },
   {
     "lane_id": "lane_E",
-    "timestamp": "2026-10-19T13:20:09.565708",
+    "timestamp": "2026-10-24T20:25:19.301950",
     "vehicle_count": 0,
     "queue_length_m": 0.0,
     "density_veh_per_m": 0.0
   },
   {
     "lane_id": "lane_W",
-    "timestamp": "2026-10-19T13:20:09.565708",
-    "vehicle_count": 31,
-    "queue_length_m": 161.2,
-    "density_veh_per_m": 1.0
+    "timestamp": "2026-10-24T20:25:19.301950",
+    "vehicle_count": 2,
+    "queue_length_m": 10.0,
+    "density_veh_per_m": 0.2
   },
   {
     "lane_id": "lane_N",
-    "timestamp": "2026-10-19T13:20:54.084397",
-    "vehicle_count": 24,
-    "queue_length_m": 124.8,
-    "density_veh_per_m": 1.0
+    "timestamp": "2026-10-24T20:25:20.301950",
+    "vehicle_count": 2,
+    "queue_length_m": 10.0,
+    "density_veh_per_m": 0.2
   },
   {
     "lane_id": "lane_S",
-    "timestamp": "2026-10-19T13:20:54.084397",
-    "vehicle_count": 27,
-    "queue_length_m": 140.4,
-    "density_veh_per_m": 1.0
+    "timestamp": "2026-10-24T20:25:20.301950",
+    "vehicle_count": 1,
+    "queue_length_m": 5.0,
+    "density_veh_per_m": 0.2
   },
   {
     "lane_id": "lane_E",
-    "timestamp": "2026-10-19T13:20:54.084397",
+    "timestamp": "2026-10-24T20:25:20.301950",
     "vehicle_count": 0,
     "queue_length_m": 0.0,
     "density_veh_per_m": 0.0
   },
   {
     "lane_id": "lane_W",
-    "timestamp": "2026-10-19T13:20:54.084397",
-    "vehicle_count": 23,
-    "queue_length_m": 119.6,
-    "density_veh_per_m": 1.0
+    "timestamp": "2026-10-24T20:25:20.301950",
+    "vehicle_count": 1,
+    "queue_length_m": 5.0,
+    "density_veh_per_m": 0.2
   },
   {
     "lane_id": "lane_N",
-    "timestamp": "2026-10-19T13:21:00.611726",
-    "vehicle_count": 28,
-    "queue_length_m": 145.6,
-    "density_veh_per_m": 1.0
+    "timestamp": "2026-10-24T20:25:21.301950",
+    "vehicle_count": 1,
+    "queue_length_m": 5.0,
+    "density_veh_per_m": 0.2
   },
   {
     "lane_id": "lane_S",
-    "timestamp": "2026-10-19T13:21:00.611726",
-    "vehicle_count": 24,
-    "queue_length_m": 124.8,
-    "density_veh_per_m": 1.0
+    "timestamp": "2026-10-24T20:25:21.301950",
+    "vehicle_count": 1,
+    "queue_length_m": 5.0,
+    "density_veh_per_m": 0.2
   },
   {
     "lane_id": "lane_E",
-    "timestamp": "2026-10-19T13:21:00.611726",
-    "vehicle_count": 20,
-    "queue_length_m": 104.0,
-    "density_veh_per_m": 1.0
+    "timestamp": "2026-10-24T20:25:21.301950",
+    "vehicle_count": 0,
+    "queue_length_m": 0.0,
+    "density_veh_per_m": 0.0
   },
   {
     "lane_id": "lane_W",
-    "timestamp": "2026-10-19T13:21:00.611726",
-    "vehicle_count": 23,
-    "queue_length_m": 119.6,
-    "density_veh_per_m": 1.0
+    "timestamp": "2026-10-24T20:25:21.301950",
+    "vehicle_count": 1,
+    "queue_length_m": 5.0,
+    "density_veh_per_m": 0.2
+  },
+  {
+    "lane_id": "lane_N",
+    "timestamp": "2026-10-24T20:25:22.301950",
+    "vehicle_count": 0,
+    "queue_length_m": 0.0,
+    "density_veh_per_m": 0.0
+  },
+  {
+    "lane_id": "lane_S",
+    "timestamp": "2026-10-24T20:25:22.301950",
+    "vehicle_count": 1,
+    "queue_length_m": 5.0,
+    "density_veh_per_m": 0.2
+  },
+  {
+    "lane_id": "lane_E",
+    "timestamp": "2026-10-24T20:25:22.301950",
+    "vehicle_count": 0,
+    "queue_length_m": 0.0,
+    "density_veh_per_m": 0.0
+  },
+  {
+    "lane_id": "lane_W",
+    "timestamp": "2026-10-24T20:25:22.301950",
+    "vehicle_count": 2,
+    "queue_length_m": 10.0,
+    "density_veh_per_m": 0.2
+  },
+  {
+    "lane_id": "lane_N",
+    "timestamp": "2026-10-24T20:25:23.301950",
+    "vehicle_count": 1,
+    "queue_length_m": 5.0,
+    "density_veh_per_m": 0.2
+  },
+  {
+    "lane_id": "lane_S",
+    "timestamp": "2026-10-24T20:25:23.301950",
+    "vehicle_count": 1,
+    "queue_length_m": 5.0,
+    "density_veh_per_m": 0.2
+  },
+  {
+    "lane_id": "lane_E",
+    "timestamp": "2026-10-24T20:25:23.301950",
+    "vehicle_count": 1,
+    "queue_length_m": 5.0,
+    "density_veh_per_m": 0.2
+  },
+  {
+    "lane_id": "lane_W",
+    "timestamp": "2026-10-24T20:25:23.301950",
+    "vehicle_count": 2,
+    "queue_length_m": 10.0,
+    "density_veh_per_m": 0.2
+  },
+  {
+    "lane_id": "lane_N",
+    "timestamp": "2026-10-24T20:25:24.301950",
+    "vehicle_count": 1,
+    "queue_length_m": 5.0,
+    "density_veh_per_m": 0.2
+  },
+  {
+    "lane_id": "lane_S",
+    "timestamp": "2026-10-24T20:25:24.301950",
+    "vehicle_count": 1,
+    "queue_length_m": 5.0,
+    "density_veh_per_m": 0.2
+  },
+  {
+    "lane_id": "lane_E",
+    "timestamp": "2026-10-24T20:25:24.301950",
+    "vehicle_count": 2,
+    "queue_length_m": 10.0,
+    "density_veh_per_m": 0.2
+  },
+  {
+    "lane_id": "lane_W",
+    "timestamp": "2026-10-24T20:25:24.301950",
+    "vehicle_count": 2,
+    "queue_length_m": 10.0,
+    "density_veh_per_m": 0.2
+  },
+  {
+    "lane_id": "lane_N",
+    "timestamp": "2026-10-24T20:25:25.301950",
+    "vehicle_count": 1,
+    "queue_length_m": 5.0,
+    "density_veh_per_m": 0.2
+  },
+  {
+    "lane_id": "lane_S",
+    "timestamp": "2026-10-24T20:25:25.301950",
+    "vehicle_count": 1,
+    "queue_length_m": 5.0,
+    "density_veh_per_m": 0.2
+  },
+  {
+    "lane_id": "lane_E",
+    "timestamp": "2026-10-24T20:25:25.301950",
+    "vehicle_count": 2,
+    "queue_length_m": 10.0,
+    "density_veh_per_m": 0.2
+  },
+  {
+    "lane_id": "lane_W",
+    "timestamp": "2026-10-24T20:25:25.301950",
+    "vehicle_count": 2,
+    "queue_length_m": 10.0,
+    "density_veh_per_m": 0.2
+  },
+  {
+    "lane_id": "lane_N",
+    "timestamp": "2026-10-24T20:25:26.301950",
+    "vehicle_count": 1,
+    "queue_length_m": 5.0,
+    "density_veh_per_m": 0.2
+  },
+  {
+    "lane_id": "lane_S",
+    "timestamp": "2026-10-24T20:25:26.301950",
+    "vehicle_count": 1,
+    "queue_length_m": 5.0,
+    "density_veh_per_m": 0.2
+  },
+  {
+    "lane_id": "lane_E",
+    "timestamp": "2026-10-24T20:25:26.301950",
+    "vehicle_count": 2,
+    "queue_length_m": 10.0,
+    "density_veh_per_m": 0.2
+  },
+  {
+    "lane_id": "lane_W",
+    "timestamp": "2026-10-24T20:25:26.301950",
+    "vehicle_count": 2,
+    "queue_length_m": 10.0,
+    "density_veh_per_m": 0.2
+  },
+  {
+    "lane_id": "lane_N",
+    "timestamp": "2026-10-24T20:25:27.301950",
+    "vehicle_count": 1,
+    "queue_length_m": 5.0,
+    "density_veh_per_m": 0.2
+  },
+  {
+    "lane_id": "lane_S",
+    "timestamp": "2026-10-24T20:25:27.301950",
+    "vehicle_count": 1,
+    "queue_length_m": 5.0,
+    "density_veh_per_m": 0.2
+  },
+  {
+    "lane_id": "lane_E",
+    "timestamp": "2026-10-24T20:25:27.301950",
+    "vehicle_count": 2,
+    "queue_length_m": 10.0,
+    "density_veh_per_m": 0.2
+  },
+  {
+    "lane_id": "lane_W",
+    "timestamp": "2026-10-24T20:25:27.301950",
+    "vehicle_count": 2,
+    "queue_length_m": 10.0,
+    "density_veh_per_m": 0.2
+  },
+  {
+    "lane_id": "lane_N",
+    "timestamp": "2026-10-24T20:25:28.301950",
+    "vehicle_count": 1,
+    "queue_length_m": 5.0,
+    "density_veh_per_m": 0.2
+  },
+  {
+    "lane_id": "lane_S",
+    "timestamp": "2026-10-24T20:25:28.301950",
+    "vehicle_count": 1,
+    "queue_length_m": 5.0,
+    "density_veh_per_m": 0.2
+  },
+  {
+    "lane_id": "lane_E",
+    "timestamp": "2026-10-24T20:25:28.301950",
+    "vehicle_count": 2,
+    "queue_length_m": 10.0,
+    "density_veh_per_m": 0.2
+  },
+  {
+    "lane_id": "lane_W",
+    "timestamp": "2026-10-24T20:25:28.301950",
+    "vehicle_count": 2,
+    "queue_length_m": 10.0,
+    "density_veh_per_m": 0.2
+  },
+  {
+    "lane_id": "lane_N",
+    "timestamp": "2026-10-24T20:25:29.301950",
+    "vehicle_count": 1,
+    "queue_length_m": 5.0,
+    "density_veh_per_m": 0.2
+  },
+  {
+    "lane_id": "lane_S",
+    "timestamp": "2026-10-24T20:25:29.301950",
+    "vehicle_count": 1,
+    "queue_length_m": 5.0,
+    "density_veh_per_m": 0.2
+  },
+  {
+    "lane_id": "lane_E",
+    "timestamp": "2026-10-24T20:25:29.301950",
+    "vehicle_count": 2,
+    "queue_length_m": 10.0,
+    "density_veh_per_m": 0.2
+  },
+  {
+    "lane_id": "lane_W",
+    "timestamp": "2026-10-24T20:25:29.301950",
+    "vehicle_count": 2,
+    "queue_length_m": 10.0,
+    "density_veh_per_m": 0.2
+  },
+  {
+    "lane_id": "lane_N",
+    "timestamp": "2026-10-24T20:25:30.301950",
+    "vehicle_count": 1,
+    "queue_length_m": 5.0,
+    "density_veh_per_m": 0.2
+  },
+  {
+    "lane_id": "lane_S",
+    "timestamp": "2026-10-24T20:25:30.301950",
+    "vehicle_count": 1,
+    "queue_length_m": 5.0,
+    "density_veh_per_m": 0.2
+  },
+  {
+    "lane_id": "lane_E",
+    "timestamp": "2026-10-24T20:25:30.301950",
+    "vehicle_count": 1,
+    "queue_length_m": 5.0,
+    "density_veh_per_m": 0.2
+  },
+  {
+    "lane_id": "lane_W",
+    "timestamp": "2026-10-24T20:25:30.301950",
+    "vehicle_count": 2,
+    "queue_length_m": 10.0,
+    "density_veh_per_m": 0.2
+  },
+  {
+    "lane_id": "lane_N",
+    "timestamp": "2026-10-24T20:25:31.301950",
+    "vehicle_count": 0,
+    "queue_length_m": 0.0,
+    "density_veh_per_m": 0.0
+  },
+  {
+    "lane_id": "lane_S",
+    "timestamp": "2026-10-24T20:25:31.301950",
+    "vehicle_count": 1,
+    "queue_length_m": 5.0,
+    "density_veh_per_m": 0.2
+  },
+  {
+    "lane_id": "lane_E",
+    "timestamp": "2026-10-24T20:25:31.301950",
+    "vehicle_count": 1,
+    "queue_length_m": 5.0,
+    "density_veh_per_m": 0.2
+  },
+  {
+    "lane_id": "lane_W",
+    "timestamp": "2026-10-24T20:25:31.301950",
+    "vehicle_count": 1,
+    "queue_length_m": 5.0,
+    "density_veh_per_m": 0.2
+  },
+  {
+    "lane_id": "lane_N",
+    "timestamp": "2026-10-24T20:25:32.301950",
+    "vehicle_count": 0,
+    "queue_length_m": 0.0,
+    "density_veh_per_m": 0.0
+  },
+  {
+    "lane_id": "lane_S",
+    "timestamp": "2026-10-24T20:25:32.301950",
+    "vehicle_count": 1,
+    "queue_length_m": 5.0,
+    "density_veh_per_m": 0.2
+  },
+  {
+    "lane_id": "lane_E",
+    "timestamp": "2026-10-24T20:25:32.301950",
+    "vehicle_count": 0,
+    "queue_length_m": 0.0,
+    "density_veh_per_m": 0.0
+  },
+  {
+    "lane_id": "lane_W",
+    "timestamp": "2026-10-24T20:25:32.301950",
+    "vehicle_count": 2,
+    "queue_length_m": 10.0,
+    "density_veh_per_m": 0.2
+  },
+  {
+    "lane_id": "lane_N",
+    "timestamp": "2026-10-24T20:25:33.301950",
+    "vehicle_count": 1,
+    "queue_length_m": 5.0,
+    "density_veh_per_m": 0.2
+  },
+  {
+    "lane_id": "lane_S",
+    "timestamp": "2026-10-24T20:25:33.301950",
+    "vehicle_count": 2,
+    "queue_length_m": 10.0,
+    "density_veh_per_m": 0.2
+  },
+  {
+    "lane_id": "lane_E",
+    "timestamp": "2026-10-24T20:25:33.301950",
+    "vehicle_count": 0,
+    "queue_length_m": 0.0,
+    "density_veh_per_m": 0.0
+  },
+  {
+    "lane_id": "lane_W",
+    "timestamp": "2026-10-24T20:25:33.301950",
+    "vehicle_count": 2,
+    "queue_length_m": 10.0,
+    "density_veh_per_m": 0.2
+  },
+  {
+    "lane_id": "lane_N",
+    "timestamp": "2026-10-24T20:25:34.301950",
+    "vehicle_count": 1,
+    "queue_length_m": 5.0,
+    "density_veh_per_m": 0.2
+  },
+  {
+    "lane_id": "lane_S",
+    "timestamp": "2026-10-24T20:25:34.301950",
+    "vehicle_count": 1,
+    "queue_length_m": 5.0,
+    "density_veh_per_m": 0.2
+  },
+  {
+    "lane_id": "lane_E",
+    "timestamp": "2026-10-24T20:25:34.301950",
+    "vehicle_count": 1,
+    "queue_length_m": 5.0,
+    "density_veh_per_m": 0.2
+  },
+  {
+    "lane_id": "lane_W",
+    "timestamp": "2026-10-24T20:25:34.301950",
+    "vehicle_count": 2,
+    "queue_length_m": 10.0,
+    "density_veh_per_m": 0.2
+  },
+  {
+    "lane_id": "lane_N",
+    "timestamp": "2026-10-24T20:25:35.301950",
+    "vehicle_count": 1,
+    "queue_length_m": 5.0,
+    "density_veh_per_m": 0.2
+  },
+  {
+    "lane_id": "lane_S",
+    "timestamp": "2026-10-24T20:25:35.301950",
+    "vehicle_count": 1,
+    "queue_length_m": 5.0,
+    "density_veh_per_m": 0.2
+  },
+  {
+    "lane_id": "lane_E",
+    "timestamp": "2026-10-24T20:25:35.301950",
+    "vehicle_count": 1,
+    "queue_length_m": 5.0,
+    "density_veh_per_m": 0.2
+  },
+  {
+    "lane_id": "lane_W",
+    "timestamp": "2026-10-24T20:25:35.301950",
+    "vehicle_count": 2,
+    "queue_length_m": 10.0,
+    "density_veh_per_m": 0.2
+  },
+  {
+    "lane_id": "lane_N",
+    "timestamp": "2026-10-24T20:25:36.301950",
+    "vehicle_count": 1,
+    "queue_length_m": 5.0,
+    "density_veh_per_m": 0.2
+  },
+  {
+    "lane_id": "lane_S",
+    "timestamp": "2026-10-24T20:25:36.301950",
+    "vehicle_count": 0,
+    "queue_length_m": 0.0,
+    "density_veh_per_m": 0.0
+  },
+  {
+    "lane_id": "lane_E",
+    "timestamp": "2026-10-24T20:25:36.301950",
+    "vehicle_count": 2,
+    "queue_length_m": 10.0,
+    "density_veh_per_m": 0.2
+  },
+  {
+    "lane_id": "lane_W",
+    "timestamp": "2026-10-24T20:25:36.301950",
+    "vehicle_count": 2,
+    "queue_length_m": 10.0,
+    "density_veh_per_m": 0.2
+  },
+  {
+    "lane_id": "lane_N",
+    "timestamp": "2026-10-24T20:25:37.301950",
+    "vehicle_count": 1,
+    "queue_length_m": 5.0,
+    "density_veh_per_m": 0.2
+  },
+  {
+    "lane_id": "lane_S",
+    "timestamp": "2026-10-24T20:25:37.301950",
+    "vehicle_count": 1,
+    "queue_length_m": 5.0,
+    "density_veh_per_m": 0.2
+  },
+  {
+    "lane_id": "lane_E",
+    "timestamp": "2026-10-24T20:25:37.301950",
+    "vehicle_count": 2,
+    "queue_length_m": 10.0,
+    "density_veh_per_m": 0.2
+  },
+  {
+    "lane_id": "lane_W",
+    "timestamp": "2026-10-24T20:25:37.301950",
+    "vehicle_count": 2,
+    "queue_length_m": 10.0,
+    "density_veh_per_m": 0.2
+  },
+  {
+    "lane_id": "lane_N",
+    "timestamp": "2026-10-24T20:25:38.301950",
+    "vehicle_count": 1,
+    "queue_length_m": 5.0,
+    "density_veh_per_m": 0.2
+  },
+  {
+    "lane_id": "lane_S",
+    "timestamp": "2026-10-24T20:25:38.301950",
+    "vehicle_count": 1,
+    "queue_length_m": 5.0,
+    "density_veh_per_m": 0.2
+  },
+  {
+    "lane_id": "lane_E",
+    "timestamp": "2026-10-24T20:25:38.301950",
+    "vehicle_count": 2,
+    "queue_length_m": 10.0,
+    "density_veh_per_m": 0.2
+  },
+  {
+    "lane_id": "lane_W",
+    "timestamp": "2026-10-24T20:25:38.301950",
+    "vehicle_count": 2,
+    "queue_length_m": 10.0,
+    "density_veh_per_m": 0.2
+  },
+  {
+    "lane_id": "lane_N",
+    "timestamp": "2026-10-24T20:25:39.301950",
+    "vehicle_count": 1,
+    "queue_length_m": 5.0,
+    "density_veh_per_m": 0.2
+  },
+  {
+    "lane_id": "lane_S",
+    "timestamp": "2026-10-24T20:25:39.301950",
+    "vehicle_count": 0,
+    "queue_length_m": 0.0,
+    "density_veh_per_m": 0.0
+  },
+  {
+    "lane_id": "lane_E",
+    "timestamp": "2026-10-24T20:25:39.301950",
+    "vehicle_count": 1,
+    "queue_length_m": 5.0,
+    "density_veh_per_m": 0.2
+  },
+  {
+    "lane_id": "lane_W",
+    "timestamp": "2026-10-24T20:25:39.301950",
+    "vehicle_count": 1,
+    "queue_length_m": 5.0,
+    "density_veh_per_m": 0.2
+  },
+  {
+    "lane_id": "lane_N",
+    "timestamp": "2026-10-24T20:25:40.301950",
+    "vehicle_count": 1,
+    "queue_length_m": 5.0,
+    "density_veh_per_m": 0.2
+  },
+  {
+    "lane_id": "lane_S",
+    "timestamp": "2026-10-24T20:25:40.301950",
+    "vehicle_count": 0,
+    "queue_length_m": 0.0,
+    "density_veh_per_m": 0.0
+  },
+  {
+    "lane_id": "lane_E",
+    "timestamp": "2026-10-24T20:25:40.301950",
+    "vehicle_count": 1,
+    "queue_length_m": 5.0,
+    "density_veh_per_m": 0.2
+  },
+  {
+    "lane_id": "lane_W",
+    "timestamp": "2026-10-24T20:25:40.301950",
+    "vehicle_count": 0,
+    "queue_length_m": 0.0,
+    "density_veh_per_m": 0.0
+  },
+  {
+    "lane_id": "lane_N",
+    "timestamp": "2026-10-24T20:25:41.301950",
+    "vehicle_count": 0,
+    "queue_length_m": 0.0,
+    "density_veh_per_m": 0.0
+  },
+  {
+    "lane_id": "lane_S",
+    "timestamp": "2026-10-24T20:25:41.301950",
+    "vehicle_count": 0,
+    "queue_length_m": 0.0,
+    "density_veh_per_m": 0.0
+  },
+  {
+    "lane_id": "lane_E",
+    "timestamp": "2026-10-24T20:25:41.301950",
+    "vehicle_count": 1,
+    "queue_length_m": 5.0,
+    "density_veh_per_m": 0.2
+  },
+  {
+    "lane_id": "lane_W",
+    "timestamp": "2026-10-24T20:25:41.301950",
+    "vehicle_count": 0,
+    "queue_length_m": 0.0,
+    "density_veh_per_m": 0.0
+  },
+  {
+    "lane_id": "lane_N",
+    "timestamp": "2026-10-24T20:25:42.301950",
+    "vehicle_count": 0,
+    "queue_length_m": 0.0,
+    "density_veh_per_m": 0.0
+  },
+  {
+    "lane_id": "lane_S",
+    "timestamp": "2026-10-24T20:25:42.301950",
+    "vehicle_count": 0,
+    "queue_length_m": 0.0,
+    "density_veh_per_m": 0.0
+  },
+  {
+    "lane_id": "lane_E",
+    "timestamp": "2026-10-24T20:25:42.301950",
+    "vehicle_count": 1,
+    "queue_length_m": 5.0,
+    "density_veh_per_m": 0.2
+  },
+  {
+    "lane_id": "lane_W",
+    "timestamp": "2026-10-24T20:25:42.301950",
+    "vehicle_count": 0,
+    "queue_length_m": 0.0,
+    "density_veh_per_m": 0.0
+  },
+  {
+    "lane_id": "lane_N",
+    "timestamp": "2026-10-24T20:25:43.301950",
+    "vehicle_count": 0,
+    "queue_length_m": 0.0,
+    "density_veh_per_m": 0.0
+  },
+  {
+    "lane_id": "lane_S",
+    "timestamp": "2026-10-24T20:25:43.301950",
+    "vehicle_count": 0,
+    "queue_length_m": 0.0,
+    "density_veh_per_m": 0.0
+  },
+  {
+    "lane_id": "lane_E",
+    "timestamp": "2026-10-24T20:25:43.301950",
+    "vehicle_count": 1,
+    "queue_length_m": 5.0,
+    "density_veh_per_m": 0.2
+  },
+  {
+    "lane_id": "lane_W",
+    "timestamp": "2026-10-24T20:25:43.301950",
+    "vehicle_count": 0,
+    "queue_length_m": 0.0,
+    "density_veh_per_m": 0.0
+  },
+  {
+    "lane_id": "lane_N",
+    "timestamp": "2026-10-24T20:25:44.301950",
+    "vehicle_count": 0,
+    "queue_length_m": 0.0,
+    "density_veh_per_m": 0.0
+  },
+  {
+    "lane_id": "lane_S",
+    "timestamp": "2026-10-24T20:25:44.301950",
+    "vehicle_count": 0,
+    "queue_length_m": 0.0,
+    "density_veh_per_m": 0.0
+  },
+  {
+    "lane_id": "lane_E",
+    "timestamp": "2026-10-24T20:25:44.301950",
+    "vehicle_count": 0,
+    "queue_length_m": 0.0,
+    "density_veh_per_m": 0.0
+  },
+  {
+    "lane_id": "lane_W",
+    "timestamp": "2026-10-24T20:25:44.301950",
+    "vehicle_count": 0,
+    "queue_length_m": 0.0,
+    "density_veh_per_m": 0.0
+  },
+  {
+    "lane_id": "lane_N",
+    "timestamp": "2026-10-24T20:25:45.301950",
+    "vehicle_count": 0,
+    "queue_length_m": 0.0,
+    "density_veh_per_m": 0.0
+  },
+  {
+    "lane_id": "lane_S",
+    "timestamp": "2026-10-24T20:25:45.301950",
+    "vehicle_count": 0,
+    "queue_length_m": 0.0,
+    "density_veh_per_m": 0.0
+  },
+  {
+    "lane_id": "lane_E",
+    "timestamp": "2026-10-24T20:25:45.301950",
+    "vehicle_count": 0,
+    "queue_length_m": 0.0,
+    "density_veh_per_m": 0.0
+  },
+  {
+    "lane_id": "lane_W",
+    "timestamp": "2026-10-24T20:25:45.301950",
+    "vehicle_count": 0,
+    "queue_length_m": 0.0,
+    "density_veh_per_m": 0.0
+  },
+  {
+    "lane_id": "lane_N",
+    "timestamp": "2026-10-24T20:25:46.301950",
+    "vehicle_count": 0,
+    "queue_length_m": 0.0,
+    "density_veh_per_m": 0.0
+  },
+  {
+    "lane_id": "lane_S",
+    "timestamp": "2026-10-24T20:25:46.301950",
+    "vehicle_count": 0,
+    "queue_length_m": 0.0,
+    "density_veh_per_m": 0.0
+  },
+  {
+    "lane_id": "lane_E",
+    "timestamp": "2026-10-24T20:25:46.301950",
+    "vehicle_count": 0,
+    "queue_length_m": 0.0,
+    "density_veh_per_m": 0.0
+  },
+  {
+    "lane_id": "lane_W",
+    "timestamp": "2026-10-24T20:25:46.301950",
+    "vehicle_count": 0,
+    "queue_length_m": 0.0,
+    "density_veh_per_m": 0.0
+  },
+  {
+    "lane_id": "lane_N",
+    "timestamp": "2026-10-24T20:25:47.301950",
+    "vehicle_count": 0,
+    "queue_length_m": 0.0,
+    "density_veh_per_m": 0.0
+  },
+  {
+    "lane_id": "lane_S",
+    "timestamp": "2026-10-24T20:25:47.301950",
+    "vehicle_count": 0,
+    "queue_length_m": 0.0,
+    "density_veh_per_m": 0.0
+  },
+  {
+    "lane_id": "lane_E",
+    "timestamp": "2026-10-24T20:25:47.301950",
+    "vehicle_count": 0,
+    "queue_length_m": 0.0,
+    "density_veh_per_m": 0.0
+  },
+  {
+    "lane_id": "lane_W",
+    "timestamp": "2026-10-24T20:25:47.301950",
+    "vehicle_count": 0,
+    "queue_length_m": 0.0,
+    "density_veh_per_m": 0.0
+  },
+  {
+    "lane_id": "lane_N",
+    "timestamp": "2026-10-24T20:25:48.301950",
+    "vehicle_count": 0,
+    "queue_length_m": 0.0,
+    "density_veh_per_m": 0.0
+  },
+  {
+    "lane_id": "lane_S",
+    "timestamp": "2026-10-24T20:25:48.301950",
+    "vehicle_count": 1,
+    "queue_length_m": 5.0,
+    "density_veh_per_m": 0.2
+  },
+  {
+    "lane_id": "lane_E",
+    "timestamp": "2026-10-24T20:25:48.301950",
+    "vehicle_count": 0,
+    "queue_length_m": 0.0,
+    "density_veh_per_m": 0.0
+  },
+  {
+    "lane_id": "lane_W",
+    "timestamp": "2026-10-24T20:25:48.301950",
+    "vehicle_count": 0,
+    "queue_length_m": 0.0,
+    "density_veh_per_m": 0.0
+  },
+  {
+    "lane_id": "lane_N",
+    "timestamp": "2026-10-24T20:25:49.301950",
+    "vehicle_count": 0,
+    "queue_length_m": 0.0,
+    "density_veh_per_m": 0.0
+  },
+  {
+    "lane_id": "lane_S",
+    "timestamp": "2026-10-24T20:25:49.301950",
+    "vehicle_count": 1,
+    "queue_length_m": 5.0,
+    "density_veh_per_m": 0.2
+  },
+  {
+    "lane_id": "lane_E",
+    "timestamp": "2026-10-24T20:25:49.301950",
+    "vehicle_count": 0,
+    "queue_length_m": 0.0,
+    "density_veh_per_m": 0.0
+  },
+  {
+    "lane_id": "lane_W",
+    "timestamp": "2026-10-24T20:25:49.301950",
+    "vehicle_count": 0,
+    "queue_length_m": 0.0,
+    "density_veh_per_m": 0.0
+  },
+  {
+    "lane_id": "lane_N",
+    "timestamp": "2026-10-24T20:25:50.301950",
+    "vehicle_count": 0,
+    "queue_length_m": 0.0,
+    "density_veh_per_m": 0.0
+  },
+  {
+    "lane_id": "lane_S",
+    "timestamp": "2026-10-24T20:25:50.301950",
+    "vehicle_count": 0,
+    "queue_length_m": 0.0,
+    "density_veh_per_m": 0.0
+  },
+  {
+    "lane_id": "lane_E",
+    "timestamp": "2026-10-24T20:25:50.301950",
+    "vehicle_count": 1,
+    "queue_length_m": 5.0,
+    "density_veh_per_m": 0.2
+  },
+  {
+    "lane_id": "lane_W",
+    "timestamp": "2026-10-24T20:25:50.301950",
+    "vehicle_count": 0,
+    "queue_length_m": 0.0,
+    "density_veh_per_m": 0.0
+  },
+  {
+    "lane_id": "lane_N",
+    "timestamp": "2026-10-24T20:25:51.301950",
+    "vehicle_count": 0,
+    "queue_length_m": 0.0,
+    "density_veh_per_m": 0.0
+  },
+  {
+    "lane_id": "lane_S",
+    "timestamp": "2026-10-24T20:25:51.301950",
+    "vehicle_count": 0,
+    "queue_length_m": 0.0,
+    "density_veh_per_m": 0.0
+  },
+  {
+    "lane_id": "lane_E",
+    "timestamp": "2026-10-24T20:25:51.301950",
+    "vehicle_count": 2,
+    "queue_length_m": 10.0,
+    "density_veh_per_m": 0.2
+  },
+  {
+    "lane_id": "lane_W",
+    "timestamp": "2026-10-24T20:25:51.301950",
+    "vehicle_count": 0,
+    "queue_length_m": 0.0,
+    "density_veh_per_m": 0.0
+  },
+  {
+    "lane_id": "lane_N",
+    "timestamp": "2026-10-24T20:25:52.301950",
+    "vehicle_count": 0,
+    "queue_length_m": 0.0,
+    "density_veh_per_m": 0.0
+  },
+  {
+    "lane_id": "lane_S",
+    "timestamp": "2026-10-24T20:25:52.301950",
+    "vehicle_count": 0,
+    "queue_length_m": 0.0,
+    "density_veh_per_m": 0.0
+  },
+  {
+    "lane_id": "lane_E",
+    "timestamp": "2026-10-24T20:25:52.301950",
+    "vehicle_count": 3,
+    "queue_length_m": 15.0,
+    "density_veh_per_m": 0.2
+  },
+  {
+    "lane_id": "lane_W",
+    "timestamp": "2026-10-24T20:25:52.301950",
+    "vehicle_count": 0,
+    "queue_length_m": 0.0,
+    "density_veh_per_m": 0.0
+  },
+  {
+    "lane_id": "lane_N",
+    "timestamp": "2026-10-24T20:25:53.301950",
+    "vehicle_count": 0,
+    "queue_length_m": 0.0,
+    "density_veh_per_m": 0.0
+  },
+  {
+    "lane_id": "lane_S",
+    "timestamp": "2026-10-24T20:25:53.301950",
+    "vehicle_count": 0,
+    "queue_length_m": 0.0,
+    "density_veh_per_m": 0.0
+  },
+  {
+    "lane_id": "lane_E",
+    "timestamp": "2026-10-24T20:25:53.301950",
+    "vehicle_count": 3,
+    "queue_length_m": 15.0,
+    "density_veh_per_m": 0.2
+  },
+  {
+    "lane_id": "lane_W",
+    "timestamp": "2026-10-24T20:25:53.301950",
+    "vehicle_count": 1,
+    "queue_length_m": 5.0,
+    "density_veh_per_m": 0.2
+  },
+  {
+    "lane_id": "lane_N",
+    "timestamp": "2026-10-24T20:25:54.301950",
+    "vehicle_count": 0,
+    "queue_length_m": 0.0,
+    "density_veh_per_m": 0.0
+  },
+  {
+    "lane_id": "lane_S",
+    "timestamp": "2026-10-24T20:25:54.301950",
+    "vehicle_count": 0,
+    "queue_length_m": 0.0,
+    "density_veh_per_m": 0.0
+  },
+  {
+    "lane_id": "lane_E",
+    "timestamp": "2026-10-24T20:25:54.301950",
+    "vehicle_count": 2,
+    "queue_length_m": 10.0,
+    "density_veh_per_m": 0.2
+  },
+  {
+    "lane_id": "lane_W",
+    "timestamp": "2026-10-24T20:25:54.301950",
+    "vehicle_count": 1,
+    "queue_length_m": 5.0,
+    "density_veh_per_m": 0.2
+  },
+  {
+    "lane_id": "lane_N",
+    "timestamp": "2026-10-24T20:25:55.301950",
+    "vehicle_count": 0,
+    "queue_length_m": 0.0,
+    "density_veh_per_m": 0.0
+  },
+  {
+    "lane_id": "lane_S",
+    "timestamp": "2026-10-24T20:25:55.301950",
+    "vehicle_count": 1,
+    "queue_length_m": 5.0,
+    "density_veh_per_m": 0.2
+  },
+  {
+    "lane_id": "lane_E",
+    "timestamp": "2026-10-24T20:25:55.301950",
+    "vehicle_count": 2,
+    "queue_length_m": 10.0,
+    "density_veh_per_m": 0.2
+  },
+  {
+    "lane_id": "lane_W",
+    "timestamp": "2026-10-24T20:25:55.301950",
+    "vehicle_count": 0,
+    "queue_length_m": 0.0,
+    "density_veh_per_m": 0.0
+  },
+  {
+    "lane_id": "lane_N",
+    "timestamp": "2026-10-24T20:25:56.301950",
+    "vehicle_count": 0,
+    "queue_length_m": 0.0,
+    "density_veh_per_m": 0.0
+  },
+  {
+    "lane_id": "lane_S",
+    "timestamp": "2026-10-24T20:25:56.301950",
+    "vehicle_count": 1,
+    "queue_length_m": 5.0,
+    "density_veh_per_m": 0.2
+  },
+  {
+    "lane_id": "lane_E",
+    "timestamp": "2026-10-24T20:25:56.301950",
+    "vehicle_count": 2,
+    "queue_length_m": 10.0,
+    "density_veh_per_m": 0.2
+  },
+  {
+    "lane_id": "lane_W",
+    "timestamp": "2026-10-24T20:25:56.301950",
+    "vehicle_count": 0,
+    "queue_length_m": 0.0,
+    "density_veh_per_m": 0.0
+  },
+  {
+    "lane_id": "lane_N",
+    "timestamp": "2026-10-24T20:25:57.301950",
+    "vehicle_count": 1,
+    "queue_length_m": 5.0,
+    "density_veh_per_m": 0.2
+  },
+  {
+    "lane_id": "lane_S",
+    "timestamp": "2026-10-24T20:25:57.301950",
+    "vehicle_count": 1,
+    "queue_length_m": 5.0,
+    "density_veh_per_m": 0.2
+  },
+  {
+    "lane_id": "lane_E",
+    "timestamp": "2026-10-24T20:25:57.301950",
+    "vehicle_count": 2,
+    "queue_length_m": 10.0,
+    "density_veh_per_m": 0.2
+  },
+  {
+    "lane_id": "lane_W",
+    "timestamp": "2026-10-24T20:25:57.301950",
+    "vehicle_count": 0,
+    "queue_length_m": 0.0,
+    "density_veh_per_m": 0.0
+  },
+  {
+    "lane_id": "lane_N",
+    "timestamp": "2026-10-24T20:25:58.301950",
+    "vehicle_count": 0,
+    "queue_length_m": 0.0,
+    "density_veh_per_m": 0.0
+  },
+  {
+    "lane_id": "lane_S",
+    "timestamp": "2026-10-24T20:25:58.301950",
+    "vehicle_count": 0,
+    "queue_length_m": 0.0,
+    "density_veh_per_m": 0.0
+  },
+  {
+    "lane_id": "lane_E",
+    "timestamp": "2026-10-24T20:25:58.301950",
+    "vehicle_count": 2,
+    "queue_length_m": 10.0,
+    "density_veh_per_m": 0.2
+  },
+  {
+    "lane_id": "lane_W",
+    "timestamp": "2026-10-24T20:25:58.301950",
+    "vehicle_count": 0,
+    "queue_length_m": 0.0,
+    "density_veh_per_m": 0.0
   }
 ]

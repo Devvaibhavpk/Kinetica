@@ -1,24 +1,28 @@
+# ==============================================================================
+# Project Kinetica — Git Ignore Rules
+# ==============================================================================
+
 # Environments & Secrets
 .env
 .env.*
 .env*.local
 *.env
-.venv
+.venv/
 env/
 venv/
 ENV/
 env.bak/
 venv.bak/
 
-# Python
+# Python Bytecode & Distribution Artifacts
 __pycache__/
 *.py[cod]
 *$py.class
 *.so
 .Python
 build/
-develop-eggs/
 dist/
+.dist/
 downloads/
 eggs/
 .eggs/
@@ -35,32 +39,31 @@ share/python-wheels/
 *.egg
 MANIFEST
 
-# Virtual environments
-.env
-.venv
-env/
-venv/
+# Node & Next.js Build Artifacts
+node_modules/
+frontend/node_modules/
+.next/
+frontend/.next/
+*.tsbuildinfo
+frontend/tsconfig.tsbuildinfo
+.npm/
 
-# IDEs and Editors
+# IDEs, OS & Editor Caches
 .idea/
 .vscode/
 *.swp
 *.swo
 *~
 .DS_Store
+Thumbs.db
+desktop.ini
 ~$*
 
-# Logs and databases
+# Logs & Local Databases
 *.log
 *.sqlite3
 
-# Node / JS tools (for any frontend tooling if added later)
-node_modules/
-dist/
-build/
-.npm/
-
-# Data and ML Models
+# Datasets, Weights & Heavy ML Checkpoints
 data/*.csv
 data/*.json
 data/*.mp4
@@ -72,17 +75,19 @@ data/**/*.png
 data/*.zip
 data/raw/
 data/kinetica_dataset/
+data/videos/
 weights/
 runs_kinetica/
 runs/
 *.pt
 *.onnx
 
+# Allow Essential Tracked Schemas & Generator Under data/
 !data/DATASET_SOURCE.md
 !data/synthetic_generator.py
 !data/calibration/
 
-# Coverage and testing
+# Testing, Coverage & Hypothesis
 htmlcov/
 .tox/
 .nox/
@@ -96,14 +101,11 @@ coverage.xml
 .hypothesis/
 .pytest_cache/
 
-# Intermediate report build drafts
-report/perfect_draft.docx
-report/perfect_draft.pdf
+# Intermediate Report Build Drafts
+report/perfect_draft.*
+report/draft_report.*
 
-# Video staging & raw video dumps
-data/videos/
-
-# Results temporary debug artifacts
+# Temporary Debug Artifacts in Results
 results/crop_*.jpg
 results/debug_*.jpg
 results/sample_cam1_frame.jpg

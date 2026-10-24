@@ -1,5 +1,29 @@
+# ==============================================================================
+# Project Kinetica — Python Dependencies
+# ==============================================================================
+
+# Core Data Schemas & Validation
 pydantic>=2.0.0
-pytest>=7.0.0
+
+# Edge Computer Vision & Deep Learning
 ultralytics>=8.0.0
 opencv-python>=4.8.0
 numpy>=1.24.0
+
+# Actuation & Statistical Analytics
+scipy>=1.10.0
+scikit-learn>=1.2.0
+matplotlib>=3.7.0
+
+# Edge Gateway API Backend
+fastapi>=0.100.0
+uvicorn>=0.20.0
+httpx>=0.24.0
+
+# Automated Testing & Verification
+pytest>=7.0.0
+pytest-asyncio>=0.21.0
+
+# Report & Documentation Generation
+reportlab>=3.6.0
+python-docx>=1.0.0

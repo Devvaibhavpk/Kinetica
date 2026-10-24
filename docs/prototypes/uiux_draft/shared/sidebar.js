@@ -12,11 +12,9 @@
   ];
 
   // ── Resolve relative path to assets ──────────────────────────────────
-  const currentPath = window.location.pathname;
-  const depth = (currentPath.match(/\//g) || []).length - 1;
-  // index.html is at depth 1 (e.g. /uiux draft/index.html)
-  // page/code.html is at depth 2
-  const prefix = depth <= 1 ? "./" : "../";
+  const currentPath = window.location.pathname.replace(/\\/g, "/");
+  const isIndex = currentPath.endsWith("/index.html") || currentPath.endsWith("/uiux_draft") || currentPath.endsWith("/uiux_draft/");
+  const prefix = isIndex ? "./" : "../";
 
   function isActive(key) {
     return currentPath.includes(key);
