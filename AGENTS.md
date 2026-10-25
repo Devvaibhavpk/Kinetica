@@ -1,25 +1,25 @@
 # AGENTS.md — Project Kinetica
 
-**Read this file first, before opening `plan.md`, `build-spec.md`, `design.md`, or any code.**
+**Read this file first, before opening `docs/plan.md`, `docs/build-spec.md`, `docs/design.md`, or any code.**
 This is the operating manual for any agentic coding session working on this repo — it tells you what the project is, what the architectural documents are for, what you own vs. must not touch, and the rules that hold across every phase.
 
 ---
 
 ## 1. What this project is (one paragraph)
 
-Project Kinetica is an autonomous closed-loop cyber-physical system replacing fixed-timer traffic intersections with a perception-driven, statistically-modeled, priority-aware controller. It has four core backend modules — **Vision** (object detection → queue/density/classification), **Actuation** (Poisson-modeled arrival rates → demand-responsive green phases), **Preemption** (max-heap local priority + directed-graph corridor routing for ambulance/police/school-van override), and **Analytics** (regression-tree bottleneck forecasting + a formal hypothesis test proving Kinetica beats a fixed-timer baseline). The whole system exists to make four specific claims true and *measured*, not asserted — see `success_criteria.md`.
+Project Kinetica is an autonomous closed-loop cyber-physical system replacing fixed-timer traffic intersections with a perception-driven, statistically-modeled, priority-aware controller. It has four core backend modules — **Vision** (object detection → queue/density/classification), **Actuation** (Poisson-modeled arrival rates → demand-responsive green phases), **Preemption** (max-heap local priority + directed-graph corridor routing for ambulance/police/school-van override), and **Analytics** (regression-tree bottleneck forecasting + a formal hypothesis test proving Kinetica beats a fixed-timer baseline). The whole system exists to make four specific claims true and *measured*, not asserted — see `docs/success_criteria.md`.
 
 ## 2. The document set — what each file is for
 
 | File | Purpose | When you read it |
 |---|---|---|
 | `AGENTS.md` (this file) | Operating rules, ownership, cross-cutting constraints | First, every session |
-| `plan.md` | Architectural phase roadmap | Before starting any new phase — confirms sequencing |
-| `build-spec.md` | Exact file paths, function signatures, and test code per phase | While implementing — this is the literal spec, not a suggestion |
-| `design.md` | Frontend visual system (colors, type, motion, components) | Only when building `frontend/` — irrelevant to backend/module work |
-| `success_criteria.md` | The four testable assertions (SC1–SC4) | After finishing any phase, before marking it done |
+| `docs/plan.md` | Architectural phase roadmap | Before starting any new phase — confirms sequencing |
+| `docs/build-spec.md` | Exact file paths, function signatures, and test code per phase | While implementing — this is the literal spec, not a suggestion |
+| `docs/design.md` | Frontend visual system (colors, type, motion, components) | Only when building `frontend/` — irrelevant to backend/module work |
+| `docs/success_criteria.md` | The four testable assertions (SC1–SC4) | After finishing any phase, before marking it done |
 
-**Rule:** `plan.md` sets the *sequence*, `build-spec.md` sets the *literal implementation*. If they ever conflict on a detail, `build-spec.md` wins for code-level decisions (exact function names, file paths, test assertions). Flag the conflict in your session output rather than silently picking one.
+**Rule:** `docs/plan.md` sets the *sequence*, `docs/build-spec.md` sets the *literal implementation*. If they ever conflict on a detail, `docs/build-spec.md` wins for code-level decisions (exact function names, file paths, test assertions). Flag the conflict in your session output rather than silently picking one.
 
 ## 3. Module ownership table (who produces / consumes what)
 

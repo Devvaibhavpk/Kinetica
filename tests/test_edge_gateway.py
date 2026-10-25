@@ -4,7 +4,7 @@ tests/test_edge_gateway.py — Tests for FastAPI Edge Actuation Gateway
 
 import pytest
 from fastapi.testclient import TestClient
-from edge_gateway import app, gateway_state
+from backend.edge_gateway import app, gateway_state
 
 
 @pytest.fixture

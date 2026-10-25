@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="logo.png" alt="Project Kinetica Logo" width="160" />
+  <img src="docs/assets/logo.png" alt="Project Kinetica Logo" width="160" />
   
   # Project Kinetica
   
@@ -132,13 +132,19 @@ Kinetica/
 │   ├── bottleneck_model.py  # Decision tree regression & Gini feature importance
 │   ├── hypothesis_test.py   # Mann-Whitney U & Welch's t-test comparative harness
 │   └── generate_plots.py    # Publication-ready figure generator
-├── backend/                 # FastAPI entrypoints
-│   └── main.py              # Production ASGI backend server
+├── backend/                 # FastAPI entrypoints & edge gateway service
+│   ├── edge_gateway.py      # Production ASGI backend server & WebSocket telemetry
+│   └── main.py              # CLI backend entrypoint
 ├── benchmarks/              # Edge latency & heap performance benchmarks
 ├── data/                    # Synthetic generator & spatial ROI calibration
 │   ├── calibration/         # Camera perspective homography & ROI definitions
 │   └── synthetic_generator.py # Deterministic multi-scenario event generator
-├── docs/                    # Technical manuals and training guides
+├── docs/                    # Technical manuals, architecture specifications & guides
+│   ├── assets/              # Branding and documentation assets
+│   ├── build-spec.md        # Technical architecture & verification specification
+│   ├── design.md            # Frontend visual design tokens & telemetry themes
+│   ├── plan.md              # Engineering phase roadmap
+│   ├── success_criteria.md  # Formal verification checklist (SC1–SC4)
 │   ├── COLAB_TRAINING_GUIDE.md
 │   ├── MODEL_PLAN.md
 │   └── MODEL_TRAINING_AND_DATASET_PIPELINE.md
@@ -155,12 +161,13 @@ Kinetica/
 │   ├── figures/             # High-resolution benchmark and telemetry plots
 │   └── *.json               # Test results, telemetry logs, and benchmark metrics
 ├── schemas/                 # Canonical Pydantic data schemas (LaneObservation, etc.)
-├── scripts/                 # Utility scripts (video generators, webcam benchmarks, false positive tests)
+├── scripts/                 # Operational utilities & test runners
+│   └── run_end_to_end.py    # Complete end-to-end integration simulation runner
 ├── tests/                   # End-to-end integration tests & FastAPI client tests
 ├── vision/                  # Perception engine, model zoo, tracker, and classification
 ├── weights/                 # Model checkpoints (best.pt, best.onnx, yolov8n.onnx)
-├── edge_gateway.py          # Standalone FastAPI Edge Actuation Gateway
-├── run_end_to_end.py        # Complete end-to-end simulation runner
+├── AGENTS.md                # Operating manual for autonomous agentic workflows
+├── conftest.py              # Global pytest configuration & runtime environment guards
 ├── requirements.txt         # Pinned Python package dependencies
 └── LICENSE                  # MIT Open Source License
 ```
@@ -175,7 +182,7 @@ Ensure you have Python 3.10+ installed:
 
 ```bash
 # Clone the repository
-git clone https://github.com/your-username/Kinetica.git
+git clone https://github.com/Devvaibhavpk/Kinetica.git
 cd Kinetica
 
 # Create and activate virtual environment
@@ -190,12 +197,12 @@ source .venv/bin/activate
 pip install -r requirements.txt
 
 # Run the complete end-to-end simulation
-python run_end_to_end.py
+python scripts/run_end_to_end.py
 ```
 
 To start the FastAPI Edge Gateway service:
 ```bash
-python -m uvicorn edge_gateway:app --host 0.0.0.0 --port 8000 --reload
+python -m uvicorn backend.edge_gateway:app --host 0.0.0.0 --port 8000 --reload
 ```
 API Documentation will be live at `http://127.0.0.1:8000/docs`.
 
@@ -250,7 +257,8 @@ Comprehensive technical manuals are located in the [`docs/`](docs/) directory:
 - 📘 [Edge Traffic Perception & Dataset Training Pipeline](docs/MODEL_TRAINING_AND_DATASET_PIPELINE.md)
 - 🚀 [Google Colab Cloud GPU Training Guide](docs/COLAB_TRAINING_GUIDE.md)
 - 🗂️ [Class Taxonomy & Dataset Plan](docs/MODEL_PLAN.md)
-- 📋 [Core System & Schemas Specification](build-spec.md)
+- 📋 [Core System & Schemas Specification](docs/build-spec.md)
+- 🎯 [Success Criteria Verification Checklist](docs/success_criteria.md)
 
 ---
 

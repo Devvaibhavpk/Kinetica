@@ -19,6 +19,8 @@ Welcome to the technical documentation for **Project Kinetica**, an open-source,
 ## 🏗️ Core Architecture & Operational Contracts
 
 - **[`schemas/lane_state.py`](../schemas/lane_state.py):** Immutable Pydantic data schemas defining `LaneObservation`, `PriorityEvent`, and `PhaseDecision`.
-- **[`build-spec.md`](../build-spec.md):** Architectural specifications, algorithmic definitions, and verification criteria.
-- **[`design.md`](../design.md):** Design tokens, telemetry color systems, and UI state ramp specifications for the Next.js Control Room dashboard.
-- **[`success_criteria.md`](../success_criteria.md):** Four formal automated Pytest assertions (SC1–SC4) verifying demand-responsive green allocation, priority preemption, corridor coordination, and statistical delay reduction.
+- **[`build-spec.md`](build-spec.md):** Architectural specifications, algorithmic definitions, and verification criteria.
+- **[`plan.md`](plan.md):** Comprehensive engineering milestones and roadmap.
+- **[`design.md`](design.md):** Design tokens, telemetry color systems, and UI state ramp specifications for the Next.js Control Room dashboard.
+- **[`success_criteria.md`](success_criteria.md):** Four formal automated Pytest assertions (SC1–SC4) verifying demand-responsive green allocation, priority preemption, corridor coordination, and statistical delay reduction.
+- **[`AGENTS.md`](../AGENTS.md):** Operating rules and cross-cutting constraints for agentic workflows.

@@ -12,6 +12,13 @@ from datetime import datetime
 import json
 import os
 from pathlib import Path
+import sys
+
+# Ensure repository root is on sys.path and is current working directory
+REPO_ROOT = Path(__file__).resolve().parent.parent
+if str(REPO_ROOT) not in sys.path:
+    sys.path.insert(0, str(REPO_ROOT))
+os.chdir(REPO_ROOT)
 
 import pandas as pd
 
