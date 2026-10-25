@@ -127,13 +127,13 @@ Update the `iet_itr2_12518` BibTeX entry to include `note={accessible}`. This en
 Create an `@article` block in `references.bib` with the citation key `ieee_11380918`. Fill out the required metadata such as title and journal, indicating it belongs to IEEE. The syntax must be perfectly valid for LaTeX compilation later.
 
 ### 1.7 Add institutional access note for ieee_11380918
-Append a `note` field to the `ieee_11380918` entry containing exactly `requires institutional access — pull via VIT library portal`. This informs downstream readers that a proxy or VPN is needed to read the full text. Do not attempt to automatically parse the PDF for this entry unless access is confirmed.
+Append a `note` field to the `ieee_11380918` entry containing exactly `requires institutional access — pull via institutional library portal`. This informs downstream readers that a proxy or VPN is needed to read the full text. Do not attempt to automatically parse the PDF for this entry unless access is confirmed.
 
 ### 1.8 Setup BibTeX skeleton for ieee_11490570
 Insert a new `@article` entry in `references.bib` for the key `ieee_11490570`. Populate the author, title, and year fields corresponding to this IEEE Xplore document. Ensure no missing commas or unclosed braces exist in the block.
 
 ### 1.9 Add institutional access note for ieee_11490570
-Modify the `ieee_11490570` citation to include `note={requires institutional access — pull via VIT library portal}`. This marks the paper as gated behind the VIT institutional login. This label must exactly match the required string.
+Modify the `ieee_11490570` citation to include `note={requires institutional access — pull via institutional library portal}`. This marks the paper as gated behind institutional login. This label must exactly match the required string.
 
 ### 1.10 Setup BibTeX skeleton for ijsrem_ev_prioritization
 Add the final `@article` entry to `references.bib` using the key `ijsrem_ev_prioritization`. Fill out the relevant bibliographic data for the IJSREM publication. Double-check that the citation key perfectly matches this string.

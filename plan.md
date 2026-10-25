@@ -1,8 +1,7 @@
 # Project Kinetica — Execution Plan
 
-**Course:** BCSE497J — Project I, Fall Semester 2026-2027
-**Team:** 23BDS1148(Vaibhav.P.K), 23BDS1168 (Mithil Girish)
-**Source documents:** `Project_Kinetica_Proposal.pdf`, `BCSE497J_Project_I_Guidelines_01.pdf`
+**Project:** Project Kinetica
+**Authors:** Vaibhav P.K, Mithil Girish
 
 This plan is written to be executed by an agentic AI coding workflow (Claude Code / equivalent), one phase at a time. Each phase ends in a **verifiable artifact** — a script, a dataset, a metric, a document section — so an agent (or a reviewer) can check "done" without ambiguity. Phases map directly onto the four modules from the proposal (Vision → Actuation → Preemption → Predictive Validation) and are sequenced to land *before* each SCOPE review deadline with margin, not on the deadline itself.
 
@@ -333,7 +332,7 @@ This task involves creating the skeleton markdown or LaTeX files for all five ch
 Before writing the methodology and results chapters, this step performs a strict audit to ensure all necessary `results/*.json` files, benchmarks, and plots actually exist. This enforces the rule that no section of the report is written speculatively without backing data. The process involves a checklist review against the outputs of Phases 2-5. The specific deliverable is a verification sign-off allowing drafting to commence.
 
 ### 6.3 Preliminary Pages Setup
-Here we draft the standard preliminary pages required by the university formatting guidelines, including the title page, abstract, acknowledgments, and table of contents. It is essential for presenting a professional, submission-ready document to the review panel. The technique involves precise formatting according to the provided `BCSE497J_Project_I_Guidelines_01.pdf`. The deliverable is the finalized front-matter of the project report.
+Here we draft the standard preliminary pages required by the university formatting guidelines, including the title page, abstract, acknowledgments, and table of contents. It is essential for presenting a professional, submission-ready document to the review panel. The technique involves precise formatting according to the provided `project documentation guidelines`. The deliverable is the finalized front-matter of the project report.
 
 ### 6.4 Chapter 1: Introduction Drafting
 This task focuses on writing the Introduction chapter, clearly defining the problem statement regarding inefficient fixed-timer traffic lights and outlining Kinetica's objectives and scope. It is necessary to set the stage for the reviewer, explaining exactly what the project intends to solve and what it explicitly will not cover. We will synthesize the original proposal into formal academic prose. The output is a complete draft of Chapter 1.
@@ -406,8 +405,8 @@ This task involves a comprehensive proofread and peer-review of the journal manu
 ### 7.10 Proof-of-Submission Gathering
 Here we formally submit the manuscript to the chosen journal and collect the official receipt or confirmation email. This is often required by the university as proof that the publication criteria of the project have been met. The process is simply navigating the journal's submission portal and saving the resulting documentation. The deliverable is the stored proof-of-submission artifact for the project portfolio.
 
-### 7.11 Viva Voce Script Preparation
-This step focuses on writing a narrative script and anticipating questions for the final Review 5 viva voce examination. It is crucial for ensuring the team can clearly articulate the architecture, defend the technical choices (like max-heap vs ML routing), and explain the statistical results under pressure. We will draft talking points mapped to each core module. The output deliverable is a comprehensive Q&A prep document.
+### 7.11 Architecture Defense & FAQ Preparation
+This step focuses on writing a narrative script and anticipating questions for the final Review 5 technical review and defense. It is crucial for ensuring the team can clearly articulate the architecture, defend the technical choices (like max-heap vs ML routing), and explain the statistical results under pressure. We will draft talking points mapped to each core module. The output deliverable is a comprehensive Q&A prep document.
 
 ### 7.12 Perception-to-Validation Narrative Rehearsal
 In this task, the team rehearses the entire presentation, ensuring a smooth narrative flow from the initial camera perception (Vision) all the way to the statistical validation (Analytics). It is necessary to present the project as a cohesive, single system rather than four disconnected modules. The process involves timed dry-runs of the speaking parts. The deliverable is a practiced, cohesive team presentation.

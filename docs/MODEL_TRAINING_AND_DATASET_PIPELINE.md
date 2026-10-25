@@ -1,8 +1,7 @@
 # Edge Traffic Perception: Multi-Dataset Merger, Cloud GPU Training & Model Export Pipeline
 
 **Document Version:** 1.0.0  
-**Project:** Project Kinetica (BCSE497J Project I Deliverable, VIT Chennai)  
-**Authors:** 23BDS1148 / 23BDS1168  
+**Project:** Project Kinetica  
 **Component:** Perception Engine (Vision Module / Model Zoo / Edge Inference)  
 **Primary Files:**  
 - Dataset Merger Script: [`scripts/merge_datasets.py`](file:///F:/project/Kinetica/scripts/merge_datasets.py)  

@@ -1,6 +1,6 @@
 {
   "status": "SUCCESS",
-  "timestamp": "2026-10-24T20:24:01.379174",
+  "timestamp": "2026-10-25T16:59:03.363119",
   "total_observations": 480,
   "poisson_fit": {
     "p_value": 0.0,
@@ -15,7 +15,7 @@
     "statistic": 0.0,
     "p_value": 0.0,
     "h0_rejected": true,
-    "effect_size": 15.16
+    "effect_size": 15.2
   },
   "corridor_path": [
     "IX-02",
@@ -24,8 +24,8 @@
   ],
   "feature_importances": {
     "density_veh_per_m": 0.0,
-    "vehicle_count": 0.5412,
-    "queue_length_m": 0.4588,
+    "vehicle_count": 0.0218,
+    "queue_length_m": 0.9782,
     "is_preempted": 0.0,
     "hour_of_day": 0.0
   }

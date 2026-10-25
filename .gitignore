@@ -101,10 +101,6 @@ coverage.xml
 .hypothesis/
 .pytest_cache/
 
-# Intermediate Report Build Drafts
-report/perfect_draft.*
-report/draft_report.*
-
 # Temporary Debug Artifacts in Results
 results/crop_*.jpg
 results/debug_*.jpg

@@ -26,7 +26,7 @@ export default function Header() {
             KINETICA <span className="text-[#0866ff] text-xs uppercase tracking-widest font-normal ml-2">Control Room</span>
           </h1>
           <p className="text-xs text-[#b0b3b8] mt-1">
-            Closed-Loop Cyber-Physical Traffic Controller • VIT Chennai
+            Autonomous Closed-Loop Cyber-Physical Traffic Controller
           </p>
         </div>
       </div>

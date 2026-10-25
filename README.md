@@ -17,7 +17,7 @@
   </p>
 
   <p align="center">
-    <sub>VIT Chennai • BCSE497J Project I • Authors: <b>Vaibhav P.K (23BDS1148)</b> & <b>Mithil Girish (23BDS1168)</b></sub>
+    <sub>Open-Source Project • Built by <b>Vaibhav P.K</b> & <b>Mithil Girish</b></sub>
   </p>
 </div>
 
@@ -33,7 +33,7 @@
   - [2. Next.js Control Room Setup](#2-nextjs-control-room-setup)
 - [Verification & Testing](#-verification--testing)
 - [Success Criteria (SC1–SC4)](#-success-criteria-sc1sc4)
-- [Documentation & Study Resources](#-documentation--study-resources)
+- [Documentation & Guides](#-documentation--guides)
 - [License](#-license)
 
 ---
@@ -42,7 +42,7 @@
 
 Modern urban traffic controllers predominantly rely on fixed-time cycle plans that cannot respond to stochastic demand surges or facilitate emergency vehicle clearance. **Project Kinetica** replaces these legacy systems with a closed-loop cyber-physical traffic control platform designed for complex heterogeneous traffic environments:
 
-- **Perception-Driven Queue Estimation:** Fine-tuned YOLOv8 neural detector trained on 7,534 images across 5 traffic datasets, augmented with Indian vehicle classes (Auto-Rickshaws, MTC Buses, Motorcycles).
+- **Perception-Driven Queue Estimation:** Fine-tuned YOLOv8 neural detector trained on 7,534 images across 5 traffic datasets, augmented with heterogeneous vehicle classes (Auto-Rickshaws, City Buses, Motorcycles).
 - **MoRTH AIS-125 Livery Decomposition:** Heuristic HSV colour-space decomposition that cross-examines vehicle livery against emergency vehicle standards to prevent red-car false positives.
 - **Dynamic Green Phase Optimization:** Demand-responsive actuation utilizing arrival rate estimation ($\lambda$) and Webster's kinematic delay formulation.
 - **Graph-Based Corridor Preemption:** Local $O(\log n)$ max-heap priority queueing paired with directed acyclic graph (DAG) lookahead routing to clear multi-intersection "green waves" for ambulances and emergency services.
@@ -138,13 +138,10 @@ Kinetica/
 ├── data/                    # Synthetic generator & spatial ROI calibration
 │   ├── calibration/         # Camera perspective homography & ROI definitions
 │   └── synthetic_generator.py # Deterministic multi-scenario event generator
-├── docs/                    # Technical manuals, study guides, and blueprints
+├── docs/                    # Technical manuals and training guides
 │   ├── COLAB_TRAINING_GUIDE.md
-│   ├── MODEL_TRAINING_AND_DATASET_PIPELINE.md
-│   ├── RESEARCH_PAPER_BLUEPRINT.md
-│   ├── REVIEW_PREPARATION_GUIDE.md
-│   ├── Kinetica_Project_Study_Guide_Master.pdf
-│   └── prototypes/          # Early HTML5 design mockups
+│   ├── MODEL_PLAN.md
+│   └── MODEL_TRAINING_AND_DATASET_PIPELINE.md
 ├── frontend/                # Next.js 16 Control Room dashboard
 │   ├── src/app/             # Next.js App Router & API routes
 │   └── src/components/      # Tactical overview, video monitors, and GIS map views
@@ -154,14 +151,11 @@ Kinetica/
 │   ├── heap.py              # Thread-safe max-heap with priority escalation
 │   ├── graph_router.py      # Directed graph multi-intersection corridor pre-clearance
 │   └── override.py          # State-machine interrupt handler
-├── report/                  # Publication report, LaTeX/BibTeX references, and generator scripts
-│   ├── chapters/            # Chapter markdown source files (Ch 1–5)
-│   └── templates/           # Academic institutional templates
 ├── results/                 # Empirical experiment results, logs, and figures
 │   ├── figures/             # High-resolution benchmark and telemetry plots
 │   └── *.json               # Test results, telemetry logs, and benchmark metrics
 ├── schemas/                 # Canonical Pydantic data schemas (LaneObservation, etc.)
-├── scripts/                 # Utility scripts (video generators, PDF builders, benchmark tools)
+├── scripts/                 # Utility scripts (video generators, webcam benchmarks, false positive tests)
 ├── tests/                   # End-to-end integration tests & FastAPI client tests
 ├── vision/                  # Perception engine, model zoo, tracker, and classification
 ├── weights/                 # Model checkpoints (best.pt, best.onnx, yolov8n.onnx)
@@ -250,14 +244,13 @@ All four foundational research claims are empirically verified via automated Pyt
 
 ---
 
-## 📚 Documentation & Study Resources
+## 📚 Documentation & Guides
 
-Comprehensive manuals and deep-dive guides are located in the [`docs/`](docs/) directory:
+Comprehensive technical manuals are located in the [`docs/`](docs/) directory:
 - 📘 [Edge Traffic Perception & Dataset Training Pipeline](docs/MODEL_TRAINING_AND_DATASET_PIPELINE.md)
 - 🚀 [Google Colab Cloud GPU Training Guide](docs/COLAB_TRAINING_GUIDE.md)
-- 📄 [Research Paper Blueprint & Empirical Formulations](docs/RESEARCH_PAPER_BLUEPRINT.md)
-- 🎓 [Oral Defense & Technical Viva Master Guide](docs/REVIEW_PREPARATION_GUIDE.md)
-- 📊 [Full Academic Technical Report Chapters](report/README.md)
+- 🗂️ [Class Taxonomy & Dataset Plan](docs/MODEL_PLAN.md)
+- 📋 [Core System & Schemas Specification](build-spec.md)
 
 ---
 
